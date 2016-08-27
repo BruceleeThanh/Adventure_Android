@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+    <ImageView
+        android:id="@+id/ivAdventureLogoSignup"
+        android:layout_width="@dimen/logo_width"
+        android:layout_height="@dimen/logo_height"
+        android:src="@drawable/img_adventure_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_big"/>
+
+    <EditText
+        android:id="@+id/etUsernameSignup"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="@dimen/btn_height"
+        android:hint="@string/email_et_signupviaemail"
+        android:layout_below="@+id/ivAdventureLogoSignup"
+        android:layout_centerHorizontal="true"
+        android:singleLine="true"
+        android:layout_marginTop="@dimen/margin_big"
+        android:imeOptions="actionNext"/>
+
+    <EditText
+        android:id="@+id/etFirstNameSignup"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="@dimen/btn_height"
+        android:hint="@string/firstname_et_signupviaemail"
+        android:layout_below="@+id/etUsernameSignup"
+        android:layout_centerHorizontal="true"
+        android:singleLine="true"
+        android:imeOptions="actionNext"/>
+
+    <EditText
+        android:id="@+id/etLastNameSignup"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="@dimen/btn_height"
+        android:hint="@string/lastname_et_signupviaemail"
+        android:layout_below="@+id/etFirstNameSignup"
+        android:layout_centerHorizontal="true"
+        android:singleLine="true"
+        android:imeOptions="actionNext"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilPasswordLayoutSignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etLastNameSignup"
+        android:layout_centerHorizontal="true"
+        app:passwordToggleEnabled="true"
+        app:hintEnabled="false">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etPasswordSignup"
+            android:layout_width="@dimen/btn_width"
+            android:layout_height="@dimen/btn_height"
+            android:hint="@string/password_et_signupviaemail"
+            android:inputType="textPassword"
+            android:imeOptions="actionNext"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <EditText
+        android:id="@+id/etRepasswordSignup"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="@dimen/btn_height"
+        android:hint="@string/repassword_et_signupviaemail"
+        android:layout_below="@+id/tilPasswordLayoutSignup"
+        android:layout_centerHorizontal="true"
+        android:singleLine="true"
+        android:inputType="textPassword"
+        android:imeOptions="actionDone"/>
+
+    <LinearLayout
+        android:id="@+id/llAcceptTermServices"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="@dimen/margin_big"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_below="@+id/etRepasswordSignup">
+        <CheckBox
+            android:id="@+id/cbAcceptTermServices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/accept_cb_signupviaemail"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/tvTermServices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etRepasswordSignup"
+            android:text="@string/term_services_tv_signupviaemail"
+            android:textColor="@color/accent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_small"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSignup"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="@dimen/btn_height"
+        android:background="@drawable/selector_green_btn"
+        android:text="@string/signup_btn_signupviaemail"
+        android:textAllCaps="false"
+        android:textSize="@dimen/txt_medium"
+        android:textColor="@color/white"
+        android:layout_below="@id/llAcceptTermServices"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_big"/>
+
+</RelativeLayout>

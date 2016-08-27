@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Adventure</string>
+
+    <!--Splash-->
+    <string name="login_via_email_btn_splash">Đăng nhập qua email</string>
+    <string name="login_via_facebook_btn_splash">Đăng nhập qua Facebook</string>
+    <string name="signup_via_email_btn_splash">Đăng ký qua email</string>
+
+    <!--Login via email-->
+    <string name="email_et_loginviaemail">Email hoặc số điện thoại</string>
+    <string name="password_et_loginviaemail">Mật khẩu</string>
+    <string name="login_btn_loginviaemail">Đăng nhập</string>
+    <string name="forget_password_tv_loginviaemail">Quên mật khẩu?</string>
+    
+    <!--Signup via email-->
+    <string name="email_et_signupviaemail">Email hoặc số điện thoại</string>
+    <string name="firstname_et_signupviaemail">Họ đệm</string>
+    <string name="lastname_et_signupviaemail">Tên</string>
+    <string name="password_et_signupviaemail">Mật khẩu</string>
+    <string name="repassword_et_signupviaemail">Nhập lại mật khẩu</string>
+    <string name="accept_cb_signupviaemail">Chấp nhận</string>
+    <string name="term_services_tv_signupviaemail"> điều khoản dịch vụ</string>
+    <string name="signup_btn_signupviaemail">Đăng ký</string>
+</resources>

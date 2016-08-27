@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/ivAdventureLogoLogin"
+        android:layout_width="@dimen/logo_width"
+        android:layout_height="@dimen/logo_height"
+        android:src="@drawable/img_adventure_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_large"/>
+
+    <EditText
+        android:id="@+id/etUsernameLogin"
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="@dimen/btn_height"
+        android:hint="@string/email_et_loginviaemail"
+        android:layout_below="@+id/ivAdventureLogoLogin"
+        android:layout_centerHorizontal="true"
+        android:singleLine="true"
+        android:layout_marginTop="@dimen/margin_big"
+        android:imeOptions="actionNext"/>
+
+    <!--<EditText-->
+        <!--android:id="@+id/etPassword"-->
+        <!--android:layout_width="@dimen/btn_width"-->
+        <!--android:layout_height="@dimen/btn_height"-->
+        <!--android:hint="@string/et_password"-->
+        <!--android:layout_below="@+id/etUsername"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:drawableBottom="@drawable/orange_line_partition"-->
+        <!--android:singleLine="true"-->
+        <!--android:layout_marginTop="@dimen/margin_small"-->
+        <!--android:imeOptions="actionDone"-->
+        <!--/>-->
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilPasswordLayoutLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etUsernameLogin"
+        android:layout_centerHorizontal="true"
+        app:passwordToggleEnabled="true"
+        app:hintEnabled="false">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etPasswordLogin"
+            android:layout_width="@dimen/btn_width"
+            android:layout_height="@dimen/btn_height"
+            android:hint="@string/password_et_loginviaemail"
+            android:inputType="textPassword"
+            android:imeOptions="actionDone"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:layout_width="@dimen/btn_width"
+        android:layout_height="@dimen/btn_height"
+        android:background="@drawable/selector_green_btn"
+        android:layout_centerHorizontal="true"
+        android:text="@string/login_btn_loginviaemail"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:textSize="@dimen/txt_medium"
+        android:layout_below="@+id/tilPasswordLayoutLogin"
+        android:layout_marginTop="@dimen/margin_big"/>
+
+    <TextView
+        android:id="@+id/tvForgetPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/forget_password_tv_loginviaemail"
+        android:textSize="@dimen/txt_medium"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:textColor="@color/accent"/>
+
+</RelativeLayout>
