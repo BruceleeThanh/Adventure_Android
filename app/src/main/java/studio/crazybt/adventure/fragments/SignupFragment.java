@@ -12,7 +12,7 @@ import studio.crazybt.adventure.R;
 /**
  * Created by Brucelee Thanh on 26/08/2016.
  */
-public class SignupFragment extends Fragment {
+public class SignupFragment extends Fragment implements View.OnClickListener{
 
     private View rootView;
 
@@ -26,4 +26,13 @@ public class SignupFragment extends Fragment {
     }
 
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btnSignup:
+                break;
+            case R.id.tvTermServices:
+                break;
+        }
+    }
 }

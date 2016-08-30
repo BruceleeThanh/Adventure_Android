@@ -12,16 +12,26 @@ import studio.crazybt.adventure.R;
 /**
  * Created by Brucelee Thanh on 26/08/2016.
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private View rootView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if(rootView == null){
+        if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_login, container, false);
         }
         return rootView;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnLogin:
+                break;
+            case R.id.tvForgetPassword:
+                break;
+        }
     }
 }

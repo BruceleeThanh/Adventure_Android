@@ -56,6 +56,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
+        android:id="@+id/btnLogin"
         android:layout_width="@dimen/btn_width"
         android:layout_height="@dimen/btn_height"
         android:background="@drawable/selector_green_btn"

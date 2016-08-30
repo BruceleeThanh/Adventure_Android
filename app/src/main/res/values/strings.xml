@@ -21,4 +21,16 @@
     <string name="accept_cb_signupviaemail">Chấp nhận</string>
     <string name="term_services_tv_signupviaemail"> điều khoản dịch vụ</string>
     <string name="signup_btn_signupviaemail">Đăng ký</string>
+
+    <!--Trip shortcut-->
+    <string name="trip_detail_tv_trip_shortcut">Chi tiết</string>
+    <string name="item_icon_size">24</string>
+    <string name="five_star_icon_width">80.33</string>
+    <string name="five_star_icon_height">16</string>
+    
+    <!--Trip Schedule-->
+    <string name="join_trip_tv_trip_schedule">Tham gia</string>
+    <string name="interested_trip_tv_trip_schedule">Quan tâm</string>
+    <string name="contact_trip_tv_trip_schedule">Liên hệ</string>
+    
 </resources>

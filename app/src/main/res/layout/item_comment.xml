@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_medium">
+
+    <ImageView
+    android:id="@+id/ivProfileImage"
+    android:layout_width="@dimen/profile_image"
+    android:layout_height="@dimen/profile_image"
+    android:src="@drawable/img_profile"/>
+
+    <TextView
+        android:id="@+id/tvProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:text="Pied Piper"
+        android:textColor="@color/primary_text"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvTimeUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:text="10 giờ trước"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/txt_small"/>
+
+    <TextView
+        android:id="@+id/tvContentComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvProfileName"
+        android:layout_toRightOf="@id/ivProfileImage"
+        android:text="Đêm thi dài bốn tiếng đồng hồ, các tiết mục khách mời được đầu tư, sân khấu hiện đại với bốn MC dẫn dắt nhưng vì thế, chương trình thiếu tập trung vào thí sinh."
+        android:textColor="@color/primary_text"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_small"/>
+
+</RelativeLayout>

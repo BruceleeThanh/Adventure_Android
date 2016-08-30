@@ -61,17 +61,17 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.8"
-            android:src="@drawable/orange_line_partition"/>
+            android:src="@drawable/partition_orange_line"/>
         <ImageView
             android:layout_width="4dp"
             android:layout_height="match_parent"
             android:layout_weight="0.1"
-            android:src="@drawable/orange_circle_partition"/>
+            android:src="@drawable/partition_orange_circle"/>
         <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.8"
-            android:src="@drawable/orange_line_partition"/>
+            android:src="@drawable/partition_orange_line"/>
     </LinearLayout>
 
     <Button

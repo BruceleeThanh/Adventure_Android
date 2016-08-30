@@ -16,6 +16,9 @@
     <dimen name="logo_width">200dp</dimen>
     <dimen name="logo_height">162dp</dimen>
 
+    <!--Trip shortcut item-->
+    <dimen name="profile_image">40dp</dimen>
+
     <!--Text size-->
     <dimen name="txt_large">20sp</dimen>
     <dimen name="txt_medium">16sp</dimen>
@@ -24,4 +27,5 @@
     <!--drawable-->
     <dimen name="radius">10dp</dimen>
     <dimen name="line">3dp</dimen>
+
 </resources>
