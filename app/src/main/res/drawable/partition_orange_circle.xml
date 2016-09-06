@@ -7,6 +7,6 @@
         android:color="@color/accent"/>
 
     <size
-        android:width="@dimen/line"
-        android:height="@dimen/line"/>
+        android:width="@dimen/line2"
+        android:height="@dimen/line2"/>
 </shape>

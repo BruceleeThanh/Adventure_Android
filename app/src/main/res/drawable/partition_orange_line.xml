@@ -4,7 +4,7 @@
     <shape
         android:shape="line">
         <stroke
-            android:width="@dimen/line"
+            android:width="@dimen/line2"
             android:color="@color/accent"/>
     </shape>
 </rotate>

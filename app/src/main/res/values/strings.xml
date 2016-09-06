@@ -24,7 +24,7 @@
 
     <!--Trip shortcut-->
     <string name="trip_detail_tv_trip_shortcut">Chi tiết</string>
-    <string name="item_icon_size">24</string>
+    <string name="item_icon_size24">24</string>
     <string name="five_star_icon_width">80.33</string>
     <string name="five_star_icon_height">16</string>
     
@@ -32,5 +32,22 @@
     <string name="join_trip_tv_trip_schedule">Tham gia</string>
     <string name="interested_trip_tv_trip_schedule">Quan tâm</string>
     <string name="contact_trip_tv_trip_schedule">Liên hệ</string>
-    
+    <string name="item_icon_size32">28</string>
+
+    <!--Friend and follow-->
+    <string name="accept_friend_and_follow">Chấp nhận</string>
+    <string name="reject_friend_and_follow">Từ chối</string>
+    <string name="friend_friend_and_follow">Bạn bè</string>
+    <string name="follow_friend_and_follow">Theo dõi</string>
+    <string name="add_friend_friend_and_follow">Kết bạn</string>
+    <string name="following_friend_and_follow">Đang theo dõi</string>
+
+    <!--Profile-->
+    <string name="message_profile">Tin nhắn</string>
+
+
+
+    <string name="friend_request">Lời mời kết bạn</string>
+
+
 </resources>

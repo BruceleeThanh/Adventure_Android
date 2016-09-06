@@ -1,51 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_margin="@dimen/margin_medium"
                 android:layout_width="match_parent"
-              android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:layout_marginLeft="@dimen/margin_medium"
+                tools:context=".activities.MainActivity">
 
     <LinearLayout
         android:id="@+id/llAction"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@drawable/partition_gray_line"
-        android:showDividers="middle"
-        android:layout_marginBottom="@dimen/margin_medium">
+        android:layout_marginBottom="@dimen/margin_big"
+        android:divider="@drawable/partition_gray_line_vertical"
+        android:orientation="horizontal"
+        android:showDividers="middle">
 
         <TextView
             android:id="@+id/tvScheduleJoin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:drawableLeft="@drawable/ic_flight_takeoff_gray_32dp"
+            android:drawablePadding="@dimen/margin_small"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/margin_medium"
             android:text="@string/join_trip_tv_trip_schedule"
-            android:drawableLeft="@drawable/ic_flight_takeoff_gray_32dp"
-            android:drawablePadding="@dimen/margin_small"/>
+            android:textColor="@color/secondary_text"/>
 
         <TextView
             android:id="@+id/tvScheduleInterested"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:drawableLeft="@drawable/ic_favorite_gray_32dp"
+            android:drawablePadding="@dimen/margin_small"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/margin_medium"
             android:text="@string/interested_trip_tv_trip_schedule"
-            android:drawableLeft="@drawable/ic_favorite_gray_32dp"
-            android:drawablePadding="@dimen/margin_small"/>
+            android:textColor="@color/secondary_text"/>
 
         <TextView
             android:id="@+id/tvScheduleContact"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:drawableLeft="@drawable/ic_message_green_32dp"
+            android:drawablePadding="@dimen/margin_small"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/margin_medium"
             android:text="@string/contact_trip_tv_trip_schedule"
-            android:textColor="@color/primary"
-            android:drawableLeft="@drawable/ic_message_green_32dp"
-            android:drawablePadding="@dimen/margin_small"/>
+            android:textColor="@color/primary"/>
     </LinearLayout>
 
     <TextView
@@ -75,113 +81,163 @@
         android:id="@+id/tvScheduleRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/llAction"
         android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_alignParentRight="true"
         android:drawablePadding="@dimen/margin_small"
         android:gravity="center_vertical"
         android:text="6/20"
         android:textColor="@color/primary_text"/>
 
-    <LinearLayout
-        android:id="@+id/llScheduleProperties"
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@drawable/partition_gray_line"
-        android:showDividers="middle"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_below="@+id/tvScheduleJoiner">
+        android:layout_below="@+id/tvScheduleJoiner"
+        android:layout_marginTop="@dimen/margin_medium">
 
-        <TextView
-            android:id="@+id/tvScheduleTripName"
+        <LinearLayout
+            android:id="@+id/llScheduleProperties"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/margin_small"
-            android:gravity="center_vertical"
-            android:text="Đi đi lại lại Hà Nội - Sài Gòn 15/08 - 15/09"
-            android:textColor="@color/primary_text"/>
+            android:divider="@drawable/partition_gray_line_horizontal"
+            android:orientation="vertical"
+            android:showDividers="middle">
 
-        <TextView
-            android:id="@+id/tvScheduleTripDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:gravity="center_vertical"
-            android:text="Xin chào mọi người, sau một thời gian lên kế hoạch, mình quyết định tìm kiếm bạn đồng hành cùng mình trên quãng đường trả dọc đất nước, các bạn tham khảo lịch trình của mình nhé."
-            android:textColor="@color/primary_text"/>
+            <TextView
+                android:id="@+id/tvScheduleTripName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="Đi đi lại lại Hà Nội - Sài Gòn 15/08 - 15/09"
+                android:textColor="@color/primary_text"/>
 
-        <TextView
-            android:id="@+id/tvScheduleTripStartPosition"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:gravity="center_vertical"
-            android:text="1 Nguyễn Trãi - Thanh Xuân - Hà Nội"
-            android:textColor="@color/primary_text"/>
+            <TextView
+                android:id="@+id/tvScheduleTripDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="Xin chào mọi người, sau một thời gian lên kế hoạch, mình quyết định tìm kiếm bạn đồng hành cùng mình trên quãng đường trả dọc đất nước, các bạn tham khảo lịch trình của mình nhé."
+                android:textColor="@color/primary_text"/>
 
-        <TextView
-            android:id="@+id/tvScheduleTripPeriod"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:gravity="center_vertical"
-            android:text="15/08/2016 - 15/09/2016"
-            android:textColor="@color/primary_text"/>
+            <TextView
+                android:id="@+id/tvScheduleTripStartPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="1 Nguyễn Trãi - Thanh Xuân - Hà Nội"
+                android:textColor="@color/primary_text"/>
 
-        <TextView
-            android:id="@+id/tvScheduleTripDestination"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:gravity="center_vertical"
-            android:text="Hà Nội - Hà Giang - Huế - Đà Nẵng - Đà Lạt- TP. HCM - Cà Mau"
-            android:textColor="@color/primary_text"/>
+            <TextView
+                android:id="@+id/tvScheduleTripPeriod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="15/08/2016 - 15/09/2016"
+                android:textColor="@color/primary_text"/>
 
-        <TextView
-            android:id="@+id/tvScheduleTripMoney"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:gravity="center_vertical"
-            android:text="7 - 10 triệu/người"
-            android:textColor="@color/primary_text"/>
+            <TextView
+                android:id="@+id/tvScheduleTripDestination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="Hà Nội - Hà Giang - Huế - Đà Nẵng - Đà Lạt- TP. HCM - Cà Mau"
+                android:textColor="@color/primary_text"/>
 
-        <TextView
-            android:id="@+id/tvScheduleTripMember"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:gravity="center_vertical"
-            android:text="10 - 15 người"
-            android:textColor="@color/primary_text"/>
+            <TextView
+                android:id="@+id/tvScheduleTripMoney"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="7 - 10 triệu/người"
+                android:textColor="@color/primary_text"/>
 
-        <TextView
-            android:id="@+id/tvScheduleTripVehicle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:gravity="center_vertical"
-            android:text="Xe máy - Tàu hoả"
-            android:textColor="@color/primary_text"/>
+            <TextView
+                android:id="@+id/tvScheduleTripMember"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="10 - 15 người"
+                android:textColor="@color/primary_text"/>
 
-        <ImageView
-            android:id="@+id/ivScheduleTripPeriodPlan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:gravity="center_vertical"
-            android:text="10 - 15 người"
-            android:textColor="@color/primary_text"/>
+            <TextView
+                android:id="@+id/tvScheduleTripVehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="Xe máy - Tàu hoả"
+                android:textColor="@color/primary_text"/>
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llScheduleTripPeriodPlan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivScheduleTripPeriodPlan"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:src="@drawable/ic_planner_96"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/revScheduleTripPeriodPlan"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/margin_small">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvScheduleTripToolbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="Quần dài : 1-3 chiếc, Áo phông mỏng, Áo len mỏng, Áo khoác gió, Khăn quàng cổ, Khăn mặt, bàn chải, kem đánh răng, dầu gội đầu, xà phòng, ..."
+                android:textColor="@color/primary_text"/>
+
+            <TextView
+                android:id="@+id/tvScheduleTripNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="Giấy phép lái xe : Thứ bắt buộc phải có nếu chuyến đi của bạn có một hành trình bất kỳ sử dụng xe máy, đây cũng là giấy tờ bạn có thể sử dụng thay thế CMND khi lên máy bay. Đăng ký xe, bảo hiểm xe, giấy chứng nhận nộp phí đường bộ : Những thứ cần thiết để tránh gặp rắc rối với CSGT khi đi trên đường..."
+                android:textColor="@color/primary_text"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/ivProfileImage"
-        android:layout_width="@dimen/profile_image"
-        android:layout_height="@dimen/profile_image"
+        android:layout_width="@dimen/profile_image_small"
+        android:layout_height="@dimen/profile_image_small"
         android:src="@drawable/img_profile"/>
 
     <TextView
@@ -157,7 +157,7 @@
         android:drawablePadding="@dimen/margin_small"
         android:drawableRight="@drawable/ic_arrow_forward_grey_500_24dp"
         android:gravity="center_vertical"
-        android:text="@string/trip_detail"
+        android:text="@string/trip_detail_tv_trip_shortcut"
         android:textColor="@color/secondary_text"/>
 
 </RelativeLayout>

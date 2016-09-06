@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    android:fitsSystemWindows="true"
+    tools:context=".activities.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/main.appbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cover_image_height"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/main.collapsing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <ImageView
+                android:id="@+id/main.backdrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_cover"
+                app:layout_collapseMode="parallax"/>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/main.toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"/>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium">
+
+            <TextView
+                android:id="@+id/tvProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_toleftof_profile_image_largest"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="Brucelee Thanh"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/txt_medium"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:id="@+id/llAction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvProfileName"
+                android:layout_marginTop="@dimen/margin_belowof_profile_image_largest"
+                android:divider="@drawable/partition_gray_line_vertical"
+                android:orientation="horizontal"
+                android:showDividers="middle">
+
+                <TextView
+                    android:id="@+id/tvScheduleJoin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:drawableLeft="@drawable/ic_person_add_black_24dp"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/margin_medium"
+                    android:text="@string/add_friend_friend_and_follow"
+                    android:textColor="@color/secondary_text"/>
+
+                <TextView
+                    android:id="@+id/tvScheduleInterested"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:drawableLeft="@drawable/ic_add_alert_black_24dp"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/margin_medium"
+                    android:text="@string/follow_friend_and_follow"
+                    android:textColor="@color/secondary_text"/>
+
+                <TextView
+                    android:id="@+id/tvScheduleContact"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:drawableLeft="@drawable/ic_message_black_24dp"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/margin_medium"
+                    android:text="@string/message_profile"
+                    android:textColor="@color/secondary_text"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvIntroInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llAction"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="Một thằng coder thích thiên nhiên, ước mơ cứu cả thế giới bằng chính đôi bàn tay gõ phím của mình.!"
+                android:textColor="@color/primary_text"/>
+
+            <LinearLayout
+                android:id="@+id/llIntro"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvIntroInfo"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@drawable/bg_gray_white_btn">
+
+                <TextView
+                    android:id="@+id/tvIntroHostTrip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:text="Tổ chức 162 chuyến đi"
+                    android:textColor="@color/primary_text"/>
+
+                <TextView
+                    android:id="@+id/tvIntroJoinTrip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivProfileImage"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:text="Tham gia 29 chuyến đi"
+                    android:textColor="@color/primary_text"/>
+
+                <TextView
+                    android:id="@+id/tvIntroPlace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivProfileImage"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:text="Đặt chân tới 1234 địa điểm"
+                    android:textColor="@color/primary_text"/>
+
+                <TextView
+                    android:id="@+id/tvIntroFollowing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivProfileImage"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:gravity="center_vertical"
+                    android:text="12962 người đang theo dõi"
+                    android:textColor="@color/primary_text"/>
+
+            </LinearLayout>
+
+
+
+
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <ImageView
+        android:layout_width="@dimen/profile_image_largest"
+        android:layout_height="@dimen/profile_image_largest"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="@drawable/bg_white_border_iv"
+        android:padding="3dp"
+        android:src="@drawable/img_profile2"
+        app:layout_anchor="@id/main.appbar"
+        app:layout_anchorGravity="bottom|left|end"/>
+
+</android.support.design.widget.CoordinatorLayout>
