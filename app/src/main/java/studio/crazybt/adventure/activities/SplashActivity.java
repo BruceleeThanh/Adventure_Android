@@ -8,21 +8,19 @@ import android.widget.TextView;
 
 import studio.crazybt.adventure.FragmentController;
 import studio.crazybt.adventure.R;
+import studio.crazybt.adventure.fragments.SplashFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity {
 
     private FragmentController fragmentController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_trip_shortcut);
-        setTripShortcut();
-//        fragmentController = new FragmentController(this);
-//        fragmentController.addFragment_BackStack(R.id.rlMain, new SplashFragment());
-//        fragmentController.commit();
-
-
+        setContentView(R.layout.activity_splash);
+        fragmentController = new FragmentController(this);
+        fragmentController.addFragment_BackStack(R.id.rlSplash, new SplashFragment());
+        fragmentController.commit();
     }
 
     public void setDrawableFitSize(TextView tv, int id, double w, double h) {
@@ -36,10 +34,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        fragmentController = new FragmentController(this);
-//        fragmentController.removeAll();
-//        fragmentController.addFragment(R.id.rlMain, new SplashFragment());
-//        fragmentController.commit();
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1){
+            finish();
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 
     public void setProfile(){
@@ -48,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
         TextView tvIntroPlace = (TextView)findViewById(R.id.tvIntroPlace);
         TextView tvIntroFollowing = (TextView)findViewById(R.id.tvIntroFollowing);
 
-        double itemSize24 = Double.parseDouble(getResources().getString(R.string.item_icon_size24));
+        double itemSizeSmall = Double.parseDouble(getResources().getString(R.string.item_icon_size_small));
 
-        this.setDrawableFitSize(tvIntroHostTrip, R.drawable.ic_trekking_96, itemSize24, itemSize24);
-        this.setDrawableFitSize(tvIntroJoinTrip, R.drawable.ic_suitcase_96, itemSize24, itemSize24);
-        this.setDrawableFitSize(tvIntroPlace, R.drawable.ic_geo_fence_96, itemSize24, itemSize24);
-        this.setDrawableFitSize(tvIntroFollowing, R.drawable.ic_appointment_reminders_96, itemSize24, itemSize24);
+        this.setDrawableFitSize(tvIntroHostTrip, R.drawable.ic_trekking_96, itemSizeSmall, itemSizeSmall);
+        this.setDrawableFitSize(tvIntroJoinTrip, R.drawable.ic_suitcase_96, itemSizeSmall, itemSizeSmall);
+        this.setDrawableFitSize(tvIntroPlace, R.drawable.ic_geo_fence_96, itemSizeSmall, itemSizeSmall);
+        this.setDrawableFitSize(tvIntroFollowing, R.drawable.ic_appointment_reminders_96, itemSizeSmall, itemSizeSmall);
     }
 
     public void setTripSchedule(){
@@ -71,24 +71,24 @@ public class MainActivity extends AppCompatActivity {
         TextView tvScheduleTripToolbox = (TextView) findViewById(R.id.tvScheduleTripToolbox);
         TextView tvScheduleTripNote = (TextView) findViewById(R.id.tvScheduleTripNote);
 
-        double itemSize24 = Double.parseDouble(getResources().getString(R.string.item_icon_size24));
-        double itemSize32 = Double.parseDouble(getResources().getString(R.string.item_icon_size32));
+        double itemSizeSmall = Double.parseDouble(getResources().getString(R.string.item_icon_size_small));
+        double itemSizeMedium = Double.parseDouble(getResources().getString(R.string.item_icon_size_medium));
         double fiveStarWidth = Double.parseDouble(getResources().getString(R.string.five_star_icon_width));
         double fiveStarHeight = Double.parseDouble(getResources().getString(R.string.five_star_icon_height));
 
-        this.setDrawableFitSize(tvScheduleJoiner, R.drawable.ic_airplane_take_off_96, itemSize24, itemSize24);
-        this.setDrawableFitSize(tvScheduleCountInterested, R.drawable.ic_like_filled_96, itemSize24, itemSize24);
+        this.setDrawableFitSize(tvScheduleJoiner, R.drawable.ic_airplane_take_off_96, itemSizeSmall, itemSizeSmall);
+        this.setDrawableFitSize(tvScheduleCountInterested, R.drawable.ic_like_filled_96, itemSizeSmall, itemSizeSmall);
         this.setDrawableFitSize(tvScheduleRate, R.drawable.ic_five_star_96, fiveStarWidth, fiveStarHeight);
-        this.setDrawableFitSize(tvScheduleTripName, R.drawable.ic_signpost_96, itemSize32, itemSize32);
-        this.setDrawableFitSize(tvScheduleTripDescription, R.drawable.ic_information_96, itemSize32, itemSize32);
-        this.setDrawableFitSize(tvScheduleTripStartPosition, R.drawable.ic_flag_filled_96, itemSize32, itemSize32);
-        this.setDrawableFitSize(tvScheduleTripPeriod, R.drawable.ic_clock_96, itemSize32, itemSize32);
-        this.setDrawableFitSize(tvScheduleTripDestination, R.drawable.ic_marker_96, itemSize32, itemSize32);
-        this.setDrawableFitSize(tvScheduleTripMoney, R.drawable.ic_money_bag_96, itemSize32, itemSize32);
-        this.setDrawableFitSize(tvScheduleTripMember, R.drawable.ic_user_96, itemSize32, itemSize32);
-        this.setDrawableFitSize(tvScheduleTripVehicle, R.drawable.ic_vehicle_96, itemSize32, itemSize32);
-        this.setDrawableFitSize(tvScheduleTripToolbox, R.drawable.ic_toolbox_96, itemSize32, itemSize32);
-        this.setDrawableFitSize(tvScheduleTripNote, R.drawable.ic_note_96, itemSize32, itemSize32);
+        this.setDrawableFitSize(tvScheduleTripName, R.drawable.ic_signpost_96, itemSizeMedium, itemSizeMedium);
+        this.setDrawableFitSize(tvScheduleTripDescription, R.drawable.ic_information_96, itemSizeMedium, itemSizeMedium);
+        this.setDrawableFitSize(tvScheduleTripStartPosition, R.drawable.ic_flag_filled_96, itemSizeMedium, itemSizeMedium);
+        this.setDrawableFitSize(tvScheduleTripPeriod, R.drawable.ic_clock_96, itemSizeMedium, itemSizeMedium);
+        this.setDrawableFitSize(tvScheduleTripDestination, R.drawable.ic_marker_96, itemSizeMedium, itemSizeMedium);
+        this.setDrawableFitSize(tvScheduleTripMoney, R.drawable.ic_money_bag_96, itemSizeMedium, itemSizeMedium);
+        this.setDrawableFitSize(tvScheduleTripMember, R.drawable.ic_user_96, itemSizeMedium, itemSizeMedium);
+        this.setDrawableFitSize(tvScheduleTripVehicle, R.drawable.ic_vehicle_96, itemSizeMedium, itemSizeMedium);
+        this.setDrawableFitSize(tvScheduleTripToolbox, R.drawable.ic_toolbox_96, itemSizeMedium, itemSizeMedium);
+        this.setDrawableFitSize(tvScheduleTripNote, R.drawable.ic_note_96, itemSizeMedium, itemSizeMedium);
     }
 
     public void setTripShortcut() {
@@ -102,18 +102,18 @@ public class MainActivity extends AppCompatActivity {
         TextView tvTripInterested = (TextView) findViewById(R.id.tvTripInterested);
         TextView tvTripRate = (TextView) findViewById(R.id.tvTripRate);
 
-        double itemSize = Double.parseDouble(getResources().getString(R.string.item_icon_size24));
+        double itemSizeSmall = Double.parseDouble(getResources().getString(R.string.item_icon_size_small));
         double fiveStarWidth = Double.parseDouble(getResources().getString(R.string.five_star_icon_width));
         double fiveStarHeight = Double.parseDouble(getResources().getString(R.string.five_star_icon_height));
 
-        this.setDrawableFitSize(tvTripName, R.drawable.ic_signpost_96, itemSize, itemSize);
-        this.setDrawableFitSize(tvTripStartPosition, R.drawable.ic_flag_filled_96, itemSize, itemSize);
-        this.setDrawableFitSize(tvTripPeriod, R.drawable.ic_clock_96, itemSize, itemSize);
-        this.setDrawableFitSize(tvTripDestination, R.drawable.ic_marker_96, itemSize, itemSize);
-        this.setDrawableFitSize(tvTripMoney, R.drawable.ic_money_bag_96, itemSize, itemSize);
-        this.setDrawableFitSize(tvTripMember, R.drawable.ic_user_96, itemSize, itemSize);
-        this.setDrawableFitSize(tvTripJoiner, R.drawable.ic_airplane_take_off_96, itemSize, itemSize);
-        this.setDrawableFitSize(tvTripInterested, R.drawable.ic_like_filled_96, itemSize, itemSize);
+        this.setDrawableFitSize(tvTripName, R.drawable.ic_signpost_96, itemSizeSmall, itemSizeSmall);
+        this.setDrawableFitSize(tvTripStartPosition, R.drawable.ic_flag_filled_96, itemSizeSmall, itemSizeSmall);
+        this.setDrawableFitSize(tvTripPeriod, R.drawable.ic_clock_96, itemSizeSmall, itemSizeSmall);
+        this.setDrawableFitSize(tvTripDestination, R.drawable.ic_marker_96, itemSizeSmall, itemSizeSmall);
+        this.setDrawableFitSize(tvTripMoney, R.drawable.ic_money_bag_96, itemSizeSmall, itemSizeSmall);
+        this.setDrawableFitSize(tvTripMember, R.drawable.ic_user_96, itemSizeSmall, itemSizeSmall);
+        this.setDrawableFitSize(tvTripJoiner, R.drawable.ic_airplane_take_off_96, itemSizeSmall, itemSizeSmall);
+        this.setDrawableFitSize(tvTripInterested, R.drawable.ic_like_filled_96, itemSizeSmall, itemSizeSmall);
         this.setDrawableFitSize(tvTripRate, R.drawable.ic_five_star_96, fiveStarWidth, fiveStarHeight);
     }
 }

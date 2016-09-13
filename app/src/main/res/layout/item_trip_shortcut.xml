@@ -1,163 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
+<android.support.v7.widget.CardView
+    android:id="@+id/cvTripShortcut"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_medium"
+    android:background="@color/white"
+    android:elevation="@dimen/margin_medium">
+
+    <RelativeLayout
+        android:id="@+id/rlTripShortcut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_medium">
+
+        <ImageView
+            android:id="@+id/ivProfileImage"
+            android:layout_width="@dimen/profile_image_small"
+            android:layout_height="@dimen/profile_image_small"
+            android:src="@drawable/img_profile"
+            android:clickable="true"
+            android:foreground="@drawable/selector_gray_white_tv"/>
+
+        <TextView
+            android:id="@+id/tvProfileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_toRightOf="@+id/ivProfileImage"
+            android:text="Pied Piper"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:background="@drawable/selector_gray_white_tv"/>
+
+        <TextView
+            android:id="@+id/tvTimeUpload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvProfileName"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_toRightOf="@id/ivProfileImage"
+            android:text="10 giờ trước"
+            android:textColor="@color/secondary_text"
+            android:textSize="@dimen/txt_small"/>
+
+        <TextView
+            android:id="@+id/tvTripName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivProfileImage"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:drawablePadding="@dimen/margin_small"
+            android:gravity="center_vertical"
+            android:text="Đi đi lại lại Hà Nội - Sài Gòn 15/08 - 15/09"
+            android:textColor="@color/primary_text"/>
+
+        <TextView
+            android:id="@+id/tvTripStartPosition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTripName"
+            android:layout_marginTop="@dimen/margin_small"
+            android:drawablePadding="@dimen/margin_small"
+            android:gravity="center_vertical"
+            android:text="1 Nguyễn Trãi, Thanh Xuân, Hà Nội"
+            android:textColor="@color/primary_text"/>
+
+        <TextView
+            android:id="@+id/tvTripPeriod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTripStartPosition"
+            android:layout_marginTop="@dimen/margin_small"
+            android:drawablePadding="@dimen/margin_small"
+            android:gravity="center_vertical"
+            android:text="15/08/2016 - 15/09/2016"
+            android:textColor="@color/primary_text"/>
+
+        <TextView
+            android:id="@+id/tvTripDestination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTripPeriod"
+            android:layout_marginTop="@dimen/margin_small"
+            android:drawablePadding="@dimen/margin_small"
+            android:gravity="center_vertical"
+            android:text="Hà Nội - Hà Giang - Huế - Đà Nẵng - TP.HCM ..."
+            android:textColor="@color/primary_text"/>
+
+        <LinearLayout
+            android:id="@+id/llTripMoney"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTripDestination"
+            android:layout_marginTop="@dimen/margin_small"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvTripMoney"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_medium"
-                tools:context=".activities.MainActivity">
+                android:layout_weight="0.5"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="7 - 10 triệu/người"
+                android:textColor="@color/primary_text"/>
 
-    <ImageView
-        android:id="@+id/ivProfileImage"
-        android:layout_width="@dimen/profile_image_small"
-        android:layout_height="@dimen/profile_image_small"
-        android:src="@drawable/img_profile"/>
-
-    <TextView
-        android:id="@+id/tvProfileName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_toRightOf="@+id/ivProfileImage"
-        android:text="Pied Piper"
-        android:textColor="@color/primary_text"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/tvTimeUpload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvProfileName"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_toRightOf="@id/ivProfileImage"
-        android:text="10 giờ trước"
-        android:textColor="@color/secondary_text"
-        android:textSize="@dimen/txt_small"/>
-
-    <TextView
-        android:id="@+id/tvTripName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ivProfileImage"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:drawablePadding="@dimen/margin_small"
-        android:gravity="center_vertical"
-        android:text="Đi đi lại lại Hà Nội - Sài Gòn 15/08 - 15/09"
-        android:textColor="@color/primary_text"/>
-
-    <TextView
-        android:id="@+id/tvTripStartPosition"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTripName"
-        android:layout_marginTop="@dimen/margin_small"
-        android:drawablePadding="@dimen/margin_small"
-        android:gravity="center_vertical"
-        android:text="1 Nguyễn Trãi, Thanh Xuân, Hà Nội"
-        android:textColor="@color/primary_text"/>
-
-    <TextView
-        android:id="@+id/tvTripPeriod"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTripStartPosition"
-        android:layout_marginTop="@dimen/margin_small"
-        android:drawablePadding="@dimen/margin_small"
-        android:gravity="center_vertical"
-        android:text="15/08/2016 - 15/09/2016"
-        android:textColor="@color/primary_text"/>
-
-    <TextView
-        android:id="@+id/tvTripDestination"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTripPeriod"
-        android:layout_marginTop="@dimen/margin_small"
-        android:drawablePadding="@dimen/margin_small"
-        android:gravity="center_vertical"
-        android:text="Hà Nội - Hà Giang - Huế - Đà Nẵng - TP.HCM ..."
-        android:textColor="@color/primary_text"/>
-
-    <LinearLayout
-        android:id="@+id/llTripMoney"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTripDestination"
-        android:layout_marginTop="@dimen/margin_small"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tvTripMember"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="10 - 15 người"
+                android:textColor="@color/primary_text"/>
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tvTripMoney"
-            android:layout_width="0dp"
+            android:id="@+id/tvTripJoiner"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_below="@+id/llTripMoney"
+            android:layout_marginTop="@dimen/margin_medium"
             android:drawablePadding="@dimen/margin_small"
             android:gravity="center_vertical"
-            android:text="7 - 10 triệu/người"
+            android:text="20"
             android:textColor="@color/primary_text"/>
 
         <TextView
-            android:id="@+id/tvTripMember"
-            android:layout_width="0dp"
+            android:id="@+id/tvTripInterested"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_below="@+id/llTripMoney"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_toRightOf="@+id/tvTripJoiner"
+            android:drawablePadding="@dimen/margin_small"
+            android:text="123"
+            android:textColor="@color/primary_text"/>
+
+        <TextView
+            android:id="@+id/tvTripRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llTripMoney"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_toRightOf="@+id/tvTripInterested"
             android:drawablePadding="@dimen/margin_small"
             android:gravity="center_vertical"
-            android:text="10 - 15 người"
+            android:text="6/20"
             android:textColor="@color/primary_text"/>
-    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvTripJoiner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/llTripMoney"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:drawablePadding="@dimen/margin_small"
-        android:gravity="center_vertical"
-        android:text="20"
-        android:textColor="@color/primary_text"/>
+        <TextView
+            android:id="@+id/tvTripDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/llTripMoney"
+            android:background="@drawable/selector_gray_white_tv"
+            android:clickable="true"
+            android:drawablePadding="@dimen/margin_small"
+            android:drawableRight="@drawable/ic_arrow_forward_grey_500_24dp"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/margin_small"
+            android:paddingLeft="@dimen/margin_medium"
+            android:paddingTop="@dimen/margin_small"
+            android:text="@string/trip_detail_tv_trip_shortcut"
+            android:textColor="@color/secondary_text"/>
 
-    <TextView
-        android:id="@+id/tvTripInterested"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/llTripMoney"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_toRightOf="@+id/tvTripJoiner"
-        android:drawablePadding="@dimen/margin_small"
-        android:text="123"
-        android:textColor="@color/primary_text"/>
-
-    <TextView
-        android:id="@+id/tvTripRate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/llTripMoney"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_toRightOf="@+id/tvTripInterested"
-        android:drawablePadding="@dimen/margin_small"
-        android:gravity="center_vertical"
-        android:text="6/20"
-        android:textColor="@color/primary_text"/>
-
-    <TextView
-        android:id="@+id/tvTripDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/llTripMoney"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:background="@drawable/selector_gray_white_tv"
-        android:clickable="true"
-        android:drawablePadding="@dimen/margin_small"
-        android:drawableRight="@drawable/ic_arrow_forward_grey_500_24dp"
-        android:gravity="center_vertical"
-        android:text="@string/trip_detail_tv_trip_shortcut"
-        android:textColor="@color/secondary_text"/>
-
-</RelativeLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

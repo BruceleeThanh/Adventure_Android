@@ -92,10 +92,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/etRepasswordSignup"
+            android:background="@drawable/selector_gray_white_tv"
             android:text="@string/term_services_tv_signupviaemail"
             android:textColor="@color/accent"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/margin_small"/>
+            android:layout_marginLeft="@dimen/margin_small"
+            android:clickable="true"/>
     </LinearLayout>
 
     <Button

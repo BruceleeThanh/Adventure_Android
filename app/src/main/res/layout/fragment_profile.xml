@@ -6,9 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
+    android:background="@color/white"
     android:fitsSystemWindows="true"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.SplashActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/main.appbar"
@@ -84,7 +84,7 @@
                     android:drawablePadding="@dimen/margin_small"
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/margin_medium"
-                    android:text="@string/add_friend_friend_and_follow"
+                    android:text="@string/add_friend_btn_friend_and_follow"
                     android:textColor="@color/secondary_text"/>
 
                 <TextView
@@ -96,7 +96,7 @@
                     android:drawablePadding="@dimen/margin_small"
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/margin_medium"
-                    android:text="@string/follow_friend_and_follow"
+                    android:text="@string/follow_btn_friend_and_follow"
                     android:textColor="@color/secondary_text"/>
 
                 <TextView
@@ -108,7 +108,7 @@
                     android:drawablePadding="@dimen/margin_small"
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/margin_medium"
-                    android:text="@string/message_profile"
+                    android:text="@string/message_btn_profile"
                     android:textColor="@color/secondary_text"/>
             </LinearLayout>
 
@@ -180,6 +180,51 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/llMenu"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/menu_btn_height"
+                android:layout_below="@+id/llIntro"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@drawable/bg_gray_white_btn"
+                android:divider="@drawable/partition_gray_line_vertical"
+                android:showDividers="middle"
+                android:dividerPadding="@dimen/margin_small">
+
+                <TextView
+                    android:id="@+id/tvMenuInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:text="@string/infomation_btn_profile"
+                    android:textColor="@color/secondary_text"
+                    android:gravity="center"/>
+                <TextView
+                    android:id="@+id/tvMenuTrip"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:text="@string/trip_btn_profile"
+                    android:textColor="@color/secondary_text"
+                    android:gravity="center"/>
+                <TextView
+                    android:id="@+id/tvMenuFriend"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:text="@string/friend_btn_profile"
+                    android:textColor="@color/secondary_text"
+                    android:gravity="center"/>
+                <TextView
+                    android:id="@+id/tvMenuPhoto"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:text="@string/photo_btn_profile"
+                    android:textColor="@color/secondary_text"
+                    android:gravity="center"/>
+            </LinearLayout>
 
 
 

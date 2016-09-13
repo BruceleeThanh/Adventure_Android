@@ -40,14 +40,12 @@ public class SplashFragment extends Fragment implements View.OnClickListener{
         switch (view.getId()){
             case R.id.btnLoginViaEmail:
                 fragmentController = new FragmentController((AppCompatActivity) this.getActivity());
-                fragmentController.addFragment(R.id.rlMain, new LoginFragment());
-                //fragmentController.removeFragment(this);
+                fragmentController.addFragment_BackStack(R.id.rlSplash, new LoginFragment());
                 fragmentController.commit();
                 break;
             case R.id.btnSignupViaEmail:
                 fragmentController = new FragmentController((AppCompatActivity) this.getActivity());
-                fragmentController.addFragment(R.id.rlMain, new SignupFragment());
-                //fragmentController.removeFragment(this);
+                fragmentController.addFragment_BackStack(R.id.rlSplash, new SignupFragment());
                 fragmentController.commit();
                 break;
         }

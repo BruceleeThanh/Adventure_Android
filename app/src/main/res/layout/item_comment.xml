@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-                android:layout_margin="@dimen/margin_medium">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@color/white">
 
     <ImageView
-    android:id="@+id/ivProfileImage"
-    android:layout_width="@dimen/profile_image_small"
-    android:layout_height="@dimen/profile_image_small"
-    android:src="@drawable/img_profile"/>
+        android:id="@+id/ivProfileImage"
+        android:layout_width="@dimen/profile_image_small"
+        android:layout_height="@dimen/profile_image_small"
+        android:src="@drawable/img_profile"/>
 
     <TextView
         android:id="@+id/tvProfileName"
@@ -18,7 +21,8 @@
         android:layout_toRightOf="@+id/ivProfileImage"
         android:text="Pied Piper"
         android:textColor="@color/primary_text"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:background="@drawable/selector_gray_white_tv"/>
 
     <TextView
         android:id="@+id/tvTimeUpload"
@@ -35,10 +39,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvProfileName"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_small"
         android:layout_toRightOf="@id/ivProfileImage"
         android:text="Đêm thi dài bốn tiếng đồng hồ, các tiết mục khách mời được đầu tư, sân khấu hiện đại với bốn MC dẫn dắt nhưng vì thế, chương trình thiếu tập trung vào thí sinh."
-        android:textColor="@color/primary_text"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_small"/>
+        android:textColor="@color/primary_text"/>
 
 </RelativeLayout>

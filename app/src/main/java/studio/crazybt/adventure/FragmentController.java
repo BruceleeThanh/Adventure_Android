@@ -25,11 +25,11 @@ public class FragmentController {
     }
 
     public void addFragment(int id, Object obj){
-        fragmentTransaction.replace(id, (Fragment) obj);
+        fragmentTransaction.add(id, (Fragment) obj, obj.getClass().getName());
     }
 
     public void addFragment_BackStack(int id, Object obj){
-        fragmentTransaction.replace(id, (Fragment) obj).addToBackStack(null);
+        fragmentTransaction.add(id, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
     }
 
     public void removeFragment(Object obj){

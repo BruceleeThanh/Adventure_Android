@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/groupAccess"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_timeline"
+            android:icon="@drawable/ic_face_gray_24dp"
+            android:title="@string/profile_drawer_menu_home_page" />
+        <item
+            android:id="@+id/nav_feedback_letterboxes"
+            android:icon="@drawable/ic_flight_takeoff_gray_24dp"
+            android:title="@string/enjoining_trip_drawer_menu_home_page" />
+        <item
+            android:id="@+id/nav_album"
+            android:icon="@drawable/ic_favorite_gray_24dp"
+            android:title="@string/interested_trip_drawer_menu_home_page" />
+        <item
+            android:id="@+id/nav_activity_log"
+            android:icon="@drawable/ic_account_balance_gray_24dp"
+            android:title="@string/group_drawer_menu_home_page" />
+    </group>
+
+    <group
+        android:id="@+id/groupAction"
+        android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_settings"
+                android:title="@string/setting_drawer_menu_home_page" />
+            <item
+                android:id="@+id/nav_info"
+                android:title="@string/about_drawer_menu_home_page" />
+            <item
+                android:id="@+id/nav_logout"
+                android:title="@string/logout_drawer_menu_home_page" />
+    </group>
+</menu>

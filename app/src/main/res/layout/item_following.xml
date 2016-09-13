@@ -4,7 +4,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:layout_marginLeft="@dimen/margin_medium"
-                android:layout_marginRight="@dimen/margin_medium">
+                android:layout_marginRight="@dimen/margin_medium"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/ivProfileImage"
@@ -21,7 +22,8 @@
         android:text="Pied Piper"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/txt_medium"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:background="@drawable/selector_gray_white_tv"/>
 
     <TextView
         android:id="@+id/tvMutualFriend"
@@ -41,7 +43,7 @@
         android:layout_marginRight="@dimen/margin_big"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="@string/following_friend_and_follow"
+        android:text="@string/following_btn_friend_and_follow"
         android:textAllCaps="false"
         android:textColor="@color/secondary_text"
         android:background="@drawable/selector_gray_white_btn"/>

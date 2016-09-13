@@ -1,63 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cvFriendRequest"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_medium"
-    android:layout_marginLeft="@dimen/margin_medium"
-    android:layout_marginRight="@dimen/margin_medium">
+    android:background="@color/white"
+    android:elevation="@dimen/margin_medium">
 
-    <ImageView
-        android:id="@+id/ivProfileImage"
-        android:layout_width="@dimen/profile_image_large"
-        android:layout_height="@dimen/profile_image_large"
-        android:src="@drawable/img_profile"/>
-
-    <TextView
-        android:id="@+id/tvProfileName"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rlFriendRequest"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_toRightOf="@+id/ivProfileImage"
-        android:text="Pied Piper"
-        android:textColor="@color/primary_text"
-        android:textSize="@dimen/txt_medium"
-        android:textStyle="bold"/>
+        android:padding="@dimen/margin_medium">
 
-    <TextView
-        android:id="@+id/tvMutualFriend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_toRightOf="@+id/ivProfileImage"
-        android:layout_below="@+id/tvProfileName"
-        android:text="30 bạn chung"
-        android:textSize="@dimen/txt_small"
-        android:textColor="@color/secondary_text"/>
+        <ImageView
+            android:id="@+id/ivProfileImage"
+            android:layout_width="@dimen/profile_image_large"
+            android:layout_height="@dimen/profile_image_large"
+            android:src="@drawable/img_profile"/>
 
-    <Button
-        android:id="@+id/btnAcceptFriendRequest"
-        android:layout_width="@dimen/btn_width_small"
-        android:layout_height="@dimen/btn_height_small"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_toRightOf="@+id/ivProfileImage"
-        android:layout_below="@+id/tvMutualFriend"
-        android:text="@string/accept_friend_and_follow"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:background="@drawable/selector_green_btn"/>
+        <TextView
+            android:id="@+id/tvProfileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_toRightOf="@+id/ivProfileImage"
+            android:text="Pied Piper"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/txt_medium"
+            android:textStyle="bold"
+            android:background="@drawable/selector_gray_white_tv"/>
 
-    <Button
-        android:id="@+id/btnRejectFriendRequest"
-        android:layout_width="@dimen/btn_width_small"
-        android:layout_height="@dimen/btn_height_small"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_toRightOf="@+id/btnAcceptFriendRequest"
-        android:layout_below="@+id/tvMutualFriend"
-        android:text="@string/reject_friend_and_follow"
-        android:textAllCaps="false"
-        android:textColor="@color/secondary_text"
-        android:background="@drawable/selector_gray_white_btn"/>
+        <TextView
+            android:id="@+id/tvMutualFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvProfileName"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_toRightOf="@+id/ivProfileImage"
+            android:text="30 bạn chung"
+            android:textColor="@color/secondary_text"
+            android:textSize="@dimen/txt_small"/>
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/btnAcceptFriendRequest"
+            android:layout_width="@dimen/btn_width_small"
+            android:layout_height="@dimen/btn_height_small"
+            android:layout_below="@+id/tvMutualFriend"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_toRightOf="@+id/ivProfileImage"
+            android:background="@drawable/selector_green_btn"
+            android:text="@string/accept_btn_friend_and_follow"
+            android:textAllCaps="false"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/btnRejectFriendRequest"
+            android:layout_width="@dimen/btn_width_small"
+            android:layout_height="@dimen/btn_height_small"
+            android:layout_below="@+id/tvMutualFriend"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_toRightOf="@+id/btnAcceptFriendRequest"
+            android:background="@drawable/selector_gray_white_btn"
+            android:text="@string/reject_btn_friend_and_follow"
+            android:textAllCaps="false"
+            android:textColor="@color/secondary_text"/>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

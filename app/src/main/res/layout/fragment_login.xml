@@ -73,10 +73,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/forget_password_tv_loginviaemail"
-        android:textSize="@dimen/txt_medium"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/margin_medium"
-        android:textColor="@color/accent"/>
+        android:background="@drawable/selector_gray_white_tv"
+        android:text="@string/forget_password_tv_loginviaemail"
+        android:textSize="@dimen/txt_medium"
+        android:textColor="@color/accent"
+        android:clickable="true"/>
 
 </RelativeLayout>

@@ -11,7 +11,7 @@
     <string name="password_et_loginviaemail">Mật khẩu</string>
     <string name="login_btn_loginviaemail">Đăng nhập</string>
     <string name="forget_password_tv_loginviaemail">Quên mật khẩu?</string>
-    
+
     <!--Signup via email-->
     <string name="email_et_signupviaemail">Email hoặc số điện thoại</string>
     <string name="firstname_et_signupviaemail">Họ đệm</string>
@@ -24,30 +24,49 @@
 
     <!--Trip shortcut-->
     <string name="trip_detail_tv_trip_shortcut">Chi tiết</string>
-    <string name="item_icon_size24">24</string>
+    <string name="item_icon_size_small">20</string>
     <string name="five_star_icon_width">80.33</string>
     <string name="five_star_icon_height">16</string>
-    
+
     <!--Trip Schedule-->
     <string name="join_trip_tv_trip_schedule">Tham gia</string>
     <string name="interested_trip_tv_trip_schedule">Quan tâm</string>
     <string name="contact_trip_tv_trip_schedule">Liên hệ</string>
-    <string name="item_icon_size32">28</string>
+    <string name="item_icon_size_medium">28</string>
 
     <!--Friend and follow-->
-    <string name="accept_friend_and_follow">Chấp nhận</string>
-    <string name="reject_friend_and_follow">Từ chối</string>
-    <string name="friend_friend_and_follow">Bạn bè</string>
-    <string name="follow_friend_and_follow">Theo dõi</string>
-    <string name="add_friend_friend_and_follow">Kết bạn</string>
-    <string name="following_friend_and_follow">Đang theo dõi</string>
+    <string name="accept_btn_friend_and_follow">Chấp nhận</string>
+    <string name="reject_btn_friend_and_follow">Từ chối</string>
+    <string name="friend_btn_friend_and_follow">Bạn bè</string>
+    <string name="follow_btn_friend_and_follow">Theo dõi</string>
+    <string name="add_friend_btn_friend_and_follow">Kết bạn</string>
+    <string name="following_btn_friend_and_follow">Đang theo dõi</string>
+    <string name="request_friend_tv_friend_and_follow">Lời mời kết bạn</string>
+    <string name="friend_detail_tv_trip_shortcut">Chi tiết</string>
 
     <!--Profile-->
-    <string name="message_profile">Tin nhắn</string>
+    <string name="message_btn_profile">Tin nhắn</string>
+    <string name="infomation_btn_profile">Thông tin</string>
+    <string name="trip_btn_profile">Chuyến đi</string>
+    <string name="friend_btn_profile">Bạn bè</string>
+    <string name="photo_btn_profile">Ảnh</string>
 
+    <!--item TabLayout Trip-->
+    <string name="schedule_tablayout_trip">Lịch trình</string>
+    <string name="map_tablayout_trip">Bản đồ</string>
+    <string name="discuss_tablayout_trip">Thảo luận</string>
+    <string name="diary_tablayout_trip">Nhật ký</string>
 
+    <!--Drawer menu home page-->
+    <string name="profile_drawer_menu_home_page">Trang cá nhân</string>
+    <string name="enjoining_trip_drawer_menu_home_page">Đang tham gia</string>
+    <string name="interested_trip_drawer_menu_home_page">Quan tâm</string>
+    <string name="group_drawer_menu_home_page">Nhóm</string>
+    <string name="setting_drawer_menu_home_page">Cài đặt</string>
+    <string name="about_drawer_menu_home_page">Thông tin</string>
+    <string name="logout_drawer_menu_home_page">Đăng xuất</string>
 
-    <string name="friend_request">Lời mời kết bạn</string>
-
+    <!--toolbar menu trip-->
+    <string name="edit_toolbar_menu_trip">Chỉnh sửa</string>
 
 </resources>

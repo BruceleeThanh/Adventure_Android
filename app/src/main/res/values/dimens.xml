@@ -20,7 +20,7 @@
     <dimen name="profile_image_small">40dp</dimen>
 
     <!--Trip schedule-->
-    <dimen name="icon_size">28dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
 
     <!--Friend request item-->
     <dimen name="profile_image_medium">50dp</dimen>
@@ -40,16 +40,24 @@
     <dimen name="btn_width_tiny">100dp</dimen>
     <dimen name="btn_height_tiny">30dp</dimen>
     <dimen name="margin_belowof_profile_image_largest">30dp</dimen>
+    <dimen name="menu_btn_height">35dp</dimen>
+
 
     <!--Text size-->
     <dimen name="txt_large">20sp</dimen>
     <dimen name="txt_medium">16sp</dimen>
     <dimen name="txt_small">12sp</dimen>
     <dimen name="txt_tiny">10sp</dimen>
-    
+
     <!--drawable-->
     <dimen name="radius">10dp</dimen>
     <dimen name="line3">3dp</dimen>
     <dimen name="elevation">4dp</dimen>
+    <dimen name="tablayout_elevation">6dp</dimen>
+
+    <!--Drawer menu home page-->
+    <dimen name="profile_image_radius_medium">25dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+
 
 </resources>

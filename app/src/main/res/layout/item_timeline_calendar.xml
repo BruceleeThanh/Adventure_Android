@@ -3,7 +3,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 xmlns:tools="http://schemas.android.com/tools"
-                tools:context=".activities.MainActivity">
+                android:background="@color/white"
+                tools:context=".activities.SplashActivity">
 
     <TextView
         android:id="@+id/tvItemTimelineMonth"
@@ -38,6 +39,7 @@
                 android:paddingTop="@dimen/margin_small"
                 android:paddingLeft="@dimen/margin_small"
                 android:paddingRight="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_small"
                 android:text="Thứ 2"
                 android:textColor="@color/white"
                 android:textSize="@dimen/txt_tiny"/>
@@ -89,7 +91,7 @@
             android:layout_width="@dimen/circle_diameter"
             android:layout_height="@dimen/circle_diameter"
             android:layout_gravity="center"
-            android:background="@drawable/partition_green_cirle" />
+            android:background="@drawable/partition_green_circle" />
 
         <View
             android:layout_width="@dimen/line2"
