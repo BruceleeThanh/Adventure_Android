@@ -197,7 +197,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
-                    android:text="@string/infomation_btn_profile"
+                    android:text="@string/information_btn_profile"
                     android:textColor="@color/secondary_text"
                     android:gravity="center"/>
                 <TextView

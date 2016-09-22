@@ -2,8 +2,6 @@ package studio.crazybt.adventure.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,16 +20,16 @@ import studio.crazybt.adventure.models.TripShortcut;
 /**
  * Created by Brucelee Thanh on 12/09/2016.
  */
-public class TripShortcutAdapter extends RecyclerView.Adapter<TripShortcutAdapter.ViewHolder> {
+public class TripShortcutListAdapter extends RecyclerView.Adapter<TripShortcutListAdapter.ViewHolder> {
 
     private Context rootContext;
     private List<TripShortcut> listTripShortcutList;
 
-    public TripShortcutAdapter(Context context) {
+    public TripShortcutListAdapter(Context context) {
         this.rootContext = context;
     }
 
-    public TripShortcutAdapter(Context context, List<TripShortcut> listTripShortcutList) {
+    public TripShortcutListAdapter(Context context, List<TripShortcut> listTripShortcutList) {
         this.rootContext = context;
         this.listTripShortcutList = listTripShortcutList;
     }

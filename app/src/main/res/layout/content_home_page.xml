@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tbHomePage"
         android:background="@color/white"
-        android:elevation="@dimen/tablayout_elevation"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:tabSelectedTextColor="@color/primary"

@@ -8,11 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
 import studio.crazybt.adventure.R;
-import studio.crazybt.adventure.adapters.TripShortcutAdapter;
+import studio.crazybt.adventure.adapters.TripShortcutListAdapter;
 
 /**
  * Created by Brucelee Thanh on 11/09/2016.
@@ -22,7 +20,7 @@ public class TabPublicTripsHomePageFragment extends Fragment{
     private View rootView;
     private LinearLayoutManager llmPublicTrips;
     private RecyclerView rvPublicTrips;
-    private TripShortcutAdapter tsaPublicTrips;
+    private TripShortcutListAdapter tsaPublicTrips;
 
     @Nullable
     @Override
@@ -38,7 +36,7 @@ public class TabPublicTripsHomePageFragment extends Fragment{
         rvPublicTrips = (RecyclerView) rootView.findViewById(R.id.rvPublicTrips);
         llmPublicTrips = new LinearLayoutManager(getContext());
         rvPublicTrips.setLayoutManager(llmPublicTrips);
-        tsaPublicTrips = new TripShortcutAdapter(this.getContext());
+        tsaPublicTrips = new TripShortcutListAdapter(this.getContext());
         rvPublicTrips.setAdapter(tsaPublicTrips);
     }
 }

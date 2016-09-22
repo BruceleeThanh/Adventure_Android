@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import studio.crazybt.adventure.fragments.TabDiaryTripFragment;
 import studio.crazybt.adventure.fragments.TabDiscussTripFragment;
 import studio.crazybt.adventure.fragments.TabMapTripFragment;
+import studio.crazybt.adventure.fragments.TabMembersTripFragment;
 import studio.crazybt.adventure.fragments.TabScheduleTripFragment;
 
 /**
@@ -36,6 +37,9 @@ public class TripAdapter extends FragmentStatePagerAdapter {
             case 3:
                 TabDiaryTripFragment tabDiaryTripFragment = new TabDiaryTripFragment();
                 return tabDiaryTripFragment;
+            case 4:
+                TabMembersTripFragment tabMembersTripFragment = new TabMembersTripFragment();
+                return tabMembersTripFragment;
             default:
                 return null;
         }

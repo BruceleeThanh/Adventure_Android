@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cvFriendRequest"
+    android:id="@+id/cvFriendTemplate"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_medium"
@@ -9,7 +9,7 @@
     android:elevation="@dimen/margin_medium">
 
     <RelativeLayout
-        android:id="@+id/rlFriendRequest"
+        android:id="@+id/rlFriendTemplate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/margin_medium">
@@ -18,7 +18,8 @@
             android:id="@+id/ivProfileImage"
             android:layout_width="@dimen/profile_image_large"
             android:layout_height="@dimen/profile_image_large"
-            android:src="@drawable/img_profile"/>
+            android:src="@drawable/img_profile"
+            android:clickable="true"/>
 
         <TextView
             android:id="@+id/tvProfileName"
@@ -30,7 +31,8 @@
             android:textColor="@color/primary_text"
             android:textSize="@dimen/txt_medium"
             android:textStyle="bold"
-            android:background="@drawable/selector_gray_white_tv"/>
+            android:background="@drawable/selector_gray_white_tv"
+            android:clickable="true"/>
 
         <TextView
             android:id="@+id/tvMutualFriend"
@@ -44,7 +46,7 @@
             android:textSize="@dimen/txt_small"/>
 
         <Button
-            android:id="@+id/btnAcceptFriendRequest"
+            android:id="@+id/btnLeftFriendTemplate"
             android:layout_width="@dimen/btn_width_small"
             android:layout_height="@dimen/btn_height_small"
             android:layout_below="@+id/tvMutualFriend"
@@ -52,20 +54,20 @@
             android:layout_marginTop="@dimen/margin_small"
             android:layout_toRightOf="@+id/ivProfileImage"
             android:background="@drawable/selector_green_btn"
-            android:text="@string/accept_btn_friend_and_follow"
+            android:text="@string/cancel_friend_btn_friend_and_follow"
             android:textAllCaps="false"
             android:textColor="@color/white"/>
 
         <Button
-            android:id="@+id/btnRejectFriendRequest"
+            android:id="@+id/btnRightFriendTemplate"
             android:layout_width="@dimen/btn_width_small"
             android:layout_height="@dimen/btn_height_small"
             android:layout_below="@+id/tvMutualFriend"
             android:layout_marginLeft="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_small"
-            android:layout_toRightOf="@+id/btnAcceptFriendRequest"
+            android:layout_toRightOf="@+id/btnLeftFriendTemplate"
             android:background="@drawable/selector_gray_white_btn"
-            android:text="@string/reject_btn_friend_and_follow"
+            android:text="@string/following_btn_friend_and_follow"
             android:textAllCaps="false"
             android:textColor="@color/secondary_text"/>
 

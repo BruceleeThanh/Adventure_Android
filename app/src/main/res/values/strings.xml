@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Adventure</string>
 
+    <string name="openDrawer">Open navigation drawer</string>
+    <string name="closeDrawer">Close navigation drawer</string>
+
     <!--Splash-->
     <string name="login_via_email_btn_splash">Đăng nhập qua email</string>
     <string name="login_via_facebook_btn_splash">Đăng nhập qua Facebook</string>
@@ -35,6 +38,7 @@
     <string name="item_icon_size_medium">28</string>
 
     <!--Friend and follow-->
+    <string name="tb_friend">Bạn bè</string>
     <string name="accept_btn_friend_and_follow">Chấp nhận</string>
     <string name="reject_btn_friend_and_follow">Từ chối</string>
     <string name="friend_btn_friend_and_follow">Bạn bè</string>
@@ -42,11 +46,14 @@
     <string name="add_friend_btn_friend_and_follow">Kết bạn</string>
     <string name="following_btn_friend_and_follow">Đang theo dõi</string>
     <string name="request_friend_tv_friend_and_follow">Lời mời kết bạn</string>
-    <string name="friend_detail_tv_trip_shortcut">Chi tiết</string>
+    <string name="friend_detail_tv_friend_and_follow">Chi tiết</string>
+    <string name="cancel_friend_btn_friend_and_follow">Huỷ kết bạn</string>
+    <string name="cancel_follow_btn_friend_and_follow">Huỷ theo dõi</string>
+    <string name="message_btn_friend_and_follow">Tin nhắn</string>
 
     <!--Profile-->
     <string name="message_btn_profile">Tin nhắn</string>
-    <string name="infomation_btn_profile">Thông tin</string>
+    <string name="information_btn_profile">Thông tin</string>
     <string name="trip_btn_profile">Chuyến đi</string>
     <string name="friend_btn_profile">Bạn bè</string>
     <string name="photo_btn_profile">Ảnh</string>
@@ -56,6 +63,7 @@
     <string name="map_tablayout_trip">Bản đồ</string>
     <string name="discuss_tablayout_trip">Thảo luận</string>
     <string name="diary_tablayout_trip">Nhật ký</string>
+    <string name="members_tablayout_trip">Thành viên</string>
 
     <!--Drawer menu home page-->
     <string name="profile_drawer_menu_home_page">Trang cá nhân</string>
@@ -68,5 +76,12 @@
 
     <!--toolbar menu trip-->
     <string name="edit_toolbar_menu_trip">Chỉnh sửa</string>
+
+    <!--item Tablayout Friend-->
+    <string name="request_tablayout_friend">Yêu cầu</string>
+    <string name="suggestion_tablayout_friend">Đề xuất</string>
+    <string name="all_tablayout_friend">Tất cả</string>
+    <string name="following_tablayout_friend">Theo dõi bạn</string>
+    <string name="follower_tablayout_friend">Bạn theo dõi</string>
 
 </resources>

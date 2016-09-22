@@ -1,5 +1,6 @@
 package studio.crazybt.adventure.activities;
 
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.TripAdapter;
@@ -25,11 +27,18 @@ public class TripActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        this.setTablayout();
+
+
+    }
+
+    public void setTablayout(){
         tlTrip = (TabLayout) findViewById(R.id.tlTrip);
         tlTrip.addTab(tlTrip.newTab().setText(getResources().getString(R.string.schedule_tablayout_trip)));
         tlTrip.addTab(tlTrip.newTab().setText(getResources().getString(R.string.map_tablayout_trip)));
         tlTrip.addTab(tlTrip.newTab().setText(getResources().getString(R.string.discuss_tablayout_trip)));
         tlTrip.addTab(tlTrip.newTab().setText(getResources().getString(R.string.diary_tablayout_trip)));
+        tlTrip.addTab(tlTrip.newTab().setText(getResources().getString(R.string.members_tablayout_trip)));
         tlTrip.setTabGravity(TabLayout.GRAVITY_FILL);
         //final int tabSelectedTextColor = ContextCompat.getColor(this.getBaseContext(), R.color.white);
         //final int tabUnselectedTextColor = ContextCompat.getColor(this.getBaseContext(), R.color.secondary_text);
@@ -67,5 +76,14 @@ public class TripActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar_menu_trip, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home){
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
