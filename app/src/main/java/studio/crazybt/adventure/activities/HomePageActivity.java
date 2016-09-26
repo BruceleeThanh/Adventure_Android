@@ -29,7 +29,7 @@ public class HomePageActivity extends AppCompatActivity {
     private TabLayout tlHomePage;
     private Toolbar toolbar;
     private NavigationView navView;
-    private DrawerLayout dlHomePage;
+    public DrawerLayout dlHomePage;
     private View navHeader;
     private LinearLayout llUserCover;
     private ImageView ivUserAvatar;

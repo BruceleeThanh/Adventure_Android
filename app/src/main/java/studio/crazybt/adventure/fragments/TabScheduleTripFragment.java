@@ -8,60 +8,65 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.BindDimen;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.helpers.DrawableProcessHelper;
 
 /**
  * Created by Brucelee Thanh on 12/09/2016.
  */
-public class TabScheduleTripFragment extends Fragment{
+public class TabScheduleTripFragment extends Fragment {
 
     private View rootView;
-    private TextView tvScheduleJoiner;
-    private TextView tvScheduleCountInterested;
-    private TextView tvScheduleRate;
-    private TextView tvScheduleTripName;
-    private TextView tvScheduleTripDescription;
-    private TextView tvScheduleTripStartPosition;
-    private TextView tvScheduleTripPeriod;
-    private TextView tvScheduleTripDestination;
-    private TextView tvScheduleTripMoney;
-    private TextView tvScheduleTripMember;
-    private TextView tvScheduleTripVehicle;
-    private TextView tvScheduleTripToolbox;
-    private TextView tvScheduleTripNote;
-    
+    @BindView(R.id.tvScheduleJoiner)
+    TextView tvScheduleJoiner;
+    @BindView(R.id.tvScheduleCountInterested)
+    TextView tvScheduleCountInterested;
+    @BindView(R.id.tvScheduleRate)
+    TextView tvScheduleRate;
+    @BindView(R.id.tvScheduleTripName)
+    TextView tvScheduleTripName;
+    @BindView(R.id.tvScheduleTripDescription)
+    TextView tvScheduleTripDescription;
+    @BindView(R.id.tvScheduleTripStartPosition)
+    TextView tvScheduleTripStartPosition;
+    @BindView(R.id.tvScheduleTripPeriod)
+    TextView tvScheduleTripPeriod;
+    @BindView(R.id.tvScheduleTripDestination)
+    TextView tvScheduleTripDestination;
+    @BindView(R.id.tvScheduleTripMoney)
+    TextView tvScheduleTripMoney;
+    @BindView(R.id.tvScheduleTripMember)
+    TextView tvScheduleTripMember;
+    @BindView(R.id.tvScheduleTripVehicle)
+    TextView tvScheduleTripVehicle;
+    @BindView(R.id.tvScheduleTripToolbox)
+    TextView tvScheduleTripToolbox;
+    @BindView(R.id.tvScheduleTripNote)
+    TextView tvScheduleTripNote;
+    @BindDimen(R.dimen.item_icon_size_small)
+    float itemSizeSmall;
+    @BindDimen(R.dimen.five_star_icon_width)
+    float fiveStarWidth;
+    @BindDimen(R.dimen.five_star_icon_height)
+    float fiveStarHeight;
+
     private DrawableProcessHelper drawableProcessHelper;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if(rootView == null){
+        if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_tab_schedule_trip, container, false);
+            ButterKnife.bind(this,rootView);
             this.setTripSchedule();
         }
         return rootView;
     }
 
-    public void setTripSchedule(){
-        tvScheduleJoiner = (TextView) rootView.findViewById(R.id.tvScheduleJoiner);
-        tvScheduleCountInterested = (TextView) rootView.findViewById(R.id.tvScheduleCountInterested);
-        tvScheduleRate = (TextView) rootView.findViewById(R.id.tvScheduleRate);
-        tvScheduleTripName = (TextView) rootView.findViewById(R.id.tvScheduleTripName);
-        tvScheduleTripDescription = (TextView) rootView.findViewById(R.id.tvScheduleTripDescription);
-        tvScheduleTripStartPosition = (TextView) rootView.findViewById(R.id.tvScheduleTripStartPosition);
-        tvScheduleTripPeriod = (TextView) rootView.findViewById(R.id.tvScheduleTripPeriod);
-        tvScheduleTripDestination = (TextView) rootView.findViewById(R.id.tvScheduleTripDestination);
-        tvScheduleTripMoney = (TextView) rootView.findViewById(R.id.tvScheduleTripMoney);
-        tvScheduleTripMember = (TextView) rootView.findViewById(R.id.tvScheduleTripMember);
-        tvScheduleTripVehicle = (TextView) rootView.findViewById(R.id.tvScheduleTripVehicle);
-        tvScheduleTripToolbox = (TextView) rootView.findViewById(R.id.tvScheduleTripToolbox);
-        tvScheduleTripNote = (TextView) rootView.findViewById(R.id.tvScheduleTripNote);
-
-        double itemSizeSmall = Double.parseDouble(getResources().getString(R.string.item_icon_size_small));
-        double fiveStarWidth = Double.parseDouble(getResources().getString(R.string.five_star_icon_width));
-        double fiveStarHeight = Double.parseDouble(getResources().getString(R.string.five_star_icon_height));
-
+    public void setTripSchedule() {
         drawableProcessHelper = new DrawableProcessHelper(rootView);
         drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleJoiner, R.drawable.ic_airplane_take_off_96, itemSizeSmall, itemSizeSmall);
         drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleCountInterested, R.drawable.ic_like_filled_96, itemSizeSmall, itemSizeSmall);

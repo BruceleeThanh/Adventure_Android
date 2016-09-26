@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.AllFriendListAdapter;
 
@@ -18,7 +20,8 @@ import studio.crazybt.adventure.adapters.AllFriendListAdapter;
 public class TabAllFriendFragment extends Fragment {
 
     private View rootView;
-    private RecyclerView rvAllFriend;
+    @BindView(R.id.rvAllFriend)
+    RecyclerView rvAllFriend;
     private LinearLayoutManager llmAllFriend;
     private AllFriendListAdapter aflaAllFriend;
 
@@ -27,13 +30,13 @@ public class TabAllFriendFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_tab_all_friend, container, false);
+            ButterKnife.bind(this, rootView);
             this.initAllFriendList();
         }
         return rootView;
     }
 
     private void initAllFriendList() {
-        rvAllFriend = (RecyclerView) rootView.findViewById(R.id.rvAllFriend);
         llmAllFriend = new LinearLayoutManager(getContext());
         rvAllFriend.setLayoutManager(llmAllFriend);
         aflaAllFriend = new AllFriendListAdapter(this.getContext());

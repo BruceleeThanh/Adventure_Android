@@ -17,12 +17,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:padding="@dimen/margin_medium"
         android:background="@drawable/selector_gray_white_tv"
         android:clickable="true"
         android:drawablePadding="@dimen/margin_small"
-        android:drawableRight="@drawable/ic_arrow_forward_grey_500_24dp"
+        android:drawableRight="@drawable/ic_arrow_forward_grey_500_18dp"
         android:gravity="center_vertical"
+        android:padding="@dimen/margin_medium"
         android:text="@string/friend_detail_tv_friend_and_follow"
         android:textColor="@color/secondary_text"/>
 
@@ -31,14 +31,12 @@
         android:id="@+id/srlFriendRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvFriendRequest"
-        android:layout_marginTop="@dimen/margin_medium">
+        android:layout_below="@+id/tvFriendDetail">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvFriendRequest"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/tvFriendRequest"
             android:divider="@color/primary_background_content"
             android:dividerHeight="@dimen/margin_small"
             android:scrollbars="none"/>

@@ -2,13 +2,7 @@
 <tools:menu xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
-            tools:context=".activities.HomePageActivity">
-    <item
-        android:id="@+id/search_view"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="Search"
-        app:showAsAction="always" />
+            tools:context=".activities.ProfileActivity">
     <item
         android:id="@+id/itemIconRightToolbar"
         android:icon="@drawable/ic_message_white_24dp"

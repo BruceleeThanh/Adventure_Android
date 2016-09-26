@@ -21,6 +21,7 @@
 
     <!--Trip schedule-->
     <dimen name="icon_size">24dp</dimen>
+    <dimen name="icon_size_big">32dp</dimen>
 
     <!--Friend request item-->
     <dimen name="profile_image_medium">50dp</dimen>
@@ -37,6 +38,7 @@
     <dimen name="cover_image_height">200dp</dimen>
     <dimen name="profile_image_largest">100dp</dimen>
     <dimen name="margin_toleftof_profile_image_largest">130dp</dimen>
+    <dimen name="margin_toleftof_profile_image_big">120dp</dimen>
     <dimen name="btn_width_tiny">100dp</dimen>
     <dimen name="btn_height_tiny">30dp</dimen>
     <dimen name="margin_belowof_profile_image_largest">30dp</dimen>
@@ -44,6 +46,7 @@
 
 
     <!--Text size-->
+    <dimen name="txt_largest">25sp</dimen>
     <dimen name="txt_large">20sp</dimen>
     <dimen name="txt_medium">16sp</dimen>
     <dimen name="txt_small">12sp</dimen>
@@ -58,6 +61,14 @@
     <!--Drawer menu home page-->
     <dimen name="profile_image_radius_medium">25dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
+
+    <!--Icon drawer helper-->
+    <dimen name="item_icon_size_small">20px</dimen>
+    <dimen name="five_star_icon_width">80.33px</dimen>
+    <dimen name="five_star_icon_height">16px</dimen>
+    <dimen name="item_icon_size_medium">28px</dimen>
+
+    <dimen name="max_height_et">100dp</dimen>
 
 
 </resources>

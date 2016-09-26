@@ -4,9 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_medium"
-    android:background="@color/white"
-    android:elevation="@dimen/margin_medium">
+    android:layout_marginBottom="@dimen/margin_medium"
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/rlTripShortcut"
@@ -165,7 +164,7 @@
             android:background="@drawable/selector_gray_white_tv"
             android:clickable="true"
             android:drawablePadding="@dimen/margin_small"
-            android:drawableRight="@drawable/ic_arrow_forward_grey_500_24dp"
+            android:drawableRight="@drawable/ic_arrow_forward_grey_500_18dp"
             android:gravity="center_vertical"
             android:paddingBottom="@dimen/margin_small"
             android:paddingLeft="@dimen/margin_medium"

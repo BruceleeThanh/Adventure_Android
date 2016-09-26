@@ -3,14 +3,21 @@ package studio.crazybt.adventure.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.FloatProperty;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
 import java.util.List;
 
+import butterknife.BindDimen;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.activities.TripActivity;
@@ -43,6 +50,13 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<TripShortcutLi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.rlTripShortcut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(rootContext, TripActivity.class);
+                rootContext.startActivity(intent);
+            }
+        });
         holder.tvTripDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,41 +90,46 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<TripShortcutLi
         public View itemView;
         private DrawableProcessHelper drawableProcessHelper;
 
-        public ImageView ivProfileImage;
-        public TextView tvProfileName;
-        public TextView tvTimeUpload;
-        public TextView tvTripName;
-        public TextView tvTripStartPosition;
-        public TextView tvTripPeriod;
-        public TextView tvTripDestination;
-        public TextView tvTripMoney;
-        public TextView tvTripMember;
-        public TextView tvTripJoiner;
-        public TextView tvTripInterested;
-        public TextView tvTripRate;
-        public TextView tvTripDetail;
+        @BindView(R.id.rlTripShortcut)
+        RelativeLayout rlTripShortcut;
+        @BindView(R.id.ivProfileImage)
+        ImageView ivProfileImage;
+        @BindView(R.id.tvProfileName)
+        TextView tvProfileName;
+        @BindView(R.id.tvTimeUpload)
+        TextView tvTimeUpload;
+        @BindView(R.id.tvTripName)
+        TextView tvTripName;
+        @BindView(R.id.tvTripStartPosition)
+        TextView tvTripStartPosition;
+        @BindView(R.id.tvTripPeriod)
+        TextView tvTripPeriod;
+        @BindView(R.id.tvTripDestination)
+        TextView tvTripDestination;
+        @BindView(R.id.tvTripMoney)
+        TextView tvTripMoney;
+        @BindView(R.id.tvTripMember)
+        TextView tvTripMember;
+        @BindView(R.id.tvTripJoiner)
+        TextView tvTripJoiner;
+        @BindView(R.id.tvTripInterested)
+        TextView tvTripInterested;
+        @BindView(R.id.tvTripRate)
+        TextView tvTripRate;
+        @BindView(R.id.tvTripDetail)
+        TextView tvTripDetail;
+        @BindDimen(R.dimen.item_icon_size_small)
+        float itemSizeSmall;
+        @BindDimen(R.dimen.five_star_icon_width)
+        float fiveStarWidth;
+        @BindDimen(R.dimen.five_star_icon_height)
+        float fiveStarHeight;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
             drawableProcessHelper = new DrawableProcessHelper(itemView);
-            ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
-            tvProfileName = (TextView) itemView.findViewById(R.id.tvProfileName);
-            tvTimeUpload = (TextView) itemView.findViewById(R.id.tvTimeUpload);
-            tvTripName = (TextView) itemView.findViewById(R.id.tvTripName);
-            tvTripStartPosition = (TextView) itemView.findViewById(R.id.tvTripStartPosition);
-            tvTripPeriod = (TextView) itemView.findViewById(R.id.tvTripPeriod);
-            tvTripDestination = (TextView) itemView.findViewById(R.id.tvTripDestination);
-            tvTripMoney = (TextView) itemView.findViewById(R.id.tvTripMoney);
-            tvTripMember = (TextView) itemView.findViewById(R.id.tvTripMember);
-            tvTripJoiner = (TextView) itemView.findViewById(R.id.tvTripJoiner);
-            tvTripInterested = (TextView) itemView.findViewById(R.id.tvTripInterested);
-            tvTripRate = (TextView) itemView.findViewById(R.id.tvTripRate);
-            tvTripDetail = (TextView) itemView.findViewById(R.id.tvTripDetail);
-
-            double itemSizeSmall = Double.parseDouble(itemView.getResources().getString(R.string.item_icon_size_small));
-            double fiveStarWidth = Double.parseDouble(itemView.getResources().getString(R.string.five_star_icon_width));
-            double fiveStarHeight = Double.parseDouble(itemView.getResources().getString(R.string.five_star_icon_height));
+            ButterKnife.bind(this, itemView);
 
             drawableProcessHelper.setTextViewDrawableFitSize(tvTripName, R.drawable.ic_signpost_96, itemSizeSmall, itemSizeSmall);
             drawableProcessHelper.setTextViewDrawableFitSize(tvTripStartPosition, R.drawable.ic_flag_filled_96, itemSizeSmall, itemSizeSmall);

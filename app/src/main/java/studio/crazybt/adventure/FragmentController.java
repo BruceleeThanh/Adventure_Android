@@ -24,12 +24,16 @@ public class FragmentController {
         fragmentTransaction = fragmentManager.beginTransaction();
     }
 
+    public void setCustomAnimations(){
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+    }
+
     public void addFragment(int id, Object obj){
-        fragmentTransaction.add(id, (Fragment) obj, obj.getClass().getName());
+        fragmentTransaction.replace(id, (Fragment) obj, obj.getClass().getName());
     }
 
     public void addFragment_BackStack(int id, Object obj){
-        fragmentTransaction.add(id, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
+        fragmentTransaction.replace(id, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
     }
 
     public void removeFragment(Object obj){
