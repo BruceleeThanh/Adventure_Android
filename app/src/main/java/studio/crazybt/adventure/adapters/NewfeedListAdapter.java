@@ -2,7 +2,6 @@ package studio.crazybt.adventure.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,19 +15,18 @@ import android.widget.TextView;
 import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import studio.crazybt.adventure.FragmentController;
+import studio.crazybt.adventure.activities.StatusActivity;
+import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.activities.TripActivity;
-import studio.crazybt.adventure.fragments.CommentStatusFragment;
-import studio.crazybt.adventure.fragments.StatusDetailFragment;
 import studio.crazybt.adventure.helpers.DrawableProcessHelper;
 
 /**
  * Created by Brucelee Thanh on 24/09/2016.
  */
 
-public class StatusShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context rootContext;
     private FragmentController fragmentController;
@@ -36,7 +34,11 @@ public class StatusShortcutListAdapter extends RecyclerView.Adapter<RecyclerView
     public static final int STATUS = 0;
     public static final int TRIP = 1;
 
-    public StatusShortcutListAdapter(Context context) {
+    public static final int STATUS_DETAIL = 1;
+    public static final int STATUS_LIKES = 2;
+    public static final int STATUS_COMMENTS = 3;
+
+    public NewfeedListAdapter(Context context) {
         this.rootContext = context;
     }
 
@@ -87,21 +89,25 @@ public class StatusShortcutListAdapter extends RecyclerView.Adapter<RecyclerView
                 statusViewHolder.tvContentStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ((AppCompatActivity)rootContext).invalidateOptionsMenu();
-                        fragmentController = new FragmentController((AppCompatActivity) rootContext);
-                        fragmentController.setCustomAnimations();
-                        fragmentController.addFragment_BackStack(R.id.rlContentHomePage, new StatusDetailFragment());
-                        fragmentController.commit();
+                        Intent intent = new Intent(rootContext, StatusActivity.class);
+                        intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
+                        rootContext.startActivity(intent);
                     }
                 });
                 statusViewHolder.llImageStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ((AppCompatActivity)rootContext).invalidateOptionsMenu();
-                        fragmentController = new FragmentController((AppCompatActivity) rootContext);
-                        fragmentController.setCustomAnimations();
-                        fragmentController.addFragment_BackStack(R.id.rlContentHomePage, new StatusDetailFragment());
-                        fragmentController.commit();
+                        Intent intent = new Intent(rootContext, StatusActivity.class);
+                        intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
+                        rootContext.startActivity(intent);
+                    }
+                });
+                statusViewHolder.tvCountLike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(rootContext, StatusActivity.class);
+                        intent.putExtra("TYPE_SHOW", STATUS_LIKES);
+                        rootContext.startActivity(intent);
                     }
                 });
                 statusViewHolder.llLike.setOnClickListener(new View.OnClickListener() {
@@ -123,19 +129,17 @@ public class StatusShortcutListAdapter extends RecyclerView.Adapter<RecyclerView
                 statusViewHolder.tvCountComment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        fragmentController = new FragmentController((AppCompatActivity) rootContext);
-                        fragmentController.setCustomAnimations();
-                        fragmentController.addFragment_BackStack(R.id.rlContentHomePage, new CommentStatusFragment());
-                        fragmentController.commit();
+                        Intent intent = new Intent(rootContext, StatusActivity.class);
+                        intent.putExtra("TYPE_SHOW", STATUS_COMMENTS);
+                        rootContext.startActivity(intent);
                     }
                 });
                 statusViewHolder.tvComment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        fragmentController = new FragmentController((AppCompatActivity) rootContext);
-                        fragmentController.setCustomAnimations();
-                        fragmentController.addFragment_BackStack(R.id.rlContentHomePage, new CommentStatusFragment());
-                        fragmentController.commit();
+                        Intent intent = new Intent(rootContext, StatusActivity.class);
+                        intent.putExtra("TYPE_SHOW", STATUS_COMMENTS);
+                        rootContext.startActivity(intent);
                     }
                 });
                 break;

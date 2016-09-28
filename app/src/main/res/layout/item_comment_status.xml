@@ -9,7 +9,8 @@
         android:id="@+id/ivProfileImage"
         android:layout_width="@dimen/profile_image_small"
         android:layout_height="@dimen/profile_image_small"
-        android:src="@drawable/img_profile"/>
+        android:src="@drawable/img_profile"
+        android:clickable="true"/>
 
     <TextView
         android:id="@+id/tvProfileName"

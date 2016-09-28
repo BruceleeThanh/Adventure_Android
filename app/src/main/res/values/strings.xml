@@ -84,7 +84,8 @@
     <string name="tb_status">Bài viết</string>
     <string name="like_tv_status">Thích</string>
     <string name="comment_tv_status">Bình luận</string>
-    <string name="count_like_tv_status">người thích điều này</string>
+    <string name="count_like_tv_status">người thích nội dung này</string>
     <string name="write_comment_hint_tv_status">Viết bình luận...</string>
+    <string name="persons_like_this_tv_status">Những người thích nội dung này</string>
 
 </resources>

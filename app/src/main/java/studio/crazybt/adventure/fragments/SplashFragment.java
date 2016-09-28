@@ -11,8 +11,7 @@ import android.widget.Button;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import studio.crazybt.adventure.FragmentController;
+import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 
 /**

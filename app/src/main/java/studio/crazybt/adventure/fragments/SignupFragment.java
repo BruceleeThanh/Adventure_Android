@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import studio.crazybt.adventure.FragmentController;
+import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 
 /**

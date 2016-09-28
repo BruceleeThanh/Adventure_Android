@@ -26,7 +26,8 @@
         android:background="@drawable/selector_blue_white_btn"
         android:layout_below="@+id/btnLoginViaEmail"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/activity_horizontal_margin">
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:clickable="true">
 
         <ImageView
             android:id="@+id/ivLoginViaFacebook"
@@ -40,10 +41,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
+            android:paddingLeft="@dimen/margin_small"
             android:text="@string/login_via_facebook_btn_splash"
             android:textSize="@dimen/txt_medium"
             android:textColor="@color/facebook"
-            android:textAlignment="center"
             android:layout_gravity="center"/>
 
     </LinearLayout>

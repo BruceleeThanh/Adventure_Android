@@ -1,4 +1,4 @@
-package studio.crazybt.adventure;
+package studio.crazybt.adventure.helpers;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;

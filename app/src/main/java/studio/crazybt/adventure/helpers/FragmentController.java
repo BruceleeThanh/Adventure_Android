@@ -1,11 +1,14 @@
-package studio.crazybt.adventure;
+package studio.crazybt.adventure.helpers;
 
 import android.app.Activity;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+
+import studio.crazybt.adventure.R;
 
 /**
  * Created by Brucelee Thanh on 26/08/2016.
@@ -15,8 +18,13 @@ public class FragmentController {
     public FragmentManager fragmentManager;
     public FragmentTransaction fragmentTransaction;
 
-    public FragmentController(AppCompatActivity activity){
-        fragmentManager = activity.getSupportFragmentManager();
+    public FragmentController(AppCompatActivity appCompatActivity){
+        fragmentManager = appCompatActivity.getSupportFragmentManager();
+        this.beginTransaction();
+    }
+
+    public FragmentController(FragmentActivity fragmentActivity){
+        fragmentManager = fragmentActivity.getSupportFragmentManager();
         this.beginTransaction();
     }
 
@@ -25,7 +33,7 @@ public class FragmentController {
     }
 
     public void setCustomAnimations(){
-        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
     }
 
     public void addFragment(int id, Object obj){
@@ -33,6 +41,11 @@ public class FragmentController {
     }
 
     public void addFragment_BackStack(int id, Object obj){
+        fragmentTransaction.replace(id, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
+    }
+
+    public void addFragment_BackStack_Animation(int id, Object obj){
+        this.setCustomAnimations();
         fragmentTransaction.replace(id, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
     }
 

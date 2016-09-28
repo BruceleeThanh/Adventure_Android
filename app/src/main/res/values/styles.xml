@@ -27,4 +27,8 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="AppTheme.ActivitySwipe" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
 </resources>

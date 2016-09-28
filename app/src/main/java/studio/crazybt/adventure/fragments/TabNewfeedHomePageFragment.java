@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
-import studio.crazybt.adventure.adapters.StatusShortcutListAdapter;
+import studio.crazybt.adventure.adapters.NewfeedListAdapter;
 
 /**
  * Created by Brucelee Thanh on 11/09/2016.
@@ -23,7 +23,7 @@ public class TabNewfeedHomePageFragment extends Fragment{
     @BindView(R.id.rvNewfeed)
     RecyclerView rvNewfeed;
     private LinearLayoutManager llmNewFeed;
-    private StatusShortcutListAdapter sslaNewfeed;
+    private NewfeedListAdapter nlaNewfeed;
 
     @Nullable
     @Override
@@ -39,7 +39,7 @@ public class TabNewfeedHomePageFragment extends Fragment{
     public void initNewFeedList(){
         llmNewFeed = new LinearLayoutManager(getContext());
         rvNewfeed.setLayoutManager(llmNewFeed);
-        sslaNewfeed = new StatusShortcutListAdapter(this.getContext());
-        rvNewfeed.setAdapter(sslaNewfeed);
+        nlaNewfeed = new NewfeedListAdapter(this.getContext());
+        rvNewfeed.setAdapter(nlaNewfeed);
     }
 }

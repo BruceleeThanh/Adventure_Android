@@ -163,6 +163,8 @@
             android:layout_below="@+id/llImageStatus"
             android:layout_marginLeft="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_medium"
+            android:background="@drawable/selector_gray_white_tv"
+            android:clickable="true"
             android:drawablePadding="@dimen/margin_small"
             android:gravity="center_vertical"
             android:text="1000"
