@@ -20,7 +20,8 @@
             android:background="@color/primary"
             android:elevation="0dp"
             app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp">
+            app:contentInsetStart="0dp"
+            app:titleTextAppearance="@style/TextAppearance.Adventure.Title">
 
         </android.support.v7.widget.Toolbar>
 

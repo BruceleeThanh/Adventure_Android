@@ -18,7 +18,8 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:tabSelectedTextColor="@color/primary"
-        app:tabTextColor="@color/primary_background_content"/>
+        app:tabTextColor="@color/primary_background_content"
+        android:elevation="2dp"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vpHomePage"

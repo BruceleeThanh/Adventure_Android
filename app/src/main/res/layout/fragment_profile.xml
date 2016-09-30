@@ -22,11 +22,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:collapsedTitleTextAppearance="@style/TextAppearance.MyApp.Title.Collapsed"
+            app:collapsedTitleTextAppearance="@style/TextAppearance.Adventure.Title.Collapsed"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginBottom="@dimen/margin_big"
             app:expandedTitleMarginStart="@dimen/margin_toleftof_profile_image_largest"
-            app:expandedTitleTextAppearance="@style/TextAppearance.MyApp.Title.Expanded"
+            app:expandedTitleTextAppearance="@style/TextAppearance.Adventure.Title.Expanded"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView

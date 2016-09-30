@@ -12,20 +12,6 @@
         android:text="@string/request_friend_tv_friend_and_follow"
         android:textColor="@color/secondary_text"/>
 
-    <TextView
-        android:id="@+id/tvFriendDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/selector_gray_white_tv"
-        android:clickable="true"
-        android:drawablePadding="@dimen/margin_small"
-        android:drawableRight="@drawable/ic_arrow_forward_grey_500_18dp"
-        android:gravity="center_vertical"
-        android:padding="@dimen/margin_medium"
-        android:text="@string/friend_detail_tv_friend_and_follow"
-        android:textColor="@color/secondary_text"/>
-
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/srlFriendRequest"
@@ -50,5 +36,21 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="15dp"
         android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tvFriendDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_gray_white_tv"
+        android:clickable="true"
+        android:drawablePadding="@dimen/margin_small"
+        android:drawableRight="@drawable/ic_arrow_forward_grey_500_18dp"
+        android:gravity="center_vertical"
+        android:padding="@dimen/margin_medium"
+        android:text="@string/friend_detail_tv_friend_and_follow"
+        android:textColor="@color/secondary_text"
+        android:layout_below="@+id/pbFriendRequest"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

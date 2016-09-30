@@ -13,21 +13,25 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="TextAppearance.Adventure.Title" parent="android:TextAppearance">
+        <item name="android:textSize">16sp</item>
+    </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
-    <style name="TextAppearance.MyApp.Title.Collapsed" parent="android:TextAppearance">
+    <style name="TextAppearance.Adventure.Title.Collapsed" parent="android:TextAppearance">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="TextAppearance.MyApp.Title.Expanded" parent="android:TextAppearance">
+    <style name="TextAppearance.Adventure.Title.Expanded" parent="android:TextAppearance">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">18sp</item>
     </style>
 
     <style name="AppTheme.ActivitySwipe" parent="AppTheme">
+        <item name="android:colorBackground">@android:color/black</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
 

@@ -3,6 +3,8 @@ package studio.crazybt.adventure.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
+import studio.crazybt.adventure.adapters.CalendarScheduleTripListAdapter;
 import studio.crazybt.adventure.helpers.DrawableProcessHelper;
 
 /**
@@ -46,6 +49,8 @@ public class TabScheduleTripFragment extends Fragment {
     TextView tvScheduleTripToolbox;
     @BindView(R.id.tvScheduleTripNote)
     TextView tvScheduleTripNote;
+    @BindView(R.id.rvScheduleTripCalendar)
+    RecyclerView rvScheduleTripCalendar;
     @BindDimen(R.dimen.item_icon_size_small)
     float itemSizeSmall;
     @BindDimen(R.dimen.five_star_icon_width)
@@ -53,6 +58,8 @@ public class TabScheduleTripFragment extends Fragment {
     @BindDimen(R.dimen.five_star_icon_height)
     float fiveStarHeight;
 
+    private LinearLayoutManager llmCalendar;
+    private CalendarScheduleTripListAdapter cstlaAdapter;
     private DrawableProcessHelper drawableProcessHelper;
 
     @Nullable
@@ -60,13 +67,14 @@ public class TabScheduleTripFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_tab_schedule_trip, container, false);
-            ButterKnife.bind(this,rootView);
+            ButterKnife.bind(this, rootView);
             this.setTripSchedule();
+            this.initCalendarList();
         }
         return rootView;
     }
 
-    public void setTripSchedule() {
+    private void setTripSchedule() {
         drawableProcessHelper = new DrawableProcessHelper(rootView);
         drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleJoiner, R.drawable.ic_airplane_take_off_96, itemSizeSmall, itemSizeSmall);
         drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleCountInterested, R.drawable.ic_like_filled_96, itemSizeSmall, itemSizeSmall);
@@ -81,6 +89,18 @@ public class TabScheduleTripFragment extends Fragment {
         drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleTripVehicle, R.drawable.ic_vehicle_96, itemSizeSmall, itemSizeSmall);
         drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleTripToolbox, R.drawable.ic_toolbox_96, itemSizeSmall, itemSizeSmall);
         drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleTripNote, R.drawable.ic_note_96, itemSizeSmall, itemSizeSmall);
+    }
+
+    private void initCalendarList() {
+        llmCalendar = new LinearLayoutManager(getContext());
+        rvScheduleTripCalendar.setLayoutManager(llmCalendar);
+        cstlaAdapter = new CalendarScheduleTripListAdapter(getContext());
+        rvScheduleTripCalendar.setAdapter(cstlaAdapter);
+//      Don't work
+        int height = llmCalendar.getHeight();
+        if (height > 300) {
+            rvScheduleTripCalendar.getLayoutParams().height = 300;
+        }
     }
 
 }

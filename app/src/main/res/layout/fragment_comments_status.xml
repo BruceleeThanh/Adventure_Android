@@ -1,100 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-    android:background="@color/white">
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="@dimen/margin_medium"
+    app:cardCornerRadius="@dimen/margin_medium">
 
     <RelativeLayout
-        android:id="@+id/rlCountLike"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/margin_medium"
-        android:clickable="true"
-        android:background="@drawable/selector_gray_white_tv">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
-        <TextView
-            android:id="@+id/tvCountLike"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/rlCountLike"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivProfileImage"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_big"
-            android:drawablePadding="@dimen/margin_small"
-            android:gravity="center_vertical"
-            android:text="@string/count_like_tv_status"
-            android:textColor="@color/secondary_text"/>
+            android:background="@drawable/selector_gray_white_tv"
+            android:clickable="true"
+            android:paddingTop="@dimen/margin_medium">
 
-        <ImageView
-            android:id="@+id/ivCountLike"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tvCountLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivProfileImage"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/margin_big"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="@string/count_like_tv_status"
+                android:textColor="@color/secondary_text"/>
+
+            <ImageView
+                android:id="@+id/ivCountLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:src="@drawable/ic_keyboard_arrow_right_gray_18dp"/>
+
+            <View
+                android:id="@+id/vLine"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tvCountLike"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@drawable/partition_gray_line_horizontal"/>
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvCommentStatus"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin_medium"
-            android:src="@drawable/ic_keyboard_arrow_right_gray_18dp"/>
+            android:layout_above="@+id/vLine2"
+            android:layout_below="@+id/rlCountLike"/>
 
         <View
-            android:id="@+id/vLine"
+            android:id="@+id/vLine2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/tvCountLike"
-            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_above="@+id/rlComment"
             android:background="@drawable/partition_gray_line_horizontal"/>
 
-    </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvCommentStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rlCountLike"
-        android:layout_above="@+id/vLine2"/>
-
-    <View
-        android:id="@+id/vLine2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@+id/rlComment"
-        android:background="@drawable/partition_gray_line_horizontal"/>
-
-
-    <RelativeLayout
-        android:id="@+id/rlComment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:clickable="true">
-
-        <ImageView
-            android:id="@+id/ivEmoticon"
-            android:layout_width="@dimen/icon_size_big"
-            android:layout_height="@dimen/icon_size_big"
-            android:layout_margin="@dimen/margin_medium"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_lol_96"
-            android:clickable="true"/>
-
-        <EditText
-            android:id="@+id/etComment"
+        <RelativeLayout
+            android:id="@+id/rlComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="@dimen/max_height_et"
-            android:layout_marginBottom="@dimen/margin_medium"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/ivSend"
-            android:layout_toRightOf="@+id/ivEmoticon"
-            android:hint="@string/write_comment_hint_tv_status"
-            android:textSize="@dimen/txt_medium"/>
+            android:layout_alignParentBottom="true"
+            android:clickable="true">
 
-        <ImageView
-            android:id="@+id/ivSend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_margin="@dimen/margin_medium"
-            android:src="@drawable/ic_send_green_24dp"
-            android:clickable="true"/>
+            <ImageView
+                android:id="@+id/ivEmoticon"
+                android:layout_width="@dimen/icon_size_big"
+                android:layout_height="@dimen/icon_size_big"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/margin_medium"
+                android:clickable="true"
+                android:src="@drawable/ic_lol_96"/>
 
+            <EditText
+                android:id="@+id/etComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_toLeftOf="@+id/ivSend"
+                android:layout_toRightOf="@+id/ivEmoticon"
+                android:background="@android:color/transparent"
+                android:hint="@string/write_comment_hint_tv_status"
+                android:maxHeight="@dimen/max_height_et"
+                android:textSize="@dimen/txt_medium"/>
+
+            <ImageView
+                android:id="@+id/ivSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/margin_medium"
+                android:clickable="true"
+                android:src="@drawable/ic_send_green_24dp"/>
+
+        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+</android.support.v7.widget.CardView>

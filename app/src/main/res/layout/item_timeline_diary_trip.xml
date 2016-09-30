@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                tools:context=".activities.SplashActivity">
+
+    <TextView
+        android:id="@+id/tvItemTimelineMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_medium"
+        android:text="T8\n2016"
+        android:textAlignment="center"
+        android:textColor="@color/primary"
+        android:textSize="@dimen/txt_tiny"/>
+
+    <LinearLayout
+        android:id="@+id/llCalendar"
+        android:layout_width="37dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_toRightOf="@+id/tvItemTimelineMonth"
+        android:background="@color/primary"
+        android:elevation="@dimen/elevation"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvItemTimelineDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="@dimen/margin_small"
+            android:paddingLeft="@dimen/margin_small"
+            android:paddingRight="@dimen/margin_small"
+            android:paddingTop="@dimen/margin_small"
+            android:text="Thứ 2"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txt_tiny"/>
+
+        <TextView
+            android:id="@+id/tvItemTimelineDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="@dimen/margin_small"
+            android:text="15"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txt_small"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvItemTimelineTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_toRightOf="@+id/llCalendar"
+        android:paddingLeft="@dimen/margin_medium"
+        android:paddingTop="@dimen/margin_medium"
+        android:text="Ngày 1: Khởi đầu đầy gian nan"
+        android:textColor="@color/primary"
+        android:textSize="@dimen/txt_medium"
+        android:textStyle="bold"/>
+
+    <View
+        android:id="@+id/vLineShort"
+        android:layout_width="@dimen/line1"
+        android:layout_height="10dp"
+        android:layout_alignLeft="@+id/llCalendar"
+        android:layout_below="@+id/llCalendar"
+        android:layout_marginLeft="18dp"
+        android:background="@color/primary"/>
+
+    <View
+        android:id="@+id/vCircle"
+        android:layout_width="@dimen/circle_diameter"
+        android:layout_height="@dimen/circle_diameter"
+        android:layout_alignLeft="@+id/llCalendar"
+        android:layout_below="@+id/vLineShort"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/partition_green_circle"/>
+
+    <View
+        android:id="@+id/vLineLong"
+        android:layout_width="@dimen/line1"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/llCalendar"
+        android:layout_alignBottom="@+id/tvItemTimelineContent"
+        android:layout_below="@+id/vCircle"
+        android:layout_marginLeft="18dp"
+        android:background="@color/primary"/>
+
+    <TextView
+        android:id="@+id/tvItemTimelineContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvItemTimelineTitle"
+        android:layout_below="@id/llCalendar"
+        android:paddingTop="10dp"
+        android:paddingBottom="@dimen/margin_medium"
+        android:text="Ngày đầu tiên của chuyến đi chúng tôi xuất phát hơi muộn so với dự tính, trời mưa khá nặng hạn dù đã mặc áo mưa đầy đủ nhưng quần áo vẫn ẩm vì nước mưa thấm vào."
+        android:textColor="@color/primary_text"/>
+
+
+</RelativeLayout>

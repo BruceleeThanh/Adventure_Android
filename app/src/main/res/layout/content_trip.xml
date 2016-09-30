@@ -19,7 +19,8 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:tabSelectedTextColor="@color/primary"
         app:tabTextColor="@color/primary_background_content"
-        app:tabMode="scrollable"/>
+        app:tabMode="scrollable"
+        android:elevation="@dimen/line2"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vpTrip"

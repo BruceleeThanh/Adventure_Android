@@ -29,8 +29,12 @@
         </activity>
         <activity android:name=".activities.FriendActivity">
         </activity>
-        <activity android:name=".activities.StatusActivity"
-                  android:theme="@style/AppTheme.ActivitySwipe">
+        <activity
+            android:name=".activities.StatusActivity"
+            android:theme="@style/AppTheme.ActivitySwipe">
+        </activity>
+        <activity android:name=".activities.DiaryTripActivity"
+            android:theme="@style/AppTheme.ActivitySwipe">
         </activity>
     </application>
 

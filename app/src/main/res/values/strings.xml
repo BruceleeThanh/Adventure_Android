@@ -88,4 +88,7 @@
     <string name="write_comment_hint_tv_status">Viết bình luận...</string>
     <string name="persons_like_this_tv_status">Những người thích nội dung này</string>
 
+    <!--diary trip detail-->
+    <string name="image_detail_tv_trip_detail">Xem tất cả</string>
+
 </resources>

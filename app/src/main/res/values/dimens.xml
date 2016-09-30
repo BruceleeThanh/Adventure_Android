@@ -31,8 +31,9 @@
     <dimen name="btn_height_small">30dp</dimen>
 
     <!--Item timeline calendar-->
-    <dimen name="circle_diameter">10dp</dimen>
+    <dimen name="circle_diameter">7dp</dimen>
     <dimen name="line2">2dp</dimen>
+    <dimen name="line1">1dp</dimen>
 
     <!--Profile-->
     <dimen name="cover_image_height">200dp</dimen>
@@ -69,6 +70,9 @@
     <dimen name="item_icon_size_medium">28px</dimen>
 
     <dimen name="max_height_et">100dp</dimen>
+
+    <!--Diary trip-->
+    <dimen name="background_image_height">200dp</dimen>
 
 
 </resources>

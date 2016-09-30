@@ -25,6 +25,7 @@ public class TripActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.tbTrip);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Đi đi lại lại Hà Nội - Sài Gòn 15/08 - 15/09");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         this.setTablayout();
@@ -44,31 +45,29 @@ public class TripActivity extends AppCompatActivity {
         //final int tabUnselectedTextColor = ContextCompat.getColor(this.getBaseContext(), R.color.secondary_text);
 
         final ViewPager vpTrip = (ViewPager) findViewById(R.id.vpTrip);
-        vpTrip.setOffscreenPageLimit(3);
+        vpTrip.setOffscreenPageLimit(4);
         final TripAdapter tripAdapter = new TripAdapter(getSupportFragmentManager(), tlTrip.getTabCount());
         vpTrip.setAdapter(tripAdapter);
         vpTrip.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tlTrip));
-//        tlTrip.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                int temp = tab.getPosition();
-//                vpHomePage.setCurrentItem(tab.getPosition());
-//                tab.getIcon().setColorFilter(tabSelectedTextColor, PorterDuff.Mode.SRC_IN);
-//                homePageAdapter.notifyDataSetChanged();
-//
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//                tab.getIcon().setColorFilter(tabUnselectedTextColor, PorterDuff.Mode.SRC_IN);
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
+        tlTrip.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                vpTrip.setCurrentItem(tab.getPosition());
+                tripAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     @Override
