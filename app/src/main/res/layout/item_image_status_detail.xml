@@ -10,7 +10,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_medium">
+        android:paddingBottom="@dimen/margin_medium"
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/ivImageStatusDetail"

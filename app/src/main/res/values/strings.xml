@@ -91,4 +91,7 @@
     <!--diary trip detail-->
     <string name="image_detail_tv_trip_detail">Xem tất cả</string>
 
+    <!--member trip-->
+    <string name="call_btn_member_trip">Gọi</string>
+
 </resources>

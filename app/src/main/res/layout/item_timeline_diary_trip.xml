@@ -62,7 +62,6 @@
         android:paddingTop="@dimen/margin_medium"
         android:text="Ngày 1: Khởi đầu đầy gian nan"
         android:textColor="@color/primary"
-        android:textSize="@dimen/txt_medium"
         android:textStyle="bold"/>
 
     <View

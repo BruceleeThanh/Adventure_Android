@@ -9,9 +9,4 @@
         android:title="Search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/itemMessage"
-        android:icon="@drawable/ic_message_white_24dp"
-        android:title="@string/message_btn_profile"
-        app:showAsAction="always"/>
 </tools:menu>

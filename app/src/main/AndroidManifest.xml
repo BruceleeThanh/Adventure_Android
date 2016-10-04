@@ -33,8 +33,11 @@
             android:name=".activities.StatusActivity"
             android:theme="@style/AppTheme.ActivitySwipe">
         </activity>
-        <activity android:name=".activities.DiaryTripActivity"
+        <activity
+            android:name=".activities.DiaryTripActivity"
             android:theme="@style/AppTheme.ActivitySwipe">
+        </activity>
+        <activity android:name=".activities.MessageActivity">
         </activity>
     </application>
 

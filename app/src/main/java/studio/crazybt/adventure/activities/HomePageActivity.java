@@ -35,6 +35,8 @@ public class HomePageActivity extends AppCompatActivity {
     private ImageView ivUserAvatar;
     private TextView tvUserName;
 
+    private static final int MESSAGE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,5 +153,17 @@ public class HomePageActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar_menu_home_page, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.itemMessage:
+                Intent intent = new Intent(this, MessageActivity.class);
+                intent.putExtra("TYPE_SHOW", MESSAGE);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

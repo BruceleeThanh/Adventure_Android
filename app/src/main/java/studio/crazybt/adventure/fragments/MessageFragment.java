@@ -12,34 +12,35 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
-import studio.crazybt.adventure.adapters.MemberTripListAdapter;
+import studio.crazybt.adventure.adapters.MessageListAdapter;
 
 /**
- * Created by Brucelee Thanh on 13/09/2016.
+ * Created by Brucelee Thanh on 03/10/2016.
  */
-public class TabMembersTripFragment extends Fragment {
+
+public class MessageFragment extends Fragment {
 
     private View rootView;
-    @BindView(R.id.rvMemberTrip)
-    RecyclerView rvMemberTrip;
-    private LinearLayoutManager llmMemberTrip;
-    private MemberTripListAdapter mtlaAdapter;
+    @BindView(R.id.rvMessage)
+    RecyclerView rvMessage;
+    private LinearLayoutManager llmMessage;
+    private MessageListAdapter mlaAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if(rootView == null){
-            rootView = inflater.inflate(R.layout.fragment_tab_members_trip, container, false);
+            rootView = inflater.inflate(R.layout.fragment_message, container, false);
             ButterKnife.bind(this, rootView);
-            this.initMemberTripList();
+            this.initMessageList();
         }
         return rootView;
     }
 
-    private void initMemberTripList(){
-        llmMemberTrip = new LinearLayoutManager(getContext());
-        rvMemberTrip.setLayoutManager(llmMemberTrip);
-        mtlaAdapter = new MemberTripListAdapter(getContext());
-        rvMemberTrip.setAdapter(mtlaAdapter);
+    private void initMessageList(){
+        llmMessage = new LinearLayoutManager(rootView.getContext());
+        rvMessage.setLayoutManager(llmMessage);
+        mlaAdapter = new MessageListAdapter(rootView.getContext());
+        rvMessage.setAdapter(mlaAdapter);
     }
 }

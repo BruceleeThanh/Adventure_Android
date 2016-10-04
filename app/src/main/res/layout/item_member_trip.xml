@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_medium"
+    android:background="@color/white"
+    android:elevation="@dimen/margin_medium">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_medium"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/ivProfileImage"
+            android:layout_width="@dimen/profile_image_large"
+            android:layout_height="@dimen/profile_image_large"
+            android:clickable="true"
+            android:src="@drawable/img_profile"/>
+
+        <TextView
+            android:id="@+id/tvProfileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_toRightOf="@+id/ivProfileImage"
+            android:background="@drawable/selector_gray_white_tv"
+            android:clickable="true"
+            android:text="Pied Piper"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/txt_medium"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btnCallMemberTrip"
+            android:layout_width="@dimen/btn_width_small"
+            android:layout_height="@dimen/btn_height_small"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/selector_gray_white_btn"
+            android:drawableLeft="@drawable/ic_call_green_24dp"
+            android:drawablePadding="-20dp"
+            android:paddingLeft="@dimen/margin_big"
+            android:text="@string/call_btn_member_trip"
+            android:textAllCaps="false"
+            android:textColor="@color/secondary_text"/>
+
+        <Button
+            android:id="@+id/btnMessageMemberTrip"
+            android:layout_width="@dimen/btn_width_small"
+            android:layout_height="@dimen/btn_height_small"
+            android:layout_alignBottom="@+id/ivProfileImage"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/selector_green_btn"
+            android:text="@string/message_btn_profile"
+            android:textAllCaps="false"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/tvMutualFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tvProfileName"
+            android:layout_alignStart="@+id/tvProfileName"
+            android:layout_below="@+id/tvProfileName"
+            android:text="30 bạn chung"
+            android:textColor="@color/secondary_text"
+            android:textSize="@dimen/txt_small"/>
+
+        <TextView
+            android:id="@+id/tvPermission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ivProfileImage"
+            android:layout_alignLeft="@+id/tvProfileName"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_toRightOf="@+id/ivProfileImage"
+            android:text="Trưởng đoàn"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/txt_small"/>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
