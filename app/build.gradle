@@ -41,6 +41,7 @@ dependencies {
     compile 'com.hannesdorfmann:swipeback:1.0.4'
     compile 'me.imid.swipebacklayout.lib:library:1.0.0'
     compile 'dev.dworks.libs:volleyplus:+'
+    compile 'com.github.clans:fab:1.6.4'
     compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
     compile('org.apache.httpcomponents:httpmime:4.3.5') {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'

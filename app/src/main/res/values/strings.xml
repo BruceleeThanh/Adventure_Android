@@ -94,4 +94,10 @@
     <!--member trip-->
     <string name="call_btn_member_trip">Gọi</string>
 
+    <!--fab label-->
+    <string name="fab_close">Đóng</string>
+    <string name="fab_create_trip">Tạo chuyến đi</string>
+    <string name="fab_create_status">Đăng trạng thái</string>
+
+
 </resources>
