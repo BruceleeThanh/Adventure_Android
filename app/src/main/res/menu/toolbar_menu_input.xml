@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tools:menu xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:context=".activities.InputActivity">
+    <item
+        android:id="@+id/itemPost"
+        android:title="@string/post_tb_right_btn_create_status"
+        app:showAsAction="always"/>
+</tools:menu>

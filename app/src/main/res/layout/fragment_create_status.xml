@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="@dimen/margin_medium">
+
+    <ImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="@dimen/profile_image_medium"
+        android:layout_height="@dimen/profile_image_medium"
+        android:src="@drawable/img_profile2"/>
+
+    <TextView
+        android:id="@+id/tvProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:text="Brucelee Thanh"
+        android:textColor="@color/primary_text"
+        android:textStyle="bold"/>
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/spiPrivacy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvProfileName"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_toRightOf="@+id/ivProfileImage">
+
+    </android.support.v7.widget.AppCompatSpinner>
+
+    <EditText
+        android:id="@+id/tvContentStatus"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ivProfileImage"
+        android:layout_marginTop="12dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/insert_status_hint_create_status"
+        android:textColor="@color/primary_text"/>
+
+    <Button
+        android:id="@+id/btnAddImage"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_below="@+id/tvContentStatus"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:background="@drawable/selector_green_white_btn_2"
+        android:drawableLeft="@drawable/ic_collections_green_18dp"
+        android:drawablePadding="@dimen/margin_medium"
+        android:paddingLeft="@dimen/margin_medium"
+        android:paddingRight="@dimen/margin_medium"
+        android:text="@string/add_image_btn_create_status"
+        android:textAllCaps="false"
+        android:textColor="@color/primary"/>
+
+    <Button
+        android:id="@+id/btnTakePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_below="@+id/tvContentStatus"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_toRightOf="@+id/btnAddImage"
+        android:background="@drawable/selector_orange_white_btn_2"
+        android:drawableLeft="@drawable/ic_add_a_photo_orange_18dp"
+        android:drawablePadding="@dimen/margin_medium"
+        android:paddingLeft="@dimen/margin_medium"
+        android:paddingRight="@dimen/margin_medium"
+        android:text="@string/take_photo_btn_create_status"
+        android:textAllCaps="false"
+        android:textColor="@color/accent"/>
+
+    <GridView
+        android:id="@+id/gvImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnAddImage"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:numColumns="4"
+        android:scrollbars="vertical">
+
+    </GridView>
+
+
+</RelativeLayout>
