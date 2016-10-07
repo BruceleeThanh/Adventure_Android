@@ -13,7 +13,7 @@
         android:layout_marginTop="@dimen/margin_big"/>
 
     <EditText
-        android:id="@+id/etUsernameSignup"
+        android:id="@+id/etPhoneEmailSignup"
         android:layout_width="@dimen/btn_width"
         android:layout_height="@dimen/btn_height"
         android:hint="@string/email_et_signupviaemail"
@@ -28,7 +28,7 @@
         android:layout_width="@dimen/btn_width"
         android:layout_height="@dimen/btn_height"
         android:hint="@string/firstname_et_signupviaemail"
-        android:layout_below="@+id/etUsernameSignup"
+        android:layout_below="@+id/etPhoneEmailSignup"
         android:layout_centerHorizontal="true"
         android:singleLine="true"
         android:imeOptions="actionNext"/>

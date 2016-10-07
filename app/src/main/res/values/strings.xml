@@ -24,6 +24,8 @@
     <string name="accept_cb_signupviaemail">Chấp nhận</string>
     <string name="term_services_tv_signupviaemail"> điều khoản dịch vụ</string>
     <string name="signup_btn_signupviaemail">Đăng ký</string>
+    <string name="repassword_error_signupviaemail">Mật khẩu không khớp</string>
+    <string name="sign_up_success_signupviaemail">Đăng ký thành công!</string>
 
     <!--Trip shortcut-->
     <string name="trip_detail_tv_trip_shortcut">Chi tiết</string>
