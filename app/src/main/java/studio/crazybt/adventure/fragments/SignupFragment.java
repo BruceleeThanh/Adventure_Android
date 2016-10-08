@@ -76,8 +76,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                     etRepasswordSignup.setError(getResources().getString(R.string.repassword_error_signupviaemail));
                 } else {
                     final ApiConstants apiConstants = new ApiConstants();
-                    Uri.Builder url = apiConstants.getBaseUrl();
-                    url.appendPath(apiConstants.API_USER).appendPath(apiConstants.API_USER_SIGNUP);
+                    Uri.Builder url = apiConstants.getApi(apiConstants.API_NORMAL_SIGNUP);
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, url.build().toString(),
                             new Response.Listener<String>() {
                                 @Override
@@ -105,7 +104,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> params = new HashMap<>();
                             params.put(apiConstants.KEY_PHONE_NUMBER_EMAIL, etPhoneEmailSignup.getText().toString());
-                            Log.e("Email: ", etPhoneEmailSignup.getText().toString());
                             params.put(apiConstants.KEY_FIRST_NAME, etFirstNameSignup.getText().toString());
                             params.put(apiConstants.KEY_LAST_NAME, etLastNameSignup.getText().toString());
                             params.put(apiConstants.KEY_PASSWORD, tilPasswordLayoutSignup.getText().toString());
