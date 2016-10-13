@@ -14,6 +14,9 @@
     <string name="password_et_loginviaemail">Mật khẩu</string>
     <string name="login_btn_loginviaemail">Đăng nhập</string>
     <string name="forget_password_tv_loginviaemail">Quên mật khẩu?</string>
+    <string name="login_success_loginviaemail">Đăng nhập thành công</string>
+    <string name="error_phonenumber_email_et_loginviaemail">Số điện thoại hoặc email không tồn tại</string>
+    <string name="error_password_et_loginviaemail">Mật khẩu không đúng</string>
 
     <!--Signup via email-->
     <string name="email_et_signupviaemail">Email hoặc số điện thoại</string>
@@ -24,7 +27,7 @@
     <string name="accept_cb_signupviaemail">Chấp nhận</string>
     <string name="term_services_tv_signupviaemail"> điều khoản dịch vụ</string>
     <string name="signup_btn_signupviaemail">Đăng ký</string>
-    <string name="repassword_error_signupviaemail">Mật khẩu không khớp</string>
+    <string name="error_repassword_et_signupviaemail">Mật khẩu không khớp</string>
     <string name="sign_up_success_signupviaemail">Đăng ký thành công!</string>
 
     <!--Trip shortcut-->
@@ -107,6 +110,10 @@
     <string name="insert_status_hint_create_status">Chia sẻ cảm xúc của bạn!</string>
     <string name="add_image_btn_create_status">Thêm ảnh</string>
     <string name="take_photo_btn_create_status">Chụp ảnh</string>
+    <string name="warning_havenot_image">Bạn không có ảnh để chọn. Hãy chụp ảnh!</string>
+    <string name="folder_title">Thư mục</string>
+    <string name="choose_image_title">Chọn ảnh</string>
+    <string name="success_post_status">Trạng thái của bạn đã được đăng.</string>
 
 
 </resources>

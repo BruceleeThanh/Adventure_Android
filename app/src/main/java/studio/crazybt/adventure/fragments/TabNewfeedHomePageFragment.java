@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +34,8 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
     RecyclerView rvNewfeed;
     @BindView(R.id.fabCreateStatus)
     FloatingActionButton fabCreateStatus;
+    @BindView(R.id.fabOrigin)
+    FloatingActionMenu fabOrigin;
 
     @Nullable
     @Override
@@ -57,6 +60,7 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fabCreateStatus:
+                fabOrigin.close(true);
                 Intent intent = new Intent(getActivity(), InputActivity.class);
                 intent.putExtra("TYPE_SHOW", INSERT_STATUS);
                 startActivity(intent);

@@ -18,7 +18,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
-import com.android.volley.request.JsonObjectRequest;
 import com.android.volley.request.StringRequest;
 
 import org.json.JSONException;
@@ -48,7 +47,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.etLastNameSignup)
     TextView etLastNameSignup;
     @BindView(R.id.etPasswordSignup)
-    TextInputEditText tilPasswordLayoutSignup;
+    TextInputEditText etPasswordSignup;
     @BindView(R.id.etRepasswordSignup)
     TextView etRepasswordSignup;
     @BindView(R.id.btnSignup)
@@ -72,8 +71,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnSignup:
-                if (!tilPasswordLayoutSignup.getText().toString().equals(etRepasswordSignup.getText().toString())) {
-                    etRepasswordSignup.setError(getResources().getString(R.string.repassword_error_signupviaemail));
+                if (!etPasswordSignup.getText().toString().equals(etRepasswordSignup.getText().toString())) {
+                    etRepasswordSignup.setError(getResources().getString(R.string.error_repassword_et_signupviaemail));
                 } else {
                     final ApiConstants apiConstants = new ApiConstants();
                     Uri.Builder url = apiConstants.getApi(apiConstants.API_NORMAL_SIGNUP);
@@ -83,10 +82,14 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                                 public void onResponse(String response) {
                                     try {
                                         JSONObject jsonObject = new JSONObject(response);
-                                        if (jsonObject.getInt("code") == 1) {
+                                        if (jsonObject.getInt(apiConstants.DEF_CODE) == 1) {
                                             Toast.makeText(getContext(), getResources().getString(R.string.sign_up_success_signupviaemail), Toast.LENGTH_LONG).show();
+                                            LoginFragment loginFragment = new LoginFragment();
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("phoneNumber", etPhoneEmailSignup.getText().toString());
+                                            loginFragment.setArguments(bundle);
                                             fragmentController = new FragmentController((AppCompatActivity) getActivity());
-                                            fragmentController.addFragment_BackStack(R.id.rlSplash, new LoginFragment());
+                                            fragmentController.addFragment_BackStack(R.id.rlSplash, loginFragment);
                                             fragmentController.commit();
                                         }
                                     } catch (JSONException e) {
@@ -97,7 +100,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "Server Error", Toast.LENGTH_SHORT).show();
                                 }
                             }) {
                         @Override
@@ -106,7 +109,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                             params.put(apiConstants.KEY_PHONE_NUMBER_EMAIL, etPhoneEmailSignup.getText().toString());
                             params.put(apiConstants.KEY_FIRST_NAME, etFirstNameSignup.getText().toString());
                             params.put(apiConstants.KEY_LAST_NAME, etLastNameSignup.getText().toString());
-                            params.put(apiConstants.KEY_PASSWORD, tilPasswordLayoutSignup.getText().toString());
+                            params.put(apiConstants.KEY_PASSWORD, etPasswordSignup.getText().toString());
                             return params;
                         }
                     };
@@ -117,5 +120,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
 }
 

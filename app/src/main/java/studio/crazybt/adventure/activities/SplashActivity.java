@@ -1,5 +1,6 @@
 package studio.crazybt.adventure.activities;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,9 @@ import android.widget.TextView;
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.fragments.SplashFragment;
+import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.libs.ApiParams;
+import studio.crazybt.adventure.utils.SharedPref;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -18,9 +22,15 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack(R.id.rlSplash, new SplashFragment());
-        fragmentController.commit();
+        if(SharedPref.getInstance(this).getString(ApiConstants.KEY_TOKEN, "").equals("")){
+            fragmentController = new FragmentController(this);
+            fragmentController.addFragment_BackStack(R.id.rlSplash, new SplashFragment());
+            fragmentController.commit();
+        }else{
+            Intent homePageIntent = new Intent(this, HomePageActivity.class);
+            startActivity(homePageIntent);
+            finish();
+        }
     }
 
     public void setDrawableFitSize(TextView tv, int id, double w, double h) {

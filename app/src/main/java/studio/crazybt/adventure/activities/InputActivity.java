@@ -19,6 +19,7 @@ public class InputActivity extends AppCompatActivity {
 
     private static int typeShow = 0;
     private FragmentController fragmentController;
+    private CreateStatusFragment createStatusFragment;
 
     @BindView(R.id.tbInput)
     Toolbar tbInput;
@@ -45,9 +46,10 @@ public class InputActivity extends AppCompatActivity {
     }
 
     private void showCreateStatus(){
+        createStatusFragment = new CreateStatusFragment();
         getSupportActionBar().setTitle(getResources().getString(R.string.title_tb_create_status));
         fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack(R.id.rlInput, new CreateStatusFragment());
+        fragmentController.addFragment_BackStack(R.id.rlInput, createStatusFragment);
         fragmentController.commit();
     }
 
@@ -75,7 +77,7 @@ public class InputActivity extends AppCompatActivity {
                 onBackPressed();
                 break;
             case R.id.itemPost:
-                Toast.makeText(this, "Post done", Toast.LENGTH_SHORT).show();
+                createStatusFragment.uploadSingleImage();
                 break;
         }
         return super.onOptionsItemSelected(item);

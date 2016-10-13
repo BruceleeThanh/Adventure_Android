@@ -23,6 +23,9 @@ import android.widget.Toast;
 
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.HomePageAdapter;
+import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.libs.ApiParams;
+import studio.crazybt.adventure.utils.SharedPref;
 
 public class HomePageActivity extends AppCompatActivity {
 
@@ -58,7 +61,8 @@ public class HomePageActivity extends AppCompatActivity {
         llUserCover = (LinearLayout) navHeader.findViewById(R.id.llUserCover);
         ivUserAvatar = (ImageView) navHeader.findViewById(R.id.ivUserAvatar);
         tvUserName = (TextView) navHeader.findViewById(R.id.tvUserName);
-
+        String userName = SharedPref.getInstance(this).getString(ApiConstants.KEY_FIRST_NAME, "") + " " + SharedPref.getInstance(this).getString(ApiConstants.KEY_LAST_NAME, "");
+        tvUserName.setText(userName);
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             // This method will trigger on item Click of navigation menu
@@ -75,6 +79,12 @@ public class HomePageActivity extends AppCompatActivity {
                     case R.id.itemProfile:
                         Intent intent = new Intent(HomePageActivity.this, ProfileActivity.class);
                         startActivity(intent);
+                        return true;
+                    case R.id.itemLogout:
+                        SharedPref.getInstance(getBaseContext()).putString(ApiConstants.KEY_TOKEN, "");
+                        Intent intent1 = new Intent(HomePageActivity.this, SplashActivity.class);
+                        startActivity(intent1);
+                        finish();
                         return true;
                     default:
                         Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();

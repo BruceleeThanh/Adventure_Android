@@ -40,7 +40,7 @@ public class CalendarScheduleTripListAdapter extends RecyclerView.Adapter<Calend
         return 5;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tvPeriodCalendar)
         TextView tvPeriodCalendar;

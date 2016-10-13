@@ -14,7 +14,7 @@
         android:layout_marginTop="@dimen/margin_large"/>
 
     <EditText
-        android:id="@+id/etUsernameLogin"
+        android:id="@+id/etPhoneEmailLogin"
         android:layout_width="@dimen/btn_width"
         android:layout_height="@dimen/btn_height"
         android:hint="@string/email_et_loginviaemail"
@@ -41,7 +41,7 @@
         android:id="@+id/tilPasswordLayoutLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etUsernameLogin"
+        android:layout_below="@+id/etPhoneEmailLogin"
         android:layout_centerHorizontal="true"
         app:passwordToggleEnabled="true"
         app:hintEnabled="false">

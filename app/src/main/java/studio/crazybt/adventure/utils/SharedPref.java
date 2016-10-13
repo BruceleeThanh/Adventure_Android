@@ -16,7 +16,7 @@ public class SharedPref {
         public static void clearAllData(Context context) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREF_KEY, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear().commit();
+            editor.clear().apply();
         }
         private SharedPref(Context context) {
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -45,7 +45,7 @@ public class SharedPref {
          * @return : MyPreferenceII to continue edit
          */
         public SharedPref putInt(String key, int value) {
-            preferences.edit().putInt(key, value).commit();
+            preferences.edit().putInt(key, value).apply();
             return instance;
         }
 
@@ -73,7 +73,7 @@ public class SharedPref {
          * @return : MyPreferenceII to continue edit
          */
         public SharedPref putLong(String key, long value) {
-            preferences.edit().putLong(key, value).commit();
+            preferences.edit().putLong(key, value).apply();
             return instance;
         }
 
@@ -100,7 +100,7 @@ public class SharedPref {
          * @return : return MyPreferenceII to continue edit
          */
         public SharedPref putString(String key, String value) {
-            preferences.edit().putString(key, value).commit();
+            preferences.edit().putString(key, value).apply();
             return instance;
         }
 
@@ -127,7 +127,7 @@ public class SharedPref {
          * @return : return MyPreferenceII to continue edit
          */
         public SharedPref putBoolean(String key, boolean value) {
-            preferences.edit().putBoolean(key, value).commit();
+            preferences.edit().putBoolean(key, value).apply();
             return instance;
         }
 
@@ -154,7 +154,7 @@ public class SharedPref {
          * @return : return MyPreferenceII to continue edit
          */
         public SharedPref putFloat(String key, float value) {
-            preferences.edit().putFloat(key, value).commit();
+            preferences.edit().putFloat(key, value).apply();
             return instance;
         }
 
@@ -171,7 +171,7 @@ public class SharedPref {
             return preferences.getFloat(key, defaultValue);
         }
         public void clear() {
-            preferences.edit().clear().commit();
+            preferences.edit().clear().apply();
         }
 
 }
