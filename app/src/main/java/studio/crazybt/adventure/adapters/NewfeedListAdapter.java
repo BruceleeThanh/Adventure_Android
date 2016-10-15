@@ -12,15 +12,22 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
 import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.activities.StatusActivity;
+import studio.crazybt.adventure.fragments.LikesStatusFragment;
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.activities.TripActivity;
 import studio.crazybt.adventure.helpers.DrawableProcessHelper;
+import studio.crazybt.adventure.helpers.PicassoHelper;
+import studio.crazybt.adventure.models.StatusShortcut;
 
 /**
  * Created by Brucelee Thanh on 24/09/2016.
@@ -30,6 +37,8 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private Context rootContext;
     private FragmentController fragmentController;
+    private List<StatusShortcut> statusShortcuts;
+    private PicassoHelper picassoHelper;
 
     public static final int STATUS = 0;
     public static final int TRIP = 1;
@@ -42,19 +51,26 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.rootContext = context;
     }
 
+    public NewfeedListAdapter(Context rootContext, List<StatusShortcut> statusShortcuts) {
+        this.rootContext = rootContext;
+        this.statusShortcuts = statusShortcuts;
+    }
+
     @Override
     public int getItemViewType(int position) {
-        if(position == 0 || position == 2 || position == 4 || position == 6 | position == 8){
-            return STATUS;
-        }else{
-            return TRIP;
-        }
+//        if(position == 0 || position == 2 || position == 4 || position == 6 | position == 8){
+//            return STATUS;
+//        }else{
+//            return TRIP;
+//        }
+        return STATUS;
     }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(rootContext);
-        switch (viewType){
+        switch (viewType) {
             case STATUS:
                 View viewStatus = li.inflate(R.layout.item_status_shortcut, parent, false);
                 return new StatusViewHolder(viewStatus);
@@ -69,7 +85,8 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        switch (getItemViewType(position)){
+        picassoHelper = new PicassoHelper();
+        switch (getItemViewType(position)) {
             case STATUS:
                 final StatusViewHolder statusViewHolder = (StatusViewHolder) holder;
                 statusViewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +96,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         rootContext.startActivity(intent);
                     }
                 });
+                statusViewHolder.tvProfileName.setText(statusShortcuts.get(position).getFirstName() + " " + statusShortcuts.get(position).getLastName());
                 statusViewHolder.tvProfileName.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -86,6 +104,8 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         rootContext.startActivity(intent);
                     }
                 });
+                statusViewHolder.tvTimeUpload.setText(statusShortcuts.get(position).getCreatedAt());
+                statusViewHolder.tvContentStatus.setText(statusShortcuts.get(position).getContent());
                 statusViewHolder.tvContentStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -110,6 +130,50 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         rootContext.startActivity(intent);
                     }
                 });
+                int countImage = statusShortcuts.get(position).getImageContents().size();
+                if (countImage == 0) {
+                    statusViewHolder.llImageStatus.setVisibility(View.GONE);
+                } else {
+                    if (countImage == 1) {
+                        picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                        statusViewHolder.llImageStatusDown.setVisibility(View.GONE);
+                        statusViewHolder.ivUpItem2.setVisibility(View.GONE);
+                    } else {
+                        if (countImage == 2) {
+                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                            statusViewHolder.llImageStatusDown.setVisibility(View.GONE);
+                        } else {
+                            if (countImage == 3) {
+                                picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                                picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                                picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
+                                statusViewHolder.ivDownItem2.setVisibility(View.GONE);
+                                statusViewHolder.rlDownItem3.setVisibility(View.GONE);
+                            } else {
+                                if (countImage == 4) {
+                                    picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                                    picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                                    picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
+                                    picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
+                                    statusViewHolder.rlDownItem3.setVisibility(View.GONE);
+                                } else {
+                                    if (countImage == 5) {
+                                        picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                                        picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                                        picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
+                                        picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
+                                        picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(4).getUrl(), statusViewHolder.ivDownItem3);
+                                    } else {
+                                        if (countImage > 5) {
+                                            statusViewHolder.tvDownItem3.setText("+" + (countImage - 5));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 statusViewHolder.llLike.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -118,7 +182,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             statusViewHolder.cbLike.setTextColor(rootContext.getResources().getColor(R.color.secondary_text));
                             int countLike = Integer.parseInt(statusViewHolder.tvCountLike.getText().toString());
                             statusViewHolder.tvCountLike.setText(String.valueOf(countLike - 1));
-                        }else{
+                        } else {
                             statusViewHolder.cbLike.setChecked(true);
                             statusViewHolder.cbLike.setTextColor(rootContext.getResources().getColor(R.color.primary));
                             int countLike = Integer.parseInt(statusViewHolder.tvCountLike.getText().toString());
@@ -179,10 +243,9 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
 
-
     @Override
     public int getItemCount() {
-        return 10;
+        return statusShortcuts.size();
     }
 
     public class StatusViewHolder extends RecyclerView.ViewHolder {
@@ -194,10 +257,10 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ImageView ivProfileImage;
         @BindView(R.id.tvProfileName)
         TextView tvProfileName;
+        @BindView(R.id.tvTimeUpload)
+        TextView tvTimeUpload;
         @BindView(R.id.tvContentStatus)
         TextView tvContentStatus;
-        @BindView(R.id.llImageStatus)
-        LinearLayout llImageStatus;
         @BindView(R.id.tvCountLike)
         TextView tvCountLike;
         @BindView(R.id.tvCountComment)
@@ -210,6 +273,28 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvComment;
         @BindDimen(R.dimen.item_icon_size_small)
         float itemSizeSmall;
+
+        //      Custom Image Show
+        @BindView(R.id.llImageStatus)
+        LinearLayout llImageStatus;
+        @BindView(R.id.llImageStatusUp)
+        LinearLayout llImageStatusUp;
+        @BindView(R.id.llImageStatusDown)
+        LinearLayout llImageStatusDown;
+        @BindView(R.id.ivUpItem1)
+        ImageView ivUpItem1;
+        @BindView(R.id.ivUpItem2)
+        ImageView ivUpItem2;
+        @BindView(R.id.ivDownItem1)
+        ImageView ivDownItem1;
+        @BindView(R.id.ivDownItem2)
+        ImageView ivDownItem2;
+        @BindView(R.id.ivDownItem3)
+        ImageView ivDownItem3;
+        @BindView(R.id.rlDownItem3)
+        RelativeLayout rlDownItem3;
+        @BindView(R.id.tvDownItem3)
+        TextView tvDownItem3;
 
         public StatusViewHolder(View itemView) {
             super(itemView);

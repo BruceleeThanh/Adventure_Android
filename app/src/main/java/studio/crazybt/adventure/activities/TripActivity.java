@@ -1,6 +1,5 @@
 package studio.crazybt.adventure.activities;
 
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import studio.crazybt.adventure.R;
-import studio.crazybt.adventure.adapters.TripAdapter;
+import studio.crazybt.adventure.adapters.TabLayoutAdapter;
+import studio.crazybt.adventure.fragments.TabDiaryTripFragment;
+import studio.crazybt.adventure.fragments.TabDiscussTripFragment;
+import studio.crazybt.adventure.fragments.TabMapTripFragment;
+import studio.crazybt.adventure.fragments.TabMembersTripFragment;
+import studio.crazybt.adventure.fragments.TabScheduleTripFragment;
 
 public class TripActivity extends AppCompatActivity {
 
@@ -29,45 +33,20 @@ public class TripActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         this.setTablayout();
-
-
     }
 
     public void setTablayout(){
         tlTrip = (TabLayout) findViewById(R.id.tlTrip);
-        tlTrip.addTab(tlTrip.newTab().setText(getResources().getString(R.string.schedule_tablayout_trip)));
-        tlTrip.addTab(tlTrip.newTab().setText(getResources().getString(R.string.map_tablayout_trip)));
-        tlTrip.addTab(tlTrip.newTab().setText(getResources().getString(R.string.discuss_tablayout_trip)));
-        tlTrip.addTab(tlTrip.newTab().setText(getResources().getString(R.string.diary_tablayout_trip)));
-        tlTrip.addTab(tlTrip.newTab().setText(getResources().getString(R.string.members_tablayout_trip)));
         tlTrip.setTabGravity(TabLayout.GRAVITY_FILL);
-        //final int tabSelectedTextColor = ContextCompat.getColor(this.getBaseContext(), R.color.white);
-        //final int tabUnselectedTextColor = ContextCompat.getColor(this.getBaseContext(), R.color.secondary_text);
-
-        final ViewPager vpTrip = (ViewPager) findViewById(R.id.vpTrip);
-        vpTrip.setOffscreenPageLimit(4);
-        final TripAdapter tripAdapter = new TripAdapter(getSupportFragmentManager(), tlTrip.getTabCount());
-        vpTrip.setAdapter(tripAdapter);
-        vpTrip.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tlTrip));
-        tlTrip.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                vpTrip.setCurrentItem(tab.getPosition());
-                tripAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        ViewPager vpTrip = (ViewPager) findViewById(R.id.vpTrip);
+        TabLayoutAdapter tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager());
+        tabLayoutAdapter.addFragment(new TabScheduleTripFragment(), getResources().getString(R.string.schedule_tablayout_trip));
+        tabLayoutAdapter.addFragment(new TabMapTripFragment(), getResources().getString(R.string.map_tablayout_trip));
+        tabLayoutAdapter.addFragment(new TabDiscussTripFragment(), getResources().getString(R.string.discuss_tablayout_trip));
+        tabLayoutAdapter.addFragment(new TabDiaryTripFragment(), getResources().getString(R.string.diary_tablayout_trip));
+        tabLayoutAdapter.addFragment(new TabMembersTripFragment(), getResources().getString(R.string.members_tablayout_trip));
+        vpTrip.setAdapter(tabLayoutAdapter);
+        tlTrip.setupWithViewPager(vpTrip);
     }
 
     @Override

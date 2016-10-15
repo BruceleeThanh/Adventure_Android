@@ -19,7 +19,7 @@ public class TabNotifiacationsHomePageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if(rootView == null){
+        if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_tab_notifications_home_page, container, false);
         }
         return rootView;

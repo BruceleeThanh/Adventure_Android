@@ -6,6 +6,7 @@ import android.support.v4.util.LruCache;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.ImageCache;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
@@ -75,4 +76,5 @@ public class MySingleton {
     public ImageLoader getImageLoader() {
         return mImageLoader;
     }
+
 }

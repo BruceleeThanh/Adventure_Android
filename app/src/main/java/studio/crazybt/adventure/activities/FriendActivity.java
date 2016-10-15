@@ -1,6 +1,5 @@
 package studio.crazybt.adventure.activities;
 
-import android.graphics.PorterDuff;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +10,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import studio.crazybt.adventure.R;
-import studio.crazybt.adventure.adapters.FriendAdapter;
-import studio.crazybt.adventure.adapters.TripAdapter;
+import studio.crazybt.adventure.adapters.TabLayoutAdapter;
+import studio.crazybt.adventure.fragments.TabAllFriendFragment;
+import studio.crazybt.adventure.fragments.TabFollowersFriendFragment;
+import studio.crazybt.adventure.fragments.TabFollowingsFriendFragment;
+import studio.crazybt.adventure.fragments.TabRequestsFriendFragment;
+import studio.crazybt.adventure.fragments.TabSuggestionsFriendFragment;
 
 public class FriendActivity extends AppCompatActivity {
 
@@ -34,37 +37,16 @@ public class FriendActivity extends AppCompatActivity {
 
     public void setTablayout(){
         tlFriend = (TabLayout) findViewById(R.id.tlFriend);
-        tlFriend.addTab(tlFriend.newTab().setText(getResources().getString(R.string.request_tablayout_friend)));
-        tlFriend.addTab(tlFriend.newTab().setText(getResources().getString(R.string.suggestion_tablayout_friend)));
-        tlFriend.addTab(tlFriend.newTab().setText(getResources().getString(R.string.all_tablayout_friend)));
-        tlFriend.addTab(tlFriend.newTab().setText(getResources().getString(R.string.following_tablayout_friend)));
-        tlFriend.addTab(tlFriend.newTab().setText(getResources().getString(R.string.follower_tablayout_friend)));
         tlFriend.setTabGravity(TabLayout.GRAVITY_FILL);
-        //final int tabSelectedTextColor = ContextCompat.getColor(this.getBaseContext(), R.color.white);
-        //final int tabUnselectedTextColor = ContextCompat.getColor(this.getBaseContext(), R.color.secondary_text);
-
-        final ViewPager vpFriend = (ViewPager) findViewById(R.id.vpFriend);
-        vpFriend.setOffscreenPageLimit(4);
-        final FriendAdapter friendAdapter = new FriendAdapter(getSupportFragmentManager(), tlFriend.getTabCount());
-        vpFriend.setAdapter(friendAdapter);
-        vpFriend.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tlFriend));
-        tlFriend.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                vpFriend.setCurrentItem(tab.getPosition());
-                friendAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        ViewPager vpFriend = (ViewPager) findViewById(R.id.vpFriend);
+        TabLayoutAdapter tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager());
+        tabLayoutAdapter.addFragment(new TabRequestsFriendFragment(), getResources().getString(R.string.request_tablayout_friend));
+        tabLayoutAdapter.addFragment(new TabSuggestionsFriendFragment(), getResources().getString(R.string.suggestion_tablayout_friend));
+        tabLayoutAdapter.addFragment(new TabAllFriendFragment(), getResources().getString(R.string.all_tablayout_friend));
+        tabLayoutAdapter.addFragment(new TabFollowingsFriendFragment(), getResources().getString(R.string.following_tablayout_friend));
+        tabLayoutAdapter.addFragment(new TabFollowersFriendFragment(), getResources().getString(R.string.follower_tablayout_friend));
+        vpFriend.setAdapter(tabLayoutAdapter);
+        tlFriend.setupWithViewPager(vpFriend);
     }
 
     @Override

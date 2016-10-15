@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -45,6 +46,7 @@ import id.zelory.compressor.Compressor;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.ImageCreateStatusListAdapter;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.ImageUpload;
 import studio.crazybt.adventure.services.MultipartRequest;
 import studio.crazybt.adventure.services.MyCommand;
@@ -66,7 +68,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     private List<ImageUpload> imageTake;
     private ImageCreateStatusListAdapter icslaAdapter;
     private ArrayList<Image> imageList;
-    private MyCommand myCommand;
+    private List<ImageContent> imageUploadeds;
 
     @BindView(R.id.btnTakePhoto)
     Button btnTakePhoto;
@@ -113,6 +115,9 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
         switch (view.getId()) {
             case R.id.btnTakePhoto:
                 Intent intentCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File out = Environment.getExternalStorageDirectory();
+                out = new File(out, out.getName());
+                intentCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(out));
                 startActivityForResult(intentCapture, TAKEPHOTO_REQUEST);
                 break;
             case R.id.btnAddImage:
@@ -167,23 +172,25 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
         if (imagePick.isEmpty()) {
             this.postSingleStatus(false);
         } else {
-            myCommand = new MyCommand(getContext());
+            imageUploadeds = new ArrayList<>();
             final ApiConstants apiConstants = new ApiConstants();
             final String token = SharedPref.getInstance(getContext()).getString(apiConstants.KEY_TOKEN, "");
             Uri.Builder url = apiConstants.getApi(apiConstants.API_UPLOAD_IMAGE);
             final JsonUtil jsonUtil = new JsonUtil();
             String sUrl = url.build().toString();
+
             for (int i = 0; i < imagePick.size(); i++) {
                 final int temp = i;
                 MultipartRequest multipartRequest = new MultipartRequest(Request.Method.POST, sUrl,
                         new Response.Listener<NetworkResponse>() {
                             @Override
                             public void onResponse(NetworkResponse response) {
+                                RLog.i(response);
                                 String resultResponse = new String(response.data);
                                 JSONObject jsonObject = jsonUtil.createJSONObject(resultResponse);
                                 if (JsonUtil.getInt(jsonObject, apiConstants.DEF_CODE, 0) == 1) {
                                     jsonObject = jsonUtil.getJSONObject(jsonObject, apiConstants.DEF_DATA);
-                                    imagePick.get(temp).setUploadedUrl(jsonUtil.getString(jsonObject, apiConstants.KEY_LINK, ""));
+                                    imageUploadeds.add(new ImageContent(jsonUtil.getString(jsonObject, apiConstants.KEY_LINK, "")));
                                 }
                                 if (temp == imagePick.size() - 1) {
                                     postSingleStatus(true);
@@ -217,9 +224,8 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
                         return params;
                     }
                 };
-                myCommand.add(multipartRequest);
+                MySingleton.getInstance(this.getContext()).addToRequestQueue(multipartRequest);
             }
-            myCommand.execute();
         }
     }
 
@@ -250,9 +256,15 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+                String content;
+                if(etContentStatus.getText().toString() == null){
+                    content = "";
+                }else{
+                    content = etContentStatus.getText().toString();
+                }
                 Map<String, String> params = new HashMap<>();
                 params.put(apiConstants.KEY_TOKEN, token);
-                params.put(apiConstants.KEY_CONTENT, etContentStatus.getText().toString());
+                params.put(apiConstants.KEY_CONTENT, content);
                 params.put(apiConstants.KEY_IMAGE_DESCRIPTION, imageDescriptionString);
                 params.put(apiConstants.KEY_TYPE, "1");
                 return params;
@@ -264,10 +276,10 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     private String getImageArray() {
         ApiConstants apiConstants = new ApiConstants();
         JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < imagePick.size(); i++) {
+        for (int i = 0; i < imageUploadeds.size(); i++) {
             Map<String, String> imageUrl = new HashMap<>();
-            imageUrl.put(apiConstants.KEY_URL, imagePick.get(i).getUploadedUrl());
-            imageUrl.put(apiConstants.KEY_DESCRIPTION, imagePick.get(i).getDescription());
+            imageUrl.put(apiConstants.KEY_URL, imageUploadeds.get(i).getUrl());
+            imageUrl.put(apiConstants.KEY_DESCRIPTION, imageUploadeds.get(i).getDescription());
             jsonArray.put(new JSONObject(imageUrl));
         }
         return jsonArray.toString();

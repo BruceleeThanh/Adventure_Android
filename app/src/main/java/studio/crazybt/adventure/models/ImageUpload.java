@@ -9,21 +9,15 @@ import android.graphics.Bitmap;
 public class ImageUpload {
     private Bitmap bitmap;
     private boolean done;
-    private String uploadedUrl;
-    private String description;
 
     public ImageUpload(Bitmap bitmap) {
         this.bitmap = bitmap;
         this.done = true;
-        this.uploadedUrl = "";
-        this.description = "";
     }
 
-    public ImageUpload(Bitmap bitmap, boolean done, String uploadedUrl, String description) {
+    public ImageUpload(Bitmap bitmap, boolean done) {
         this.bitmap = bitmap;
         this.done = done;
-        this.uploadedUrl = uploadedUrl;
-        this.description = description;
     }
 
 
@@ -44,19 +38,4 @@ public class ImageUpload {
         done = done;
     }
 
-    public String getUploadedUrl() {
-        return uploadedUrl;
-    }
-
-    public void setUploadedUrl(String uploadedUrl) {
-        this.uploadedUrl = uploadedUrl;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

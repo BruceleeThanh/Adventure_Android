@@ -21,6 +21,7 @@ public class ApiConstants {
     public static final String API_NORMAL_LOGIN = "user/login";
     public static final String API_UPLOAD_IMAGE = "file/upload_image";
     public static final String API_CREATE_STATUS = "status/create";
+    public static final String API_TIME_LINE = "status/time_line?token=%1$s";
 
     // Default params
     public static final String DEF_CODE = "code";
@@ -44,6 +45,9 @@ public class ApiConstants {
     public static final String KEY_TYPE = "type";
     public static final String KEY_URL = "url";
     public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_CREATED_AT = "created_at";
+    public static final String KEY_OWNER = "owner";
+    public static final String KEY_IMAGES = "images";
 
     public ApiConstants() {
     }

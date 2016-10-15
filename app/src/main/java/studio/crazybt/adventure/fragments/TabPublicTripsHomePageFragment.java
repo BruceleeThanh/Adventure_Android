@@ -15,7 +15,7 @@ import studio.crazybt.adventure.adapters.TripShortcutListAdapter;
 /**
  * Created by Brucelee Thanh on 11/09/2016.
  */
-public class TabPublicTripsHomePageFragment extends Fragment{
+public class TabPublicTripsHomePageFragment extends Fragment {
 
     private View rootView;
     private LinearLayoutManager llmPublicTrips;
@@ -25,14 +25,14 @@ public class TabPublicTripsHomePageFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if(rootView == null){
+        if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_tab_public_trips_home_page, container, false);
         }
         this.initPublicTrips();
         return rootView;
     }
 
-    public void initPublicTrips(){
+    public void initPublicTrips() {
         rvPublicTrips = (RecyclerView) rootView.findViewById(R.id.rvPublicTrips);
         llmPublicTrips = new LinearLayoutManager(getContext());
         rvPublicTrips.setLayoutManager(llmPublicTrips);

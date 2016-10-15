@@ -17,14 +17,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import studio.crazybt.adventure.R;
-import studio.crazybt.adventure.adapters.HomePageAdapter;
+import studio.crazybt.adventure.adapters.TabLayoutAdapter;
+import studio.crazybt.adventure.fragments.TabFriendHomePageFragment;
+import studio.crazybt.adventure.fragments.TabNewfeedHomePageFragment;
+import studio.crazybt.adventure.fragments.TabNotifiacationsHomePageFragment;
+import studio.crazybt.adventure.fragments.TabPublicTripsHomePageFragment;
 import studio.crazybt.adventure.libs.ApiConstants;
-import studio.crazybt.adventure.libs.ApiParams;
 import studio.crazybt.adventure.utils.SharedPref;
 
 public class HomePageActivity extends AppCompatActivity {
@@ -120,30 +122,29 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void setTablayout() {
-        tlHomePage = (TabLayout) findViewById(R.id.tlHomePage);
-        tlHomePage.addTab(tlHomePage.newTab().setIcon(R.drawable.ic_public_gray_24dp));
-        tlHomePage.addTab(tlHomePage.newTab().setIcon(R.drawable.ic_view_list_gray_24dp));
-        tlHomePage.addTab(tlHomePage.newTab().setIcon(R.drawable.ic_group_gray_24dp));
-        tlHomePage.addTab(tlHomePage.newTab().setIcon(R.drawable.ic_notifications_gray_24dp));
-        tlHomePage.setTabGravity(TabLayout.GRAVITY_FILL);
         final int tabSelectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary);
         final int tabUnselectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary_background_content);
+        tlHomePage = (TabLayout) findViewById(R.id.tlHomePage);
+        tlHomePage.setTabGravity(TabLayout.GRAVITY_FILL);
+        ViewPager vpHomePage = (ViewPager) findViewById(R.id.vpHomePage);
+        TabLayoutAdapter tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager());
+        tabLayoutAdapter.addFragment(new TabPublicTripsHomePageFragment());
+        tabLayoutAdapter.addFragment(new TabNewfeedHomePageFragment());
+        tabLayoutAdapter.addFragment(new TabFriendHomePageFragment());
+        tabLayoutAdapter.addFragment(new TabNotifiacationsHomePageFragment());
+        vpHomePage.setAdapter(tabLayoutAdapter);
+        tlHomePage.setupWithViewPager(vpHomePage);
+        tlHomePage.getTabAt(0).setIcon(R.drawable.ic_public_gray_24dp);
+        tlHomePage.getTabAt(1).setIcon(R.drawable.ic_view_list_gray_24dp);
+        tlHomePage.getTabAt(2).setIcon(R.drawable.ic_group_gray_24dp);
+        tlHomePage.getTabAt(3).setIcon(R.drawable.ic_notifications_gray_24dp);
         tlHomePage.getTabAt(0).getIcon().setColorFilter(tabSelectedIconColor, PorterDuff.Mode.SRC_IN);
-
-        final ViewPager vpHomePage = (ViewPager) findViewById(R.id.vpHomePage);
-        vpHomePage.setOffscreenPageLimit(3);
-        final HomePageAdapter homePageAdapter = new HomePageAdapter(getSupportFragmentManager(), tlHomePage.getTabCount());
-        vpHomePage.setAdapter(homePageAdapter);
         vpHomePage.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tlHomePage));
         tlHomePage.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                int temp = tab.getPosition();
-                vpHomePage.setCurrentItem(tab.getPosition());
                 tab.getIcon().setColorFilter(tabSelectedIconColor, PorterDuff.Mode.SRC_IN);
-                homePageAdapter.notifyDataSetChanged();
-
             }
 
             @Override
