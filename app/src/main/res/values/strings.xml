@@ -32,6 +32,10 @@
 
     <!--Trip shortcut-->
     <string name="trip_detail_tv_trip_shortcut">Chi tiết</string>
+    
+    <!--Status shortcut-->
+    <string name="today_tv_status_shortcut">Hôm nay, </string>
+    <string name="yesterday_tv_status_shortcut">Hôm qua, </string>
 
     <!--Trip Schedule-->
     <string name="join_trip_tv_trip_schedule">Tham gia</string>

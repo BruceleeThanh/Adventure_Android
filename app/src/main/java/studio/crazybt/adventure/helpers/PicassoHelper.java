@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.utils.SharedPref;
 
 
@@ -23,7 +24,7 @@ public class PicassoHelper {
         if (url.isEmpty() || url == null) {
             imageView.setVisibility(View.GONE);
         } else {
-            Picasso.with(context).load(url).into(imageView);
+            Picasso.with(context).load(url).placeholder(R.drawable.img_loading).into(imageView);
         }
     }
 }

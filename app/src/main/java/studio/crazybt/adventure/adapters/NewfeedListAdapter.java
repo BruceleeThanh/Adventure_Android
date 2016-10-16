@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.activities.StatusActivity;
 import studio.crazybt.adventure.fragments.LikesStatusFragment;
+import studio.crazybt.adventure.helpers.ConvertTimeHelper;
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
@@ -104,7 +105,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         rootContext.startActivity(intent);
                     }
                 });
-                statusViewHolder.tvTimeUpload.setText(statusShortcuts.get(position).getCreatedAt());
+                statusViewHolder.tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(statusShortcuts.get(position).getCreatedAt()));
                 statusViewHolder.tvContentStatus.setText(statusShortcuts.get(position).getContent());
                 statusViewHolder.tvContentStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -134,16 +135,22 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 if (countImage == 0) {
                     statusViewHolder.llImageStatus.setVisibility(View.GONE);
                 } else {
+                    statusViewHolder.llImageStatus.setVisibility(View.VISIBLE);
+                    statusViewHolder.llImageStatusUp.setVisibility(View.VISIBLE);
+                    statusViewHolder.ivUpItem1.setVisibility(View.VISIBLE);
                     if (countImage == 1) {
                         picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
                         statusViewHolder.llImageStatusDown.setVisibility(View.GONE);
                         statusViewHolder.ivUpItem2.setVisibility(View.GONE);
                     } else {
+                        statusViewHolder.ivUpItem2.setVisibility(View.VISIBLE);
                         if (countImage == 2) {
                             picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
                             picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
                             statusViewHolder.llImageStatusDown.setVisibility(View.GONE);
                         } else {
+                            statusViewHolder.llImageStatusDown.setVisibility(View.VISIBLE);
+                            statusViewHolder.ivDownItem1.setVisibility(View.VISIBLE);
                             if (countImage == 3) {
                                 picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
                                 picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
@@ -151,6 +158,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 statusViewHolder.ivDownItem2.setVisibility(View.GONE);
                                 statusViewHolder.rlDownItem3.setVisibility(View.GONE);
                             } else {
+                                statusViewHolder.ivDownItem2.setVisibility(View.VISIBLE);
                                 if (countImage == 4) {
                                     picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
                                     picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
@@ -158,7 +166,10 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                     picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
                                     statusViewHolder.rlDownItem3.setVisibility(View.GONE);
                                 } else {
+                                    statusViewHolder.rlDownItem3.setVisibility(View.VISIBLE);
+                                    statusViewHolder.ivDownItem3.setVisibility(View.VISIBLE);
                                     if (countImage == 5) {
+                                        statusViewHolder.tvDownItem3.setVisibility(View.GONE);
                                         picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
                                         picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
                                         picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
@@ -166,6 +177,12 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                         picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(4).getUrl(), statusViewHolder.ivDownItem3);
                                     } else {
                                         if (countImage > 5) {
+                                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
+                                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
+                                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(4).getUrl(), statusViewHolder.ivDownItem3);
+                                            statusViewHolder.tvDownItem3.setVisibility(View.VISIBLE);
                                             statusViewHolder.tvDownItem3.setText("+" + (countImage - 5));
                                         }
                                     }
@@ -241,7 +258,6 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
     }
-
 
     @Override
     public int getItemCount() {

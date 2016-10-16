@@ -89,7 +89,7 @@
                 <ImageView
                     android:id="@+id/ivUpItem1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
@@ -99,7 +99,7 @@
                 <ImageView
                     android:id="@+id/ivUpItem2"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
@@ -111,7 +111,8 @@
             <LinearLayout
                 android:id="@+id/llImageStatusDown"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"
                 android:divider="@drawable/partition_white_line_vertical"
                 android:orientation="horizontal"
                 android:showDividers="middle"
@@ -120,7 +121,7 @@
                 <ImageView
                     android:id="@+id/ivDownItem1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
@@ -130,7 +131,7 @@
                 <ImageView
                     android:id="@+id/ivDownItem2"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
@@ -140,14 +141,14 @@
                 <RelativeLayout
                     android:id="@+id/rlDownItem3"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:visibility="visible">
 
                     <ImageView
                         android:id="@+id/ivDownItem3"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:scaleType="centerCrop"
                         android:src="@drawable/demo2"
@@ -156,10 +157,10 @@
                     <TextView
                         android:id="@+id/tvDownItem3"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_alignBottom="@id/ivDownItem3"
                         android:layout_alignTop="@id/ivDownItem3"
-                        android:background="@color/secondary_text50"
+                        android:background="@color/secondary_text70"
                         android:gravity="center"
                         android:text="+10"
                         android:textColor="@color/white"

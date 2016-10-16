@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,7 +45,7 @@ import studio.crazybt.adventure.utils.SharedPref;
 /**
  * Created by Brucelee Thanh on 11/09/2016.
  */
-public class TabNewfeedHomePageFragment extends Fragment implements View.OnClickListener {
+public class TabNewfeedHomePageFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
 
     private static final int INSERT_STATUS = 1;
     private View rootView;
@@ -59,6 +60,8 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
     FloatingActionButton fabCreateStatus;
     @BindView(R.id.fabOrigin)
     FloatingActionMenu fabOrigin;
+    @BindView(R.id.srlNewfeed)
+    SwipeRefreshLayout srlNewfeed;
 
     @Nullable
     @Override
@@ -67,14 +70,21 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
             rootView = inflater.inflate(R.layout.fragment_tab_newfeed_home_page, container, false);
             ButterKnife.bind(this, rootView);
             fabCreateStatus.setOnClickListener(this);
+            srlNewfeed.setOnRefreshListener(this);
             this.initNewFeedList();
-
+            srlNewfeed.post(new Runnable() {
+                @Override
+                public void run() {
+                    srlNewfeed.setRefreshing(true);
+                    loadData();
+                }
+            });
         }
         return rootView;
     }
 
     public void initNewFeedList() {
-        this.loadData();
+        statusShortcuts = new ArrayList<>();
         llmNewFeed = new LinearLayoutManager(getContext());
         rvNewfeed.setLayoutManager(llmNewFeed);
         nlaNewfeed = new NewfeedListAdapter(this.getContext(), statusShortcuts);
@@ -94,7 +104,8 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
     }
 
     private void loadData() {
-        statusShortcuts = new ArrayList<>();
+        srlNewfeed.setRefreshing(true);
+        statusShortcuts.clear();
         final ApiConstants apiConstants = new ApiConstants();
         final String token = SharedPref.getInstance(getContext()).getString(apiConstants.KEY_TOKEN, "");
         final JsonUtil jsonUtil = new JsonUtil();
@@ -132,14 +143,21 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
                     }
                 }
                 nlaNewfeed.notifyDataSetChanged();
+                srlNewfeed.setRefreshing(false);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 RLog.e(error.getMessage());
+                srlNewfeed.setRefreshing(false);
             }
         });
         stringRequest.setShouldCache(false);
         MySingleton.getInstance(this.getContext()).addToRequestQueue(stringRequest);
+    }
+
+    @Override
+    public void onRefresh() {
+        this.loadData();
     }
 }

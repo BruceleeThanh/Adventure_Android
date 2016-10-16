@@ -77,6 +77,7 @@ public class InputActivity extends AppCompatActivity {
                 onBackPressed();
                 break;
             case R.id.itemPost:
+                item.setEnabled(false);
                 createStatusFragment.uploadSingleImage();
                 break;
         }
