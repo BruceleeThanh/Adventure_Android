@@ -10,7 +10,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_medium"
         android:background="@color/white">
 
         <ImageView
@@ -19,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:src="@drawable/demo2"/>
+            android:src="@drawable/demo1"/>
 
         <TextView
             android:id="@+id/tvDescriptionImageStatusDetail"
@@ -29,6 +28,7 @@
             android:layout_marginLeft="@dimen/margin_medium"
             android:layout_marginRight="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
             android:text="Ninja 300 của Kawasaki thật mạnh mẽ và phong cách. Sở hữu khối động cơ 269cc uy lực."
             android:textColor="@color/primary_text"/>
     </RelativeLayout>

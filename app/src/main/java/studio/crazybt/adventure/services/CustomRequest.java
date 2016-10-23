@@ -22,13 +22,20 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class PostRequest extends Request<JSONObject> {
-    private ContentValues params;
+import studio.crazybt.adventure.utils.RLog;
+
+public class CustomRequest extends Request<JSONObject> {
+    private int method;
+    private String url;
+    private Map<String, String> params;
     private Response.Listener listener;
 
-    public PostRequest(String url, ContentValues params, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) {
-        super(Method.POST, url, errorListener);
-        Log.d("AppLog",url);
+
+    public CustomRequest(int method, String url, Map<String, String> params, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) {
+        super(method, url, errorListener);
+        RLog.d(url);
+        this.method = method;
+        this.url = url;
         this.params = params;
         this.listener = responseListener;
         this.setRetryPolicy(new DefaultRetryPolicy(
@@ -55,18 +62,29 @@ public class PostRequest extends Request<JSONObject> {
     }
 
     @Override
-    public Map<String, String> getParams() {
-        Map<String, String> map = new HashMap<String, String>();
-        Set<Map.Entry<String, Object>> set = params.valueSet();
-        Iterator itr = set.iterator();
-        StringBuilder pr = new StringBuilder();
-        while (itr.hasNext()) {
-            Map.Entry me = (Map.Entry) itr.next();
-            map.put(me.getKey().toString(), me.getValue().toString());
-            pr.append(me.getKey().toString()).append("=").append(me.getValue().toString()).append("&");
+    public String getUrl() {
+        if (method == Request.Method.GET) {
+            StringBuilder stringBuilder = new StringBuilder(url);
+            Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
+            int i = 1;
+            while (iterator.hasNext()) {
+                Map.Entry<String, String> entry = iterator.next();
+                if (i == 1) {
+                    stringBuilder.append("?" + entry.getKey() + "=" + entry.getValue());
+                } else {
+                    stringBuilder.append("&" + entry.getKey() + "=" + entry.getValue());
+                }
+                iterator.remove(); // avoids a ConcurrentModificationException
+                i++;
+            }
+            url = stringBuilder.toString();
         }
-        Log.d("AppLog", pr.deleteCharAt(pr.length() - 1).toString());
-        return map;
+        return url;
+    }
+
+    @Override
+    public Map<String, String> getParams() {
+        return params;
     }
 
     @Override

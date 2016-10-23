@@ -78,7 +78,7 @@ public class InputActivity extends AppCompatActivity {
                 break;
             case R.id.itemPost:
                 item.setEnabled(false);
-                createStatusFragment.uploadSingleImage();
+                createStatusFragment.uploadStatus();
                 break;
         }
         return super.onOptionsItemSelected(item);

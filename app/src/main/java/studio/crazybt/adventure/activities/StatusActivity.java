@@ -10,6 +10,7 @@ import studio.crazybt.adventure.fragments.CommentsStatusFragment;
 import studio.crazybt.adventure.fragments.LikesStatusFragment;
 import studio.crazybt.adventure.fragments.StatusDetailFragment;
 import studio.crazybt.adventure.helpers.FragmentController;
+import studio.crazybt.adventure.models.StatusShortcut;
 
 public class StatusActivity extends SwipeBackActivity {
 
@@ -50,8 +51,13 @@ public class StatusActivity extends SwipeBackActivity {
     }
 
     private void showStatusDetail(){
+        StatusShortcut statusShortcut = (StatusShortcut) getIntent().getParcelableExtra("data");
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("data", statusShortcut);
+        StatusDetailFragment statusDetailFragment = new StatusDetailFragment();
+        statusDetailFragment.setArguments(bundle);
         fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, new StatusDetailFragment());
+        fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, statusDetailFragment);
         fragmentController.commit();
     }
 

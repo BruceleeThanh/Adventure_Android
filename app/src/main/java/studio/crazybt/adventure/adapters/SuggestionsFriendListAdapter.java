@@ -15,6 +15,7 @@ import java.util.List;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.models.Friend;
+import studio.crazybt.adventure.models.User;
 
 /**
  * Created by Brucelee Thanh on 22/09/2016.
@@ -23,15 +24,15 @@ import studio.crazybt.adventure.models.Friend;
 public class SuggestionsFriendListAdapter extends RecyclerView.Adapter<SuggestionsFriendListAdapter.ViewHolder> {
 
     private Context rootContext;
-    private List<Friend> listFriendRequest;
+    private List<User> users;
 
     public SuggestionsFriendListAdapter(Context rootContext) {
         this.rootContext = rootContext;
     }
 
-    public SuggestionsFriendListAdapter(Context rootContext, List<Friend> listFriendRequest) {
+    public SuggestionsFriendListAdapter(Context rootContext, List<User> users) {
         this.rootContext = rootContext;
-        this.listFriendRequest = listFriendRequest;
+        this.users = users;
     }
 
     @Override
@@ -43,6 +44,7 @@ public class SuggestionsFriendListAdapter extends RecyclerView.Adapter<Suggestio
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.tvProfileName.setText(users.get(position).getFirstName() + " " + users.get(position).getLastName());
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,7 +63,7 @@ public class SuggestionsFriendListAdapter extends RecyclerView.Adapter<Suggestio
 
     @Override
     public int getItemCount() {
-        return 10;
+        return users.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

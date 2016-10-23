@@ -8,9 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
+import studio.crazybt.adventure.helpers.PicassoHelper;
+import studio.crazybt.adventure.models.ImageContent;
 
 /**
  * Created by Brucelee Thanh on 24/09/2016.
@@ -19,9 +23,12 @@ import studio.crazybt.adventure.R;
 public class ImageStatusDetailListAdapter extends RecyclerView.Adapter<ImageStatusDetailListAdapter.ViewHolder>{
 
     private Context rootContext;
+    private List<ImageContent> imageContents;
+    private PicassoHelper picassoHelper = new PicassoHelper();
 
-    public ImageStatusDetailListAdapter(Context rootContext) {
+    public ImageStatusDetailListAdapter(Context rootContext, List<ImageContent> imageContents) {
         this.rootContext = rootContext;
+        this.imageContents = imageContents;
     }
 
     @Override
@@ -33,12 +40,18 @@ public class ImageStatusDetailListAdapter extends RecyclerView.Adapter<ImageStat
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        picassoHelper.execPicasso(rootContext, imageContents.get(position).getUrl(), holder.ivImageStatusDetail);
+        if (imageContents.get(position).getDescription().equals("") || imageContents.get(position).getDescription() == null){
+            holder.tvDescriptionImageStatusDetail.setVisibility(View.GONE);
+        }else{
+            holder.tvDescriptionImageStatusDetail.setVisibility(View.VISIBLE);
+            holder.tvDescriptionImageStatusDetail.setText(imageContents.get(position).getDescription());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return imageContents.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

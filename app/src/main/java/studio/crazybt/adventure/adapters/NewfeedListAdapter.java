@@ -39,7 +39,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Context rootContext;
     private FragmentController fragmentController;
     private List<StatusShortcut> statusShortcuts;
-    private PicassoHelper picassoHelper;
+    private PicassoHelper picassoHelper = new PicassoHelper();
 
     public static final int STATUS = 0;
     public static final int TRIP = 1;
@@ -85,8 +85,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        picassoHelper = new PicassoHelper();
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         switch (getItemViewType(position)) {
             case STATUS:
                 final StatusViewHolder statusViewHolder = (StatusViewHolder) holder;
@@ -106,12 +105,18 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     }
                 });
                 statusViewHolder.tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(statusShortcuts.get(position).getCreatedAt()));
-                statusViewHolder.tvContentStatus.setText(statusShortcuts.get(position).getContent());
+                if(statusShortcuts.get(position).getContent().equals("") || statusShortcuts.get(position).getContent() == null){
+                    statusViewHolder.tvContentStatus.setVisibility(View.GONE);
+                }else{
+                    statusViewHolder.tvContentStatus.setVisibility(View.VISIBLE);
+                    statusViewHolder.tvContentStatus.setText(statusShortcuts.get(position).getContent());
+                }
                 statusViewHolder.tvContentStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(rootContext, StatusActivity.class);
                         intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
+                        intent.putExtra("data", statusShortcuts.get(position));
                         rootContext.startActivity(intent);
                     }
                 });
@@ -120,6 +125,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     public void onClick(View view) {
                         Intent intent = new Intent(rootContext, StatusActivity.class);
                         intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
+                        intent.putExtra("data", statusShortcuts.get(position));
                         rootContext.startActivity(intent);
                     }
                 });

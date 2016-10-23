@@ -3,21 +3,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvFriendRequest"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rlFriendDetail"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:text="@string/request_friend_tv_friend_and_follow"
-        android:textColor="@color/secondary_text"/>
+        android:clickable="true"
+        android:background="@drawable/selector_gray_white_tv">
+        <TextView
+            android:id="@+id/tvFriendRequest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="@string/request_friend_tv_friend_and_follow"
+            android:textColor="@color/secondary_text"/>
+
+        <TextView
+            android:id="@+id/tvFriendDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/margin_small"
+            android:drawableRight="@drawable/ic_arrow_forward_grey_500_18dp"
+            android:gravity="center_vertical"
+            android:padding="@dimen/margin_medium"
+            android:text="@string/friend_detail_tv_friend_and_follow"
+            android:textColor="@color/secondary_text"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/srlFriendRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvFriendDetail">
+        android:layout_below="@+id/rlFriendDetail">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvFriendRequest"
@@ -37,20 +58,6 @@
         android:layout_marginTop="15dp"
         android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/tvFriendDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_gray_white_tv"
-        android:clickable="true"
-        android:drawablePadding="@dimen/margin_small"
-        android:drawableRight="@drawable/ic_arrow_forward_grey_500_18dp"
-        android:gravity="center_vertical"
-        android:padding="@dimen/margin_medium"
-        android:text="@string/friend_detail_tv_friend_and_follow"
-        android:textColor="@color/secondary_text"
-        android:layout_below="@+id/pbFriendRequest"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+
 
 </RelativeLayout>

@@ -20,12 +20,14 @@ import butterknife.BindDimen;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import studio.crazybt.adventure.helpers.ConvertTimeHelper;
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.HomePageActivity;
 import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.adapters.ImageStatusDetailListAdapter;
 import studio.crazybt.adventure.helpers.DrawableProcessHelper;
+import studio.crazybt.adventure.models.StatusShortcut;
 
 /**
  * Created by Brucelee Thanh on 24/09/2016.
@@ -38,6 +40,9 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
     private ImageStatusDetailListAdapter isdlaImageStatusDetail;
     private DrawableProcessHelper drawableProcessHelper;
     private FragmentController fragmentController;
+
+    private StatusShortcut statusShortcut;
+
     @BindView(R.id.rvImageStatusDetail)
     RecyclerView rvImageStatusDetail;
     @BindString(R.string.tb_status)
@@ -47,6 +52,8 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
     ImageView ivProfileImage;
     @BindView(R.id.tvProfileName)
     TextView tvProfileName;
+    @BindView(R.id.tvTimeUpload)
+    TextView tvTimeUpload;
     @BindView(R.id.tvContentStatus)
     TextView tvContentStatus;
     @BindView(R.id.tvCountLike)
@@ -74,8 +81,10 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
             tvCountLike.setOnClickListener(this);
             tvCountComment.setOnClickListener(this);
             tvComment.setOnClickListener(this);
+            statusShortcut = (StatusShortcut) getArguments().getParcelable("data");
             this.initDrawable();
             this.initImageStatusDetailList();
+            this.loadData();
         }
         return rootView;
     }
@@ -86,11 +95,22 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
         drawableProcessHelper.setTextViewDrawableFitSize(tvCountComment, R.drawable.ic_chat_96, itemSizeSmall, itemSizeSmall);
     }
 
+    private void loadData(){
+        tvProfileName.setText(statusShortcut.getFirstName() + " " + statusShortcut.getLastName());
+        tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(statusShortcut.getCreatedAt()));
+        if(statusShortcut.getContent().equals("") || statusShortcut.getContent() == null){
+            tvContentStatus.setVisibility(View.GONE);
+        }else{
+            tvContentStatus.setText(statusShortcut.getContent());
+        }
+    }
+
     private void initImageStatusDetailList() {
         llmImageStatusDetail = new LinearLayoutManager(rootView.getContext());
         rvImageStatusDetail.setLayoutManager(llmImageStatusDetail);
-        isdlaImageStatusDetail = new ImageStatusDetailListAdapter(rootView.getContext());
+        isdlaImageStatusDetail = new ImageStatusDetailListAdapter(rootView.getContext(), statusShortcut.getImageContents());
         rvImageStatusDetail.setAdapter(isdlaImageStatusDetail);
+        isdlaImageStatusDetail.notifyDataSetChanged();
     }
 
     @Override

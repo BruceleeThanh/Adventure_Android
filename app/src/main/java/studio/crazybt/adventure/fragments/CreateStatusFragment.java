@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -46,6 +47,7 @@ import id.zelory.compressor.Compressor;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.ImageCreateStatusListAdapter;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.libs.ApiParams;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.ImageUpload;
 import studio.crazybt.adventure.services.MultipartRequest;
@@ -168,7 +170,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
         return encodedImage;
     }
 
-    public void uploadSingleImage() {
+    public void uploadStatus() {
         if (imagePick.isEmpty()) {
             this.postSingleStatus(false);
         } else {
@@ -224,6 +226,10 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
                         return params;
                     }
                 };
+                multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                        0,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 MySingleton.getInstance(this.getContext()).addToRequestQueue(multipartRequest);
             }
         }
@@ -262,7 +268,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
                 }else{
                     content = etContentStatus.getText().toString();
                 }
-                Map<String, String> params = new HashMap<>();
+                ApiParams params = new ApiParams();
                 params.put(apiConstants.KEY_TOKEN, token);
                 params.put(apiConstants.KEY_CONTENT, content);
                 params.put(apiConstants.KEY_IMAGE_DESCRIPTION, imageDescriptionString);

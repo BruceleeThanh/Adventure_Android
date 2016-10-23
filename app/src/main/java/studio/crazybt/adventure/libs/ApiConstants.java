@@ -15,13 +15,14 @@ public class ApiConstants {
     public static final int RESPONSE_CODE_SUCCESS = 200;
 
     // API Urls
-    public static final String API_ROOT = "161.202.24.102:22896/api";
+    public static final String API_ROOT = "104.198.46.159:25763/api";
     public static final String API_SCHEME = "http";
     public static final String API_NORMAL_SIGNUP = "user/sign_up";
     public static final String API_NORMAL_LOGIN = "user/login";
     public static final String API_UPLOAD_IMAGE = "file/upload_image";
     public static final String API_CREATE_STATUS = "status/create";
     public static final String API_TIME_LINE = "status/time_line?token=%1$s";
+    public static final String API_SUGGEST_FRIEND = "friend/suggest_friend";
 
     // Default params
     public static final String DEF_CODE = "code";
@@ -31,6 +32,7 @@ public class ApiConstants {
     // Key params
 
     // user params
+    public static final String KEY_ID = "_id";
     public static final String KEY_PHONE_NUMBER_EMAIL = "phone_number_email";
     public static final String KEY_PHONE_NUMBER = "phone_number";
     public static final String KEY_EMAIL = "email";
@@ -48,6 +50,9 @@ public class ApiConstants {
     public static final String KEY_CREATED_AT = "created_at";
     public static final String KEY_OWNER = "owner";
     public static final String KEY_IMAGES = "images";
+    public static final String KEY_AVATAR = "avatar";
+    public static final String KEY_PAGE = "page";
+    public static final String KEY_PERPAGE = "perPage";
 
     public ApiConstants() {
     }

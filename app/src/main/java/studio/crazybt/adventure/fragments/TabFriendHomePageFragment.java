@@ -9,8 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.FriendActivity;
 import studio.crazybt.adventure.adapters.RequestFriendListAdapter;
@@ -25,7 +28,8 @@ public class TabFriendHomePageFragment extends Fragment implements View.OnClickL
     private LinearLayoutManager llmFriendRequest;
     private RequestFriendListAdapter fraFriendRequest;
 
-    private TextView tvFriendDetail;
+    @BindView(R.id.rlFriendDetail)
+    RelativeLayout rlFriendDetail;
 
     @Nullable
     @Override
@@ -33,9 +37,8 @@ public class TabFriendHomePageFragment extends Fragment implements View.OnClickL
         if(rootView == null){
             rootView = inflater.inflate(R.layout.fragment_tab_friend_home_page, container, false);
         }
-
-        tvFriendDetail = (TextView)rootView.findViewById(R.id.tvFriendDetail);
-        tvFriendDetail.setOnClickListener(this);
+        ButterKnife.bind(this, rootView);
+        rlFriendDetail.setOnClickListener(this);
 
         this.initFriendRequest();
         return rootView;
@@ -49,10 +52,14 @@ public class TabFriendHomePageFragment extends Fragment implements View.OnClickL
         rvFriendRequest.setAdapter(fraFriendRequest);
     }
 
+    public void loadData(){
+
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.tvFriendDetail:
+            case R.id.rlFriendDetail:
                 Intent intent = new Intent(rootView.getContext(), FriendActivity.class);
                 startActivity(intent);
                 break;
