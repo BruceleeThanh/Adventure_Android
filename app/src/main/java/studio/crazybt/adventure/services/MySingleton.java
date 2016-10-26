@@ -69,7 +69,8 @@ public class MySingleton {
         return mRequestQueue;
     }
 
-    public <T> void addToRequestQueue(Request<T> req) {
+    public <T> void addToRequestQueue(Request<T> req, boolean shouldCache) {
+        req.setShouldCache(shouldCache);
         getRequestQueue().add(req);
     }
 

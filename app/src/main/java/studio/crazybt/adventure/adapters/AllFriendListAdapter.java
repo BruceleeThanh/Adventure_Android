@@ -14,7 +14,9 @@ import java.util.List;
 
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
+import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.models.Friend;
+import studio.crazybt.adventure.models.User;
 
 /**
  * Created by Brucelee Thanh on 22/09/2016.
@@ -23,15 +25,15 @@ import studio.crazybt.adventure.models.Friend;
 public class AllFriendListAdapter extends RecyclerView.Adapter<AllFriendListAdapter.ViewHolder> {
 
     private Context rootContext;
-    private List<Friend> listFriendRequest;
+    private List<User> users;
 
     public AllFriendListAdapter(Context rootContext) {
         this.rootContext = rootContext;
     }
 
-    public AllFriendListAdapter(Context rootContext, List<Friend> listFriendRequest) {
+    public AllFriendListAdapter(Context rootContext, List<User> users) {
         this.rootContext = rootContext;
-        this.listFriendRequest = listFriendRequest;
+        this.users = users;
     }
 
     @Override
@@ -42,11 +44,14 @@ public class AllFriendListAdapter extends RecyclerView.Adapter<AllFriendListAdap
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        holder.tvProfileName.setText(users.get(position).getFirstName() + " " + users.get(position).getLastName());
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(rootContext, ProfileActivity.class);
+                intent.putExtra(CommonConstants.KEY_ID_USER, users.get(position).getId());
+                intent.putExtra(CommonConstants.KEY_USERNAME, users.get(position).getFirstName() + " " + users.get(position).getLastName());
                 rootContext.startActivity(intent);
             }
         });
@@ -54,6 +59,8 @@ public class AllFriendListAdapter extends RecyclerView.Adapter<AllFriendListAdap
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(rootContext, ProfileActivity.class);
+                intent.putExtra(CommonConstants.KEY_ID_USER, users.get(position).getId());
+                intent.putExtra(CommonConstants.KEY_USERNAME, users.get(position).getFirstName() + " " + users.get(position).getLastName());
                 rootContext.startActivity(intent);
             }
         });
@@ -61,7 +68,7 @@ public class AllFriendListAdapter extends RecyclerView.Adapter<AllFriendListAdap
 
     @Override
     public int getItemCount() {
-        return 10;
+        return users.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

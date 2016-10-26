@@ -7,8 +7,9 @@
         android:id="@+id/rlFriendDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:background="@drawable/selector_gray_white_tv">
+        android:background="@drawable/selector_gray_white_tv"
+        android:clickable="true">
+
         <TextView
             android:id="@+id/tvFriendRequest"
             android:layout_width="wrap_content"
@@ -22,42 +23,47 @@
             android:id="@+id/tvFriendDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:drawablePadding="@dimen/margin_small"
             android:drawableRight="@drawable/ic_arrow_forward_grey_500_18dp"
             android:gravity="center_vertical"
             android:padding="@dimen/margin_medium"
             android:text="@string/friend_detail_tv_friend_and_follow"
-            android:textColor="@color/secondary_text"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
+            android:textColor="@color/secondary_text"/>
     </RelativeLayout>
 
 
+
     <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/srlFriendRequest"
+        android:id="@+id/srlFriendHomePage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rlFriendDetail">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvFriendRequest"
+            android:id="@+id/rvFriendHomePage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@color/primary_background_content"
             android:dividerHeight="@dimen/margin_small"
             android:scrollbars="none"/>
+
+        <ProgressBar
+            android:id="@+id/pbFriendHomePage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="15dp"
+            android:visibility="gone"/>
+
     </android.support.v4.widget.SwipeRefreshLayout>
 
-
-    <ProgressBar
-        android:id="@+id/pbFriendRequest"
+    <TextView
+        android:id="@+id/tvErrorFriendHomePage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginTop="15dp"
-        android:visibility="gone"/>
-
-
-
+        android:visibility="gone"
+        android:textColor="@color/primary_text"/>
 </RelativeLayout>

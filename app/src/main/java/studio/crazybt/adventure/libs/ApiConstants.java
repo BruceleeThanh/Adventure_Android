@@ -21,8 +21,13 @@ public class ApiConstants {
     public static final String API_NORMAL_LOGIN = "user/login";
     public static final String API_UPLOAD_IMAGE = "file/upload_image";
     public static final String API_CREATE_STATUS = "status/create";
-    public static final String API_TIME_LINE = "status/time_line?token=%1$s";
+    public static final String API_TIME_LINE = "status/time_line";
+    public static final String API_NEWFEEDS = "status/new_feeds";
     public static final String API_SUGGEST_FRIEND = "friend/suggest_friend";
+    public static final String API_BROWSE_FRIEND = "friend/browse";
+    public static final String API_SEND_REQUEST_FRIEND = "friend_request/send_request";
+    public static final String API_BROWSE_REQUEST_FRIEND = "friend_request/browse";
+    public static final String API_CONFIRM_REQUEST_FRIEND = "friend_request/confirm";
 
     // Default params
     public static final String DEF_CODE = "code";
@@ -53,25 +58,30 @@ public class ApiConstants {
     public static final String KEY_AVATAR = "avatar";
     public static final String KEY_PAGE = "page";
     public static final String KEY_PERPAGE = "perPage";
+    public static final String KEY_USER = "user";
+    public static final String KEY_SENDER = "sender";
+    public static final String KEY_RECIPIENT = "recipient";
+    public static final String KEY_STATUS = "status";
+
 
     public ApiConstants() {
     }
 
-    public void setBaseUrl(){
+    public void setBaseUrl() {
         builder = new Uri.Builder();
         builder.scheme(API_SCHEME).encodedAuthority(API_ROOT);
     }
 
-    public Uri.Builder getBaseApi(){
+    public Uri.Builder getBaseApi() {
         this.setBaseUrl();
         return builder;
     }
 
-    public Uri.Builder getApi(String path){
+    public Uri.Builder getApi(String path) {
         this.setBaseUrl();
-        if(path.contains("/")){
+        if (path.contains("/")) {
             builder.appendEncodedPath(path);
-        }else{
+        } else {
             builder.appendPath(path);
         }
         return builder;

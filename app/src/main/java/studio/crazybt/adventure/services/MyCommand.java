@@ -28,7 +28,7 @@ public class MyCommand<T>  {
 
     public void execute(){
         for(Request<T> request : requestArrayList){
-            MySingleton.getInstance(this.context).addToRequestQueue(request);
+            MySingleton.getInstance(this.context).addToRequestQueue(request, false);
         }
     }
 }

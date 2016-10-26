@@ -11,37 +11,28 @@ import java.util.List;
  */
 
 public class StatusShortcut implements Parcelable {
-    private String firstName;
-    private String lastName;
+    private User user;
     private String createdAt;
     private String content;
     private List<ImageContent> imageContents;
 
     public StatusShortcut() {
+
     }
 
-    public StatusShortcut(String firstName, String lastName, String createdAt, String content, List<ImageContent> imageContents) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public StatusShortcut(User user, String createdAt, String content, List<ImageContent> imageContents) {
+        this.user = user;
         this.createdAt = createdAt;
         this.content = content;
         this.imageContents = imageContents;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public User getUser() {
+        return user;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getCreatedAt() {
@@ -76,23 +67,20 @@ public class StatusShortcut implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.firstName);
-        dest.writeString(this.lastName);
+        dest.writeParcelable(this.user, flags);
         dest.writeString(this.createdAt);
         dest.writeString(this.content);
-        dest.writeList(this.imageContents);
+        dest.writeTypedList(this.imageContents);
     }
 
     protected StatusShortcut(Parcel in) {
-        this.firstName = in.readString();
-        this.lastName = in.readString();
+        this.user = in.readParcelable(User.class.getClassLoader());
         this.createdAt = in.readString();
         this.content = in.readString();
-        this.imageContents = new ArrayList<ImageContent>();
-        in.readList(this.imageContents, ImageContent.class.getClassLoader());
+        this.imageContents = in.createTypedArrayList(ImageContent.CREATOR);
     }
 
-    public static final Parcelable.Creator<StatusShortcut> CREATOR = new Parcelable.Creator<StatusShortcut>() {
+    public static final Creator<StatusShortcut> CREATOR = new Creator<StatusShortcut>() {
         @Override
         public StatusShortcut createFromParcel(Parcel source) {
             return new StatusShortcut(source);

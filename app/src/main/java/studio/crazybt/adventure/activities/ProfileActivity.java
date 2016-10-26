@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.fragments.ProfileFragment;
+import studio.crazybt.adventure.libs.CommonConstants;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -18,15 +19,29 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        String idUser = CommonConstants.VAL_ID_DEFAULT;
+        String username = CommonConstants.VAL_USERNAME_DEFAUT;
+        if (getIntent().getStringExtra("ID_USER") != null) {
+            idUser = getIntent().getStringExtra("ID_USER").toString();
+        }
+        if (getIntent().getStringExtra("USERNAME") != null) {
+            username = getIntent().getStringExtra("USERNAME").toString();
+        }
+        Bundle bundle = new Bundle();
+        bundle.putString(CommonConstants.KEY_ID_USER, idUser);
+        bundle.putString(CommonConstants.KEY_USERNAME, username);
+        ProfileFragment profileFragment = new ProfileFragment();
+        profileFragment.setArguments(bundle);
         fragmentController = new FragmentController(this);
-        fragmentController.addFragment(R.id.rlProfile, new ProfileFragment());
+        fragmentController.addFragment(R.id.rlProfile, profileFragment);
         fragmentController.commit();
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == android.R.id.home){
+        if (id == android.R.id.home) {
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);

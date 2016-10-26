@@ -36,6 +36,10 @@ public class FragmentController {
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
     }
 
+    public void addFragment_WithoutReplace(int id, Object obj){
+        fragmentTransaction.add(id, (Fragment) obj, obj.getClass().getName());
+    }
+
     public void addFragment(int id, Object obj){
         fragmentTransaction.replace(id, (Fragment) obj, obj.getClass().getName());
     }

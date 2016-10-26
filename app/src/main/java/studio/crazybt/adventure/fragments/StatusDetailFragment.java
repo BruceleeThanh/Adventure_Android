@@ -96,7 +96,7 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
     }
 
     private void loadData(){
-        tvProfileName.setText(statusShortcut.getFirstName() + " " + statusShortcut.getLastName());
+        tvProfileName.setText(statusShortcut.getUser().getFirstName() + " " + statusShortcut.getUser().getLastName());
         tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(statusShortcut.getCreatedAt()));
         if(statusShortcut.getContent().equals("") || statusShortcut.getContent() == null){
             tvContentStatus.setVisibility(View.GONE);

@@ -25,7 +25,9 @@ import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +38,8 @@ import studio.crazybt.adventure.adapters.NewfeedListAdapter;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.StatusShortcut;
+import studio.crazybt.adventure.models.User;
+import studio.crazybt.adventure.services.CustomRequest;
 import studio.crazybt.adventure.services.MyCommand;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
@@ -45,7 +49,7 @@ import studio.crazybt.adventure.utils.SharedPref;
 /**
  * Created by Brucelee Thanh on 11/09/2016.
  */
-public class TabNewfeedHomePageFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
+public class TabNewfeedHomePageFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private static final int INSERT_STATUS = 1;
     private View rootView;
@@ -75,7 +79,6 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
             srlNewfeed.post(new Runnable() {
                 @Override
                 public void run() {
-                    srlNewfeed.setRefreshing(true);
                     loadData();
                 }
             });
@@ -109,29 +112,31 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
         final ApiConstants apiConstants = new ApiConstants();
         final String token = SharedPref.getInstance(getContext()).getString(apiConstants.KEY_TOKEN, "");
         final JsonUtil jsonUtil = new JsonUtil();
-        Uri.Builder url = apiConstants.getApi(apiConstants.API_TIME_LINE);
-        String sUrl = String.format(url.build().toString(), token);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, sUrl, new Response.Listener<String>() {
+        Uri.Builder url = apiConstants.getApi(apiConstants.API_NEWFEEDS);
+        Map<String, String> params = new HashMap<>();
+        params.put(apiConstants.KEY_TOKEN, token);
+        CustomRequest customRequest = new CustomRequest(Request.Method.GET, url.build().toString(), params, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String response) {
+            public void onResponse(JSONObject response) {
                 RLog.i(response);
+                String id;
                 String firstName;
                 String lastName;
                 String createdAt;
                 String content;
-                JSONObject jsonObject = jsonUtil.createJSONObject(response);
-                if (jsonUtil.getInt(jsonObject, apiConstants.DEF_CODE, 0) == 1) {
-                    JSONArray data = jsonUtil.getJSONArray(jsonObject, apiConstants.DEF_DATA);
+                if (jsonUtil.getInt(response, apiConstants.DEF_CODE, 0) == 1) {
+                    JSONArray data = jsonUtil.getJSONArray(response, apiConstants.DEF_DATA);
                     for (int i = 0; i < data.length(); i++) {
                         List<ImageContent> imageContents = new ArrayList<>();
                         JSONObject dataObject = jsonUtil.getJSONObject(data, i);
                         content = jsonUtil.getString(dataObject, apiConstants.KEY_CONTENT, "");
                         createdAt = jsonUtil.getString(dataObject, apiConstants.KEY_CREATED_AT, "");
                         JSONObject owner = jsonUtil.getJSONObject(dataObject, apiConstants.KEY_OWNER);
+                        id = jsonUtil.getString(owner, apiConstants.KEY_ID, "");
                         firstName = jsonUtil.getString(owner, apiConstants.KEY_FIRST_NAME, "");
                         lastName = jsonUtil.getString(owner, apiConstants.KEY_LAST_NAME, "");
                         JSONArray images = jsonUtil.getJSONArray(dataObject, apiConstants.KEY_IMAGES);
-                        if(images != null && images.length() > 0){
+                        if (images != null && images.length() > 0) {
                             for (int j = 0; j < images.length(); j++) {
                                 JSONObject image = jsonUtil.getJSONObject(images, j);
                                 imageContents.add(new ImageContent(
@@ -139,7 +144,11 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
                                         jsonUtil.getString(image, apiConstants.KEY_DESCRIPTION, "")));
                             }
                         }
-                        statusShortcuts.add(new StatusShortcut(firstName, lastName, createdAt, content, imageContents));
+                        statusShortcuts.add(
+                                new StatusShortcut(new User(id, firstName, lastName, ""),
+                                        createdAt,
+                                        content,
+                                        imageContents));
                     }
                 }
                 nlaNewfeed.notifyDataSetChanged();
@@ -152,8 +161,7 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
                 srlNewfeed.setRefreshing(false);
             }
         });
-        stringRequest.setShouldCache(false);
-        MySingleton.getInstance(this.getContext()).addToRequestQueue(stringRequest);
+        MySingleton.getInstance(this.getContext()).addToRequestQueue(customRequest, false);
     }
 
     @Override

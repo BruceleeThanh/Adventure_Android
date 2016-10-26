@@ -119,7 +119,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         return params;
                     }
                 };
-                MySingleton.getInstance(this.getContext()).addToRequestQueue(stringRequest);
+                MySingleton.getInstance(this.getContext()).addToRequestQueue(stringRequest, false);
                 break;
             case R.id.tvForgetPassword:
                 break;

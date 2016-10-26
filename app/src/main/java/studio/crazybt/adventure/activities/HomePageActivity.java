@@ -27,6 +27,7 @@ import studio.crazybt.adventure.fragments.TabNewfeedHomePageFragment;
 import studio.crazybt.adventure.fragments.TabNotifiacationsHomePageFragment;
 import studio.crazybt.adventure.fragments.TabPublicTripsHomePageFragment;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.utils.SharedPref;
 
 public class HomePageActivity extends AppCompatActivity {
@@ -63,7 +64,7 @@ public class HomePageActivity extends AppCompatActivity {
         llUserCover = (LinearLayout) navHeader.findViewById(R.id.llUserCover);
         ivUserAvatar = (ImageView) navHeader.findViewById(R.id.ivUserAvatar);
         tvUserName = (TextView) navHeader.findViewById(R.id.tvUserName);
-        String userName = SharedPref.getInstance(this).getString(ApiConstants.KEY_FIRST_NAME, "") + " " + SharedPref.getInstance(this).getString(ApiConstants.KEY_LAST_NAME, "");
+        final String userName = SharedPref.getInstance(this).getString(ApiConstants.KEY_FIRST_NAME, "") + " " + SharedPref.getInstance(this).getString(ApiConstants.KEY_LAST_NAME, "");
         tvUserName.setText(userName);
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -80,6 +81,8 @@ public class HomePageActivity extends AppCompatActivity {
                     // Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.itemProfile:
                         Intent intent = new Intent(HomePageActivity.this, ProfileActivity.class);
+                        intent.putExtra(CommonConstants.KEY_ID_USER, CommonConstants.VAL_ID_DEFAULT);
+                        intent.putExtra(CommonConstants.KEY_USERNAME, userName);
                         startActivity(intent);
                         return true;
                     case R.id.itemLogout:
@@ -133,6 +136,7 @@ public class HomePageActivity extends AppCompatActivity {
         tabLayoutAdapter.addFragment(new TabFriendHomePageFragment());
         tabLayoutAdapter.addFragment(new TabNotifiacationsHomePageFragment());
         vpHomePage.setAdapter(tabLayoutAdapter);
+        vpHomePage.setOffscreenPageLimit(3);
         tlHomePage.setupWithViewPager(vpHomePage);
         tlHomePage.getTabAt(0).setIcon(R.drawable.ic_public_gray_24dp);
         tlHomePage.getTabAt(1).setIcon(R.drawable.ic_view_list_gray_24dp);

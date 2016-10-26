@@ -28,6 +28,7 @@ import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.activities.TripActivity;
 import studio.crazybt.adventure.helpers.DrawableProcessHelper;
 import studio.crazybt.adventure.helpers.PicassoHelper;
+import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.models.StatusShortcut;
 
 /**
@@ -93,14 +94,18 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(rootContext, ProfileActivity.class);
+                        intent.putExtra(CommonConstants.KEY_ID_USER, statusShortcuts.get(position).getUser().getId());
+                        intent.putExtra(CommonConstants.KEY_USERNAME, statusShortcuts.get(position).getUser().getFirstName() + " " + statusShortcuts.get(position).getUser().getLastName());
                         rootContext.startActivity(intent);
                     }
                 });
-                statusViewHolder.tvProfileName.setText(statusShortcuts.get(position).getFirstName() + " " + statusShortcuts.get(position).getLastName());
+                statusViewHolder.tvProfileName.setText(statusShortcuts.get(position).getUser().getFirstName() + " " + statusShortcuts.get(position).getUser().getLastName());
                 statusViewHolder.tvProfileName.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(rootContext, ProfileActivity.class);
+                        intent.putExtra(CommonConstants.KEY_ID_USER, statusShortcuts.get(position).getUser().getId());
+                        intent.putExtra(CommonConstants.KEY_USERNAME, statusShortcuts.get(position).getUser().getFirstName() + " " + statusShortcuts.get(position).getUser().getLastName());
                         rootContext.startActivity(intent);
                     }
                 });

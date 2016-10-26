@@ -1,10 +1,13 @@
 package studio.crazybt.adventure.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Brucelee Thanh on 23/10/2016.
  */
 
-public class User {
+public class User implements Parcelable {
     private String id;
     private String firstName;
     private String lastName;
@@ -178,4 +181,61 @@ public class User {
     public void setLastVisitedAt(String lastVisitedAt) {
         this.lastVisitedAt = lastVisitedAt;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.firstName);
+        dest.writeString(this.lastName);
+        dest.writeString(this.password);
+        dest.writeString(this.email);
+        dest.writeString(this.phoneNumber);
+        dest.writeString(this.gender);
+        dest.writeString(this.birthday);
+        dest.writeString(this.address);
+        dest.writeString(this.religion);
+        dest.writeString(this.intro);
+        dest.writeString(this.fbId);
+        dest.writeString(this.avatar);
+        dest.writeString(this.cover);
+        dest.writeString(this.createAt);
+        dest.writeString(this.lastVisitedAt);
+    }
+
+    protected User(Parcel in) {
+        this.id = in.readString();
+        this.firstName = in.readString();
+        this.lastName = in.readString();
+        this.password = in.readString();
+        this.email = in.readString();
+        this.phoneNumber = in.readString();
+        this.gender = in.readString();
+        this.birthday = in.readString();
+        this.address = in.readString();
+        this.religion = in.readString();
+        this.intro = in.readString();
+        this.fbId = in.readString();
+        this.avatar = in.readString();
+        this.cover = in.readString();
+        this.createAt = in.readString();
+        this.lastVisitedAt = in.readString();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

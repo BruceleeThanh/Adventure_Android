@@ -8,7 +8,6 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:fitsSystemWindows="true"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.SplashActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -33,7 +32,6 @@
                 android:id="@+id/ivCover"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/img_cover"
                 app:layout_collapseMode="pin"/>
@@ -52,7 +50,7 @@
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:background="@drawable/bg_white_border_iv"
         android:padding="3dp"
-        android:src="@drawable/img_profile2"
+        android:src="@drawable/img_profile"
         app:layout_anchor="@id/main.appbar"
         app:layout_anchorGravity="bottom|left|end"/>
 
@@ -64,15 +62,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/margin_medium"
-            android:layout_marginRight="@dimen/margin_medium">
+            android:descendantFocusability="blocksDescendants">
 
             <LinearLayout
                 android:id="@+id/llAction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvProfileName"
-                android:layout_marginLeft="@dimen/margin_toleftof_profile_image_big"
+                android:layout_marginLeft="@dimen/margin_toleftof_profile_image_largest"
                 android:layout_marginTop="@dimen/margin_big"
                 android:divider="@drawable/partition_gray_line_vertical"
                 android:orientation="horizontal"
@@ -108,12 +105,23 @@
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:id="@+id/rlInfoIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llAction"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:paddingBottom="@dimen/margin_medium"
+                android:paddingTop="@dimen/margin_medium"
+                android:background="@color/white">
+
+
             <TextView
                 android:id="@+id/tvIntroInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/llAction"
-                android:layout_marginTop="@dimen/margin_big"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:layout_marginLeft="@dimen/margin_medium"
                 android:text="Một thằng coder thích thiên nhiên, ước mơ cứu cả thế giới bằng chính đôi bàn tay gõ phím của mình.!"
                 android:textColor="@color/primary_text"/>
 
@@ -121,6 +129,8 @@
                 android:id="@+id/llIntro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:layout_marginLeft="@dimen/margin_medium"
                 android:layout_below="@+id/tvIntroInfo"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:background="@drawable/bg_gray_white_btn"
@@ -182,6 +192,8 @@
                 android:layout_height="@dimen/menu_btn_height"
                 android:layout_below="@+id/llIntro"
                 android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:layout_marginLeft="@dimen/margin_medium"
                 android:background="@drawable/bg_gray_white_btn"
                 android:divider="@drawable/partition_gray_line_vertical"
                 android:dividerPadding="@dimen/margin_small"
@@ -234,7 +246,18 @@
             </LinearLayout>
 
 
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvTimeline"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rlInfoIntro"
+                android:background="@color/primary_background_content"
+                android:nestedScrollingEnabled="false"/>
+
         </RelativeLayout>
+
     </android.support.v4.widget.NestedScrollView>
 
 

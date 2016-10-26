@@ -230,7 +230,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
                         DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                         0,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                MySingleton.getInstance(this.getContext()).addToRequestQueue(multipartRequest);
+                MySingleton.getInstance(this.getContext()).addToRequestQueue(multipartRequest, false);
             }
         }
     }
@@ -276,7 +276,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
                 return params;
             }
         };
-        MySingleton.getInstance(this.getContext()).addToRequestQueue(stringRequest);
+        MySingleton.getInstance(this.getContext()).addToRequestQueue(stringRequest, false);
     }
 
     private String getImageArray() {
