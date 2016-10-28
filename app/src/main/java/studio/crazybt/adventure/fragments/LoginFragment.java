@@ -63,7 +63,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         ButterKnife.bind(this, rootView);
         btnLogin.setOnClickListener(this);
         tvForgetPassword.setOnClickListener(this);
-        String memory = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_PHONE_NUMBER_EMAIL, "");
+        Bundle bundle = this.getArguments();
+        String memory;
+        if(bundle != null){
+            memory = bundle.getString("phoneNumber");
+        }else{
+            memory = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_PHONE_NUMBER_EMAIL, "");
+        }
         if(memory != ""){
             etPhoneEmailLogin.setText(memory);
         }

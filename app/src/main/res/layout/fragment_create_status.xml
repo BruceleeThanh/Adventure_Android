@@ -11,7 +11,7 @@
         android:layout_height="@dimen/profile_image_medium"
         android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_medium"
-        android:src="@drawable/img_profile2"/>
+        android:src="@drawable/img_profile"/>
 
     <TextView
         android:id="@+id/tvProfileName"

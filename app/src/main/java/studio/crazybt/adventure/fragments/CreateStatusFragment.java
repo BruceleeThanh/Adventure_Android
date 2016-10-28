@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -80,6 +81,8 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     RecyclerView rvImageCreateStatus;
     @BindView(R.id.etContentStatus)
     EditText etContentStatus;
+    @BindView(R.id.tvProfileName)
+    TextView tvProfileName;
 
     private static final int TAKEPHOTO_REQUEST = 100;
     private static final int PICK_IMAGE_REQUEST = 200;
@@ -99,6 +102,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
         ButterKnife.bind(this, rootView);
         btnTakePhoto.setOnClickListener(this);
         btnAddImage.setOnClickListener(this);
+        tvProfileName.setText(SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_FIRST_NAME, "") + " " + SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_LAST_NAME, ""));
         this.initImageCreateStatusList();
         return rootView;
     }
@@ -155,7 +159,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
                 .imageTitle(getResources().getString(R.string.choose_image_title)) // image selection title
                 .single() // single mode
                 .multi() // multi mode (default mode)
-                .limit(10) // max images can be selected (99 by default)
+                .limit(99) // max images can be selected (99 by default)
                 .showCamera(true) // show camera or not (true by default)
                 .imageDirectory(getResources().getString(R.string.take_photo_btn_create_status)) // directory name for captured image  ("Camera" folder by default)
                 .origin(imageList) // original selected images, used in multi mode
