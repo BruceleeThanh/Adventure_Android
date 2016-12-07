@@ -32,6 +32,7 @@ import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.services.MySingleton;
+import studio.crazybt.adventure.utils.RLog;
 
 /**
  * Created by Brucelee Thanh on 26/08/2016.
@@ -80,6 +81,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
+                                    RLog.i(response);
                                     try {
                                         JSONObject jsonObject = new JSONObject(response);
                                         if (jsonObject.getInt(apiConstants.DEF_CODE) == 1) {
@@ -91,6 +93,8 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                                             fragmentController = new FragmentController((AppCompatActivity) getActivity());
                                             fragmentController.addFragment_BackStack(R.id.rlSplash, loginFragment);
                                             fragmentController.commit();
+                                        }else if(jsonObject.getInt(apiConstants.DEF_CODE) == -1){
+                                            Toast.makeText(getContext(), getResources().getString(R.string.error_phonenumber_email_signupviaemail), Toast.LENGTH_LONG).show();
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -113,6 +117,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                             return params;
                         }
                     };
+                    RLog.i(url.build().toString());
                     MySingleton.getInstance(this.getContext()).addToRequestQueue(stringRequest, false);
                 }
                 break;

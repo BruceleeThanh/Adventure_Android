@@ -100,6 +100,7 @@ public class SuggestionsFriendListAdapter extends RecyclerView.Adapter<Suggestio
                         }
                         users.remove(position);
                         notifyDataSetChanged();
+                        holder.btnLeftFriendTemplate.setEnabled(true);
                     }
                 }, new Response.ErrorListener() {
                     @Override

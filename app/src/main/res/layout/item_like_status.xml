@@ -21,11 +21,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin_big"
+        android:layout_marginLeft="@dimen/margin_medium"
         android:layout_toRightOf="@+id/ivProfileImage"
         android:text="Pied Piper"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/txt_medium"
         android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/btnFriendOrFollow"
+        android:layout_width="@dimen/btn_width_small"
+        android:layout_height="@dimen/btn_height_small"
+        android:layout_marginRight="@dimen/margin_big"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/selector_gray_white_btn"
+        android:text="@string/friend_btn_profile"
+        android:textAllCaps="false"
+        android:textColor="@color/secondary_text"
+        android:clickable="true"/>
 
 </RelativeLayout>

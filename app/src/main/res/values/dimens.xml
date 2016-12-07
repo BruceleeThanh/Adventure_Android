@@ -20,6 +20,8 @@
     <dimen name="profile_image_small">40dp</dimen>
 
     <!--Trip schedule-->
+    <dimen name="icon_size_tiny">14dp</dimen>
+    <dimen name="icon_size_small">18dp</dimen>
     <dimen name="icon_size">24dp</dimen>
     <dimen name="icon_size_big">32dp</dimen>
 

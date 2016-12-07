@@ -41,7 +41,7 @@
             android:layout_below="@+id/tvProfileName"
             android:layout_marginLeft="@dimen/margin_medium"
             android:layout_toRightOf="@+id/ivProfileImage"
-            android:text=""
+            android:text="Bạn chung"
             android:textColor="@color/secondary_text"
             android:textSize="@dimen/txt_small"/>
 

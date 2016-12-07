@@ -1,5 +1,6 @@
 package studio.crazybt.adventure.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -51,12 +52,15 @@ import studio.crazybt.adventure.utils.SharedPref;
  */
 public class TabNewfeedHomePageFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final int INSERT_STATUS = 1;
+    private static final int STATUS_DETAIL = 1;
+    private final int REQUEST_CODE = 100;
+    private final int INSERT_STATUS = 1;
     private View rootView;
     private LinearLayoutManager llmNewFeed;
     private NewfeedListAdapter nlaNewfeed;
 
     private List<StatusShortcut> statusShortcuts;
+    private int posItem;
 
     @BindView(R.id.rvNewfeed)
     RecyclerView rvNewfeed;
@@ -91,6 +95,16 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
         llmNewFeed = new LinearLayoutManager(getContext());
         rvNewfeed.setLayoutManager(llmNewFeed);
         nlaNewfeed = new NewfeedListAdapter(this.getContext(), statusShortcuts);
+        nlaNewfeed.setOnAdapterClickListener(new NewfeedListAdapter.OnAdapterClick() {
+            @Override
+            public void onStatusDetailClick(int pos, StatusShortcut statusShortcut) {
+                posItem=pos;
+                Intent intent = new Intent(getContext(), StatusActivity.class);
+                intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
+                intent.putExtra("data", statusShortcut);
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
         rvNewfeed.setAdapter(nlaNewfeed);
     }
 
@@ -112,29 +126,50 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
         final ApiConstants apiConstants = new ApiConstants();
         final String token = SharedPref.getInstance(getContext()).getString(apiConstants.KEY_TOKEN, "");
         final JsonUtil jsonUtil = new JsonUtil();
-        Uri.Builder url = apiConstants.getApi(apiConstants.API_NEWFEEDS);
+        Uri.Builder url = apiConstants.getApi(apiConstants.API_NEWS_FEED);
         Map<String, String> params = new HashMap<>();
         params.put(apiConstants.KEY_TOKEN, token);
         CustomRequest customRequest = new CustomRequest(Request.Method.GET, url.build().toString(), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 RLog.i(response);
-                String id;
+
+                // status
+                String idStatus;
+                String content;
+                int amountLike;
+                int amountComment;
+                int permission;
+                int type;
+                String createdAt;
+                int isLike;
+                int isComment;
+
+                // user
+                String idUser;
                 String firstName;
                 String lastName;
-                String createdAt;
-                String content;
+                String avatar;
+
                 if (jsonUtil.getInt(response, apiConstants.DEF_CODE, 0) == 1) {
                     JSONArray data = jsonUtil.getJSONArray(response, apiConstants.DEF_DATA);
                     for (int i = 0; i < data.length(); i++) {
                         List<ImageContent> imageContents = new ArrayList<>();
                         JSONObject dataObject = jsonUtil.getJSONObject(data, i);
+                        idStatus = jsonUtil.getString(dataObject, apiConstants.KEY_ID, "");
                         content = jsonUtil.getString(dataObject, apiConstants.KEY_CONTENT, "");
+                        amountLike = jsonUtil.getInt(dataObject, apiConstants.KEY_AMOUNT_LIKE, 0);
+                        amountComment = jsonUtil.getInt(dataObject, apiConstants.KEY_AMOUNT_COMMENT, 0);
+                        permission = jsonUtil.getInt(dataObject, apiConstants.KEY_PERMISSION, 3);
+                        type = jsonUtil.getInt(dataObject, apiConstants.KEY_TYPE, 1);
                         createdAt = jsonUtil.getString(dataObject, apiConstants.KEY_CREATED_AT, "");
+                        isLike = jsonUtil.getInt(dataObject, apiConstants.KEY_IS_LIKE, 0);
+                        isComment = jsonUtil.getInt(dataObject, apiConstants.KEY_IS_COMMENT, 0);
                         JSONObject owner = jsonUtil.getJSONObject(dataObject, apiConstants.KEY_OWNER);
-                        id = jsonUtil.getString(owner, apiConstants.KEY_ID, "");
+                        idUser = jsonUtil.getString(owner, apiConstants.KEY_ID, "");
                         firstName = jsonUtil.getString(owner, apiConstants.KEY_FIRST_NAME, "");
                         lastName = jsonUtil.getString(owner, apiConstants.KEY_LAST_NAME, "");
+                        avatar = jsonUtil.getString(owner, apiConstants.KEY_AVATAR, "");
                         JSONArray images = jsonUtil.getJSONArray(dataObject, apiConstants.KEY_IMAGES);
                         if (images != null && images.length() > 0) {
                             for (int j = 0; j < images.length(); j++) {
@@ -145,10 +180,8 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
                             }
                         }
                         statusShortcuts.add(
-                                new StatusShortcut(new User(id, firstName, lastName, ""),
-                                        createdAt,
-                                        content,
-                                        imageContents));
+                                new StatusShortcut(new User(idUser, firstName, lastName, avatar), idStatus, createdAt, content, permission,
+                                        type, amountLike, amountComment, isLike, isComment, imageContents));
                     }
                 }
                 nlaNewfeed.notifyDataSetChanged();
@@ -167,5 +200,20 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
     @Override
     public void onRefresh() {
         this.loadData();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE){
+            if(resultCode == Activity.RESULT_OK){
+                statusShortcuts.set(posItem, (StatusShortcut) data.getParcelableExtra("result"));
+                nlaNewfeed.notifyDataSetChanged();
+            }
+        }
+    }
+
+    public void onRefreshResult(StatusShortcut statusShortcut){
+        statusShortcuts.set(posItem, statusShortcut);
+        nlaNewfeed.notifyDataSetChanged();
     }
 }

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'realm-android'
 
 
 android {
@@ -38,13 +39,13 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile 'com.hannesdorfmann:swipeback:1.0.4'
     compile 'me.imid.swipebacklayout.lib:library:1.0.0'
     compile 'dev.dworks.libs:volleyplus:+'
     compile 'com.github.clans:fab:1.6.4'
     compile 'id.zelory:compressor:1.0.3'
     compile 'com.github.nguyenhoanglam:ImagePicker:1.1.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.vanniktech:emoji:0.4.0-SNAPSHOT'
     compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
     compile('org.apache.httpcomponents:httpmime:4.3.5') {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'

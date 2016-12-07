@@ -2,6 +2,9 @@ package studio.crazybt.adventure.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +15,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
@@ -28,8 +38,15 @@ import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.activities.TripActivity;
 import studio.crazybt.adventure.helpers.DrawableProcessHelper;
 import studio.crazybt.adventure.helpers.PicassoHelper;
+import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.models.StatusShortcut;
+import studio.crazybt.adventure.services.CustomRequest;
+import studio.crazybt.adventure.services.MySingleton;
+import studio.crazybt.adventure.utils.JsonUtil;
+import studio.crazybt.adventure.utils.RLog;
+import studio.crazybt.adventure.utils.SharedPref;
+import studio.crazybt.adventure.utils.StringUtil;
 
 /**
  * Created by Brucelee Thanh on 24/09/2016.
@@ -42,12 +59,12 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<StatusShortcut> statusShortcuts;
     private PicassoHelper picassoHelper = new PicassoHelper();
 
-    public static final int STATUS = 0;
-    public static final int TRIP = 1;
+    private static final int STATUS = 0;
+    private static final int TRIP = 1;
 
-    public static final int STATUS_DETAIL = 1;
-    public static final int STATUS_LIKES = 2;
-    public static final int STATUS_COMMENTS = 3;
+    private static final int STATUS_DETAIL = 1;
+    private static final int STATUS_LIKES = 2;
+    private static final int STATUS_COMMENTS = 3;
 
     public NewfeedListAdapter(Context context) {
         this.rootContext = context;
@@ -90,59 +107,72 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (getItemViewType(position)) {
             case STATUS:
                 final StatusViewHolder statusViewHolder = (StatusViewHolder) holder;
+                final StatusShortcut statusItem = statusShortcuts.get(position);
+
+                // User avatar
                 statusViewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(rootContext, ProfileActivity.class);
-                        intent.putExtra(CommonConstants.KEY_ID_USER, statusShortcuts.get(position).getUser().getId());
-                        intent.putExtra(CommonConstants.KEY_USERNAME, statusShortcuts.get(position).getUser().getFirstName() + " " + statusShortcuts.get(position).getUser().getLastName());
+                        intent.putExtra(CommonConstants.KEY_ID_USER, statusItem.getUser().getId());
+                        intent.putExtra(CommonConstants.KEY_USERNAME, statusItem.getUser().getFirstName() + " " + statusItem.getUser().getLastName());
                         rootContext.startActivity(intent);
                     }
                 });
-                statusViewHolder.tvProfileName.setText(statusShortcuts.get(position).getUser().getFirstName() + " " + statusShortcuts.get(position).getUser().getLastName());
+
+                // User name
+                statusViewHolder.tvProfileName.setText(statusItem.getUser().getFirstName() + " " + statusItem.getUser().getLastName());
                 statusViewHolder.tvProfileName.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(rootContext, ProfileActivity.class);
-                        intent.putExtra(CommonConstants.KEY_ID_USER, statusShortcuts.get(position).getUser().getId());
-                        intent.putExtra(CommonConstants.KEY_USERNAME, statusShortcuts.get(position).getUser().getFirstName() + " " + statusShortcuts.get(position).getUser().getLastName());
+                        intent.putExtra(CommonConstants.KEY_ID_USER, statusItem.getUser().getId());
+                        intent.putExtra(CommonConstants.KEY_USERNAME, statusItem.getUser().getFirstName() + " " + statusItem.getUser().getLastName());
                         rootContext.startActivity(intent);
                     }
                 });
-                statusViewHolder.tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(statusShortcuts.get(position).getCreatedAt()));
-                if(statusShortcuts.get(position).getContent().equals("") || statusShortcuts.get(position).getContent() == null){
-                    statusViewHolder.tvContentStatus.setVisibility(View.GONE);
-                }else{
-                    statusViewHolder.tvContentStatus.setVisibility(View.VISIBLE);
-                    statusViewHolder.tvContentStatus.setText(statusShortcuts.get(position).getContent());
+
+                // Permission (Status Privacy)
+                if (statusItem.getPermission() == 1) {
+                    statusViewHolder.ivPermission.setImageResource(R.drawable.ic_private_96);
+                } else if (statusItem.getPermission() == 2) {
+                    statusViewHolder.ivPermission.setImageResource(R.drawable.ic_friend_96);
+                } else if (statusItem.getPermission() == 3) {
+                    statusViewHolder.ivPermission.setImageResource(R.drawable.ic_public_96);
                 }
+
+                // Status create time
+                statusViewHolder.tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(statusItem.getCreatedAt()));
+
+                // Remove content status if not exits
+                if (statusItem.getContent().equals("") || statusItem.getContent() == null) {
+                    statusViewHolder.tvContentStatus.setVisibility(View.GONE);
+                } else {
+                    statusViewHolder.tvContentStatus.setVisibility(View.VISIBLE);
+                    statusViewHolder.tvContentStatus.setText(statusItem.getContent());
+                }
+
+                // Content status
                 statusViewHolder.tvContentStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(rootContext, StatusActivity.class);
                         intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
-                        intent.putExtra("data", statusShortcuts.get(position));
+                        intent.putExtra("data", statusItem);
                         rootContext.startActivity(intent);
                     }
                 });
+
+                // Click to see detail Images
                 statusViewHolder.llImageStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(rootContext, StatusActivity.class);
-                        intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
-                        intent.putExtra("data", statusShortcuts.get(position));
-                        rootContext.startActivity(intent);
+                        if (onAdapterClick!= null) onAdapterClick.onStatusDetailClick(position, statusItem);
                     }
                 });
-                statusViewHolder.tvCountLike.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(rootContext, StatusActivity.class);
-                        intent.putExtra("TYPE_SHOW", STATUS_LIKES);
-                        rootContext.startActivity(intent);
-                    }
-                });
-                int countImage = statusShortcuts.get(position).getImageContents().size();
+
+                // Process display Images
+                int countImage = statusItem.getImageContents().size();
                 if (countImage == 0) {
                     statusViewHolder.llImageStatus.setVisibility(View.GONE);
                 } else {
@@ -150,49 +180,49 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     statusViewHolder.llImageStatusUp.setVisibility(View.VISIBLE);
                     statusViewHolder.ivUpItem1.setVisibility(View.VISIBLE);
                     if (countImage == 1) {
-                        picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                        picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
                         statusViewHolder.llImageStatusDown.setVisibility(View.GONE);
                         statusViewHolder.ivUpItem2.setVisibility(View.GONE);
                     } else {
                         statusViewHolder.ivUpItem2.setVisibility(View.VISIBLE);
                         if (countImage == 2) {
-                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
-                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
                             statusViewHolder.llImageStatusDown.setVisibility(View.GONE);
                         } else {
                             statusViewHolder.llImageStatusDown.setVisibility(View.VISIBLE);
                             statusViewHolder.ivDownItem1.setVisibility(View.VISIBLE);
                             if (countImage == 3) {
-                                picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
-                                picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
-                                picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
+                                picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                                picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                                picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
                                 statusViewHolder.ivDownItem2.setVisibility(View.GONE);
                                 statusViewHolder.rlDownItem3.setVisibility(View.GONE);
                             } else {
                                 statusViewHolder.ivDownItem2.setVisibility(View.VISIBLE);
                                 if (countImage == 4) {
-                                    picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
-                                    picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
-                                    picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
-                                    picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
+                                    picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                                    picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                                    picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
+                                    picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
                                     statusViewHolder.rlDownItem3.setVisibility(View.GONE);
                                 } else {
                                     statusViewHolder.rlDownItem3.setVisibility(View.VISIBLE);
                                     statusViewHolder.ivDownItem3.setVisibility(View.VISIBLE);
                                     if (countImage == 5) {
                                         statusViewHolder.tvDownItem3.setVisibility(View.GONE);
-                                        picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
-                                        picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
-                                        picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
-                                        picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
-                                        picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(4).getUrl(), statusViewHolder.ivDownItem3);
+                                        picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                                        picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                                        picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
+                                        picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
+                                        picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(4).getUrl(), statusViewHolder.ivDownItem3);
                                     } else {
                                         if (countImage > 5) {
-                                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
-                                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
-                                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
-                                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
-                                            picassoHelper.execPicasso(rootContext, statusShortcuts.get(position).getImageContents().get(4).getUrl(), statusViewHolder.ivDownItem3);
+                                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
+                                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
+                                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(4).getUrl(), statusViewHolder.ivDownItem3);
                                             statusViewHolder.tvDownItem3.setVisibility(View.VISIBLE);
                                             statusViewHolder.tvDownItem3.setText("+" + (countImage - 5));
                                         }
@@ -202,35 +232,101 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         }
                     }
                 }
+
+                // Amount of Like
+                statusViewHolder.tvCountLike.setText(String.valueOf(statusItem.getAmountLike()));
+                statusViewHolder.tvCountLike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(rootContext, StatusActivity.class);
+                        intent.putExtra("TYPE_SHOW", STATUS_LIKES);
+                        intent.putExtra("data", statusItem);
+                        rootContext.startActivity(intent);
+                    }
+                });
+
+                // Liked highlight
+                if (statusItem.getIsLike() == 1) {
+                    statusViewHolder.cbLike.setChecked(true);
+                    statusViewHolder.cbLike.setTextColor(rootContext.getResources().getColor(R.color.primary));
+                } else if (statusItem.getIsLike() == 0) {
+                    statusViewHolder.cbLike.setChecked(false);
+                    statusViewHolder.cbLike.setTextColor(rootContext.getResources().getColor(R.color.secondary_text));
+                }
+
+                // Process Like status
                 statusViewHolder.llLike.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (statusViewHolder.cbLike.isChecked()) {
                             statusViewHolder.cbLike.setChecked(false);
                             statusViewHolder.cbLike.setTextColor(rootContext.getResources().getColor(R.color.secondary_text));
-                            int countLike = Integer.parseInt(statusViewHolder.tvCountLike.getText().toString());
-                            statusViewHolder.tvCountLike.setText(String.valueOf(countLike - 1));
                         } else {
                             statusViewHolder.cbLike.setChecked(true);
                             statusViewHolder.cbLike.setTextColor(rootContext.getResources().getColor(R.color.primary));
-                            int countLike = Integer.parseInt(statusViewHolder.tvCountLike.getText().toString());
-                            statusViewHolder.tvCountLike.setText(String.valueOf(countLike + 1));
                         }
+                        final String token = SharedPref.getInstance(rootContext).getString(ApiConstants.KEY_TOKEN, "");
+                        Uri.Builder url = ApiConstants.getApi(ApiConstants.API_LIKE_STATUS);
+                        Map<String, String> params = new HashMap<>();
+                        params.put(ApiConstants.KEY_TOKEN, token);
+                        params.put(ApiConstants.KEY_ID_STATUS, statusItem.getId());
+                        CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                if (JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0) == 1) {
+                                    JSONObject data = JsonUtil.getJSONObject(response, ApiConstants.DEF_DATA);
+                                    JSONObject status = JsonUtil.getJSONObject(data, ApiConstants.KEY_STATUS);
+                                    int amountLike = JsonUtil.getInt(status, ApiConstants.KEY_AMOUNT_LIKE, -1);
+                                    int isLike = JsonUtil.getInt(data, ApiConstants.KEY_IS_LIKE, -1);
+                                    if (amountLike != -1) {
+                                        statusShortcuts.get(position).setAmountLike(amountLike);
+                                    }
+                                    if (isLike != -1) {
+                                        statusShortcuts.get(position).setIsLike(isLike);
+                                    }
+                                    notifyDataSetChanged();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                            }
+                        });
+                        MySingleton.getInstance(rootContext).addToRequestQueue(customRequest, false);
                     }
                 });
+
+                // Amount of Comment
+                statusViewHolder.tvCountComment.setText(String.valueOf(statusItem.getAmountComment()));
                 statusViewHolder.tvCountComment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(rootContext, StatusActivity.class);
                         intent.putExtra("TYPE_SHOW", STATUS_COMMENTS);
+                        intent.putExtra("data", statusItem);
                         rootContext.startActivity(intent);
                     }
                 });
+
+                // Comment highlight
+                if(statusItem.getIsComment() == 1){
+                    Drawable drawable = ContextCompat.getDrawable(rootContext, R.drawable.ic_chat_bubble_green_24dp);
+                    statusViewHolder.tvComment.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
+                    statusViewHolder.tvComment.setTextColor(rootContext.getResources().getColor(R.color.primary));
+                }else{
+                    Drawable drawable = ContextCompat.getDrawable(rootContext, R.drawable.ic_chat_bubble_gray_24dp);
+                    statusViewHolder.tvComment.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
+                    statusViewHolder.tvComment.setTextColor(rootContext.getResources().getColor(R.color.secondary_text));
+                }
+
+                // Click comment detail
                 statusViewHolder.tvComment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(rootContext, StatusActivity.class);
                         intent.putExtra("TYPE_SHOW", STATUS_COMMENTS);
+                        intent.putExtra("data", statusItem);
                         rootContext.startActivity(intent);
                     }
                 });
@@ -286,6 +382,8 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvProfileName;
         @BindView(R.id.tvTimeUpload)
         TextView tvTimeUpload;
+        @BindView(R.id.ivPermission)
+        ImageView ivPermission;
         @BindView(R.id.tvContentStatus)
         TextView tvContentStatus;
         @BindView(R.id.tvCountLike)
@@ -301,7 +399,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @BindDimen(R.dimen.item_icon_size_small)
         float itemSizeSmall;
 
-        //      Custom Image Show
+        // Custom Image Show
         @BindView(R.id.llImageStatus)
         LinearLayout llImageStatus;
         @BindView(R.id.llImageStatusUp)
@@ -389,5 +487,14 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             drawableProcessHelper.setTextViewDrawableFitSize(tvTripInterested, R.drawable.ic_like_filled_96, itemSizeSmall, itemSizeSmall);
             drawableProcessHelper.setTextViewDrawableFitSize(tvTripRate, R.drawable.ic_five_star_96, fiveStarWidth, fiveStarHeight);
         }
+    }
+
+    private OnAdapterClick onAdapterClick;
+    public void setOnAdapterClickListener(OnAdapterClick listener){
+        onAdapterClick = listener;
+    }
+
+    public interface OnAdapterClick{
+        void onStatusDetailClick(int pos, StatusShortcut statusShortcut);
     }
 }

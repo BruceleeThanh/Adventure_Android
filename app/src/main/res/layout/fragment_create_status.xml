@@ -28,10 +28,9 @@
         android:id="@+id/spiPrivacy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvProfileName"
         android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_toRightOf="@+id/ivProfileImage">
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_alignBottom="@id/ivProfileImage">
 
     </android.support.v7.widget.AppCompatSpinner>
 

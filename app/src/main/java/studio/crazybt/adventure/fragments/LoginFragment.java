@@ -29,9 +29,12 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmResults;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.HomePageActivity;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.RLog;
@@ -53,6 +56,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     TextView tvForgetPassword;
     @BindView(R.id.tilPasswordLayoutLogin)
     TextInputLayout tilPasswordLayoutLogin;
+    private Realm realm;
 
     @Nullable
     @Override
@@ -61,6 +65,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             rootView = inflater.inflate(R.layout.fragment_login, container, false);
         }
         ButterKnife.bind(this, rootView);
+        realm = Realm.getDefaultInstance();
         btnLogin.setOnClickListener(this);
         tvForgetPassword.setOnClickListener(this);
         Bundle bundle = this.getArguments();
@@ -92,11 +97,48 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         int code = jsonUtil.getInt(jsonObject, apiConstants.DEF_CODE, -4);
                         RLog.i(code);
                         if(code == 1){
+                            String id;
+                            String email;
+                            String phoneNumber;
+                            String firstName;
+                            String lastName;
+                            int gender;
+                            String address;
+                            String religion;
+                            String intro;
+                            String idFacebook;
+                            String avatar;
+                            String cover;
+                            String createdAt;
+                            String latestActive;
                             jsonObject = jsonUtil.getJSONObject(jsonObject, apiConstants.DEF_DATA);
+                            SharedPref.getInstance(getContext()).putString(apiConstants.KEY_ID, jsonUtil.getString(jsonObject, apiConstants.KEY_ID, ""));
                             SharedPref.getInstance(getContext()).putString(apiConstants.KEY_TOKEN, jsonUtil.getString(jsonObject, apiConstants.KEY_TOKEN, ""));
                             SharedPref.getInstance(getContext()).putString(apiConstants.KEY_PHONE_NUMBER_EMAIL, etPhoneEmailLogin.getText().toString());
                             SharedPref.getInstance(getContext()).putString(apiConstants.KEY_FIRST_NAME, jsonUtil.getString(jsonObject, apiConstants.KEY_FIRST_NAME, ""));
                             SharedPref.getInstance(getContext()).putString(apiConstants.KEY_LAST_NAME, jsonUtil.getString(jsonObject, apiConstants.KEY_LAST_NAME, ""));
+                            id = JsonUtil.getString(jsonObject, ApiConstants.KEY_ID, "");
+                            email = JsonUtil.getString(jsonObject, ApiConstants.KEY_EMAIL, "");
+                            phoneNumber = JsonUtil.getString(jsonObject, ApiConstants.KEY_PHONE_NUMBER, "");
+                            firstName = JsonUtil.getString(jsonObject, ApiConstants.KEY_FIRST_NAME, "");
+                            lastName = JsonUtil.getString(jsonObject, ApiConstants.KEY_LAST_NAME,"");
+                            gender=JsonUtil.getInt(jsonObject,ApiConstants.KEY_GENDER, 0);
+                            address = JsonUtil.getString(jsonObject,ApiConstants.KEY_ADDRESS, "");
+                            religion=JsonUtil.getString(jsonObject,ApiConstants.KEY_RELIGION, "");
+                            intro = JsonUtil.getString(jsonObject,ApiConstants.KEY_INTRO, "");
+                            idFacebook = JsonUtil.getString(jsonObject, ApiConstants.KEY_ID_FACEBOOK, "");
+                            avatar = JsonUtil.getString(jsonObject, ApiConstants.KEY_AVATAR, "");
+                            cover = JsonUtil.getString(jsonObject, ApiConstants.KEY_COVER, "");
+                            createdAt=JsonUtil.getString(jsonObject, ApiConstants.KEY_CREATED_AT, "");
+                            latestActive=JsonUtil.getString(jsonObject, ApiConstants.KEY_LATEST_ACTIVE, "");
+                            realm.beginTransaction();
+                            RealmResults<User> userRealmResults = realm.where(User.class).findAll();
+                            userRealmResults.deleteAllFromRealm();
+                            User user = new User(id, firstName, lastName, "", email, phoneNumber, gender, "birthday", address, religion,
+                                    intro, idFacebook, avatar, cover, createdAt, latestActive);
+                            User userRealm = realm.copyToRealmOrUpdate(user);
+                            realm.insertOrUpdate(userRealm);
+                            realm.commitTransaction();
                             Toast.makeText(getContext(), getResources().getString(R.string.login_success_loginviaemail), Toast.LENGTH_LONG).show();
                             Intent homePageIntent = new Intent(getActivity(), HomePageActivity.class);
                             startActivity(homePageIntent);

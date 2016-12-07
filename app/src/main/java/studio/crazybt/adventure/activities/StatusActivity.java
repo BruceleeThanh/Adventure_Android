@@ -1,5 +1,6 @@
 package studio.crazybt.adventure.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -17,6 +18,8 @@ public class StatusActivity extends SwipeBackActivity {
     private SwipeBackLayout swipeBackLayout;
     private FragmentController fragmentController;
     private static int typeShow = 0;
+    StatusDetailFragment statusDetailFragment;
+    StatusShortcut statusShortcut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,7 @@ public class StatusActivity extends SwipeBackActivity {
         swipeBackLayout = getSwipeBackLayout();
         Intent intent = getIntent();
         typeShow = intent.getIntExtra("TYPE_SHOW", typeShow);
+        statusShortcut = getIntent().getParcelableExtra("data");
         switch (typeShow){
             case 1:
                 this.showStatusDetail();
@@ -43,6 +47,11 @@ public class StatusActivity extends SwipeBackActivity {
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 1){
+            if(typeShow == 1){
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result",statusDetailFragment.getStatusShortcut());
+                setResult(Activity.RESULT_OK,returnIntent);
+            }
             finish();
         }
         else {
@@ -50,11 +59,17 @@ public class StatusActivity extends SwipeBackActivity {
         }
     }
 
+    // Big fucking bug: can't setResult to previous activity
+    @Override
+    public void scrollToFinishActivity() {
+        super.scrollToFinishActivity();
+        onBackPressed();
+    }
+
     private void showStatusDetail(){
-        StatusShortcut statusShortcut = (StatusShortcut) getIntent().getParcelableExtra("data");
         Bundle bundle = new Bundle();
         bundle.putParcelable("data", statusShortcut);
-        StatusDetailFragment statusDetailFragment = new StatusDetailFragment();
+        statusDetailFragment = new StatusDetailFragment();
         statusDetailFragment.setArguments(bundle);
         fragmentController = new FragmentController(this);
         fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, statusDetailFragment);
@@ -62,14 +77,22 @@ public class StatusActivity extends SwipeBackActivity {
     }
 
     private void showStatusLikes(){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("data", statusShortcut);
+        LikesStatusFragment likesStatusFragment = new LikesStatusFragment();
+        likesStatusFragment.setArguments(bundle);
         fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, new LikesStatusFragment());
+        fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, likesStatusFragment);
         fragmentController.commit();
     }
 
     private void showStatusComments(){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("data", statusShortcut);
+        CommentsStatusFragment commentsStatusFragment = new CommentsStatusFragment();
+        commentsStatusFragment.setArguments(bundle);
         fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, new CommentsStatusFragment());
+        fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, commentsStatusFragment);
         fragmentController.commit();
     }
 }

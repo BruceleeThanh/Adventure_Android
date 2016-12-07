@@ -82,13 +82,13 @@
                 android:clickable="true"
                 android:src="@drawable/ic_lol_96"/>
 
-            <EditText
-                android:id="@+id/etComment"
+            <com.vanniktech.emoji.EmojiEditText
+                android:id="@+id/eetComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="@dimen/margin_medium"
-                android:layout_toLeftOf="@+id/ivSend"
+                android:layout_toLeftOf="@+id/ivSendComment"
                 android:layout_toRightOf="@+id/ivEmoticon"
                 android:background="@android:color/transparent"
                 android:hint="@string/write_comment_hint_tv_status"
@@ -96,7 +96,7 @@
                 android:textSize="@dimen/txt_medium"/>
 
             <ImageView
-                android:id="@+id/ivSend"
+                android:id="@+id/ivSendComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

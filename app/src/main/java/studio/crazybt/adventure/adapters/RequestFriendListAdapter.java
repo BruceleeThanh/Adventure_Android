@@ -101,6 +101,7 @@ public class RequestFriendListAdapter extends RecyclerView.Adapter<RequestFriend
                         }
                         requestFriends.remove(position);
                         notifyDataSetChanged();
+                        holder.btnLeftFriendTemplate.setEnabled(true);
                     }
                 }, new Response.ErrorListener() {
                     @Override

@@ -35,15 +35,22 @@
             android:textColor="@color/primary_text"
             android:textStyle="bold"/>
 
+        <ImageView
+            android:id="@+id/ivPermission"
+            android:layout_width="@dimen/icon_size_tiny"
+            android:layout_height="@dimen/icon_size_tiny"
+            android:layout_alignBottom="@+id/ivProfileImage"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_toRightOf="@id/ivProfileImage"/>
+
         <TextView
             android:id="@+id/tvTimeUpload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvProfileName"
-            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_alignBottom="@+id/ivProfileImage"
             android:layout_marginRight="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_toRightOf="@id/ivProfileImage"
+            android:layout_toRightOf="@id/ivPermission"
             android:text="12 giờ trước"
             android:textColor="@color/secondary_text"
             android:textSize="@dimen/txt_small"/>

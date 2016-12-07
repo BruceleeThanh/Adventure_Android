@@ -15,7 +15,7 @@
     <string name="login_btn_loginviaemail">Đăng nhập</string>
     <string name="forget_password_tv_loginviaemail">Quên mật khẩu?</string>
     <string name="login_success_loginviaemail">Đăng nhập thành công</string>
-    <string name="error_phonenumber_email_et_loginviaemail">Số điện thoại hoặc email không tồn tại</string>
+    <string name="error_phonenumber_email_et_loginviaemail">Email hoặc số điện thoại không tồn tại</string>
     <string name="error_password_et_loginviaemail">Mật khẩu không đúng</string>
 
     <!--Signup via email-->
@@ -29,6 +29,7 @@
     <string name="signup_btn_signupviaemail">Đăng ký</string>
     <string name="error_repassword_et_signupviaemail">Mật khẩu không khớp</string>
     <string name="sign_up_success_signupviaemail">Đăng ký thành công!</string>
+    <string name="error_phonenumber_email_signupviaemail">Email hoặc số điện thoại đã tồn tại</string>
 
     <!--Trip shortcut-->
     <string name="trip_detail_tv_trip_shortcut">Chi tiết</string>
@@ -98,7 +99,7 @@
     <string name="tb_status">Bài viết</string>
     <string name="like_tv_status">Thích</string>
     <string name="comment_tv_status">Bình luận</string>
-    <string name="count_like_tv_status">người thích nội dung này</string>
+    <string name="count_like_tv_status">người thích điều này</string>
     <string name="write_comment_hint_tv_status">Viết bình luận...</string>
     <string name="persons_like_this_tv_status">Những người thích nội dung này</string>
 
@@ -123,7 +124,9 @@
     <string name="folder_title">Thư mục</string>
     <string name="choose_image_title">Chọn ảnh</string>
     <string name="success_post_status">Trạng thái của bạn đã được đăng.</string>
-
+    <string name="only_me_privacy">Chỉ mình tôi</string>
+    <string name="friend_privacy">Bạn bè</string>
+    <string name="public_privacy">Công khai</string>
 
     <string name="error_connect">Lỗi kết nối</string>
 </resources>

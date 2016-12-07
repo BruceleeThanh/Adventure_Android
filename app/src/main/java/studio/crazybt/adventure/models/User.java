@@ -3,18 +3,22 @@ package studio.crazybt.adventure.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Brucelee Thanh on 23/10/2016.
  */
 
-public class User implements Parcelable {
+public class User extends RealmObject implements Parcelable {
+    @PrimaryKey
     private String id;
     private String firstName;
     private String lastName;
     private String password;
     private String email;
     private String phoneNumber;
-    private String gender;
+    private int gender;
     private String birthday;
     private String address;
     private String religion;
@@ -24,6 +28,7 @@ public class User implements Parcelable {
     private String cover;
     private String createAt;
     private String lastVisitedAt;
+    private int isFriend;
 
     public User() {
     }
@@ -35,7 +40,17 @@ public class User implements Parcelable {
         this.avatar = avatar;
     }
 
-    public User(String id, String firstName, String lastName, String password, String email, String phoneNumber, String gender, String birthday, String address, String religion, String intro, String fbId, String avatar, String cover, String createAt, String lastVisitedAt) {
+    public User(String id, String firstName, String lastName, String avatar, int isFriend) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.avatar = avatar;
+        this.isFriend = isFriend;
+    }
+
+    public User(String id, String firstName, String lastName, String password, String email, String phoneNumber, int gender,
+                String birthday, String address, String religion, String intro, String fbId, String avatar, String cover,
+                String createAt, String lastVisitedAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,6 +67,26 @@ public class User implements Parcelable {
         this.cover = cover;
         this.createAt = createAt;
         this.lastVisitedAt = lastVisitedAt;
+    }
+
+    public User(String id, String firstName, String lastName, String password, String email, String phoneNumber, int gender, String birthday, String address, String religion, String intro, String fbId, String avatar, String cover, String createAt, String lastVisitedAt, int isFriend) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.address = address;
+        this.religion = religion;
+        this.intro = intro;
+        this.fbId = fbId;
+        this.avatar = avatar;
+        this.cover = cover;
+        this.createAt = createAt;
+        this.lastVisitedAt = lastVisitedAt;
+        this.isFriend = isFriend;
     }
 
     public String getId() {
@@ -102,11 +137,11 @@ public class User implements Parcelable {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 
@@ -182,6 +217,14 @@ public class User implements Parcelable {
         this.lastVisitedAt = lastVisitedAt;
     }
 
+    public int getIsFriend() {
+        return isFriend;
+    }
+
+    public void setIsFriend(int isFriend) {
+        this.isFriend = isFriend;
+    }
+
 
     @Override
     public int describeContents() {
@@ -196,7 +239,7 @@ public class User implements Parcelable {
         dest.writeString(this.password);
         dest.writeString(this.email);
         dest.writeString(this.phoneNumber);
-        dest.writeString(this.gender);
+        dest.writeInt(this.gender);
         dest.writeString(this.birthday);
         dest.writeString(this.address);
         dest.writeString(this.religion);
@@ -206,6 +249,7 @@ public class User implements Parcelable {
         dest.writeString(this.cover);
         dest.writeString(this.createAt);
         dest.writeString(this.lastVisitedAt);
+        dest.writeInt(this.isFriend);
     }
 
     protected User(Parcel in) {
@@ -215,7 +259,7 @@ public class User implements Parcelable {
         this.password = in.readString();
         this.email = in.readString();
         this.phoneNumber = in.readString();
-        this.gender = in.readString();
+        this.gender = in.readInt();
         this.birthday = in.readString();
         this.address = in.readString();
         this.religion = in.readString();
@@ -225,9 +269,10 @@ public class User implements Parcelable {
         this.cover = in.readString();
         this.createAt = in.readString();
         this.lastVisitedAt = in.readString();
+        this.isFriend = in.readInt();
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel source) {
             return new User(source);

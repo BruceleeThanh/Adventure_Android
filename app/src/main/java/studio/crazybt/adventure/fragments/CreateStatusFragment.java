@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Base64;
@@ -47,12 +48,13 @@ import butterknife.ButterKnife;
 import id.zelory.compressor.Compressor;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.ImageCreateStatusListAdapter;
+import studio.crazybt.adventure.adapters.SpinnerAdapter;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.ApiParams;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.ImageUpload;
+import studio.crazybt.adventure.models.SpinnerItem;
 import studio.crazybt.adventure.services.MultipartRequest;
-import studio.crazybt.adventure.services.MyCommand;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.RLog;
@@ -83,9 +85,12 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     EditText etContentStatus;
     @BindView(R.id.tvProfileName)
     TextView tvProfileName;
+    @BindView(R.id.spiPrivacy)
+    AppCompatSpinner spiPrivacy;
 
     private static final int TAKEPHOTO_REQUEST = 100;
     private static final int PICK_IMAGE_REQUEST = 200;
+    private static final String CURRENT_STATUS_PRIVACY = "current_status_privacy";
 
     private CreateStatusFragment instance;
 
@@ -103,8 +108,20 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
         btnTakePhoto.setOnClickListener(this);
         btnAddImage.setOnClickListener(this);
         tvProfileName.setText(SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_FIRST_NAME, "") + " " + SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_LAST_NAME, ""));
+        this.initSpinnerPrivacy();
         this.initImageCreateStatusList();
         return rootView;
+    }
+
+    private void initSpinnerPrivacy(){
+        int currentPrivacy = SharedPref.getInstance(getContext()).getInt(CURRENT_STATUS_PRIVACY, 2);
+        List<SpinnerItem> spinnerItemList = new ArrayList<>();
+        spinnerItemList.add(new SpinnerItem(getResources().getString(R.string.only_me_privacy), R.drawable.ic_private_96));
+        spinnerItemList.add(new SpinnerItem(getResources().getString(R.string.friend_privacy), R.drawable.ic_friend_96));
+        spinnerItemList.add(new SpinnerItem(getResources().getString(R.string.public_privacy), R.drawable.ic_public_96));
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this.getContext(), R.layout.spinner_privacy, R.id.tvSpinnerPrivacy, spinnerItemList);
+        spiPrivacy.setAdapter(spinnerAdapter);
+        spiPrivacy.setSelection(currentPrivacy);
     }
 
     private void initImageCreateStatusList() {
@@ -175,6 +192,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     }
 
     public void uploadStatus() {
+        SharedPref.getInstance(getContext()).putInt(CURRENT_STATUS_PRIVACY, spiPrivacy.getSelectedItemPosition());
         if (imagePick.isEmpty()) {
             this.postSingleStatus(false);
         } else {
@@ -276,6 +294,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
                 params.put(apiConstants.KEY_TOKEN, token);
                 params.put(apiConstants.KEY_CONTENT, content);
                 params.put(apiConstants.KEY_IMAGE_DESCRIPTION, imageDescriptionString);
+                params.put(apiConstants.KEY_PERMISSION, String.valueOf(spiPrivacy.getSelectedItemPosition() + 1));
                 params.put(apiConstants.KEY_TYPE, "1");
                 return params;
             }

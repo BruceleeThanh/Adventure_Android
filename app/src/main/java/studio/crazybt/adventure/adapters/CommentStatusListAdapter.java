@@ -9,10 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.vanniktech.emoji.EmojiTextView;
+
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
+import studio.crazybt.adventure.helpers.ConvertTimeHelper;
+import studio.crazybt.adventure.models.CommentStatus;
 
 /**
  * Created by Brucelee Thanh on 25/09/2016.
@@ -21,9 +27,11 @@ import studio.crazybt.adventure.activities.ProfileActivity;
 public class CommentStatusListAdapter extends RecyclerView.Adapter<CommentStatusListAdapter.ViewHolder> {
 
     private Context rootContext;
+    private List<CommentStatus> commentStatusList;
 
-    public CommentStatusListAdapter(Context rootContext) {
+    public CommentStatusListAdapter(Context rootContext, List<CommentStatus> commentStatusList) {
         this.rootContext = rootContext;
+        this.commentStatusList = commentStatusList;
     }
 
     @Override
@@ -35,6 +43,7 @@ public class CommentStatusListAdapter extends RecyclerView.Adapter<CommentStatus
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        CommentStatus commentStatus = commentStatusList.get(position);
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,6 +51,7 @@ public class CommentStatusListAdapter extends RecyclerView.Adapter<CommentStatus
                 rootContext.startActivity(intent);
             }
         });
+        holder.tvProfileName.setText(commentStatus.getUser().getFirstName() + " " + commentStatus.getUser().getLastName());
         holder.tvProfileName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,11 +59,13 @@ public class CommentStatusListAdapter extends RecyclerView.Adapter<CommentStatus
                 rootContext.startActivity(intent);
             }
         });
+        holder.etvContentComment.setText(commentStatus.getContent());
+        holder.tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(commentStatus.getCreatedAt()));
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return commentStatusList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -63,6 +75,10 @@ public class CommentStatusListAdapter extends RecyclerView.Adapter<CommentStatus
         ImageView ivProfileImage;
         @BindView(R.id.tvProfileName)
         TextView tvProfileName;
+        @BindView(R.id.tvTimeUpload)
+        TextView tvTimeUpload;
+        @BindView(R.id.etvContentComment)
+        EmojiTextView etvContentComment;
 
         public ViewHolder(View itemView) {
             super(itemView);

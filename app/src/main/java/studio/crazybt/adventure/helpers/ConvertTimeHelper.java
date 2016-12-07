@@ -45,35 +45,39 @@ public class ConvertTimeHelper {
     }
 
     public String convertISODateToPrettyTimeStamp(String timeStamp) {
-        DateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
-        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-        String dateString = this.convertISODateToString(timeStamp);
-        Date date = null;
-        try {
-            date = dateFormat.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Date nowDate = new Date();
-        int compareDays = getDateDiff(removeTime(date), removeTime(nowDate), TimeUnit.DAYS);
-        if (compareDays == 0) {
-            int compareHours = getDateDiff(date, nowDate, TimeUnit.HOURS);
-            if(compareHours == 0){
-                int compareMinutes = getDateDiff(date, nowDate, TimeUnit.MINUTES);
-                if(compareMinutes == 0 || compareMinutes == 1){
-                    return JUST_NOW;
+        if (!(timeStamp == null || timeStamp.isEmpty())) {
+
+            DateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
+            DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+            String dateString = this.convertISODateToString(timeStamp);
+            Date date = null;
+            try {
+                date = dateFormat.parse(dateString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date nowDate = new Date();
+            int compareDays = getDateDiff(removeTime(date), removeTime(nowDate), TimeUnit.DAYS);
+            if (compareDays == 0) {
+                int compareHours = getDateDiff(date, nowDate, TimeUnit.HOURS);
+                if (compareHours == 0) {
+                    int compareMinutes = getDateDiff(date, nowDate, TimeUnit.MINUTES);
+                    if (compareMinutes == 0 || compareMinutes == 1) {
+                        return JUST_NOW;
+                    }
+                    return compareMinutes + MINUTE_LATER;
+                } else {
+                    return compareHours + HOURS_LATER;
                 }
-                return compareMinutes + MINUTE_LATER;
-            }else{
-                return compareHours + HOURS_LATER;
+            } else {
+                if (compareDays == 1) {
+                    String time = timeFormat.format(date);
+                    return YESTERDAY + time;
+                }
             }
-        } else {
-            if (compareDays == 1) {
-                String time = timeFormat.format(date);
-                return YESTERDAY + time;
-            }
+            return dateString;
         }
-        return dateString;
+        return null;
     }
 
     /**
