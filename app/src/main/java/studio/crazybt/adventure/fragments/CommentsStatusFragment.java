@@ -1,5 +1,10 @@
 package studio.crazybt.adventure.fragments;
 
+import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,9 +14,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +30,7 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
+import com.vanniktech.emoji.EmojiTextView;
 import com.vanniktech.emoji.emoji.Emoji;
 import com.vanniktech.emoji.listeners.OnEmojiBackspaceClickListener;
 import com.vanniktech.emoji.listeners.OnEmojiClickedListener;
@@ -45,6 +55,7 @@ import io.realm.RealmResults;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.HomePageActivity;
 import studio.crazybt.adventure.adapters.CommentStatusListAdapter;
+import studio.crazybt.adventure.helpers.ConvertTimeHelper;
 import studio.crazybt.adventure.helpers.DrawableProcessHelper;
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.libs.ApiConstants;
@@ -54,7 +65,9 @@ import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.CustomRequest;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
+import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
+import studio.crazybt.adventure.utils.ToastUtil;
 
 /**
  * Created by Brucelee Thanh on 25/09/2016.
@@ -77,6 +90,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
     ImageView ivSendComment;
     @BindDimen(R.dimen.item_icon_size_medium)
     float itemSizeMedium;
+    private EmojiEditText eetEditComment;
     private EmojiPopup emojiPopup;
     private LinearLayoutManager llmCommentStatus;
     private CommentStatusListAdapter cslaCommentStatus;
@@ -85,6 +99,8 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
     private List<CommentStatus> commentStatusList;
     private StatusShortcut statusShortcut;
     private Realm realm;
+    private int posItem;
+    private Dialog dialog;
 
     @Nullable
     @Override
@@ -117,12 +133,18 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
         llmCommentStatus = new LinearLayoutManager(rootView.getContext());
         rvCommentStatus.setLayoutManager(llmCommentStatus);
         cslaCommentStatus = new CommentStatusListAdapter(rootView.getContext(), commentStatusList);
+        cslaCommentStatus.setOnAdapterClickListener(new CommentStatusListAdapter.AdapterClickListener() {
+            @Override
+            public void onItemLongClick(View v, int pos) {
+                posItem = pos;
+                loadOptionCommentStatus(isOwnerCommentStatus(), v.getLeft() - (v.getWidth() * 2), v.getTop() + (v.getHeight()));
+            }
+        });
         rvCommentStatus.setAdapter(cslaCommentStatus);
     }
 
     private void loadData() {
         tvCountLike.setText(statusShortcut.getAmountLike() + " " + getResources().getString(R.string.count_like_tv_status));
-
         final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
         Uri.Builder url = ApiConstants.getApi(ApiConstants.API_BROWSE_COMMENT);
         Map<String, String> params = new HashMap<>();
@@ -168,6 +190,28 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
         MySingleton.getInstance(this.getContext()).addToRequestQueue(customRequest, false);
     }
 
+    private void loadOptionCommentStatus(boolean isOwner, int x, int y) {
+        dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_comment_status);
+        dialog.setCanceledOnTouchOutside(true);
+        WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
+        wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+        wmlp.x = x;
+        wmlp.y = y;
+        TextView tvCopyComment = (TextView) dialog.findViewById(R.id.tvCopyComment);
+        tvCopyComment.setOnClickListener(this);
+        TextView tvEditComment = (TextView) dialog.findViewById(R.id.tvEditComment);
+        tvEditComment.setOnClickListener(this);
+        TextView tvDeleteComment = (TextView) dialog.findViewById(R.id.tvDeleteComment);
+        tvDeleteComment.setOnClickListener(this);
+        if (!isOwner) {
+            tvEditComment.setVisibility(View.GONE);
+            tvDeleteComment.setVisibility(View.GONE);
+        }
+        dialog.show();
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -184,47 +228,35 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
                 emojiPopup.toggle();
                 break;
             case R.id.ivSendComment:
-                ivEmoticon.setEnabled(false);
-                eetComment.setEnabled(false);
-                ivSendComment.setEnabled(false);
-                final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
-                final String currentUserID = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_ID, "");
-                Uri.Builder url = ApiConstants.getApi(ApiConstants.API_COMMENT_STATUS);
-                Map<String, String> params = new HashMap<>();
-                params.put(ApiConstants.KEY_TOKEN, token);
-                params.put(ApiConstants.KEY_ID_STATUS, statusShortcut.getId());
-                params.put(ApiConstants.KEY_CONTENT, eetComment.getText().toString());
-                CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0) == 1) {
-                            JSONObject data = JsonUtil.getJSONObject(response, ApiConstants.DEF_DATA);
-                            String id;
-                            String owner;
-                            String idStatus;
-                            String content;
-                            String createdAt;
-                            id = JsonUtil.getString(data, ApiConstants.KEY_ID, "");
-                            owner = JsonUtil.getString(data, ApiConstants.KEY_OWNER, "");
-                            idStatus = JsonUtil.getString(data, ApiConstants.KEY_ID_STATUS, "");
-                            content = JsonUtil.getString(data, ApiConstants.KEY_CONTENT, "");
-                            createdAt = JsonUtil.getString(data, ApiConstants.KEY_CREATED_AT, "");
-                            User userRealmResults = realm.where(User.class).equalTo("id", owner).findFirst();
-                            commentStatusList.add(0, new CommentStatus(userRealmResults, id, idStatus, createdAt, content));
-                            cslaCommentStatus.notifyDataSetChanged();
-                            ivEmoticon.setEnabled(true);
-                            eetComment.setEnabled(true);
-                            ivSendComment.setEnabled(true);
-                            eetComment.setText("");
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-                MySingleton.getInstance(this.getContext()).addToRequestQueue(customRequest, false);
+                if (!eetComment.getText().toString().isEmpty())
+                    createComment();
+                else
+                    eetComment.setError(getResources().getString(R.string.field_can_not_empty));
+                break;
+            case R.id.tvCopyComment:
+                dialog.dismiss();
+                ClipboardManager clipboardManager = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("AdventureCopyText", commentStatusList.get(posItem).getContent());
+                clipboardManager.setPrimaryClip(clipData);
+                ToastUtil.showToast(getContext(), R.string.copy_to_clipboard);
+                break;
+            case R.id.tvEditComment:
+                dialog.dismiss();
+                loadEditCommentStatus();
+                break;
+            case R.id.tvDeleteComment:
+                dialog.dismiss();
+                deleteComment();
+                break;
+            case R.id.btnConfirmEdit:
+                dialog.dismiss();
+                if (!eetEditComment.getText().toString().isEmpty())
+                    editComment();
+                else
+                    eetEditComment.setError(getResources().getString(R.string.field_can_not_empty));
+                break;
+            case R.id.btnCancelEdit:
+                dialog.dismiss();
                 break;
         }
     }
@@ -247,5 +279,155 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
                         emojiPopup.dismiss();
                     }
                 }).build(eetComment);
+    }
+
+    private void loadEditCommentStatus() {
+        LayoutInflater li = LayoutInflater.from(getContext());
+        View dialogView = li.inflate(R.layout.dialog_edit_comment_status, null);
+        dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
+        ImageView ivProfileImage = (ImageView) dialog.findViewById(R.id.ivProfileImage);
+
+        TextView tvProfileName = (TextView) dialog.findViewById(R.id.tvProfileName);
+        String profileName = commentStatusList.get(posItem).getUser().getFirstName() + " " + commentStatusList.get(posItem).getUser().getLastName();
+        tvProfileName.setText(profileName);
+
+        TextView tvTimeUpload = (TextView) dialog.findViewById(R.id.tvTimeUpload);
+        tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(commentStatusList.get(posItem).getCreatedAt()));
+
+        EmojiTextView etvContentComment = (EmojiTextView) dialog.findViewById(R.id.etvContentComment);
+        etvContentComment.setText(commentStatusList.get(posItem).getContent());
+
+        eetEditComment = (EmojiEditText) dialog.findViewById(R.id.eetEditComment);
+        eetEditComment.setText(commentStatusList.get(posItem).getContent());
+
+        Button btnConfirmEdit = (Button) dialog.findViewById(R.id.btnConfirmEdit);
+        btnConfirmEdit.setOnClickListener(this);
+
+        Button btnCancelEdit = (Button) dialog.findViewById(R.id.btnCancelEdit);
+        btnCancelEdit.setOnClickListener(this);
+
+        dialog.show();
+    }
+
+    private void createComment() {
+        ivEmoticon.setEnabled(false);
+        eetComment.setEnabled(false);
+        ivSendComment.setEnabled(false);
+        final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
+        Uri.Builder url = ApiConstants.getApi(ApiConstants.API_COMMENT_STATUS);
+        Map<String, String> params = new HashMap<>();
+        params.put(ApiConstants.KEY_TOKEN, token);
+        params.put(ApiConstants.KEY_ID_STATUS, statusShortcut.getId());
+        params.put(ApiConstants.KEY_CONTENT, eetComment.getText().toString());
+        CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0) == 1) {
+                    JSONObject data = JsonUtil.getJSONObject(response, ApiConstants.DEF_DATA);
+                    String id;
+                    String owner;
+                    String idStatus;
+                    String content;
+                    String createdAt;
+                    id = JsonUtil.getString(data, ApiConstants.KEY_ID, "");
+                    owner = JsonUtil.getString(data, ApiConstants.KEY_OWNER, "");
+                    idStatus = JsonUtil.getString(data, ApiConstants.KEY_ID_STATUS, "");
+                    content = JsonUtil.getString(data, ApiConstants.KEY_CONTENT, "");
+                    createdAt = JsonUtil.getString(data, ApiConstants.KEY_CREATED_AT, "");
+                    User userRealmResults = realm.where(User.class).equalTo("id", owner).findFirst();
+                    commentStatusList.add(0, new CommentStatus(userRealmResults, id, idStatus, createdAt, content));
+                    cslaCommentStatus.notifyDataSetChanged();
+                    ivEmoticon.setEnabled(true);
+                    eetComment.setEnabled(true);
+                    ivSendComment.setEnabled(true);
+                    eetComment.setText("");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        MySingleton.getInstance(this.getContext()).addToRequestQueue(customRequest, false);
+    }
+
+    private void editComment() {
+        final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
+        Uri.Builder url = ApiConstants.getApi(ApiConstants.API_COMMENT_EDIT_CONTENT);
+        Map<String, String> params = new HashMap<>();
+        params.put(ApiConstants.KEY_TOKEN, token);
+        params.put(ApiConstants.KEY_ID_STATUS, statusShortcut.getId());
+        params.put(ApiConstants.KEY_ID_COMMENT, commentStatusList.get(posItem).getId());
+        params.put(ApiConstants.KEY_CONTENT, eetEditComment.getText().toString());
+        CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0) == 1) {
+                    JSONObject data = JsonUtil.getJSONObject(response, ApiConstants.DEF_DATA);
+                    String id;
+                    String owner;
+                    String idStatus;
+                    String content;
+                    String createdAt;
+                    id = JsonUtil.getString(data, ApiConstants.KEY_ID, "");
+                    owner = JsonUtil.getString(data, ApiConstants.KEY_OWNER, "");
+                    idStatus = JsonUtil.getString(data, ApiConstants.KEY_ID_STATUS, "");
+                    content = JsonUtil.getString(data, ApiConstants.KEY_CONTENT, "");
+                    createdAt = JsonUtil.getString(data, ApiConstants.KEY_CREATED_AT, "");
+                    User userRealmResults = realm.where(User.class).equalTo("id", owner).findFirst();
+                    commentStatusList.set(posItem, new CommentStatus(userRealmResults, id, idStatus, createdAt, content));
+                    cslaCommentStatus.notifyDataSetChanged();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        MySingleton.getInstance(this.getContext()).addToRequestQueue(customRequest, false);
+    }
+
+    private void deleteComment() {
+        final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
+        Uri.Builder url = ApiConstants.getApi(ApiConstants.API_DELETE_COMMENT);
+        Map<String, String> params = new HashMap<>();
+        params.put(ApiConstants.KEY_TOKEN, token);
+        params.put(ApiConstants.KEY_ID_STATUS, statusShortcut.getId());
+        params.put(ApiConstants.KEY_ID_COMMENT, commentStatusList.get(posItem).getId());
+        CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                RLog.i(response.toString());
+                if (JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0) == 1) {
+                    JSONObject data = JsonUtil.getJSONObject(response, ApiConstants.DEF_DATA);
+                    JSONObject status = JsonUtil.getJSONObject(data, ApiConstants.KEY_STATUS);
+                    int amountComment = JsonUtil.getInt(status, ApiConstants.KEY_AMOUNT_COMMENT, -1);
+                    int isComment = JsonUtil.getInt(data, ApiConstants.KEY_IS_COMMENT, -1);
+                    statusShortcut.setAmountComment(amountComment);
+                    statusShortcut.setIsComment(isComment);
+                    commentStatusList.remove(posItem);
+                    cslaCommentStatus.notifyDataSetChanged();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        MySingleton.getInstance(this.getContext()).addToRequestQueue(customRequest, false);
+    }
+
+    private boolean isOwnerCommentStatus() {
+        String currentUserId = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_ID, "");
+        if (currentUserId.equals(commentStatusList.get(posItem).getUser().getId())) {
+            return true;
+        }
+        return false;
     }
 }

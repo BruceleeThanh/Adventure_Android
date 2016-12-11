@@ -167,7 +167,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 statusViewHolder.llImageStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (onAdapterClick!= null) onAdapterClick.onStatusDetailClick(position, statusItem);
+                        if (onAdapterClick!= null) onAdapterClick.onStatusDetailClick(position);
                     }
                 });
 
@@ -495,6 +495,6 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public interface OnAdapterClick{
-        void onStatusDetailClick(int pos, StatusShortcut statusShortcut);
+        void onStatusDetailClick(int pos);
     }
 }

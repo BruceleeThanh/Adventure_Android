@@ -117,6 +117,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                             SharedPref.getInstance(getContext()).putString(apiConstants.KEY_PHONE_NUMBER_EMAIL, etPhoneEmailLogin.getText().toString());
                             SharedPref.getInstance(getContext()).putString(apiConstants.KEY_FIRST_NAME, jsonUtil.getString(jsonObject, apiConstants.KEY_FIRST_NAME, ""));
                             SharedPref.getInstance(getContext()).putString(apiConstants.KEY_LAST_NAME, jsonUtil.getString(jsonObject, apiConstants.KEY_LAST_NAME, ""));
+
                             id = JsonUtil.getString(jsonObject, ApiConstants.KEY_ID, "");
                             email = JsonUtil.getString(jsonObject, ApiConstants.KEY_EMAIL, "");
                             phoneNumber = JsonUtil.getString(jsonObject, ApiConstants.KEY_PHONE_NUMBER, "");
@@ -131,6 +132,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                             cover = JsonUtil.getString(jsonObject, ApiConstants.KEY_COVER, "");
                             createdAt=JsonUtil.getString(jsonObject, ApiConstants.KEY_CREATED_AT, "");
                             latestActive=JsonUtil.getString(jsonObject, ApiConstants.KEY_LATEST_ACTIVE, "");
+
                             realm.beginTransaction();
                             RealmResults<User> userRealmResults = realm.where(User.class).findAll();
                             userRealmResults.deleteAllFromRealm();
@@ -139,6 +141,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                             User userRealm = realm.copyToRealmOrUpdate(user);
                             realm.insertOrUpdate(userRealm);
                             realm.commitTransaction();
+
                             Toast.makeText(getContext(), getResources().getString(R.string.login_success_loginviaemail), Toast.LENGTH_LONG).show();
                             Intent homePageIntent = new Intent(getActivity(), HomePageActivity.class);
                             startActivity(homePageIntent);

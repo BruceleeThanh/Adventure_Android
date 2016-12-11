@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.fragments.SplashFragment;
@@ -22,6 +25,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+//        FacebookSdk.sdkInitialize(getApplicationContext());
+//        AppEventsLogger.activateApp(this);
         if(SharedPref.getInstance(this).getString(ApiConstants.KEY_TOKEN, "").equals("")){
             fragmentController = new FragmentController(this);
             fragmentController.addFragment_BackStack(R.id.rlSplash, new SplashFragment());
@@ -51,18 +56,37 @@ public class SplashActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-}
 
 
-//    public void setSpannableString(TextView tv, int id){
-////        ImageSpan imageSpan = new ImageSpan(this, id);
-////        SpannableString spannableString = new SpannableString(tv.getText());
-////        spannableString.setSpan(imageSpan, tv.getText().length() - 1, tv.getText().length(), 0);
+//    @Override
+//    public View onCreateView(
+//            LayoutInflater inflater,
+//            ViewGroup container,
+//            Bundle savedInstanceState) {
+//        View view = inflater.inflate(R.layout.splash, container, false);
 //
-//        Drawable image = ContextCompat.getDrawable(this.getBaseContext(), id);
-//        image.setBounds(0, 0, 24, 24);
-//        SpannableString sb = new SpannableString(" ");
-//        ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-//        sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        tv.setText(sb);
+//        loginButton = (LoginButton) view.findViewById(R.id.login_button);
+//        loginButton.setReadPermissions("email");
+//        // If using in a fragment
+//        loginButton.setFragment(this);
+//        // Other app specific specialization
+//
+//        // Callback registration
+//        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                // App code
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                // App code
+//            }
+//
+//            @Override
+//            public void onError(FacebookException exception) {
+//                // App code
+//            }
+//        });
 //    }
+}

@@ -25,6 +25,8 @@ public class ApiConstants {
     public static final String API_LIKE_STATUS = "like_status/like";
     public static final String API_BROWSE_COMMENT = "comment_status/browse";
     public static final String API_COMMENT_STATUS = "comment_status/create";
+    public static final String API_COMMENT_EDIT_CONTENT = "comment_status/edit_content";
+    public static final String API_DELETE_COMMENT = "comment_status/delete";
     public static final String API_TIME_LINE = "news/time_line";
     public static final String API_NEWS_FEED = "news/news_feed";
     public static final String API_SUGGEST_FRIEND = "friend/suggest_friend";
@@ -43,6 +45,7 @@ public class ApiConstants {
     // user params
     public static final String KEY_ID = "_id";
     public static final String KEY_ID_STATUS = "id_status";
+    public static final String KEY_ID_COMMENT = "id_comment";
     public static final String KEY_PHONE_NUMBER_EMAIL = "phone_number_email";
     public static final String KEY_PHONE_NUMBER = "phone_number";
     public static final String KEY_EMAIL = "email";

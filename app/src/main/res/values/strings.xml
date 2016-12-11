@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">Adventure</string>
+    <string name="facebook_app_id">1757209921226171</string>
+    <string name="fb_login_protocol_scheme">fb1757209921226171</string>
 
     <string name="openDrawer">Open navigation drawer</string>
     <string name="closeDrawer">Close navigation drawer</string>
 
+    <!--General-->
+    <string name="field_can_not_empty">Không được để trống trường này</string>
     <!--Splash-->
     <string name="login_via_email_btn_splash">Đăng nhập qua email</string>
     <string name="login_via_facebook_btn_splash">Đăng nhập qua Facebook</string>
@@ -129,4 +133,12 @@
     <string name="public_privacy">Công khai</string>
 
     <string name="error_connect">Lỗi kết nối</string>
+    
+    <!--Dialog comment status-->
+    <string name="copy_dialog_comment_status">Sao chép</string>
+    <string name="edit_dialog_comment_status">Sửa</string>
+    <string name="delete_dialog_comment_status">Xoá</string>
+    <string name="copy_to_clipboard">Đã sao chép</string>
+    <string name="cancel_dialog">Huỷ</string>
+    <string name="update_dialog">Cập nhật</string>
 </resources>

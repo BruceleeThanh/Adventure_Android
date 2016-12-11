@@ -97,11 +97,11 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
         nlaNewfeed = new NewfeedListAdapter(this.getContext(), statusShortcuts);
         nlaNewfeed.setOnAdapterClickListener(new NewfeedListAdapter.OnAdapterClick() {
             @Override
-            public void onStatusDetailClick(int pos, StatusShortcut statusShortcut) {
+            public void onStatusDetailClick(int pos) {
                 posItem=pos;
                 Intent intent = new Intent(getContext(), StatusActivity.class);
                 intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
-                intent.putExtra("data", statusShortcut);
+                intent.putExtra("data", statusShortcuts.get(posItem));
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1046826313109",
+    "firebase_url": "https://adventure-1145a.firebaseio.com",
+    "project_id": "adventure-1145a",
+    "storage_bucket": "adventure-1145a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046826313109:android:0226fe9718197eb0",
+        "android_client_info": {
+          "package_name": "studio.crazybt.adventure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1046826313109-8cm423pvsihn734c8ecl1n2mpgcpo9c5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "studio.crazybt.adventure",
+            "certificate_hash": "A430D3272DB4B859B169E772DBB48D2F347E7E3E"
+          }
+        },
+        {
+          "client_id": "1046826313109-k32rfm44kvprjimtr39jd4f12galoeal.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALIM0cMh3RmhAIxaeKG0O4SuGI4QZLUkg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1046826313109-k32rfm44kvprjimtr39jd4f12galoeal.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

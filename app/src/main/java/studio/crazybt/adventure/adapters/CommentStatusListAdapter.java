@@ -42,7 +42,7 @@ public class CommentStatusListAdapter extends RecyclerView.Adapter<CommentStatus
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         CommentStatus commentStatus = commentStatusList.get(position);
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +61,15 @@ public class CommentStatusListAdapter extends RecyclerView.Adapter<CommentStatus
         });
         holder.etvContentComment.setText(commentStatus.getContent());
         holder.tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(commentStatus.getCreatedAt()));
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(onAdapterClickListener != null){
+                    onAdapterClickListener.onItemLongClick(v, position);
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -85,5 +94,14 @@ public class CommentStatusListAdapter extends RecyclerView.Adapter<CommentStatus
             this.itemView=itemView;
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    private AdapterClickListener onAdapterClickListener;
+    public void setOnAdapterClickListener(AdapterClickListener listener){
+        onAdapterClickListener = listener;
+    }
+
+    public interface AdapterClickListener{
+        void onItemLongClick(View v, int pos);
     }
 }
