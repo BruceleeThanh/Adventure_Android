@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.vanniktech.emoji.EmojiTextView;
+
 import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +63,7 @@ public class StatusShortcutListAdapter extends RecyclerView.Adapter<StatusShortc
                 rootContext.startActivity(intent);
             }
         });
-        holder.tvContentStatus.setOnClickListener(new View.OnClickListener() {
+        holder.etvContentStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(rootContext, StatusActivity.class);
@@ -135,8 +137,8 @@ public class StatusShortcutListAdapter extends RecyclerView.Adapter<StatusShortc
         ImageView ivProfileImage;
         @BindView(R.id.tvProfileName)
         TextView tvProfileName;
-        @BindView(R.id.tvContentStatus)
-        TextView tvContentStatus;
+        @BindView(R.id.etvContentStatus)
+        EmojiTextView etvContentStatus;
         @BindView(R.id.llImageStatus)
         LinearLayout llImageStatus;
         @BindView(R.id.tvCountLike)

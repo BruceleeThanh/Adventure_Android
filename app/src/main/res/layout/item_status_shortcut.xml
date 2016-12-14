@@ -59,8 +59,8 @@
             android:textColor="@color/secondary_text"
             android:textSize="@dimen/txt_small"/>
 
-        <TextView
-            android:id="@+id/tvContentStatus"
+        <com.vanniktech.emoji.EmojiTextView
+            android:id="@+id/etvContentStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivProfileImage"
@@ -69,13 +69,14 @@
             android:layout_marginTop="@dimen/margin_medium"
             android:clickable="true"
             android:text="Đêm thi dài bốn tiếng đồng hồ, các tiết mục khách mời được đầu tư, sân khấu hiện đại với bốn MC dẫn dắt nhưng vì thế, chương trình thiếu tập trung vào thí sinh."
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text"
+            app:emojiSize="26sp"/>
 
         <LinearLayout
             android:id="@+id/llImageStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvContentStatus"
+            android:layout_below="@+id/etvContentStatus"
             android:layout_marginTop="@dimen/margin_medium"
             android:clickable="true"
             android:divider="@drawable/partition_white_line_horizontal"

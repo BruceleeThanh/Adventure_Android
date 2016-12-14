@@ -124,6 +124,8 @@
     <string name="insert_status_hint_create_status">Chia sẻ cảm xúc của bạn!</string>
     <string name="add_image_btn_create_status">Thêm ảnh</string>
     <string name="take_photo_btn_create_status">Chụp ảnh</string>
+    <string name="emojicon_btn_create_status">Biểu tượng</string>
+    <string name="keyboard_btn_create_status">Bàn phím</string>
     <string name="warning_havenot_image">Bạn không có ảnh để chọn. Hãy chụp ảnh!</string>
     <string name="folder_title">Thư mục</string>
     <string name="choose_image_title">Chọn ảnh</string>

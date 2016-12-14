@@ -32,6 +32,11 @@ import com.android.volley.request.StringRequest;
 import com.nguyenhoanglam.imagepicker.activity.ImagePicker;
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
 import com.nguyenhoanglam.imagepicker.model.Image;
+import com.vanniktech.emoji.EmojiEditText;
+import com.vanniktech.emoji.EmojiPopup;
+import com.vanniktech.emoji.listeners.OnEmojiPopupDismissListener;
+import com.vanniktech.emoji.listeners.OnEmojiPopupShownListener;
+import com.vanniktech.emoji.listeners.OnSoftKeyboardCloseListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,12 +48,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.zelory.compressor.Compressor;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.ImageCreateStatusListAdapter;
 import studio.crazybt.adventure.adapters.SpinnerAdapter;
+import studio.crazybt.adventure.helpers.DrawableProcessHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.ApiParams;
 import studio.crazybt.adventure.models.ImageContent;
@@ -75,24 +82,30 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     private ArrayList<Image> imageList;
     private List<ImageContent> imageUploadeds;
 
-    @BindView(R.id.btnTakePhoto)
-    Button btnTakePhoto;
+    @BindView(R.id.btnAddEmojicon)
+    Button btnAddEmojicon;
     @BindView(R.id.btnAddImage)
     Button btnAddImage;
     @BindView(R.id.rvImageCreateStatus)
     RecyclerView rvImageCreateStatus;
-    @BindView(R.id.etContentStatus)
-    EditText etContentStatus;
+    @BindView(R.id.eetContentStatus)
+    EmojiEditText eetContentStatus;
     @BindView(R.id.tvProfileName)
     TextView tvProfileName;
     @BindView(R.id.spiPrivacy)
     AppCompatSpinner spiPrivacy;
+
+    @BindDimen(R.dimen.item_icon_size_small)
+    float itemSizeSmall;
+
+    private EmojiPopup emojiPopup;
 
     private static final int TAKEPHOTO_REQUEST = 100;
     private static final int PICK_IMAGE_REQUEST = 200;
     private static final String CURRENT_STATUS_PRIVACY = "current_status_privacy";
 
     private CreateStatusFragment instance;
+    private DrawableProcessHelper drawableProcessHelper;
 
     public CreateStatusFragment() {
         this.instance = this;
@@ -105,9 +118,12 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
             rootView = inflater.inflate(R.layout.fragment_create_status, container, false);
         }
         ButterKnife.bind(this, rootView);
-        btnTakePhoto.setOnClickListener(this);
+        drawableProcessHelper = new DrawableProcessHelper(rootView);
         btnAddImage.setOnClickListener(this);
+        btnAddEmojicon.setOnClickListener(this);
+        drawableProcessHelper.setButtonDrawableFitSize(btnAddEmojicon, R.drawable.ic_lol_96, itemSizeSmall, itemSizeSmall);
         tvProfileName.setText(SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_FIRST_NAME, "") + " " + SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_LAST_NAME, ""));
+        this.setupPopUpEmoji();
         this.initSpinnerPrivacy();
         this.initImageCreateStatusList();
         return rootView;
@@ -136,12 +152,15 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btnTakePhoto:
-                Intent intentCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File out = Environment.getExternalStorageDirectory();
-                out = new File(out, out.getName());
-                intentCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(out));
-                startActivityForResult(intentCapture, TAKEPHOTO_REQUEST);
+//            case R.id.btnTakePhoto:
+//                Intent intentCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                File out = Environment.getExternalStorageDirectory();
+//                out = new File(out, out.getName());
+//                intentCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(out));
+//                startActivityForResult(intentCapture, TAKEPHOTO_REQUEST);
+//                break;
+            case R.id.btnAddEmojicon:
+                emojiPopup.toggle();
                 break;
             case R.id.btnAddImage:
                 this.showFileChooser();
@@ -181,6 +200,28 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
                 .imageDirectory(getResources().getString(R.string.take_photo_btn_create_status)) // directory name for captured image  ("Camera" folder by default)
                 .origin(imageList) // original selected images, used in multi mode
                 .start(PICK_IMAGE_REQUEST); // start image picker activity with request code
+    }
+
+    private void setupPopUpEmoji() {
+        emojiPopup = EmojiPopup.Builder.fromRootView(rootView)
+                .setOnEmojiPopupShownListener(new OnEmojiPopupShownListener() {
+                    @Override
+                    public void onEmojiPopupShown() {
+                        btnAddEmojicon.setText(getResources().getString(R.string.keyboard_btn_create_status));
+                        drawableProcessHelper.setButtonDrawableFitSize(btnAddEmojicon, R.drawable.ic_keyboard_96, itemSizeSmall, itemSizeSmall);
+                    }
+                }).setOnEmojiPopupDismissListener(new OnEmojiPopupDismissListener() {
+                    @Override
+                    public void onEmojiPopupDismiss() {
+                        btnAddEmojicon.setText(getResources().getString(R.string.emojicon_btn_create_status));
+                        drawableProcessHelper.setButtonDrawableFitSize(btnAddEmojicon, R.drawable.ic_lol_96, itemSizeSmall, itemSizeSmall);
+                    }
+                }).setOnSoftKeyboardCloseListener(new OnSoftKeyboardCloseListener() {
+                    @Override
+                    public void onKeyboardClose() {
+                        emojiPopup.dismiss();
+                    }
+                }).build(eetContentStatus);
     }
 
     public String getStringImage(Bitmap bitmap) {
@@ -285,10 +326,10 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 String content;
-                if(etContentStatus.getText().toString() == null){
+                if(eetContentStatus.getText().toString() == null){
                     content = "";
                 }else{
-                    content = etContentStatus.getText().toString();
+                    content = eetContentStatus.getText().toString();
                 }
                 ApiParams params = new ApiParams();
                 params.put(apiConstants.KEY_TOKEN, token);

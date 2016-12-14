@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -24,5 +25,14 @@ public class DrawableProcessHelper {
         final int height = Math.round((int) h * destiny);
         drawable.setBounds(0, 0, width, height);
         tv.setCompoundDrawables(drawable, null, null, null);
+    }
+
+    public void setButtonDrawableFitSize(Button btn, int id, double w, double h) {
+        final float destiny = rootView.getResources().getDisplayMetrics().density;
+        final Drawable drawable = ContextCompat.getDrawable(rootView.getContext(), id);
+        final int width = Math.round((int) w * destiny);
+        final int height = Math.round((int) h * destiny);
+        drawable.setBounds(0, 0, width, height);
+        btn.setCompoundDrawables(drawable, null, null, null);
     }
 }

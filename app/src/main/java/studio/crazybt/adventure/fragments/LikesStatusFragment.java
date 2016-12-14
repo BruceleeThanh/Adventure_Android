@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -29,10 +30,12 @@ import studio.crazybt.adventure.adapters.LikesStatusListAdapter;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.models.StatusShortcut;
 import studio.crazybt.adventure.models.User;
+import studio.crazybt.adventure.services.AdventureRequest;
 import studio.crazybt.adventure.services.CustomRequest;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.SharedPref;
+import studio.crazybt.adventure.utils.ToastUtil;
 
 /**
  * Created by Brucelee Thanh on 27/09/2016.
@@ -77,40 +80,38 @@ public class LikesStatusFragment extends Fragment {
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_ID_STATUS, statusShortcut.getId());
-        CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
+        AdventureRequest adventureRequest = new AdventureRequest(rootView.getContext(), Request.Method.POST, url.build().toString(), params, false);
+        adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override
-            public void onResponse(JSONObject response) {
-                if (JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0) == 1) {
-                    JSONArray data = JsonUtil.getJSONArray(response, ApiConstants.DEF_DATA);
-                    int length = data.length();
-                    String id;
-                    String firstName;
-                    String lastName;
-                    String avatar;
-                    int isFriend;
-                    for (int i = 0; i < length; i++) {
-                        JSONObject item = JsonUtil.getJSONObject(data, i);
-                        JSONObject owner = JsonUtil.getJSONObject(item, ApiConstants.KEY_OWNER);
-                        id = JsonUtil.getString(owner, ApiConstants.KEY_ID, "");
-                        firstName = JsonUtil.getString(owner, ApiConstants.KEY_FIRST_NAME, "");
-                        lastName = JsonUtil.getString(owner, ApiConstants.KEY_LAST_NAME, "");
-                        avatar = JsonUtil.getString(owner, ApiConstants.KEY_AVATAR, "");
-                        if (id.equals(currentUserID)) {
-                            isFriend = -1;
-                        } else {
-                            isFriend = JsonUtil.getInt(item, ApiConstants.KEY_IS_FRIEND, 0);
-                        }
-                        userList.add(new User(id, firstName, lastName, avatar, isFriend));
+            public void onAdventureResponse(JSONObject response) {
+                JSONArray data = JsonUtil.getJSONArray(response, ApiConstants.DEF_DATA);
+                int length = data.length();
+                String id;
+                String firstName;
+                String lastName;
+                String avatar;
+                int isFriend;
+                for (int i = 0; i < length; i++) {
+                    JSONObject item = JsonUtil.getJSONObject(data, i);
+                    JSONObject owner = JsonUtil.getJSONObject(item, ApiConstants.KEY_OWNER);
+                    id = JsonUtil.getString(owner, ApiConstants.KEY_ID, "");
+                    firstName = JsonUtil.getString(owner, ApiConstants.KEY_FIRST_NAME, "");
+                    lastName = JsonUtil.getString(owner, ApiConstants.KEY_LAST_NAME, "");
+                    avatar = JsonUtil.getString(owner, ApiConstants.KEY_AVATAR, "");
+                    if (id.equals(currentUserID)) {
+                        isFriend = -1;
+                    } else {
+                        isFriend = JsonUtil.getInt(item, ApiConstants.KEY_IS_FRIEND, 0);
                     }
-                    lslaLikesStatus.notifyDataSetChanged();
+                    userList.add(new User(id, firstName, lastName, avatar, isFriend));
                 }
+                lslaLikesStatus.notifyDataSetChanged();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
 
+            @Override
+            public void onAdventureError(int errorCode, String errorMsg) {
+                ToastUtil.showToast(rootView.getContext(), errorMsg);
             }
         });
-        MySingleton.getInstance(rootView.getContext()).addToRequestQueue(customRequest, false);
     }
 }

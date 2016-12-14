@@ -19,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.squareup.picasso.Picasso;
+import com.vanniktech.emoji.EmojiTextView;
 
 import org.json.JSONObject;
 
@@ -146,14 +147,14 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                 // Remove content status if not exits
                 if (statusItem.getContent().equals("") || statusItem.getContent() == null) {
-                    statusViewHolder.tvContentStatus.setVisibility(View.GONE);
+                    statusViewHolder.etvContentStatus.setVisibility(View.GONE);
                 } else {
-                    statusViewHolder.tvContentStatus.setVisibility(View.VISIBLE);
-                    statusViewHolder.tvContentStatus.setText(statusItem.getContent());
+                    statusViewHolder.etvContentStatus.setVisibility(View.VISIBLE);
+                    statusViewHolder.etvContentStatus.setText(statusItem.getContent());
                 }
 
                 // Content status
-                statusViewHolder.tvContentStatus.setOnClickListener(new View.OnClickListener() {
+                statusViewHolder.etvContentStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(rootContext, StatusActivity.class);
@@ -384,8 +385,8 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvTimeUpload;
         @BindView(R.id.ivPermission)
         ImageView ivPermission;
-        @BindView(R.id.tvContentStatus)
-        TextView tvContentStatus;
+        @BindView(R.id.etvContentStatus)
+        EmojiTextView etvContentStatus;
         @BindView(R.id.tvCountLike)
         TextView tvCountLike;
         @BindView(R.id.tvCountComment)

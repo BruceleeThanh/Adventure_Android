@@ -93,7 +93,8 @@
                 android:background="@android:color/transparent"
                 android:hint="@string/write_comment_hint_tv_status"
                 android:maxHeight="@dimen/max_height_et"
-                android:textSize="@dimen/txt_medium"/>
+                android:textSize="@dimen/txt_medium"
+                app:emojiSize="20sp"/>
 
             <ImageView
                 android:id="@+id/ivSendComment"

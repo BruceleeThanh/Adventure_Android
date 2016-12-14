@@ -66,6 +66,7 @@
     <dimen name="nav_header_height">160dp</dimen>
 
     <!--Icon drawer helper-->
+    <dimen name="item_icon_size_tiny">18px</dimen>
     <dimen name="item_icon_size_small">20px</dimen>
     <dimen name="five_star_icon_width">80.33px</dimen>
     <dimen name="five_star_icon_height">16px</dimen>

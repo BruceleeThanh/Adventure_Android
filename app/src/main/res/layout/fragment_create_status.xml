@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
     <ImageView
@@ -34,8 +35,8 @@
 
     </android.support.v7.widget.AppCompatSpinner>
 
-    <EditText
-        android:id="@+id/etContentStatus"
+    <com.vanniktech.emoji.EmojiEditText
+        android:id="@+id/eetContentStatus"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_alignParentLeft="true"
@@ -47,7 +48,8 @@
         android:background="@android:color/transparent"
         android:gravity="top"
         android:hint="@string/insert_status_hint_create_status"
-        android:textColor="@color/primary_text"/>
+        android:textColor="@color/primary_text"
+        app:emojiSize="26sp"/>
 
 
     <android.support.v7.widget.RecyclerView
@@ -55,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/vLine"
-        android:layout_below="@+id/etContentStatus"
+        android:layout_below="@+id/eetContentStatus"
         android:layout_marginBottom="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_medium"/>
 
@@ -68,6 +70,21 @@
         android:layout_marginRight="@dimen/margin_medium"
         android:background="@drawable/partition_gray_line_horizontal"/>
 
+    <Button
+        android:id="@+id/btnAddEmojicon"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_marginLeft="@dimen/margin_big"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:background="@drawable/selector_orange_white_btn_2"
+        android:drawablePadding="@dimen/margin_medium"
+        android:paddingLeft="@dimen/margin_medium"
+        android:paddingRight="@dimen/margin_medium"
+        android:text="@string/emojicon_btn_create_status"
+        android:textAllCaps="false"
+        android:textColor="@color/accent"/>
 
     <Button
         android:id="@+id/btnAddImage"
@@ -75,8 +92,9 @@
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/margin_medium"
-        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginLeft="@dimen/margin_big"
         android:layout_marginTop="@dimen/margin_medium"
+        android:layout_toRightOf="@+id/btnAddEmojicon"
         android:background="@drawable/selector_green_white_btn_2"
         android:drawableLeft="@drawable/ic_collections_green_18dp"
         android:drawablePadding="@dimen/margin_medium"
@@ -86,23 +104,7 @@
         android:textAllCaps="false"
         android:textColor="@color/primary"/>
 
-    <Button
-        android:id="@+id/btnTakePhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/margin_medium"
-        android:layout_marginLeft="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_toRightOf="@+id/btnAddImage"
-        android:background="@drawable/selector_orange_white_btn_2"
-        android:drawableLeft="@drawable/ic_add_a_photo_orange_18dp"
-        android:drawablePadding="@dimen/margin_medium"
-        android:paddingLeft="@dimen/margin_medium"
-        android:paddingRight="@dimen/margin_medium"
-        android:text="@string/take_photo_btn_create_status"
-        android:textAllCaps="false"
-        android:textColor="@color/accent"/>
+
 
 
 </RelativeLayout>
