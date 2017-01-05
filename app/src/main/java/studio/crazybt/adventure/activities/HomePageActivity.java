@@ -24,15 +24,16 @@ import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.TabLayoutAdapter;
 import studio.crazybt.adventure.fragments.TabFriendHomePageFragment;
 import studio.crazybt.adventure.fragments.TabNewfeedHomePageFragment;
-import studio.crazybt.adventure.fragments.TabNotifiacationsHomePageFragment;
+import studio.crazybt.adventure.fragments.TabNotificationsHomePageFragment;
 import studio.crazybt.adventure.fragments.TabPublicTripsHomePageFragment;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.CommonConstants;
+import studio.crazybt.adventure.utils.BadgeTabLayout;
 import studio.crazybt.adventure.utils.SharedPref;
 
 public class HomePageActivity extends AppCompatActivity {
 
-    private TabLayout tlHomePage;
+    private BadgeTabLayout tlHomePage;
     private Toolbar toolbar;
     private NavigationView navView;
     public DrawerLayout dlHomePage;
@@ -127,38 +128,49 @@ public class HomePageActivity extends AppCompatActivity {
     public void setTablayout() {
         final int tabSelectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary);
         final int tabUnselectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary_background_content);
-        tlHomePage = (TabLayout) findViewById(R.id.tlHomePage);
+        tlHomePage = (BadgeTabLayout) findViewById(R.id.tlHomePage);
         tlHomePage.setTabGravity(TabLayout.GRAVITY_FILL);
+
         ViewPager vpHomePage = (ViewPager) findViewById(R.id.vpHomePage);
         TabLayoutAdapter tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager());
         tabLayoutAdapter.addFragment(new TabPublicTripsHomePageFragment());
         tabLayoutAdapter.addFragment(new TabNewfeedHomePageFragment());
         tabLayoutAdapter.addFragment(new TabFriendHomePageFragment());
-        tabLayoutAdapter.addFragment(new TabNotifiacationsHomePageFragment());
+        TabNotificationsHomePageFragment tabNoti = new TabNotificationsHomePageFragment();
+        tabLayoutAdapter.addFragment(tabNoti);
         vpHomePage.setAdapter(tabLayoutAdapter);
         vpHomePage.setOffscreenPageLimit(3);
         tlHomePage.setupWithViewPager(vpHomePage);
-        tlHomePage.getTabAt(0).setIcon(R.drawable.ic_public_gray_24dp);
-        tlHomePage.getTabAt(1).setIcon(R.drawable.ic_view_list_gray_24dp);
-        tlHomePage.getTabAt(2).setIcon(R.drawable.ic_group_gray_24dp);
-        tlHomePage.getTabAt(3).setIcon(R.drawable.ic_notifications_gray_24dp);
-        tlHomePage.getTabAt(0).getIcon().setColorFilter(tabSelectedIconColor, PorterDuff.Mode.SRC_IN);
+        tlHomePage.with(0).noBadge().icon(R.drawable.ic_public_gray_24dp).build();
+        tlHomePage.with(1).noBadge().icon(R.drawable.ic_view_list_gray_24dp).build();
+        tlHomePage.with(2).noBadge().icon(R.drawable.ic_group_gray_24dp).build();
+        tlHomePage.with(3).noBadge().icon(R.drawable.ic_notifications_gray_24dp).build();
+        tlHomePage.with(0).noBadge().iconColor(tabSelectedIconColor).build();
         vpHomePage.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tlHomePage));
         tlHomePage.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                tab.getIcon().setColorFilter(tabSelectedIconColor, PorterDuff.Mode.SRC_IN);
+                tlHomePage.with(tab).noBadge().iconColor(tabSelectedIconColor).build();
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                tab.getIcon().setColorFilter(tabUnselectedIconColor, PorterDuff.Mode.SRC_IN);
+                tlHomePage.with(tab).iconColor(tabUnselectedIconColor).build();
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+        });
+
+        tabNoti.setOnBadgeNotificationRefreshListener(new TabNotificationsHomePageFragment.OnBadgeNotificationRefresh() {
+            @Override
+            public void onBadgeNotificationChange(int notiCount) {
+                if (notiCount > 0) {
+                    tlHomePage.with(3).hasBadge().badgeCount(notiCount).build();
+                }
             }
         });
     }
@@ -172,7 +184,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.itemMessage:
                 Intent intent = new Intent(this, MessageActivity.class);
                 intent.putExtra("TYPE_SHOW", MESSAGE);

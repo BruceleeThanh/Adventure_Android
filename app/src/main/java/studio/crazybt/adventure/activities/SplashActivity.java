@@ -7,14 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.fragments.SplashFragment;
 import studio.crazybt.adventure.libs.ApiConstants;
-import studio.crazybt.adventure.libs.ApiParams;
 import studio.crazybt.adventure.utils.SharedPref;
 
 public class SplashActivity extends AppCompatActivity {

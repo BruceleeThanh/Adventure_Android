@@ -21,6 +21,8 @@ import com.android.volley.Response;
 import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.StringRequest;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONObject;
 
@@ -39,6 +41,7 @@ import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
+import studio.crazybt.adventure.utils.ToastUtil;
 
 /**
  * Created by Brucelee Thanh on 26/08/2016.
@@ -85,7 +88,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnLogin:
+                final String token= FirebaseInstanceId.getInstance().getToken();
                 btnLogin.setClickable(false);
+                ToastUtil.showToast(getContext(), token);
                 final ApiConstants apiConstants = new ApiConstants();
                 Uri.Builder url = apiConstants.getApi(apiConstants.API_NORMAL_LOGIN);
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url.build().toString(),
@@ -167,6 +172,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         Map<String, String> params = new HashMap<>();
                         params.put(apiConstants.KEY_PHONE_NUMBER_EMAIL, etPhoneEmailLogin.getText().toString());
                         params.put(apiConstants.KEY_PASSWORD, etPasswordLogin.getText().toString());
+                        params.put(apiConstants.KEY_FCM_TOKEN, token);
                         return params;
                     }
                 };

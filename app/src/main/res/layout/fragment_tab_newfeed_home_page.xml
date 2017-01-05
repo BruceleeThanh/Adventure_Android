@@ -17,7 +17,9 @@
             android:layout_height="match_parent"
             android:divider="@color/primary_background_content"
             android:dividerHeight="@dimen/margin_small"
-            android:scrollbars="none"/>
+            android:scrollbars="none"
+            android:paddingBottom="@dimen/margin_large"
+            android:clipToPadding="false"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <ProgressBar

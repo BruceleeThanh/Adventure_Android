@@ -52,6 +52,7 @@
     <dimen name="txt_largest">25sp</dimen>
     <dimen name="txt_large">20sp</dimen>
     <dimen name="txt_medium">16sp</dimen>
+    <dimen name="txt_mid_medium">13sp</dimen>
     <dimen name="txt_small">12sp</dimen>
     <dimen name="txt_tiny">10sp</dimen>
 
@@ -76,6 +77,9 @@
 
     <!--Diary trip-->
     <dimen name="background_image_height">200dp</dimen>
+
+    <!--Notification-->
+    <dimen name="noti_icon_size_medium">20dp</dimen>
 
 
 </resources>

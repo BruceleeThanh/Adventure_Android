@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlNotificationItem"
+    android:layout_width="match_parent"
+    android:layout_height="85dp"
+    android:paddingTop="@dimen/margin_small"
+    android:paddingLeft="@dimen/margin_medium"
+    android:paddingRight="@dimen/margin_small"
+    android:background="@color/unclicked_noti">
+
+    <ImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="@dimen/profile_image_big"
+        android:layout_height="@dimen/profile_image_big"
+        android:layout_centerVertical="true"
+        android:src="@drawable/img_profile"/>
+
+    <TextView
+        android:id="@+id/tvContentNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:text="Trang Thư và Brucelee Thanh đã bình luận về trạng thái của bạn: hello world hello world hello world hello worldhello worldhello world"
+        android:textColor="@color/primary_text"
+        android:maxLines="3"
+        android:textSize="@dimen/txt_mid_medium"/>
+
+    <ImageView
+        android:id="@+id/ivIconNotification"
+        android:layout_width="@dimen/noti_icon_size_medium"
+        android:layout_height="@dimen/noti_icon_size_medium"
+        android:src="@drawable/ic_chat_96"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_below="@+id/tvContentNotification"/>
+
+    <TextView
+        android:id="@+id/tvTimeUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_toRightOf="@+id/ivIconNotification"
+        android:layout_alignBottom="@+id/ivIconNotification"
+        android:text="12 giờ trước"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/txt_small"/>
+
+</RelativeLayout>

@@ -37,22 +37,25 @@ import studio.crazybt.adventure.activities.InputActivity;
 import studio.crazybt.adventure.activities.StatusActivity;
 import studio.crazybt.adventure.adapters.NewfeedListAdapter;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.listeners.OnLoadMoreListener;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.StatusShortcut;
 import studio.crazybt.adventure.models.User;
+import studio.crazybt.adventure.services.AdventureRequest;
 import studio.crazybt.adventure.services.CustomRequest;
 import studio.crazybt.adventure.services.MyCommand;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
+import studio.crazybt.adventure.utils.ToastUtil;
 
 /**
  * Created by Brucelee Thanh on 11/09/2016.
  */
 public class TabNewfeedHomePageFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final int STATUS_DETAIL = 1;
+    private final int STATUS_DETAIL = 1;
     private final int REQUEST_CODE = 100;
     private final int INSERT_STATUS = 1;
     private View rootView;
@@ -61,6 +64,13 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
 
     private List<StatusShortcut> statusShortcuts;
     private int posItem;
+
+    // pagination - load more
+    private int page = 1;
+    private final int perPage = 10;
+    private boolean isLoading;
+    private int visibleThreshold = 3;
+    private int lastVisibleItem, totalItemCount;
 
     @BindView(R.id.rvNewfeed)
     RecyclerView rvNewfeed;
@@ -79,33 +89,66 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
             ButterKnife.bind(this, rootView);
             fabCreateStatus.setOnClickListener(this);
             srlNewfeed.setOnRefreshListener(this);
-            this.initNewFeedList();
+            this.initNewsfeedList();
             srlNewfeed.post(new Runnable() {
                 @Override
                 public void run() {
-                    loadData();
+                    loadData(false, 1);
                 }
             });
         }
         return rootView;
     }
 
-    public void initNewFeedList() {
+    public void initNewsfeedList() {
         statusShortcuts = new ArrayList<>();
         llmNewFeed = new LinearLayoutManager(getContext());
         rvNewfeed.setLayoutManager(llmNewFeed);
         nlaNewfeed = new NewfeedListAdapter(this.getContext(), statusShortcuts);
+        this.initScrollNewsfeed();
         nlaNewfeed.setOnAdapterClickListener(new NewfeedListAdapter.OnAdapterClick() {
             @Override
             public void onStatusDetailClick(int pos) {
-                posItem=pos;
+                posItem = pos;
                 Intent intent = new Intent(getContext(), StatusActivity.class);
                 intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
                 intent.putExtra("data", statusShortcuts.get(posItem));
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
+        nlaNewfeed.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                RLog.e("isRefreshing" + srlNewfeed.isRefreshing());
+                if (!srlNewfeed.isRefreshing()){
+                    statusShortcuts.add(null);
+                    nlaNewfeed.notifyItemInserted(statusShortcuts.size() - 1);
+                    loadData(true, page + 1);
+                }
+            }
+        });
         rvNewfeed.setAdapter(nlaNewfeed);
+
+    }
+
+    private void initScrollNewsfeed(){
+        rvNewfeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy > 0){
+                    totalItemCount = llmNewFeed.getItemCount();
+                    lastVisibleItem = llmNewFeed.findLastVisibleItemPosition();
+
+                    if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                        if (nlaNewfeed.onLoadMoreListener != null) {
+                            nlaNewfeed.onLoadMoreListener.onLoadMore();
+                        }
+                        isLoading = true;
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -120,99 +163,99 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
         }
     }
 
-    private void loadData() {
-        srlNewfeed.setRefreshing(true);
-        statusShortcuts.clear();
-        final ApiConstants apiConstants = new ApiConstants();
-        final String token = SharedPref.getInstance(getContext()).getString(apiConstants.KEY_TOKEN, "");
-        final JsonUtil jsonUtil = new JsonUtil();
-        Uri.Builder url = apiConstants.getApi(apiConstants.API_NEWS_FEED);
+    private void loadData(final boolean isLoadMore, final int pagination) {
+        if (!isLoadMore){
+            srlNewfeed.setRefreshing(true);
+        }
+        final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
+        Uri.Builder url = ApiConstants.getApi(ApiConstants.API_NEWS_FEED);
         Map<String, String> params = new HashMap<>();
-        params.put(apiConstants.KEY_TOKEN, token);
-        CustomRequest customRequest = new CustomRequest(Request.Method.GET, url.build().toString(), params, new Response.Listener<JSONObject>() {
+        params.put(ApiConstants.KEY_TOKEN, token);
+        params.put(ApiConstants.KEY_PAGE, String.valueOf(pagination));
+        params.put(ApiConstants.KEY_PERPAGE, String.valueOf(perPage));
+        AdventureRequest adventureRequest = new AdventureRequest(getContext(), Request.Method.GET, url.build().toString(), params, false);
+        adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override
-            public void onResponse(JSONObject response) {
-                RLog.i(response);
-
-                // status
-                String idStatus;
-                String content;
-                int amountLike;
-                int amountComment;
-                int permission;
-                int type;
-                String createdAt;
-                int isLike;
-                int isComment;
-
-                // user
-                String idUser;
-                String firstName;
-                String lastName;
-                String avatar;
-
-                if (jsonUtil.getInt(response, apiConstants.DEF_CODE, 0) == 1) {
-                    JSONArray data = jsonUtil.getJSONArray(response, apiConstants.DEF_DATA);
-                    for (int i = 0; i < data.length(); i++) {
-                        List<ImageContent> imageContents = new ArrayList<>();
-                        JSONObject dataObject = jsonUtil.getJSONObject(data, i);
-                        idStatus = jsonUtil.getString(dataObject, apiConstants.KEY_ID, "");
-                        content = jsonUtil.getString(dataObject, apiConstants.KEY_CONTENT, "");
-                        amountLike = jsonUtil.getInt(dataObject, apiConstants.KEY_AMOUNT_LIKE, 0);
-                        amountComment = jsonUtil.getInt(dataObject, apiConstants.KEY_AMOUNT_COMMENT, 0);
-                        permission = jsonUtil.getInt(dataObject, apiConstants.KEY_PERMISSION, 3);
-                        type = jsonUtil.getInt(dataObject, apiConstants.KEY_TYPE, 1);
-                        createdAt = jsonUtil.getString(dataObject, apiConstants.KEY_CREATED_AT, "");
-                        isLike = jsonUtil.getInt(dataObject, apiConstants.KEY_IS_LIKE, 0);
-                        isComment = jsonUtil.getInt(dataObject, apiConstants.KEY_IS_COMMENT, 0);
-                        JSONObject owner = jsonUtil.getJSONObject(dataObject, apiConstants.KEY_OWNER);
-                        idUser = jsonUtil.getString(owner, apiConstants.KEY_ID, "");
-                        firstName = jsonUtil.getString(owner, apiConstants.KEY_FIRST_NAME, "");
-                        lastName = jsonUtil.getString(owner, apiConstants.KEY_LAST_NAME, "");
-                        avatar = jsonUtil.getString(owner, apiConstants.KEY_AVATAR, "");
-                        JSONArray images = jsonUtil.getJSONArray(dataObject, apiConstants.KEY_IMAGES);
-                        if (images != null && images.length() > 0) {
-                            for (int j = 0; j < images.length(); j++) {
-                                JSONObject image = jsonUtil.getJSONObject(images, j);
-                                imageContents.add(new ImageContent(
-                                        jsonUtil.getString(image, apiConstants.KEY_URL, ""),
-                                        jsonUtil.getString(image, apiConstants.KEY_DESCRIPTION, "")));
-                            }
+            public void onAdventureResponse(JSONObject response) {
+                // pagination - load more
+                if(isLoadMore){
+                    statusShortcuts.remove(statusShortcuts.size() -1 );
+                    nlaNewfeed.notifyItemRemoved(statusShortcuts.size());
+                }else{
+                    statusShortcuts.clear();
+                }
+                JSONArray data = JsonUtil.getJSONArray(response, ApiConstants.DEF_DATA);
+                for (int i = 0; i < data.length(); i++) {
+                    List<ImageContent> imageContents = new ArrayList<>();
+                    JSONObject dataObject = JsonUtil.getJSONObject(data, i);
+                    JSONObject owner = JsonUtil.getJSONObject(dataObject, ApiConstants.KEY_OWNER);
+                    JSONArray images = JsonUtil.getJSONArray(dataObject, ApiConstants.KEY_IMAGES);
+                    if (images != null && images.length() > 0) {
+                        for (int j = 0; j < images.length(); j++) {
+                            JSONObject image = JsonUtil.getJSONObject(images, j);
+                            imageContents.add(new ImageContent(
+                                    JsonUtil.getString(image, ApiConstants.KEY_URL, ""),
+                                    JsonUtil.getString(image, ApiConstants.KEY_DESCRIPTION, "")));
                         }
-                        statusShortcuts.add(
-                                new StatusShortcut(new User(idUser, firstName, lastName, avatar), idStatus, createdAt, content, permission,
-                                        type, amountLike, amountComment, isLike, isComment, imageContents));
                     }
+                    statusShortcuts.add(
+                            new StatusShortcut(
+                                    new User(JsonUtil.getString(owner, ApiConstants.KEY_ID, ""),
+                                            JsonUtil.getString(owner, ApiConstants.KEY_FIRST_NAME, ""),
+                                            JsonUtil.getString(owner, ApiConstants.KEY_LAST_NAME, ""),
+                                            JsonUtil.getString(owner, ApiConstants.KEY_AVATAR, "")),
+                                    JsonUtil.getString(dataObject, ApiConstants.KEY_ID, ""),
+                                    JsonUtil.getString(dataObject, ApiConstants.KEY_CREATED_AT, ""),
+                                    JsonUtil.getString(dataObject, ApiConstants.KEY_CONTENT, ""),
+                                    JsonUtil.getInt(dataObject, ApiConstants.KEY_PERMISSION, 3),
+                                    JsonUtil.getInt(dataObject, ApiConstants.KEY_TYPE, 1),
+                                    JsonUtil.getInt(dataObject, ApiConstants.KEY_AMOUNT_LIKE, 0),
+                                    JsonUtil.getInt(dataObject, ApiConstants.KEY_AMOUNT_COMMENT, 0),
+                                    JsonUtil.getInt(dataObject, ApiConstants.KEY_IS_LIKE, 0),
+                                    JsonUtil.getInt(dataObject, ApiConstants.KEY_IS_COMMENT, 0),
+                                    imageContents));
                 }
                 nlaNewfeed.notifyDataSetChanged();
-                srlNewfeed.setRefreshing(false);
+                initScrollNewsfeed();
+                page = pagination;
+                if(isLoadMore){
+                    isLoading = false;
+                }else{
+                    srlNewfeed.setRefreshing(false);
+                }
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                RLog.e(error.getMessage());
-                srlNewfeed.setRefreshing(false);
+            public void onAdventureError(int errorCode, String errorMsg) {
+                if(isLoadMore){
+                    statusShortcuts.remove(statusShortcuts.size() -1 );
+                    nlaNewfeed.notifyItemRemoved(statusShortcuts.size());
+                    isLoading = false;
+                }else{
+                    srlNewfeed.setRefreshing(false);
+                }
+                ToastUtil.showToast(getContext(), errorMsg);
             }
         });
-        MySingleton.getInstance(this.getContext()).addToRequestQueue(customRequest, false);
     }
 
     @Override
     public void onRefresh() {
-        this.loadData();
+        this.loadData(false, 1);
+        RLog.e("refresh");
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_CODE){
-            if(resultCode == Activity.RESULT_OK){
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
                 statusShortcuts.set(posItem, (StatusShortcut) data.getParcelableExtra("result"));
                 nlaNewfeed.notifyDataSetChanged();
             }
         }
     }
 
-    public void onRefreshResult(StatusShortcut statusShortcut){
+    public void onRefreshResult(StatusShortcut statusShortcut) {
         statusShortcuts.set(posItem, statusShortcut);
         nlaNewfeed.notifyDataSetChanged();
     }

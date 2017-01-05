@@ -1,50 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/srlFriendHomePage"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/rlFriendDetail">
 
     <RelativeLayout
-        android:id="@+id/rlFriendDetail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_gray_white_tv"
-        android:clickable="true">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tvFriendRequest"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/rlFriendDetail"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:text="@string/request_friend_tv_friend_and_follow"
-            android:textColor="@color/secondary_text"/>
+            android:background="@drawable/selector_gray_white_tv"
+            android:paddingTop="@dimen/margin_small"
+            android:paddingBottom="@dimen/margin_small"
+            android:clickable="true">
 
-        <TextView
-            android:id="@+id/tvFriendDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:drawablePadding="@dimen/margin_small"
-            android:drawableRight="@drawable/ic_arrow_forward_grey_500_18dp"
-            android:gravity="center_vertical"
-            android:padding="@dimen/margin_medium"
-            android:text="@string/friend_detail_tv_friend_and_follow"
-            android:textColor="@color/secondary_text"/>
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tvFriendRequest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/request_friend_tv_friend_and_follow"
+                android:textColor="@color/secondary_text"/>
 
-
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/srlFriendHomePage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rlFriendDetail">
+            <TextView
+                android:id="@+id/tvFriendDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="@dimen/margin_small"
+                android:drawableRight="@drawable/ic_arrow_forward_grey_500_18dp"
+                android:gravity="center_vertical"
+                android:padding="@dimen/margin_medium"
+                android:text="@string/friend_detail_tv_friend_and_follow"
+                android:textColor="@color/secondary_text"/>
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvFriendHomePage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/rlFriendDetail"
             android:divider="@color/primary_background_content"
             android:dividerHeight="@dimen/margin_small"
             android:scrollbars="none"/>
@@ -57,13 +59,12 @@
             android:layout_marginTop="15dp"
             android:visibility="gone"/>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-    <TextView
-        android:id="@+id/tvErrorFriendHomePage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:textColor="@color/primary_text"/>
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tvErrorFriendHomePage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/primary_text"
+            android:visibility="gone"/>
+    </RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

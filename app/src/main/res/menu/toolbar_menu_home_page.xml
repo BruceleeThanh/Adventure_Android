@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tools:menu xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            tools:context=".activities.HomePageActivity">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.HomePageActivity">
     <item
         android:id="@+id/search_view"
         android:icon="@android:drawable/ic_menu_search"
@@ -11,7 +12,8 @@
         app:showAsAction="always"/>
     <item
         android:id="@+id/itemMessage"
+        app:actionLayout="@layout/badge_notification_icon"
         android:icon="@drawable/ic_message_white_24dp"
         android:title="@string/message_btn_profile"
         app:showAsAction="always"/>
-</tools:menu>
+</menu>

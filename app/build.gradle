@@ -1,12 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'realm-android'
-apply plugin: 'com.google.gms.google-services'
 
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "studio.crazybt.adventure"
@@ -37,7 +36,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.0'
     compile 'com.android.support:design:24.2.0'
     compile 'com.android.support:cardview-v7:24.2.0'
-    compile 'com.google.firebase:firebase-messaging:9.0.0'
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
@@ -48,9 +47,11 @@ dependencies {
     compile 'com.github.nguyenhoanglam:ImagePicker:1.1.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.vanniktech:emoji:0.4.0-SNAPSHOT'
-    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    //compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
     compile('org.apache.httpcomponents:httpmime:4.3.5') {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 }
+
+apply plugin: 'com.google.gms.google-services'

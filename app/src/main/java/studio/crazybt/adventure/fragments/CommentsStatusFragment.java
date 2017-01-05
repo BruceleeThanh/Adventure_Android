@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -73,7 +74,7 @@ import studio.crazybt.adventure.utils.ToastUtil;
  * Created by Brucelee Thanh on 25/09/2016.
  */
 
-public class CommentsStatusFragment extends Fragment implements View.OnClickListener {
+public class CommentsStatusFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
 
     private View rootView;
     @BindView(R.id.rlCountLike)
@@ -88,6 +89,8 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
     EmojiEditText eetComment;
     @BindView(R.id.ivSendComment)
     ImageView ivSendComment;
+    @BindView(R.id.srlComments)
+    SwipeRefreshLayout srlComments;
     @BindDimen(R.dimen.item_icon_size_medium)
     float itemSizeMedium;
     private EmojiEditText eetEditComment;
@@ -114,10 +117,16 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
             realm = Realm.getDefaultInstance();
             ivEmoticon.setOnClickListener(this);
             ivSendComment.setOnClickListener(this);
+            srlComments.setOnRefreshListener(this);
             this.initDrawable();
             this.setupPopUpEmoji();
             this.initCommentsStatusList();
-            this.loadData();
+            srlComments.post(new Runnable() {
+                @Override
+                public void run() {
+                    loadData();
+                }
+            });
             rlCountLike.setOnClickListener(this);
         }
         return rootView;
@@ -144,6 +153,8 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
     }
 
     private void loadData() {
+        srlComments.setRefreshing(true);
+        commentStatusList.clear();
         tvCountLike.setText(statusShortcut.getAmountLike() + " " + getResources().getString(R.string.count_like_tv_status));
         final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
         Uri.Builder url = ApiConstants.getApi(ApiConstants.API_BROWSE_COMMENT);
@@ -179,12 +190,13 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
                         commentStatusList.add(new CommentStatus(new User(idUser, firstName, lastName, avatar), id, idStatus, createdAt, content));
                     }
                     cslaCommentStatus.notifyDataSetChanged();
+                    srlComments.setRefreshing(false);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                srlComments.setRefreshing(false);
             }
         });
         MySingleton.getInstance(this.getContext()).addToRequestQueue(customRequest, false);
@@ -429,5 +441,10 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onRefresh() {
+        this.loadData();
     }
 }

@@ -12,13 +12,13 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
-import com.squareup.picasso.Picasso;
 import com.vanniktech.emoji.EmojiTextView;
 
 import org.json.JSONObject;
@@ -31,7 +31,6 @@ import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.activities.StatusActivity;
-import studio.crazybt.adventure.fragments.LikesStatusFragment;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
@@ -41,13 +40,13 @@ import studio.crazybt.adventure.helpers.DrawableProcessHelper;
 import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.CommonConstants;
+import studio.crazybt.adventure.listeners.OnLoadMoreListener;
 import studio.crazybt.adventure.models.StatusShortcut;
 import studio.crazybt.adventure.services.CustomRequest;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
-import studio.crazybt.adventure.utils.StringUtil;
 
 /**
  * Created by Brucelee Thanh on 24/09/2016.
@@ -60,12 +59,13 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<StatusShortcut> statusShortcuts;
     private PicassoHelper picassoHelper = new PicassoHelper();
 
-    private static final int STATUS = 0;
-    private static final int TRIP = 1;
+    private final int STATUS = 0;
+    private final int TRIP = 1;
+    private final int LOAD_MORE = 3;
 
-    private static final int STATUS_DETAIL = 1;
-    private static final int STATUS_LIKES = 2;
-    private static final int STATUS_COMMENTS = 3;
+    private final int STATUS_DETAIL = 1;
+    private final int STATUS_LIKES = 2;
+    private final int STATUS_COMMENTS = 3;
 
     public NewfeedListAdapter(Context context) {
         this.rootContext = context;
@@ -74,6 +74,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public NewfeedListAdapter(Context rootContext, List<StatusShortcut> statusShortcuts) {
         this.rootContext = rootContext;
         this.statusShortcuts = statusShortcuts;
+        RLog.e("fucking restart");
     }
 
     @Override
@@ -83,7 +84,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 //        }else{
 //            return TRIP;
 //        }
-        return STATUS;
+        return statusShortcuts.get(position) == null ? LOAD_MORE : STATUS;
     }
 
 
@@ -97,6 +98,9 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case TRIP:
                 View viewTrip = li.inflate(R.layout.item_trip_shortcut, parent, false);
                 return new TripViewHolder(viewTrip);
+            case LOAD_MORE:
+                View viewLoadMore = li.inflate(R.layout.item_load_more, parent, false);
+                return new LoadingViewHolder(viewLoadMore);
             default:
                 break;
         }
@@ -168,7 +172,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 statusViewHolder.llImageStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (onAdapterClick!= null) onAdapterClick.onStatusDetailClick(position);
+                        if (onAdapterClick != null) onAdapterClick.onStatusDetailClick(position);
                     }
                 });
 
@@ -311,11 +315,11 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 });
 
                 // Comment highlight
-                if(statusItem.getIsComment() == 1){
+                if (statusItem.getIsComment() == 1) {
                     Drawable drawable = ContextCompat.getDrawable(rootContext, R.drawable.ic_chat_bubble_green_24dp);
                     statusViewHolder.tvComment.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
                     statusViewHolder.tvComment.setTextColor(rootContext.getResources().getColor(R.color.primary));
-                }else{
+                } else {
                     Drawable drawable = ContextCompat.getDrawable(rootContext, R.drawable.ic_chat_bubble_gray_24dp);
                     statusViewHolder.tvComment.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
                     statusViewHolder.tvComment.setTextColor(rootContext.getResources().getColor(R.color.secondary_text));
@@ -363,13 +367,16 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     }
                 });
                 break;
+            case LOAD_MORE:
+                LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
+                loadingViewHolder.pbLoadMore.setIndeterminate(true);
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return statusShortcuts.size();
+        return statusShortcuts == null ? 0 : statusShortcuts.size();
     }
 
     public class StatusViewHolder extends RecyclerView.ViewHolder {
@@ -490,12 +497,31 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
+    public class LoadingViewHolder extends RecyclerView.ViewHolder {
+        public View itemView;
+
+        @BindView(R.id.pbLoadMore)
+        ProgressBar pbLoadMore;
+
+        public LoadingViewHolder(View itemView) {
+            super(itemView);
+            this.itemView = itemView;
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
     private OnAdapterClick onAdapterClick;
-    public void setOnAdapterClickListener(OnAdapterClick listener){
+    public OnLoadMoreListener onLoadMoreListener;
+
+    public void setOnLoadMoreListener(OnLoadMoreListener listener){
+        onLoadMoreListener = listener;
+    }
+
+    public void setOnAdapterClickListener(OnAdapterClick listener) {
         onAdapterClick = listener;
     }
 
-    public interface OnAdapterClick{
+    public interface OnAdapterClick {
         void onStatusDetailClick(int pos);
     }
 }

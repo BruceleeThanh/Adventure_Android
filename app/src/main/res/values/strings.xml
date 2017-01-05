@@ -143,4 +143,16 @@
     <string name="copy_to_clipboard">Đã sao chép</string>
     <string name="cancel_dialog">Huỷ</string>
     <string name="update_dialog">Cập nhật</string>
+
+    <!--Create trip-->
+    <string name="name_trip_create_trip">Tên chuyến đi...</string>
+    <string name="description_trip_create_trip">Miêu tả...</string>
+    <string name="start_pos_trip_create_trip">Điểm bắt đầu...</string>
+    <string name="period_trip_create_trip">Thời gian</string>
+    <string name="destination_trip_create_trip">Điểm đến</string>
+    <string name="money_trip_create_trip"></string>
+    <string name="member_trip_create_trip">Số người...</string>
+    <string name="vehicle_trip_create_trip">Phương tiện...</string>
+
+
 </resources>

@@ -81,6 +81,12 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<TripShortcutLi
     }
 
     @Override
+    public void onViewRecycled(ViewHolder holder) {
+        super.onViewRecycled(holder);
+
+    }
+
+    @Override
     public int getItemCount() {
         return 5;
     }
@@ -118,8 +124,8 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<TripShortcutLi
         TextView tvTripRate;
         @BindView(R.id.tvTripDetail)
         TextView tvTripDetail;
-        @BindDimen(R.dimen.item_icon_size_small)
-        float itemSizeSmall;
+        @BindDimen(R.dimen.item_icon_size_tiny)
+        float itemSizeTiny;
         @BindDimen(R.dimen.five_star_icon_width)
         float fiveStarWidth;
         @BindDimen(R.dimen.five_star_icon_height)
@@ -131,14 +137,14 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<TripShortcutLi
             drawableProcessHelper = new DrawableProcessHelper(itemView);
             ButterKnife.bind(this, itemView);
 
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripName, R.drawable.ic_signpost_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripStartPosition, R.drawable.ic_flag_filled_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripPeriod, R.drawable.ic_clock_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripDestination, R.drawable.ic_marker_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripMoney, R.drawable.ic_money_bag_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripMember, R.drawable.ic_user_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripJoiner, R.drawable.ic_airplane_take_off_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripInterested, R.drawable.ic_like_filled_96, itemSizeSmall, itemSizeSmall);
+            drawableProcessHelper.setTextViewDrawableFitSize(tvTripName, R.drawable.ic_signpost_96, itemSizeTiny, itemSizeTiny);
+            drawableProcessHelper.setTextViewDrawableFitSize(tvTripStartPosition, R.drawable.ic_flag_filled_96, itemSizeTiny, itemSizeTiny);
+            drawableProcessHelper.setTextViewDrawableFitSize(tvTripPeriod, R.drawable.ic_clock_96, itemSizeTiny, itemSizeTiny);
+            drawableProcessHelper.setTextViewDrawableFitSize(tvTripDestination, R.drawable.ic_marker_96, itemSizeTiny, itemSizeTiny);
+            drawableProcessHelper.setTextViewDrawableFitSize(tvTripMoney, R.drawable.ic_money_bag_96, itemSizeTiny, itemSizeTiny);
+            drawableProcessHelper.setTextViewDrawableFitSize(tvTripMember, R.drawable.ic_user_96, itemSizeTiny, itemSizeTiny);
+            drawableProcessHelper.setTextViewDrawableFitSize(tvTripJoiner, R.drawable.ic_airplane_take_off_96, itemSizeTiny, itemSizeTiny);
+            drawableProcessHelper.setTextViewDrawableFitSize(tvTripInterested, R.drawable.ic_like_filled_96, itemSizeTiny, itemSizeTiny);
             drawableProcessHelper.setTextViewDrawableFitSize(tvTripRate, R.drawable.ic_five_star_96, fiveStarWidth, fiveStarHeight);
         }
     }

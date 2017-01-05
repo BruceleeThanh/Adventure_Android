@@ -53,6 +53,8 @@ public class InputActivity extends AppCompatActivity {
         fragmentController.commit();
     }
 
+
+
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 1){

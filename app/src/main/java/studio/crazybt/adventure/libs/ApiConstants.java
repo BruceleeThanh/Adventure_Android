@@ -21,12 +21,14 @@ public class ApiConstants {
     public static final String API_NORMAL_LOGIN = "user/login";
     public static final String API_UPLOAD_IMAGE = "file/upload_image";
     public static final String API_CREATE_STATUS = "status/create";
+    public static final String API_FIND_ONE_STATUS = "status/find_one";
     public static final String API_BROWSE_LIKE = "like_status/browse";
     public static final String API_LIKE_STATUS = "like_status/like";
     public static final String API_BROWSE_COMMENT = "comment_status/browse";
     public static final String API_COMMENT_STATUS = "comment_status/create";
     public static final String API_COMMENT_EDIT_CONTENT = "comment_status/edit_content";
     public static final String API_DELETE_COMMENT = "comment_status/delete";
+    public static final String API_BROWSE_NOTIFICATION = "notification/browse";
     public static final String API_TIME_LINE = "news/time_line";
     public static final String API_NEWS_FEED = "news/news_feed";
     public static final String API_SUGGEST_FRIEND = "friend/suggest_friend";
@@ -58,6 +60,7 @@ public class ApiConstants {
     public static final String KEY_INTRO = "intro";
     public static final String KEY_ID_FACEBOOK = "id_facebook";
     public static final String KEY_TOKEN = "token";
+    public static final String KEY_FCM_TOKEN = "fcm_token";
     public static final String KEY_FILE = "file";
     public static final String KEY_LINK = "link";
     public static final String KEY_CONTENT = "content";
@@ -78,12 +81,16 @@ public class ApiConstants {
     public static final String KEY_AVATAR = "avatar";
     public static final String KEY_COVER = "cover";
     public static final String KEY_PAGE = "page";
-    public static final String KEY_PERPAGE = "perPage";
+    public static final String KEY_PERPAGE = "per_page";
     public static final String KEY_USER = "user";
     public static final String KEY_SENDER = "sender";
+    public static final String KEY_SENDER_AVATAR = "sender_avatar";
     public static final String KEY_RECIPIENT = "recipient";
     public static final String KEY_STATUS = "status";
-
+    public static final String KEY_OBJECT = "object";
+    public static final String KEY_CLICKED = "clicked";
+    public static final String KEY_VIEWED = "viewed";
+    public static final String KEY_FCM_CONTENT = "fcm_content";
 
     public ApiConstants() {
     }
