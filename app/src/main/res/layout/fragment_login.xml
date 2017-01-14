@@ -20,7 +20,7 @@
         android:hint="@string/email_et_loginviaemail"
         android:layout_below="@+id/ivAdventureLogoLogin"
         android:layout_centerHorizontal="true"
-        android:singleLine="true"
+        android:maxLines="1"
         android:layout_marginTop="@dimen/margin_big"
         android:imeOptions="actionNext"/>
 
@@ -52,6 +52,7 @@
             android:layout_height="@dimen/btn_height"
             android:hint="@string/password_et_loginviaemail"
             android:inputType="textPassword"
+            android:maxLines="1"
             android:imeOptions="actionDone"/>
     </android.support.design.widget.TextInputLayout>
 

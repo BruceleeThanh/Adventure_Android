@@ -48,13 +48,22 @@ public class AdventureRequest {
     }
 
     private OnAdventureRequestListener onAdventureRequestListener;
+    public OnNotifyResponseReceived onNotifyResponseReceived;
 
     public void setOnAdventureRequestListener(OnAdventureRequestListener listener) {
         onAdventureRequestListener = listener;
     }
 
+    public void setOnNotifyResponseReceived(OnNotifyResponseReceived listener){
+        onNotifyResponseReceived = listener;
+    }
+
     public interface OnAdventureRequestListener {
         void onAdventureResponse(JSONObject response);
         void onAdventureError(int errorCode, String errorMsg);
+    }
+
+    public interface OnNotifyResponseReceived{
+        void onNotify();
     }
 }

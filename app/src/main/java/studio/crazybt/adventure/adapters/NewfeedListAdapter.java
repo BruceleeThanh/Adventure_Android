@@ -36,16 +36,15 @@ import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.activities.TripActivity;
-import studio.crazybt.adventure.helpers.DrawableProcessHelper;
+import studio.crazybt.adventure.helpers.DrawableHelper;
 import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.listeners.OnLoadMoreListener;
-import studio.crazybt.adventure.models.StatusShortcut;
+import studio.crazybt.adventure.models.Status;
 import studio.crazybt.adventure.services.CustomRequest;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
-import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
 
 /**
@@ -56,7 +55,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private Context rootContext;
     private FragmentController fragmentController;
-    private List<StatusShortcut> statusShortcuts;
+    private List<Status> statuses;
     private PicassoHelper picassoHelper = new PicassoHelper();
 
     private final int STATUS = 0;
@@ -71,10 +70,9 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.rootContext = context;
     }
 
-    public NewfeedListAdapter(Context rootContext, List<StatusShortcut> statusShortcuts) {
+    public NewfeedListAdapter(Context rootContext, List<Status> statuses) {
         this.rootContext = rootContext;
-        this.statusShortcuts = statusShortcuts;
-        RLog.e("fucking restart");
+        this.statuses = statuses;
     }
 
     @Override
@@ -84,7 +82,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 //        }else{
 //            return TRIP;
 //        }
-        return statusShortcuts.get(position) == null ? LOAD_MORE : STATUS;
+        return statuses.get(position) == null ? LOAD_MORE : STATUS;
     }
 
 
@@ -112,7 +110,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (getItemViewType(position)) {
             case STATUS:
                 final StatusViewHolder statusViewHolder = (StatusViewHolder) holder;
-                final StatusShortcut statusItem = statusShortcuts.get(position);
+                final Status statusItem = statuses.get(position);
 
                 // User avatar
                 statusViewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +145,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
 
                 // Status create time
-                statusViewHolder.tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(statusItem.getCreatedAt()));
+                statusViewHolder.tvTimeUpload.setText(ConvertTimeHelper.convertISODateToPrettyTimeStamp(statusItem.getCreatedAt()));
 
                 // Remove content status if not exits
                 if (statusItem.getContent().equals("") || statusItem.getContent() == null) {
@@ -284,10 +282,10 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                     int amountLike = JsonUtil.getInt(status, ApiConstants.KEY_AMOUNT_LIKE, -1);
                                     int isLike = JsonUtil.getInt(data, ApiConstants.KEY_IS_LIKE, -1);
                                     if (amountLike != -1) {
-                                        statusShortcuts.get(position).setAmountLike(amountLike);
+                                        statuses.get(position).setAmountLike(amountLike);
                                     }
                                     if (isLike != -1) {
-                                        statusShortcuts.get(position).setIsLike(isLike);
+                                        statuses.get(position).setIsLike(isLike);
                                     }
                                     notifyDataSetChanged();
                                 }
@@ -376,13 +374,13 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return statusShortcuts == null ? 0 : statusShortcuts.size();
+        return statuses == null ? 0 : statuses.size();
     }
 
     public class StatusViewHolder extends RecyclerView.ViewHolder {
 
         public View itemView;
-        public DrawableProcessHelper drawableProcessHelper;
+        public DrawableHelper drawableHelper;
 
         @BindView(R.id.ivProfileImage)
         ImageView ivProfileImage;
@@ -433,16 +431,16 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             super(itemView);
             this.itemView = itemView;
             ButterKnife.bind(this, itemView);
-            drawableProcessHelper = new DrawableProcessHelper(itemView);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvCountLike, R.drawable.ic_thumb_up_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvCountComment, R.drawable.ic_chat_96, itemSizeSmall, itemSizeSmall);
+            drawableHelper = new DrawableHelper(itemView.getContext());
+            drawableHelper.setTextViewDrawableFitSize(tvCountLike, R.drawable.ic_thumb_up_96, itemSizeSmall, itemSizeSmall);
+            drawableHelper.setTextViewDrawableFitSize(tvCountComment, R.drawable.ic_chat_96, itemSizeSmall, itemSizeSmall);
         }
     }
 
     public class TripViewHolder extends RecyclerView.ViewHolder {
 
         public View itemView;
-        private DrawableProcessHelper drawableProcessHelper;
+        private DrawableHelper drawableHelper;
 
         @BindView(R.id.rlTripShortcut)
         RelativeLayout rlTripShortcut;
@@ -482,18 +480,18 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public TripViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
-            drawableProcessHelper = new DrawableProcessHelper(itemView);
+            drawableHelper = new DrawableHelper(itemView.getContext());
             ButterKnife.bind(this, itemView);
 
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripName, R.drawable.ic_signpost_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripStartPosition, R.drawable.ic_flag_filled_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripPeriod, R.drawable.ic_clock_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripDestination, R.drawable.ic_marker_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripMoney, R.drawable.ic_money_bag_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripMember, R.drawable.ic_user_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripJoiner, R.drawable.ic_airplane_take_off_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripInterested, R.drawable.ic_like_filled_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvTripRate, R.drawable.ic_five_star_96, fiveStarWidth, fiveStarHeight);
+            drawableHelper.setTextViewDrawableFitSize(tvTripName, R.drawable.ic_signpost_96, itemSizeSmall, itemSizeSmall);
+            drawableHelper.setTextViewDrawableFitSize(tvTripStartPosition, R.drawable.ic_flag_filled_96, itemSizeSmall, itemSizeSmall);
+            drawableHelper.setTextViewDrawableFitSize(tvTripPeriod, R.drawable.ic_clock_96, itemSizeSmall, itemSizeSmall);
+            drawableHelper.setTextViewDrawableFitSize(tvTripDestination, R.drawable.ic_marker_96, itemSizeSmall, itemSizeSmall);
+            drawableHelper.setTextViewDrawableFitSize(tvTripMoney, R.drawable.ic_money_bag_96, itemSizeSmall, itemSizeSmall);
+            drawableHelper.setTextViewDrawableFitSize(tvTripMember, R.drawable.ic_user_96, itemSizeSmall, itemSizeSmall);
+            drawableHelper.setTextViewDrawableFitSize(tvTripJoiner, R.drawable.ic_airplane_take_off_96, itemSizeSmall, itemSizeSmall);
+            drawableHelper.setTextViewDrawableFitSize(tvTripInterested, R.drawable.ic_like_filled_96, itemSizeSmall, itemSizeSmall);
+            drawableHelper.setTextViewDrawableFitSize(tvTripRate, R.drawable.ic_five_star_96, fiveStarWidth, fiveStarHeight);
         }
     }
 

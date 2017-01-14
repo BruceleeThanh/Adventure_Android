@@ -20,6 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+
+import org.json.JSONObject;
+
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.TabLayoutAdapter;
 import studio.crazybt.adventure.fragments.TabFriendHomePageFragment;
@@ -27,8 +31,11 @@ import studio.crazybt.adventure.fragments.TabNewfeedHomePageFragment;
 import studio.crazybt.adventure.fragments.TabNotificationsHomePageFragment;
 import studio.crazybt.adventure.fragments.TabPublicTripsHomePageFragment;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.libs.ApiParams;
 import studio.crazybt.adventure.libs.CommonConstants;
+import studio.crazybt.adventure.services.AdventureRequest;
 import studio.crazybt.adventure.utils.BadgeTabLayout;
+import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
 
 public class HomePageActivity extends AppCompatActivity {
@@ -42,7 +49,9 @@ public class HomePageActivity extends AppCompatActivity {
     private ImageView ivUserAvatar;
     private TextView tvUserName;
 
-    private static final int MESSAGE = 1;
+    private final int MESSAGE = 1;
+
+    private static int notificationCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +63,11 @@ public class HomePageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        this.setNavigationDrawer();
-        this.setTablayout();
+        this.initNavigationDrawer();
+        this.initTablayout();
     }
 
-    public void setNavigationDrawer() {
+    public void initNavigationDrawer() {
         navView = (NavigationView) findViewById(R.id.navView);
         // nav header set item
         navHeader = navView.getHeaderView(0);
@@ -125,7 +134,7 @@ public class HomePageActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
-    public void setTablayout() {
+    public void initTablayout() {
         final int tabSelectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary);
         final int tabUnselectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary_background_content);
         tlHomePage = (BadgeTabLayout) findViewById(R.id.tlHomePage);
@@ -152,6 +161,7 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tlHomePage.with(tab).noBadge().iconColor(tabSelectedIconColor).build();
+                RLog.i("Tab at: " + tab.getPosition());
             }
 
             @Override
@@ -169,10 +179,34 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onBadgeNotificationChange(int notiCount) {
                 if (notiCount > 0) {
+                    notificationCount = notiCount;
                     tlHomePage.with(3).hasBadge().badgeCount(notiCount).build();
                 }
             }
         });
+    }
+
+    private void tabSelectedAction(int position){
+        if(position == 3){
+            if(notificationCount > 0){
+                String token = SharedPref.getInstance(this).getString(ApiConstants.KEY_TOKEN, "");
+                String url = ApiConstants.getUrl(ApiConstants.API_VIEWED_NOTIFICATION);
+                ApiParams params = ApiParams.getBuilder();
+                params.put(ApiConstants.KEY_TOKEN, token);
+                AdventureRequest adventureRequest = new AdventureRequest(this, Request.Method.POST, url, params, false);
+                adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
+                    @Override
+                    public void onAdventureResponse(JSONObject response) {
+
+                    }
+
+                    @Override
+                    public void onAdventureError(int errorCode, String errorMsg) {
+
+                    }
+                });
+            }
+        }
     }
 
     @Override

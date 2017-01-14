@@ -1,4 +1,4 @@
-package studio.crazybt.adventure.adapters;
+package studio.crazybt.adventure.listeners;
 
 import android.view.View;
 

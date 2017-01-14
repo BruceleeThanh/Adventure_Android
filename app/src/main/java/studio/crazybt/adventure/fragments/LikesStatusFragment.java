@@ -9,11 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.error.VolleyError;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,11 +25,9 @@ import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.LikesStatusListAdapter;
 import studio.crazybt.adventure.libs.ApiConstants;
-import studio.crazybt.adventure.models.StatusShortcut;
+import studio.crazybt.adventure.models.Status;
 import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.AdventureRequest;
-import studio.crazybt.adventure.services.CustomRequest;
-import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.SharedPref;
 import studio.crazybt.adventure.utils.ToastUtil;
@@ -48,7 +43,7 @@ public class LikesStatusFragment extends Fragment {
     RecyclerView rvLikesStatus;
     LinearLayoutManager llmLikesStatus;
     LikesStatusListAdapter lslaLikesStatus;
-    StatusShortcut statusShortcut;
+    Status status;
     List<User> userList;
 
     @Nullable
@@ -58,7 +53,7 @@ public class LikesStatusFragment extends Fragment {
             rootView = inflater.inflate(R.layout.fragment_likes_status, container, false);
             ButterKnife.bind(this, rootView);
             if (getArguments() != null)
-                statusShortcut = getArguments().getParcelable("data");
+                status = getArguments().getParcelable("data");
             this.initLikesStatusList();
             this.loadData();
         }
@@ -79,7 +74,7 @@ public class LikesStatusFragment extends Fragment {
         Uri.Builder url = ApiConstants.getApi(ApiConstants.API_BROWSE_LIKE);
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
-        params.put(ApiConstants.KEY_ID_STATUS, statusShortcut.getId());
+        params.put(ApiConstants.KEY_ID_STATUS, status.getId());
         AdventureRequest adventureRequest = new AdventureRequest(rootView.getContext(), Request.Method.POST, url.build().toString(), params, false);
         adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override

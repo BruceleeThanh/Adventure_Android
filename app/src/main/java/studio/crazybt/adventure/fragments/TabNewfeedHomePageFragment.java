@@ -14,17 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.error.VolleyError;
-import com.android.volley.misc.AsyncTask;
-import com.android.volley.request.StringRequest;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,12 +34,9 @@ import studio.crazybt.adventure.adapters.NewfeedListAdapter;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.listeners.OnLoadMoreListener;
 import studio.crazybt.adventure.models.ImageContent;
-import studio.crazybt.adventure.models.StatusShortcut;
+import studio.crazybt.adventure.models.Status;
 import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.AdventureRequest;
-import studio.crazybt.adventure.services.CustomRequest;
-import studio.crazybt.adventure.services.MyCommand;
-import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
@@ -57,12 +49,13 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
 
     private final int STATUS_DETAIL = 1;
     private final int REQUEST_CODE = 100;
-    private final int INSERT_STATUS = 1;
+    private final int CREATE_STATUS = 1;
+    private final int CREATE_TRIP = 2;
     private View rootView;
     private LinearLayoutManager llmNewFeed;
     private NewfeedListAdapter nlaNewfeed;
 
-    private List<StatusShortcut> statusShortcuts;
+    private List<Status> statuses;
     private int posItem;
 
     // pagination - load more
@@ -76,6 +69,8 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
     RecyclerView rvNewfeed;
     @BindView(R.id.fabCreateStatus)
     FloatingActionButton fabCreateStatus;
+    @BindView(R.id.fabCreateTrip)
+    FloatingActionButton fabCreateTrip;
     @BindView(R.id.fabOrigin)
     FloatingActionMenu fabOrigin;
     @BindView(R.id.srlNewfeed)
@@ -88,6 +83,7 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
             rootView = inflater.inflate(R.layout.fragment_tab_newfeed_home_page, container, false);
             ButterKnife.bind(this, rootView);
             fabCreateStatus.setOnClickListener(this);
+            fabCreateTrip.setOnClickListener(this);
             srlNewfeed.setOnRefreshListener(this);
             this.initNewsfeedList();
             srlNewfeed.post(new Runnable() {
@@ -101,10 +97,10 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
     }
 
     public void initNewsfeedList() {
-        statusShortcuts = new ArrayList<>();
+        statuses = new ArrayList<>();
         llmNewFeed = new LinearLayoutManager(getContext());
         rvNewfeed.setLayoutManager(llmNewFeed);
-        nlaNewfeed = new NewfeedListAdapter(this.getContext(), statusShortcuts);
+        nlaNewfeed = new NewfeedListAdapter(this.getContext(), statuses);
         this.initScrollNewsfeed();
         nlaNewfeed.setOnAdapterClickListener(new NewfeedListAdapter.OnAdapterClick() {
             @Override
@@ -112,7 +108,7 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
                 posItem = pos;
                 Intent intent = new Intent(getContext(), StatusActivity.class);
                 intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
-                intent.putExtra("data", statusShortcuts.get(posItem));
+                intent.putExtra("data", statuses.get(posItem));
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
@@ -121,8 +117,8 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
             public void onLoadMore() {
                 RLog.e("isRefreshing" + srlNewfeed.isRefreshing());
                 if (!srlNewfeed.isRefreshing()){
-                    statusShortcuts.add(null);
-                    nlaNewfeed.notifyItemInserted(statusShortcuts.size() - 1);
+                    statuses.add(null);
+                    nlaNewfeed.notifyItemInserted(statuses.size() - 1);
                     loadData(true, page + 1);
                 }
             }
@@ -156,9 +152,15 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
         switch (view.getId()) {
             case R.id.fabCreateStatus:
                 fabOrigin.close(true);
-                Intent intent = new Intent(getActivity(), InputActivity.class);
-                intent.putExtra("TYPE_SHOW", INSERT_STATUS);
-                startActivity(intent);
+                Intent intentStatus = new Intent(getActivity(), InputActivity.class);
+                intentStatus.putExtra("TYPE_SHOW", CREATE_STATUS);
+                startActivity(intentStatus);
+                break;
+            case R.id.fabCreateTrip:
+                fabOrigin.close(true);
+                Intent intentTrip = new Intent(getActivity(), InputActivity.class);
+                intentTrip.putExtra("TYPE_SHOW", CREATE_TRIP);
+                startActivity(intentTrip);
                 break;
         }
     }
@@ -179,10 +181,10 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
             public void onAdventureResponse(JSONObject response) {
                 // pagination - load more
                 if(isLoadMore){
-                    statusShortcuts.remove(statusShortcuts.size() -1 );
-                    nlaNewfeed.notifyItemRemoved(statusShortcuts.size());
+                    statuses.remove(statuses.size() -1 );
+                    nlaNewfeed.notifyItemRemoved(statuses.size());
                 }else{
-                    statusShortcuts.clear();
+                    statuses.clear();
                 }
                 JSONArray data = JsonUtil.getJSONArray(response, ApiConstants.DEF_DATA);
                 for (int i = 0; i < data.length(); i++) {
@@ -198,8 +200,8 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
                                     JsonUtil.getString(image, ApiConstants.KEY_DESCRIPTION, "")));
                         }
                     }
-                    statusShortcuts.add(
-                            new StatusShortcut(
+                    statuses.add(
+                            new Status(
                                     new User(JsonUtil.getString(owner, ApiConstants.KEY_ID, ""),
                                             JsonUtil.getString(owner, ApiConstants.KEY_FIRST_NAME, ""),
                                             JsonUtil.getString(owner, ApiConstants.KEY_LAST_NAME, ""),
@@ -228,8 +230,8 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
             @Override
             public void onAdventureError(int errorCode, String errorMsg) {
                 if(isLoadMore){
-                    statusShortcuts.remove(statusShortcuts.size() -1 );
-                    nlaNewfeed.notifyItemRemoved(statusShortcuts.size());
+                    statuses.remove(statuses.size() -1 );
+                    nlaNewfeed.notifyItemRemoved(statuses.size());
                     isLoading = false;
                 }else{
                     srlNewfeed.setRefreshing(false);
@@ -249,14 +251,14 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                statusShortcuts.set(posItem, (StatusShortcut) data.getParcelableExtra("result"));
+                statuses.set(posItem, (Status) data.getParcelableExtra("result"));
                 nlaNewfeed.notifyDataSetChanged();
             }
         }
     }
 
-    public void onRefreshResult(StatusShortcut statusShortcut) {
-        statusShortcuts.set(posItem, statusShortcut);
+    public void onRefreshResult(Status status) {
+        statuses.set(posItem, status);
         nlaNewfeed.notifyDataSetChanged();
     }
 }

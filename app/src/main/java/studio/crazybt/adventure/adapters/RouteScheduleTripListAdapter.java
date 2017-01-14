@@ -15,17 +15,17 @@ import studio.crazybt.adventure.R;
  * Created by Brucelee Thanh on 30/09/2016.
  */
 
-public class CalendarScheduleTripListAdapter extends RecyclerView.Adapter<CalendarScheduleTripListAdapter.ViewHolder> {
+public class RouteScheduleTripListAdapter extends RecyclerView.Adapter<RouteScheduleTripListAdapter.ViewHolder> {
 
     private Context rootContext;
 
-    public CalendarScheduleTripListAdapter(Context rootContext) {
+    public RouteScheduleTripListAdapter(Context rootContext) {
         this.rootContext = rootContext;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_calendar_schedule_trip, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_route_schedule_trip, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -42,12 +42,12 @@ public class CalendarScheduleTripListAdapter extends RecyclerView.Adapter<Calend
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tvPeriodCalendar)
-        TextView tvPeriodCalendar;
-        @BindView(R.id.tvTitleCalendar)
-        TextView tvTitleCalendar;
-        @BindView(R.id.tvContentCalendar)
-        TextView tvContentCalendar;
+        @BindView(R.id.tvPeriodRoute)
+        TextView tvPeriodRoute;
+        @BindView(R.id.tvTitleRoute)
+        TextView tvTitleRoute;
+        @BindView(R.id.tvContentRoute)
+        TextView tvContentRoute;
 
         public ViewHolder(View itemView) {
             super(itemView);

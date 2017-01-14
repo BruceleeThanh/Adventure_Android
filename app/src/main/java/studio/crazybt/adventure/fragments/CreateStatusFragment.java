@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
@@ -13,11 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Base64;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +51,7 @@ import id.zelory.compressor.Compressor;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.ImageCreateStatusListAdapter;
 import studio.crazybt.adventure.adapters.SpinnerAdapter;
-import studio.crazybt.adventure.helpers.DrawableProcessHelper;
+import studio.crazybt.adventure.helpers.DrawableHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.ApiParams;
 import studio.crazybt.adventure.models.ImageContent;
@@ -100,16 +96,11 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
 
     private EmojiPopup emojiPopup;
 
-    private static final int TAKEPHOTO_REQUEST = 100;
-    private static final int PICK_IMAGE_REQUEST = 200;
-    private static final String CURRENT_STATUS_PRIVACY = "current_status_privacy";
+    private final int TAKEPHOTO_REQUEST = 100;
+    private final int PICK_IMAGE_REQUEST = 200;
+    private final String CURRENT_STATUS_PRIVACY = "current_status_privacy";
 
-    private CreateStatusFragment instance;
-    private DrawableProcessHelper drawableProcessHelper;
-
-    public CreateStatusFragment() {
-        this.instance = this;
-    }
+    private DrawableHelper drawableHelper;
 
     @Nullable
     @Override
@@ -118,10 +109,10 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
             rootView = inflater.inflate(R.layout.fragment_create_status, container, false);
         }
         ButterKnife.bind(this, rootView);
-        drawableProcessHelper = new DrawableProcessHelper(rootView);
+        drawableHelper = new DrawableHelper(getContext());
         btnAddImage.setOnClickListener(this);
         btnAddEmojicon.setOnClickListener(this);
-        drawableProcessHelper.setButtonDrawableFitSize(btnAddEmojicon, R.drawable.ic_lol_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setButtonDrawableFitSize(btnAddEmojicon, R.drawable.ic_lol_96, itemSizeSmall, itemSizeSmall);
         tvProfileName.setText(SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_FIRST_NAME, "") + " " + SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_LAST_NAME, ""));
         this.setupPopUpEmoji();
         this.initSpinnerPrivacy();
@@ -208,13 +199,13 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
                     @Override
                     public void onEmojiPopupShown() {
                         btnAddEmojicon.setText(getResources().getString(R.string.keyboard_btn_create_status));
-                        drawableProcessHelper.setButtonDrawableFitSize(btnAddEmojicon, R.drawable.ic_keyboard_96, itemSizeSmall, itemSizeSmall);
+                        drawableHelper.setButtonDrawableFitSize(btnAddEmojicon, R.drawable.ic_keyboard_96, itemSizeSmall, itemSizeSmall);
                     }
                 }).setOnEmojiPopupDismissListener(new OnEmojiPopupDismissListener() {
                     @Override
                     public void onEmojiPopupDismiss() {
                         btnAddEmojicon.setText(getResources().getString(R.string.emojicon_btn_create_status));
-                        drawableProcessHelper.setButtonDrawableFitSize(btnAddEmojicon, R.drawable.ic_lol_96, itemSizeSmall, itemSizeSmall);
+                        drawableHelper.setButtonDrawableFitSize(btnAddEmojicon, R.drawable.ic_lol_96, itemSizeSmall, itemSizeSmall);
                     }
                 }).setOnSoftKeyboardCloseListener(new OnSoftKeyboardCloseListener() {
                     @Override
@@ -321,6 +312,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
             @Override
             public void onErrorResponse(VolleyError error) {
                 RLog.e(error.getMessage());
+
             }
         }) {
             @Override

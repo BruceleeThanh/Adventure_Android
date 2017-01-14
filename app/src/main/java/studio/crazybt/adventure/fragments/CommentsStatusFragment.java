@@ -4,17 +4,13 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,13 +28,9 @@ import com.android.volley.error.VolleyError;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
 import com.vanniktech.emoji.EmojiTextView;
-import com.vanniktech.emoji.emoji.Emoji;
-import com.vanniktech.emoji.listeners.OnEmojiBackspaceClickListener;
-import com.vanniktech.emoji.listeners.OnEmojiClickedListener;
 import com.vanniktech.emoji.listeners.OnEmojiPopupDismissListener;
 import com.vanniktech.emoji.listeners.OnEmojiPopupShownListener;
 import com.vanniktech.emoji.listeners.OnSoftKeyboardCloseListener;
-import com.vanniktech.emoji.listeners.OnSoftKeyboardOpenListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -52,22 +44,21 @@ import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import io.realm.RealmResults;
 import studio.crazybt.adventure.R;
-import studio.crazybt.adventure.activities.HomePageActivity;
 import studio.crazybt.adventure.adapters.CommentStatusListAdapter;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
-import studio.crazybt.adventure.helpers.DrawableProcessHelper;
+import studio.crazybt.adventure.helpers.DrawableHelper;
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.models.CommentStatus;
-import studio.crazybt.adventure.models.StatusShortcut;
+import studio.crazybt.adventure.models.Status;
 import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.CustomRequest;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
+import studio.crazybt.adventure.utils.StringUtil;
 import studio.crazybt.adventure.utils.ToastUtil;
 
 /**
@@ -97,10 +88,10 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
     private EmojiPopup emojiPopup;
     private LinearLayoutManager llmCommentStatus;
     private CommentStatusListAdapter cslaCommentStatus;
-    private DrawableProcessHelper drawableProcessHelper;
+    private DrawableHelper drawableHelper;
     private FragmentController fragmentController;
     private List<CommentStatus> commentStatusList;
-    private StatusShortcut statusShortcut;
+    private Status status;
     private Realm realm;
     private int posItem;
     private Dialog dialog;
@@ -112,7 +103,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
             rootView = inflater.inflate(R.layout.fragment_comments_status, container, false);
             ButterKnife.bind(this, rootView);
             if (getArguments() != null) {
-                statusShortcut = getArguments().getParcelable("data");
+                status = getArguments().getParcelable("data");
             }
             realm = Realm.getDefaultInstance();
             ivEmoticon.setOnClickListener(this);
@@ -133,8 +124,8 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
     }
 
     private void initDrawable() {
-        drawableProcessHelper = new DrawableProcessHelper(rootView);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvCountLike, R.drawable.ic_thumb_up_96, itemSizeMedium, itemSizeMedium);
+        drawableHelper = new DrawableHelper(getContext());
+        drawableHelper.setTextViewDrawableFitSize(tvCountLike, R.drawable.ic_thumb_up_96, itemSizeMedium, itemSizeMedium);
     }
 
     private void initCommentsStatusList() {
@@ -155,12 +146,12 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
     private void loadData() {
         srlComments.setRefreshing(true);
         commentStatusList.clear();
-        tvCountLike.setText(statusShortcut.getAmountLike() + " " + getResources().getString(R.string.count_like_tv_status));
+        tvCountLike.setText(status.getAmountLike() + " " + getResources().getString(R.string.count_like_tv_status));
         final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
         Uri.Builder url = ApiConstants.getApi(ApiConstants.API_BROWSE_COMMENT);
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
-        params.put(ApiConstants.KEY_ID_STATUS, statusShortcut.getId());
+        params.put(ApiConstants.KEY_ID_STATUS, status.getId());
         CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -190,8 +181,8 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
                         commentStatusList.add(new CommentStatus(new User(idUser, firstName, lastName, avatar), id, idStatus, createdAt, content));
                     }
                     cslaCommentStatus.notifyDataSetChanged();
-                    srlComments.setRefreshing(false);
                 }
+                srlComments.setRefreshing(false);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -205,7 +196,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
     private void loadOptionCommentStatus(boolean isOwner, int x, int y) {
         dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_comment_status);
+        dialog.setContentView(R.layout.dialog_option_comment_status);
         dialog.setCanceledOnTouchOutside(true);
         WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
         wmlp.gravity = Gravity.TOP | Gravity.LEFT;
@@ -229,7 +220,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
         switch (view.getId()) {
             case R.id.rlCountLike:
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("data", statusShortcut);
+                bundle.putParcelable("data", status);
                 LikesStatusFragment likesStatusFragment = new LikesStatusFragment();
                 likesStatusFragment.setArguments(bundle);
                 fragmentController = new FragmentController(getActivity());
@@ -240,7 +231,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
                 emojiPopup.toggle();
                 break;
             case R.id.ivSendComment:
-                if (!eetComment.getText().toString().isEmpty())
+                if (!StringUtil.isEmpty(eetEditComment))
                     createComment();
                 else
                     eetComment.setError(getResources().getString(R.string.field_can_not_empty));
@@ -262,7 +253,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
                 break;
             case R.id.btnConfirmEdit:
                 dialog.dismiss();
-                if (!eetEditComment.getText().toString().isEmpty())
+                if (!StringUtil.isEmpty(eetEditComment))
                     editComment();
                 else
                     eetEditComment.setError(getResources().getString(R.string.field_can_not_empty));
@@ -332,7 +323,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
         Uri.Builder url = ApiConstants.getApi(ApiConstants.API_COMMENT_STATUS);
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
-        params.put(ApiConstants.KEY_ID_STATUS, statusShortcut.getId());
+        params.put(ApiConstants.KEY_ID_STATUS, status.getId());
         params.put(ApiConstants.KEY_CONTENT, eetComment.getText().toString());
         CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
             @Override
@@ -372,7 +363,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
         Uri.Builder url = ApiConstants.getApi(ApiConstants.API_COMMENT_EDIT_CONTENT);
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
-        params.put(ApiConstants.KEY_ID_STATUS, statusShortcut.getId());
+        params.put(ApiConstants.KEY_ID_STATUS, status.getId());
         params.put(ApiConstants.KEY_ID_COMMENT, commentStatusList.get(posItem).getId());
         params.put(ApiConstants.KEY_CONTENT, eetEditComment.getText().toString());
         CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
@@ -409,7 +400,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
         Uri.Builder url = ApiConstants.getApi(ApiConstants.API_DELETE_COMMENT);
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
-        params.put(ApiConstants.KEY_ID_STATUS, statusShortcut.getId());
+        params.put(ApiConstants.KEY_ID_STATUS, status.getId());
         params.put(ApiConstants.KEY_ID_COMMENT, commentStatusList.get(posItem).getId());
         CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
             @Override
@@ -420,8 +411,8 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
                     JSONObject status = JsonUtil.getJSONObject(data, ApiConstants.KEY_STATUS);
                     int amountComment = JsonUtil.getInt(status, ApiConstants.KEY_AMOUNT_COMMENT, -1);
                     int isComment = JsonUtil.getInt(data, ApiConstants.KEY_IS_COMMENT, -1);
-                    statusShortcut.setAmountComment(amountComment);
-                    statusShortcut.setIsComment(isComment);
+                    CommentsStatusFragment.this.status.setAmountComment(amountComment);
+                    CommentsStatusFragment.this.status.setIsComment(isComment);
                     commentStatusList.remove(posItem);
                     cslaCommentStatus.notifyDataSetChanged();
                 }

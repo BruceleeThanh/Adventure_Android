@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 
@@ -27,11 +26,10 @@ import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.Notification;
-import studio.crazybt.adventure.models.StatusShortcut;
+import studio.crazybt.adventure.models.Status;
 import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.AdventureRequest;
 import studio.crazybt.adventure.utils.JsonUtil;
-import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
 import studio.crazybt.adventure.utils.ToastUtil;
 
@@ -41,7 +39,7 @@ public class StatusActivity extends SwipeBackActivity {
     private FragmentController fragmentController;
     private static int typeShow = 0;
     StatusDetailFragment statusDetailFragment;
-    StatusShortcut statusShortcut;
+    Status status;
     Realm realm;
 
     @Override
@@ -52,7 +50,7 @@ public class StatusActivity extends SwipeBackActivity {
         Intent intent = getIntent();
         typeShow = intent.getIntExtra("TYPE_SHOW", typeShow);
         if (intent.hasExtra("data")) {
-            statusShortcut = intent.getParcelableExtra("data");
+            status = intent.getParcelableExtra("data");
             this.remoteShow(typeShow);
         } else if (intent.hasExtra("data_notify")) {
             Notification notification = intent.getParcelableExtra("data_notify");
@@ -86,7 +84,7 @@ public class StatusActivity extends SwipeBackActivity {
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             if (typeShow == 1) {
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("result", statusDetailFragment.getStatusShortcut());
+                returnIntent.putExtra("result", statusDetailFragment.getStatus());
                 setResult(Activity.RESULT_OK, returnIntent);
             }
             finish();
@@ -156,7 +154,7 @@ public class StatusActivity extends SwipeBackActivity {
                     }
                 }
 
-                statusShortcut = new StatusShortcut(new User(idUser, firstName, lastName, avatar), idStatus, createdAt, content, permission,
+                status = new Status(new User(idUser, firstName, lastName, avatar), idStatus, createdAt, content, permission,
                         type, amountLike, amountComment, isLike, isComment, imageContents);
                 remoteShow(typeShow);
             }
@@ -170,7 +168,7 @@ public class StatusActivity extends SwipeBackActivity {
 
     private void showStatusDetail() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("data", statusShortcut);
+        bundle.putParcelable("data", status);
         statusDetailFragment = new StatusDetailFragment();
         statusDetailFragment.setArguments(bundle);
         fragmentController = new FragmentController(this);
@@ -180,7 +178,7 @@ public class StatusActivity extends SwipeBackActivity {
 
     private void showStatusLikes() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("data", statusShortcut);
+        bundle.putParcelable("data", status);
         LikesStatusFragment likesStatusFragment = new LikesStatusFragment();
         likesStatusFragment.setArguments(bundle);
         fragmentController = new FragmentController(this);
@@ -190,7 +188,7 @@ public class StatusActivity extends SwipeBackActivity {
 
     private void showStatusComments() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("data", statusShortcut);
+        bundle.putParcelable("data", status);
         CommentsStatusFragment commentsStatusFragment = new CommentsStatusFragment();
         commentsStatusFragment.setArguments(bundle);
         fragmentController = new FragmentController(this);

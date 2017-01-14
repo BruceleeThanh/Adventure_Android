@@ -2,6 +2,7 @@ package studio.crazybt.adventure.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -13,21 +14,37 @@ import io.realm.annotations.PrimaryKey;
 public class User extends RealmObject implements Parcelable {
     @PrimaryKey
     private String id;
+
     private String firstName;
+
     private String lastName;
+    @Nullable
     private String password;
+    @Nullable
     private String email;
+    @Nullable
     private String phoneNumber;
+
     private int gender;
+    @Nullable
     private String birthday;
+    @Nullable
     private String address;
+    @Nullable
     private String religion;
+    @Nullable
     private String intro;
+    @Nullable
     private String fbId;
+
     private String avatar;
+    @Nullable
     private String cover;
+    @Nullable
     private String createAt;
+    @Nullable
     private String lastVisitedAt;
+
     private int isFriend;
 
     public User() {
@@ -37,20 +54,42 @@ public class User extends RealmObject implements Parcelable {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.password = null;
+        this.email = null;
+        this.phoneNumber = null;
+        this.birthday = null;
+        this.address = null;
+        this.religion = null;
+        this.intro = null;
+        this.fbId = null;
         this.avatar = avatar;
+        this.cover = null;
+        this.createAt = null;
+        this.lastVisitedAt = null;
     }
 
     public User(String id, String firstName, String lastName, String avatar, int isFriend) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.password = null;
+        this.email = null;
+        this.phoneNumber = null;
+        this.birthday = null;
+        this.address = null;
+        this.religion = null;
+        this.intro = null;
+        this.fbId = null;
         this.avatar = avatar;
+        this.cover = null;
+        this.createAt = null;
+        this.lastVisitedAt = null;
         this.isFriend = isFriend;
     }
 
-    public User(String id, String firstName, String lastName, String password, String email, String phoneNumber, int gender,
-                String birthday, String address, String religion, String intro, String fbId, String avatar, String cover,
-                String createAt, String lastVisitedAt) {
+    public User(String id, String firstName, String lastName, @Nullable String password, @Nullable String email, @Nullable String phoneNumber,
+                int gender, @Nullable String birthday, @Nullable String address, @Nullable String religion, @Nullable String intro,
+                @Nullable String fbId, String avatar, @Nullable String cover, @Nullable String createAt, @Nullable String lastVisitedAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -69,7 +108,10 @@ public class User extends RealmObject implements Parcelable {
         this.lastVisitedAt = lastVisitedAt;
     }
 
-    public User(String id, String firstName, String lastName, String password, String email, String phoneNumber, int gender, String birthday, String address, String religion, String intro, String fbId, String avatar, String cover, String createAt, String lastVisitedAt, int isFriend) {
+    public User(String id, String firstName, String lastName, @Nullable String password, @Nullable String email, @Nullable String phoneNumber,
+                int gender, @Nullable String birthday, @Nullable String address, @Nullable String religion, @Nullable String intro,
+                @Nullable String fbId, String avatar, @Nullable String cover, @Nullable String createAt, @Nullable String lastVisitedAt,
+                int isFriend) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -113,27 +155,30 @@ public class User extends RealmObject implements Parcelable {
         this.lastName = lastName;
     }
 
+    @Nullable
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@Nullable String password) {
         this.password = password;
     }
 
+    @Nullable
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@Nullable String email) {
         this.email = email;
     }
 
+    @Nullable
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(@Nullable String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -145,43 +190,48 @@ public class User extends RealmObject implements Parcelable {
         this.gender = gender;
     }
 
+    @Nullable
     public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(@Nullable String birthday) {
         this.birthday = birthday;
     }
 
+    @Nullable
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(@Nullable String address) {
         this.address = address;
     }
 
+    @Nullable
     public String getReligion() {
         return religion;
     }
 
-    public void setReligion(String religion) {
+    public void setReligion(@Nullable String religion) {
         this.religion = religion;
     }
 
+    @Nullable
     public String getIntro() {
         return intro;
     }
 
-    public void setIntro(String intro) {
+    public void setIntro(@Nullable String intro) {
         this.intro = intro;
     }
 
+    @Nullable
     public String getFbId() {
         return fbId;
     }
 
-    public void setFbId(String fbId) {
+    public void setFbId(@Nullable String fbId) {
         this.fbId = fbId;
     }
 
@@ -193,27 +243,30 @@ public class User extends RealmObject implements Parcelable {
         this.avatar = avatar;
     }
 
+    @Nullable
     public String getCover() {
         return cover;
     }
 
-    public void setCover(String cover) {
+    public void setCover(@Nullable String cover) {
         this.cover = cover;
     }
 
+    @Nullable
     public String getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(String createAt) {
+    public void setCreateAt(@Nullable String createAt) {
         this.createAt = createAt;
     }
 
+    @Nullable
     public String getLastVisitedAt() {
         return lastVisitedAt;
     }
 
-    public void setLastVisitedAt(String lastVisitedAt) {
+    public void setLastVisitedAt(@Nullable String lastVisitedAt) {
         this.lastVisitedAt = lastVisitedAt;
     }
 

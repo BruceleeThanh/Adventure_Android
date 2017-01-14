@@ -4,27 +4,27 @@
               android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tvPeriodCalendar"
+        android:id="@+id/tvPeriodRoute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="15/08 - 20/08"
         android:textStyle="bold"
         android:textColor="@color/primary_text"/>
     <TextView
-        android:id="@+id/tvTitleCalendar"
+        android:id="@+id/tvTitleRoute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvPeriodCalendar"
+        android:layout_below="@+id/tvPeriodRoute"
         android:layout_marginTop="@dimen/margin_small"
         android:text="Phan Rang - Đầm Môn (Khánh Hoà) - 194Km"
         android:textColor="@color/primary_text"
         android:textAllCaps="true"/>
 
     <TextView
-        android:id="@+id/tvContentCalendar"
+        android:id="@+id/tvContentRoute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTitleCalendar"
+        android:layout_below="@+id/tvTitleRoute"
         android:layout_marginTop="@dimen/margin_small"
         android:text="Hang Bái\nVịnh Vĩnh Hy\nNghỉ đêm đầm môn. Chuẩn bị sáng Trek cực Đông."
         android:textColor="@color/primary_text"/>
@@ -33,7 +33,7 @@
         android:id="@+id/vLine"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/tvContentCalendar"
+        android:layout_below="@id/tvContentRoute"
         android:layout_marginTop="@dimen/margin_medium"
         android:layout_marginBottom="@dimen/margin_medium"
         android:background="@drawable/partition_gray_line_horizontal"/>

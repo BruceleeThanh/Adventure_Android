@@ -32,10 +32,10 @@ public class TripActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Đi đi lại lại Hà Nội - Sài Gòn 15/08 - 15/09");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        this.setTablayout();
+        this.initTablayout();
     }
 
-    public void setTablayout(){
+    public void initTablayout(){
         tlTrip = (TabLayout) findViewById(R.id.tlTrip);
         tlTrip.setTabGravity(TabLayout.GRAVITY_FILL);
         ViewPager vpTrip = (ViewPager) findViewById(R.id.vpTrip);
@@ -46,7 +46,20 @@ public class TripActivity extends AppCompatActivity {
         tabLayoutAdapter.addFragment(new TabDiaryTripFragment(), getResources().getString(R.string.diary_tablayout_trip));
         tabLayoutAdapter.addFragment(new TabMembersTripFragment(), getResources().getString(R.string.members_tablayout_trip));
         vpTrip.setAdapter(tabLayoutAdapter);
+        vpTrip.setOffscreenPageLimit(4);
         tlTrip.setupWithViewPager(vpTrip);
+    }
+
+    public void loadData(){
+
+    }
+
+    public void getParams(){
+
+    }
+
+    public void getResponse(){
+
     }
 
     @Override

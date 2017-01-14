@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,9 +35,9 @@ import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.adapters.ImageStatusDetailListAdapter;
-import studio.crazybt.adventure.helpers.DrawableProcessHelper;
+import studio.crazybt.adventure.helpers.DrawableHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
-import studio.crazybt.adventure.models.StatusShortcut;
+import studio.crazybt.adventure.models.Status;
 import studio.crazybt.adventure.services.CustomRequest;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
@@ -54,10 +52,10 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
     private View rootView;
     private LinearLayoutManager llmImageStatusDetail;
     private ImageStatusDetailListAdapter isdlaImageStatusDetail;
-    private DrawableProcessHelper drawableProcessHelper;
+    private DrawableHelper drawableHelper;
     private FragmentController fragmentController;
 
-    private StatusShortcut statusShortcut;
+    private Status status;
 
     @BindView(R.id.rvImageStatusDetail)
     RecyclerView rvImageStatusDetail;
@@ -99,7 +97,7 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
             tvCountLike.setOnClickListener(this);
             tvCountComment.setOnClickListener(this);
             tvComment.setOnClickListener(this);
-            statusShortcut = getArguments().getParcelable("data");
+            status = getArguments().getParcelable("data");
             this.initDrawable();
             this.initImageStatusDetailList();
             this.loadData();
@@ -108,31 +106,31 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
     }
 
     private void initDrawable(){
-        drawableProcessHelper = new DrawableProcessHelper(rootView);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvCountLike, R.drawable.ic_thumb_up_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvCountComment, R.drawable.ic_chat_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper = new DrawableHelper(getContext());
+        drawableHelper.setTextViewDrawableFitSize(tvCountLike, R.drawable.ic_thumb_up_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvCountComment, R.drawable.ic_chat_96, itemSizeSmall, itemSizeSmall);
     }
 
     private void loadData(){
-        tvProfileName.setText(statusShortcut.getUser().getFirstName() + " " + statusShortcut.getUser().getLastName());
-        if (statusShortcut.getPermission() == 1) {
+        tvProfileName.setText(status.getUser().getFirstName() + " " + status.getUser().getLastName());
+        if (status.getPermission() == 1) {
             ivPermission.setImageResource(R.drawable.ic_private_96);
-        } else if (statusShortcut.getPermission() == 2) {
+        } else if (status.getPermission() == 2) {
             ivPermission.setImageResource(R.drawable.ic_friend_96);
-        } else if (statusShortcut.getPermission() == 3) {
+        } else if (status.getPermission() == 3) {
             ivPermission.setImageResource(R.drawable.ic_public_96);
         }
-        if(statusShortcut.getIsLike() == 0){
+        if(status.getIsLike() == 0){
             cbLike.setChecked(false);
             cbLike.setTextColor(getResources().getColor(R.color.secondary_text));
-        }else if(statusShortcut.getIsLike() == 1){
+        }else if(status.getIsLike() == 1){
             cbLike.setChecked(true);
             cbLike.setTextColor(getResources().getColor(R.color.primary));
         }
-        tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(statusShortcut.getCreatedAt()));
-        tvCountLike.setText(String.valueOf(statusShortcut.getAmountLike()));
-        tvCountComment.setText(String.valueOf(statusShortcut.getAmountComment()));
-        if(statusShortcut.getIsComment() == 1){
+        tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(status.getCreatedAt()));
+        tvCountLike.setText(String.valueOf(status.getAmountLike()));
+        tvCountComment.setText(String.valueOf(status.getAmountComment()));
+        if(status.getIsComment() == 1){
             Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_chat_bubble_green_24dp);
             tvComment.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
             tvComment.setTextColor(getResources().getColor(R.color.primary));
@@ -141,23 +139,23 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
             tvComment.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
             tvComment.setTextColor(getResources().getColor(R.color.secondary_text));
         }
-        if(statusShortcut.getContent().equals("") || statusShortcut.getContent() == null){
+        if(status.getContent().equals("") || status.getContent() == null){
             tvContentStatus.setVisibility(View.GONE);
         }else{
-            tvContentStatus.setText(statusShortcut.getContent());
+            tvContentStatus.setText(status.getContent());
         }
     }
 
     private void initImageStatusDetailList() {
         llmImageStatusDetail = new LinearLayoutManager(rootView.getContext());
         rvImageStatusDetail.setLayoutManager(llmImageStatusDetail);
-        isdlaImageStatusDetail = new ImageStatusDetailListAdapter(rootView.getContext(), statusShortcut.getImageContents());
+        isdlaImageStatusDetail = new ImageStatusDetailListAdapter(rootView.getContext(), status.getImageContents());
         rvImageStatusDetail.setAdapter(isdlaImageStatusDetail);
         isdlaImageStatusDetail.notifyDataSetChanged();
     }
 
-    public StatusShortcut getStatusShortcut(){
-        return statusShortcut;
+    public Status getStatus(){
+        return status;
     }
 
     @Override
@@ -184,7 +182,7 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
                 Uri.Builder url = ApiConstants.getApi(ApiConstants.API_LIKE_STATUS);
                 Map<String, String> params = new HashMap<>();
                 params.put(ApiConstants.KEY_TOKEN, token);
-                params.put(ApiConstants.KEY_ID_STATUS, statusShortcut.getId());
+                params.put(ApiConstants.KEY_ID_STATUS, status.getId());
                 CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -194,11 +192,11 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
                             int amountLike = JsonUtil.getInt(status, ApiConstants.KEY_AMOUNT_LIKE, -1);
                             int isLike = JsonUtil.getInt(data, ApiConstants.KEY_IS_LIKE, -1);
                             if (amountLike != -1) {
-                                statusShortcut.setAmountLike(amountLike);
+                                StatusDetailFragment.this.status.setAmountLike(amountLike);
                                 tvCountLike.setText(String.valueOf(amountLike));
                             }
                             if (isLike != -1) {
-                                statusShortcut.setIsLike(isLike);
+                                StatusDetailFragment.this.status.setIsLike(isLike);
                                 if(isLike == 0){
                                     cbLike.setChecked(false);
                                     cbLike.setTextColor(getResources().getColor(R.color.secondary_text));
@@ -219,7 +217,7 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.tvCountLike:
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("data", statusShortcut);
+                bundle.putParcelable("data", status);
                 LikesStatusFragment likesStatusFragment = new LikesStatusFragment();
                 likesStatusFragment.setArguments(bundle);
                 fragmentController = new FragmentController(getActivity());
@@ -228,7 +226,7 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.tvCountComment:
                 Bundle bundle1 = new Bundle();
-                bundle1.putParcelable("data", statusShortcut);
+                bundle1.putParcelable("data", status);
                 CommentsStatusFragment commentsStatusFragment = new CommentsStatusFragment();
                 commentsStatusFragment.setArguments(bundle1);
                 fragmentController = new FragmentController(getActivity());
@@ -237,7 +235,7 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.tvComment:
                 Bundle bundle2 = new Bundle();
-                bundle2.putParcelable("data", statusShortcut);
+                bundle2.putParcelable("data", status);
                 CommentsStatusFragment commentsStatusFragment1 = new CommentsStatusFragment();
                 commentsStatusFragment1.setArguments(bundle2);
                 fragmentController = new FragmentController(getActivity());

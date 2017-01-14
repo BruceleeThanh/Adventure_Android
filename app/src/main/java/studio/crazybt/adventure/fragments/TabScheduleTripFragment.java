@@ -14,8 +14,8 @@ import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
-import studio.crazybt.adventure.adapters.CalendarScheduleTripListAdapter;
-import studio.crazybt.adventure.helpers.DrawableProcessHelper;
+import studio.crazybt.adventure.adapters.RouteScheduleTripListAdapter;
+import studio.crazybt.adventure.helpers.DrawableHelper;
 
 /**
  * Created by Brucelee Thanh on 12/09/2016.
@@ -59,8 +59,8 @@ public class TabScheduleTripFragment extends Fragment {
     float fiveStarHeight;
 
     private LinearLayoutManager llmCalendar;
-    private CalendarScheduleTripListAdapter cstlaAdapter;
-    private DrawableProcessHelper drawableProcessHelper;
+    private RouteScheduleTripListAdapter cstlaAdapter;
+    private DrawableHelper drawableHelper;
 
     @Nullable
     @Override
@@ -75,26 +75,26 @@ public class TabScheduleTripFragment extends Fragment {
     }
 
     private void setTripSchedule() {
-        drawableProcessHelper = new DrawableProcessHelper(rootView);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleJoiner, R.drawable.ic_airplane_take_off_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleCountInterested, R.drawable.ic_like_filled_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleRate, R.drawable.ic_five_star_96, fiveStarWidth, fiveStarHeight);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleTripName, R.drawable.ic_signpost_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleTripDescription, R.drawable.ic_information_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleTripStartPosition, R.drawable.ic_flag_filled_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleTripPeriod, R.drawable.ic_clock_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleTripDestination, R.drawable.ic_marker_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleTripMoney, R.drawable.ic_money_bag_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleTripMember, R.drawable.ic_user_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleTripVehicle, R.drawable.ic_vehicle_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleTripToolbox, R.drawable.ic_toolbox_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvScheduleTripNote, R.drawable.ic_note_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper = new DrawableHelper(getContext());
+        drawableHelper.setTextViewDrawableFitSize(tvScheduleJoiner, R.drawable.ic_airplane_take_off_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvScheduleCountInterested, R.drawable.ic_like_filled_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvScheduleRate, R.drawable.ic_five_star_96, fiveStarWidth, fiveStarHeight);
+        drawableHelper.setTextViewDrawableFitSize(tvScheduleTripName, R.drawable.ic_signpost_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvScheduleTripDescription, R.drawable.ic_information_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvScheduleTripStartPosition, R.drawable.ic_flag_filled_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvScheduleTripPeriod, R.drawable.ic_clock_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvScheduleTripDestination, R.drawable.ic_marker_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvScheduleTripMoney, R.drawable.ic_money_bag_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvScheduleTripMember, R.drawable.ic_user_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvScheduleTripVehicle, R.drawable.ic_vehicle_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvScheduleTripToolbox, R.drawable.ic_toolbox_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvScheduleTripNote, R.drawable.ic_note_96, itemSizeSmall, itemSizeSmall);
     }
 
     private void initCalendarList() {
         llmCalendar = new LinearLayoutManager(getContext());
         rvScheduleTripCalendar.setLayoutManager(llmCalendar);
-        cstlaAdapter = new CalendarScheduleTripListAdapter(getContext());
+        cstlaAdapter = new RouteScheduleTripListAdapter(getContext());
         rvScheduleTripCalendar.setAdapter(cstlaAdapter);
 //      Don't work
         int height = llmCalendar.getHeight();

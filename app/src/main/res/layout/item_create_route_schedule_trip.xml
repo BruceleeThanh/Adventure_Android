@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/etStartTimeRoute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:background="@drawable/selector_gray_white_tv"
+        android:clickable="true"
+        android:editable="false"
+        android:focusable="false"
+        android:hint="@string/start_time_create_trip"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/txt_mid_medium"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/etEndTimeRoute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/etStartTimeRoute"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_toRightOf="@+id/etStartTimeRoute"
+        android:background="@drawable/selector_gray_white_tv"
+        android:clickable="true"
+        android:editable="false"
+        android:focusable="false"
+        android:hint="@string/end_time_create_trip"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/txt_mid_medium"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/ivDeleteRoute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/selector_gray_white_tv"
+        android:clickable="true"
+        android:padding="@dimen/margin_medium"
+        android:src="@drawable/ic_clear_grey_600_18dp"/>
+
+
+    <EditText
+        android:id="@+id/etTitleRoute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etStartTimeRoute"
+        android:layout_alignLeft="@+id/etStartTimeRoute"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:hint="@string/title_schedule_create_trip"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/txt_mid_medium"
+        android:gravity="top"
+        android:background="@android:color/transparent"/>
+
+    <EditText
+        android:id="@+id/etContentRoute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etStartTimeRoute"
+        android:layout_below="@+id/etTitleRoute"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:background="@android:color/transparent"
+        android:hint="@string/content_schedule_create_trip"
+        android:gravity="top"
+        android:minHeight="@dimen/min_height_et"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/txt_mid_medium"/>
+
+    <View
+        android:id="@+id/vLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/etContentRoute"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:background="@drawable/partition_gray_line_horizontal"/>
+
+</RelativeLayout>

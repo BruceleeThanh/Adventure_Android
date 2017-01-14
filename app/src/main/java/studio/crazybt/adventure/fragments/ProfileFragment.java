@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
-import com.android.volley.request.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,11 +29,11 @@ import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.adapters.NewfeedListAdapter;
-import studio.crazybt.adventure.helpers.DrawableProcessHelper;
+import studio.crazybt.adventure.helpers.DrawableHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.models.ImageContent;
-import studio.crazybt.adventure.models.StatusShortcut;
+import studio.crazybt.adventure.models.Status;
 import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.CustomRequest;
 import studio.crazybt.adventure.services.MySingleton;
@@ -61,12 +60,12 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.rvTimeline)
     RecyclerView rvTimeline;
 
-    private DrawableProcessHelper drawableProcessHelper;
+    private DrawableHelper drawableHelper;
 
     private LinearLayoutManager llmTimeline;
     private NewfeedListAdapter nlaTimeline;
 
-    private List<StatusShortcut> statusShortcuts;
+    private List<Status> statuses;
 
 
     @Nullable
@@ -96,23 +95,23 @@ public class ProfileFragment extends Fragment {
     private void initDrawable() {
         double itemSizeSmall = getResources().getDimension(R.dimen.item_icon_size_small);
 
-        drawableProcessHelper = new DrawableProcessHelper(rootView);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvIntroHostTrip, R.drawable.ic_trekking_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvIntroJoinTrip, R.drawable.ic_suitcase_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvIntroPlace, R.drawable.ic_geo_fence_96, itemSizeSmall, itemSizeSmall);
-        drawableProcessHelper.setTextViewDrawableFitSize(tvIntroFollowing, R.drawable.ic_appointment_reminders_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper = new DrawableHelper(getContext());
+        drawableHelper.setTextViewDrawableFitSize(tvIntroHostTrip, R.drawable.ic_trekking_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvIntroJoinTrip, R.drawable.ic_suitcase_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvIntroPlace, R.drawable.ic_geo_fence_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setTextViewDrawableFitSize(tvIntroFollowing, R.drawable.ic_appointment_reminders_96, itemSizeSmall, itemSizeSmall);
     }
 
     public void initTimeline() {
-        statusShortcuts = new ArrayList<>();
+        statuses = new ArrayList<>();
         llmTimeline = new LinearLayoutManager(getContext());
         rvTimeline.setLayoutManager(llmTimeline);
-        nlaTimeline = new NewfeedListAdapter(this.getContext(), statusShortcuts);
+        nlaTimeline = new NewfeedListAdapter(this.getContext(), statuses);
         rvTimeline.setAdapter(nlaTimeline);
     }
 
     private void loadData(String idUser) {
-        statusShortcuts.clear();
+        statuses.clear();
         final ApiConstants apiConstants = new ApiConstants();
         final String token = SharedPref.getInstance(getContext()).getString(apiConstants.KEY_TOKEN, "");
         final JsonUtil jsonUtil = new JsonUtil();
@@ -151,8 +150,8 @@ public class ProfileFragment extends Fragment {
                                         jsonUtil.getString(image, apiConstants.KEY_DESCRIPTION, "")));
                             }
                         }
-                        statusShortcuts.add(
-                                new StatusShortcut(new User(id, firstName, lastName, ""),
+                        statuses.add(
+                                new Status(new User(id, firstName, lastName, ""),
                                         createdAt,
                                         content,
                                         imageContents));

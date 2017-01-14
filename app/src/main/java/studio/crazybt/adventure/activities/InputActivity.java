@@ -13,13 +13,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.fragments.CreateStatusFragment;
+import studio.crazybt.adventure.fragments.CreateTripFragment;
 import studio.crazybt.adventure.helpers.FragmentController;
+import studio.crazybt.adventure.services.AdventureRequest;
 
 public class InputActivity extends AppCompatActivity {
 
     private static int typeShow = 0;
     private FragmentController fragmentController;
     private CreateStatusFragment createStatusFragment;
+    private CreateTripFragment createTripFragment;
 
     @BindView(R.id.tbInput)
     Toolbar tbInput;
@@ -33,19 +36,19 @@ public class InputActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         typeShow = intent.getIntExtra("TYPE_SHOW", typeShow);
-        switch (typeShow){
+        switch (typeShow) {
             case 1:
-                this.showCreateStatus();
+                this.initCreateStatus();
                 break;
             case 2:
-
+                this.initCreateTrip();
                 break;
             default:
                 break;
         }
     }
 
-    private void showCreateStatus(){
+    private void initCreateStatus() {
         createStatusFragment = new CreateStatusFragment();
         getSupportActionBar().setTitle(getResources().getString(R.string.title_tb_create_status));
         fragmentController = new FragmentController(this);
@@ -53,14 +56,20 @@ public class InputActivity extends AppCompatActivity {
         fragmentController.commit();
     }
 
+    private void initCreateTrip() {
+        createTripFragment = new CreateTripFragment();
+        getSupportActionBar().setTitle(getResources().getString(R.string.title_tb_create_trip));
+        fragmentController = new FragmentController(this);
+        fragmentController.addFragment_BackStack(R.id.rlInput, createTripFragment);
+        fragmentController.commit();
+    }
 
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1){
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -73,14 +82,27 @@ public class InputActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 break;
             case R.id.itemPost:
-                item.setEnabled(false);
-                createStatusFragment.uploadStatus();
+                if (typeShow == 1) {
+                    item.setEnabled(false);
+                    createStatusFragment.uploadStatus();
+                } else if (typeShow == 2) {
+                    createTripFragment.uploadTrip();
+                    if(createTripFragment.getRequest() != null) {
+                        item.setEnabled(false);
+                        createTripFragment.getRequest().setOnNotifyResponseReceived(new AdventureRequest.OnNotifyResponseReceived() {
+                            @Override
+                            public void onNotify() {
+                                item.setEnabled(true);
+                            }
+                        });
+                    }
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);

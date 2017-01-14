@@ -21,12 +21,4 @@
             android:scrollbars="none"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <ProgressBar
-        android:id="@+id/pbPublicTrips"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="15dp"
-        android:visibility="gone"/>
-
 </RelativeLayout>

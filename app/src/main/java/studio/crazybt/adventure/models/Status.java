@@ -2,23 +2,28 @@ package studio.crazybt.adventure.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Brucelee Thanh on 13/10/2016.
  */
 
-public class StatusShortcut implements Parcelable {
+public class Status implements Parcelable {
     @PrimaryKey
     private String id;
+    @Nullable
+    private String idGroup;
+    @Nullable
+    private String idTrip;
 
     private User user;
+
     private String createdAt;
+    @Nullable
     private String content;
     private int permission;
     private int type;
@@ -26,21 +31,22 @@ public class StatusShortcut implements Parcelable {
     private int amountComment;
     private int isLike;
     private int isComment;
+    @Nullable
     private List<ImageContent> imageContents;
 
-    public StatusShortcut() {
+    public Status() {
 
     }
 
-    public StatusShortcut(User user, String createdAt, String content, List<ImageContent> imageContents) {
+    public Status(User user, String createdAt, @Nullable String content, @Nullable List<ImageContent> imageContents) {
         this.user = user;
         this.createdAt = createdAt;
         this.content = content;
         this.imageContents = imageContents;
     }
 
-    public StatusShortcut(User user, String id, String createdAt, String content, int permission, int type, int amountLike,
-                          int amountComment, int isLike, int isComment, List<ImageContent> imageContents) {
+    public Status(User user, String id, String createdAt, @Nullable String content, int permission, int type, int amountLike,
+                  int amountComment, int isLike, int isComment, @Nullable List<ImageContent> imageContents) {
         this.user = user;
         this.id = id;
         this.createdAt = createdAt;
@@ -52,6 +58,24 @@ public class StatusShortcut implements Parcelable {
         this.isLike = isLike;
         this.isComment = isComment;
         this.imageContents = imageContents;
+    }
+
+    @Nullable
+    public String getIdGroup() {
+        return idGroup;
+    }
+
+    public void setIdGroup(@Nullable String idGroup) {
+        this.idGroup = idGroup;
+    }
+
+    @Nullable
+    public String getIdTrip() {
+        return idTrip;
+    }
+
+    public void setIdTrip(@Nullable String idTrip) {
+        this.idTrip = idTrip;
     }
 
     public User getUser() {
@@ -78,11 +102,12 @@ public class StatusShortcut implements Parcelable {
         this.createdAt = createdAt;
     }
 
+    @Nullable
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(@Nullable String content) {
         this.content = content;
     }
 
@@ -134,11 +159,12 @@ public class StatusShortcut implements Parcelable {
         this.isComment = isComment;
     }
 
+    @Nullable
     public List<ImageContent> getImageContents() {
         return imageContents;
     }
 
-    public void setImageContents(List<ImageContent> imageContents) {
+    public void setImageContents(@Nullable List<ImageContent> imageContents) {
         this.imageContents = imageContents;
     }
 
@@ -163,7 +189,7 @@ public class StatusShortcut implements Parcelable {
         dest.writeTypedList(this.imageContents);
     }
 
-    protected StatusShortcut(Parcel in) {
+    protected Status(Parcel in) {
         this.user = in.readParcelable(User.class.getClassLoader());
         this.id = in.readString();
         this.createdAt = in.readString();
@@ -177,15 +203,15 @@ public class StatusShortcut implements Parcelable {
         this.imageContents = in.createTypedArrayList(ImageContent.CREATOR);
     }
 
-    public static final Creator<StatusShortcut> CREATOR = new Creator<StatusShortcut>() {
+    public static final Creator<Status> CREATOR = new Creator<Status>() {
         @Override
-        public StatusShortcut createFromParcel(Parcel source) {
-            return new StatusShortcut(source);
+        public Status createFromParcel(Parcel source) {
+            return new Status(source);
         }
 
         @Override
-        public StatusShortcut[] newArray(int size) {
-            return new StatusShortcut[size];
+        public Status[] newArray(int size) {
+            return new Status[size];
         }
     };
 }

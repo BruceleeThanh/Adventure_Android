@@ -29,6 +29,8 @@ public class ApiConstants {
     public static final String API_COMMENT_EDIT_CONTENT = "comment_status/edit_content";
     public static final String API_DELETE_COMMENT = "comment_status/delete";
     public static final String API_BROWSE_NOTIFICATION = "notification/browse";
+    public static final String API_VIEWED_NOTIFICATION = "notification/viewed";
+    public static final String API_CLICKED_NOTIFICATION = "notification/clicked";
     public static final String API_TIME_LINE = "news/time_line";
     public static final String API_NEWS_FEED = "news/news_feed";
     public static final String API_SUGGEST_FRIEND = "friend/suggest_friend";
@@ -36,6 +38,9 @@ public class ApiConstants {
     public static final String API_SEND_REQUEST_FRIEND = "friend_request/send_request";
     public static final String API_BROWSE_REQUEST_FRIEND = "friend_request/browse";
     public static final String API_CONFIRM_REQUEST_FRIEND = "friend_request/confirm";
+    public static final String API_CREATE_TRIP = "trip/create";
+    public static final String API_BROWSE_TRIP = "trip/browse";
+    public static final String API_CREATE_PLACE_TRIP_MAP = "trip_map/create_place";
 
     // Default params
     public static final String DEF_CODE = "code";
@@ -48,6 +53,8 @@ public class ApiConstants {
     public static final String KEY_ID = "_id";
     public static final String KEY_ID_STATUS = "id_status";
     public static final String KEY_ID_COMMENT = "id_comment";
+    public static final String KEY_ID_GROUP = "id_group";
+    public static final String KEY_ID_TRIP = "id_trip";
     public static final String KEY_PHONE_NUMBER_EMAIL = "phone_number_email";
     public static final String KEY_PHONE_NUMBER = "phone_number";
     public static final String KEY_EMAIL = "email";
@@ -91,6 +98,26 @@ public class ApiConstants {
     public static final String KEY_CLICKED = "clicked";
     public static final String KEY_VIEWED = "viewed";
     public static final String KEY_FCM_CONTENT = "fcm_content";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_START_AT = "start_at";
+    public static final String KEY_END_AT = "end_at";
+    public static final String KEY_START_POSITION = "start_position";
+    public static final String KEY_DESTINATION_SUMMARY = "destination_summary";
+    public static final String KEY_EXPENSE = "expense";
+    public static final String KEY_AMOUNT_PEOPLE = "amount_people";
+    public static final String KEY_AMOUNT_MEMBER = "amount_member";
+    public static final String KEY_AMOUNT_INTERESTED = "amount_interested";
+    public static final String KEY_AMOUNT_RATING = "amount_rating";
+    public static final String KEY_RATING = "rating";
+    public static final String KEY_VEHICLES = "vehicles";
+    public static final String KEY_ROUTES = "routes";
+    public static final String KEY_PREPARE = "prepare";
+    public static final String KEY_NOTE = "note";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_ORDER = "order";
+    public static final String KEY_LATITUDE = "latitude";
+    public static final String KEY_LONGITUDE = "longitude";
+
 
     public ApiConstants() {
     }
@@ -113,6 +140,10 @@ public class ApiConstants {
             builder.appendPath(path);
         }
         return builder;
+    }
+
+    public static String getUrl(String path){
+        return getApi(path).build().toString();
     }
 
 }

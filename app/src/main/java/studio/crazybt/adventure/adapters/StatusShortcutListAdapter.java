@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.activities.StatusActivity;
-import studio.crazybt.adventure.helpers.DrawableProcessHelper;
+import studio.crazybt.adventure.helpers.DrawableHelper;
 import studio.crazybt.adventure.helpers.FragmentController;
 
 /**
@@ -131,7 +131,7 @@ public class StatusShortcutListAdapter extends RecyclerView.Adapter<StatusShortc
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public View itemView;
-        public DrawableProcessHelper drawableProcessHelper;
+        public DrawableHelper drawableHelper;
 
         @BindView(R.id.ivProfileImage)
         ImageView ivProfileImage;
@@ -158,9 +158,9 @@ public class StatusShortcutListAdapter extends RecyclerView.Adapter<StatusShortc
             super(itemView);
             this.itemView = itemView;
             ButterKnife.bind(this, itemView);
-            drawableProcessHelper = new DrawableProcessHelper(itemView);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvCountLike, R.drawable.ic_thumb_up_96, itemSizeSmall, itemSizeSmall);
-            drawableProcessHelper.setTextViewDrawableFitSize(tvCountComment, R.drawable.ic_chat_96, itemSizeSmall, itemSizeSmall);
+            drawableHelper = new DrawableHelper(itemView.getContext());
+            drawableHelper.setTextViewDrawableFitSize(tvCountLike, R.drawable.ic_thumb_up_96, itemSizeSmall, itemSizeSmall);
+            drawableHelper.setTextViewDrawableFitSize(tvCountComment, R.drawable.ic_chat_96, itemSizeSmall, itemSizeSmall);
         }
     }
 }

@@ -1,5 +1,7 @@
 package studio.crazybt.adventure.helpers;
 
+import android.text.format.DateUtils;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +18,8 @@ public class ConvertTimeHelper {
 
     public static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String UTC_FORMAT = "UTC";
-    public static final String DATE_FORMAT = "dd/MM/yyyy HH:mm";
+    public static final String DATE_FORMAT_1 = "dd/MM/yyyy HH:mm";
+    public static final String DATE_FORMAT_2 = "dd/MM/yyyy";
     public static final String TIME_FORMAT = "HH:mm";
 
     public static final String TODAY = "Hôm nay, ";
@@ -25,13 +28,9 @@ public class ConvertTimeHelper {
     public static final String MINUTE_LATER = " phút trước";
     public static final String JUST_NOW = "Vừa xong";
 
-    public ConvertTimeHelper() {
-
-    }
-
-    public String convertISODateToString(String timeStamp) {
+    public static String convertISODateToString(String timeStamp) {
         DateFormat isoFormat = new SimpleDateFormat(ISO_DATE_FORMAT);
-        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_1);
         isoFormat.setTimeZone(TimeZone.getTimeZone(UTC_FORMAT));
         try {
             Date date = isoFormat.parse(timeStamp);
@@ -44,12 +43,12 @@ public class ConvertTimeHelper {
         return null;
     }
 
-    public String convertISODateToPrettyTimeStamp(String timeStamp) {
+    public static String convertISODateToPrettyTimeStamp(String timeStamp) {
         if (!(timeStamp == null || timeStamp.isEmpty())) {
 
             DateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
-            DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-            String dateString = this.convertISODateToString(timeStamp);
+            DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_1);
+            String dateString = convertISODateToString(timeStamp);
             Date date = null;
             try {
                 date = dateFormat.parse(dateString);
@@ -88,12 +87,12 @@ public class ConvertTimeHelper {
      * @param timeUnit the unit in which you want the diff
      * @return the diff value, in the provided unit
      */
-    public int getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+    public static int getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
         long diffInMillies = date2.getTime() - date1.getTime();
         return (int) timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
     }
 
-    public Date removeTime(Date date) {
+    public static Date removeTime(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -102,4 +101,32 @@ public class ConvertTimeHelper {
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
+
+    public static String convertDateToISOFormat(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.MILLISECOND, 0);
+        date = cal.getTime();
+        TimeZone tz = TimeZone.getTimeZone(UTC_FORMAT);
+        DateFormat df = new SimpleDateFormat(ISO_DATE_FORMAT);
+        df.setTimeZone(tz);
+        return df.format(date);
+    }
+
+    public static String convertDateToString(Date date, String format){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        return simpleDateFormat.format(date);
+    }
+
+    public static Date convertStringToDate(String timeStamp, String format){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(timeStamp);
+            return date;
+        } catch (ParseException e) {
+        }
+        return date;
+    }
+
 }
