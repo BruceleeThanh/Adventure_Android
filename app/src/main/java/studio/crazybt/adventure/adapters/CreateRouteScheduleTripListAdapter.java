@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
+import studio.crazybt.adventure.listeners.OnTimeSetupListener;
 import studio.crazybt.adventure.models.Route;
 import studio.crazybt.adventure.utils.ToastUtil;
 
@@ -236,9 +237,5 @@ public class CreateRouteScheduleTripListAdapter extends RecyclerView.Adapter<Cre
 
     public void setOnTimeSetupListener(OnTimeSetupListener listener){
         onTimeSetupListener = listener;
-    }
-
-    public interface OnTimeSetupListener{
-        void onTimeSetup(Date date);
     }
 }

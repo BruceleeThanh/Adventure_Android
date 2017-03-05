@@ -11,19 +11,19 @@
         android:id="@+id/llAction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_big"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginRight="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_medium"
         android:divider="@drawable/partition_gray_line_vertical"
         android:orientation="horizontal"
-        android:showDividers="middle">
+        android:showDividers="middle"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tvScheduleJoin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:background="@drawable/selector_gray_white_tv"
+            android:clickable="true"
             android:drawableLeft="@drawable/ic_flight_takeoff_gray_24dp"
             android:drawablePadding="@dimen/margin_small"
             android:gravity="center_vertical"
@@ -36,6 +36,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:background="@drawable/selector_gray_white_tv"
+            android:clickable="true"
             android:drawableLeft="@drawable/ic_favorite_gray_24dp"
             android:drawablePadding="@dimen/margin_small"
             android:gravity="center_vertical"
@@ -48,6 +50,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:background="@drawable/selector_gray_white_tv"
+            android:clickable="true"
             android:drawableLeft="@drawable/ic_message_green_24dp"
             android:drawablePadding="@dimen/margin_small"
             android:gravity="center_vertical"
@@ -61,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llAction"
+        android:layout_marginTop="@dimen/margin_medium"
         android:layout_toLeftOf="@+id/tvScheduleCountInterested"
         android:drawablePadding="@dimen/margin_small"
         android:gravity="center_vertical"
@@ -74,6 +79,7 @@
         android:layout_below="@+id/llAction"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
         android:layout_toLeftOf="@+id/tvScheduleRate"
         android:drawablePadding="@dimen/margin_small"
         android:text="123"
@@ -87,6 +93,7 @@
         android:layout_below="@+id/llAction"
         android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginRight="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
         android:drawablePadding="@dimen/margin_small"
         android:gravity="center_vertical"
         android:text="6/20"
@@ -118,7 +125,7 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:drawablePadding="@dimen/margin_small"
                 android:gravity="center_vertical"
-                android:text="Đi đi lại lại Hà Nội - Sài Gòn 15/08 - 15/09"
+                android:hint="@string/name_create_trip"
                 android:textColor="@color/primary_text"/>
 
             <TextView
@@ -129,7 +136,7 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:drawablePadding="@dimen/margin_small"
                 android:gravity="center_vertical"
-                android:text="Xin chào mọi người, sau một thời gian lên kế hoạch, mình quyết định tìm kiếm bạn đồng hành cùng mình trên quãng đường trả dọc đất nước, các bạn tham khảo lịch trình của mình nhé."
+                android:hint="@string/description_create_trip"
                 android:textColor="@color/primary_text"/>
 
             <TextView
@@ -140,7 +147,7 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:drawablePadding="@dimen/margin_small"
                 android:gravity="center_vertical"
-                android:text="1 Nguyễn Trãi - Thanh Xuân - Hà Nội"
+                android:hint="@string/start_pos_create_trip"
                 android:textColor="@color/primary_text"/>
 
             <TextView
@@ -151,7 +158,7 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:drawablePadding="@dimen/margin_small"
                 android:gravity="center_vertical"
-                android:text="15/08/2016 - 15/09/2016"
+                android:hint="@string/period_create_trip"
                 android:textColor="@color/primary_text"/>
 
             <TextView
@@ -162,7 +169,7 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:drawablePadding="@dimen/margin_small"
                 android:gravity="center_vertical"
-                android:text="Hà Nội - Hà Giang - Huế - Đà Nẵng - Đà Lạt- TP. HCM - Cà Mau"
+                android:hint="@string/destination_summary_create_trip"
                 android:textColor="@color/primary_text"/>
 
             <TextView
@@ -173,18 +180,18 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:drawablePadding="@dimen/margin_small"
                 android:gravity="center_vertical"
-                android:text="7 - 10 triệu/người"
+                android:hint="@string/money_create_trip"
                 android:textColor="@color/primary_text"/>
 
             <TextView
-                android:id="@+id/tvScheduleTripMember"
+                android:id="@+id/tvScheduleTripPeople"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:layout_marginTop="@dimen/margin_small"
                 android:drawablePadding="@dimen/margin_small"
                 android:gravity="center_vertical"
-                android:text="10 - 15 người"
+                android:hint="@string/member_create_trip"
                 android:textColor="@color/primary_text"/>
 
             <TextView
@@ -195,7 +202,7 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:drawablePadding="@dimen/margin_small"
                 android:gravity="center_vertical"
-                android:text="Xe máy - Tàu hoả"
+                android:hint="@string/vehicle_create_trip"
                 android:textColor="@color/primary_text"/>
 
             <LinearLayout
@@ -212,11 +219,11 @@
                     android:layout_height="@dimen/icon_size"
                     android:src="@drawable/ic_planner_96"/>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvScheduleTripCalendar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_small"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvScheduleTripCalendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_small"/>
 
             </LinearLayout>
 
@@ -228,7 +235,7 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:drawablePadding="@dimen/margin_small"
                 android:gravity="center_vertical"
-                android:text="Quần dài : 1-3 chiếc, Áo phông mỏng, Áo len mỏng, Áo khoác gió, Khăn quàng cổ, Khăn mặt, bàn chải, kem đánh răng, dầu gội đầu, xà phòng, ..."
+                android:hint="@string/toolbox_create_trip"
                 android:textColor="@color/primary_text"/>
 
             <TextView
@@ -239,7 +246,7 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:drawablePadding="@dimen/margin_small"
                 android:gravity="center_vertical"
-                android:text="Giấy phép lái xe : Thứ bắt buộc phải có nếu chuyến đi của bạn có một hành trình bất kỳ sử dụng xe máy, đây cũng là giấy tờ bạn có thể sử dụng thay thế CMND khi lên máy bay. Đăng ký xe, bảo hiểm xe, giấy chứng nhận nộp phí đường bộ : Những thứ cần thiết để tránh gặp rắc rối với CSGT khi đi trên đường..."
+                android:hint="@string/note_create_trip"
                 android:textColor="@color/primary_text"/>
 
         </LinearLayout>

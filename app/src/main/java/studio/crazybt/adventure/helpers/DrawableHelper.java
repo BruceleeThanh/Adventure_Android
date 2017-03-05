@@ -1,6 +1,8 @@
 package studio.crazybt.adventure.helpers;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
@@ -78,6 +80,15 @@ public class DrawableHelper {
         } else if (rating >= 4.75 && rating <= 5) {
             setTextViewDrawableFitSize(textView, R.drawable.ic_rating_5, w, h);
         }
+    }
+
+    public Bitmap resizeMapIcons(int id, float w, float h){
+        final float destiny = rootContext.getResources().getDisplayMetrics().density;
+        final int width = Math.round((int) w * destiny);
+        final int height = Math.round((int) h * destiny);
+        Bitmap imageBitmap = BitmapFactory.decodeResource(rootContext.getResources(), id);
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+        return resizedBitmap;
     }
 
     class GravityCompoundDrawable extends Drawable {

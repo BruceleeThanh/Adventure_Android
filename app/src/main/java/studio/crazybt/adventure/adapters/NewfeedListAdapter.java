@@ -19,7 +19,9 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
+import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.EmojiTextView;
+import com.vanniktech.emoji.one.EmojiOneProvider;
 
 import org.json.JSONObject;
 
@@ -88,6 +90,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        EmojiManager.install(new EmojiOneProvider());
         LayoutInflater li = LayoutInflater.from(rootContext);
         switch (viewType) {
             case STATUS:
@@ -429,6 +432,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public StatusViewHolder(View itemView) {
             super(itemView);
+            EmojiManager.install(new EmojiOneProvider());
             this.itemView = itemView;
             ButterKnife.bind(this, itemView);
             drawableHelper = new DrawableHelper(itemView.getContext());
@@ -486,7 +490,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             drawableHelper.setTextViewDrawableFitSize(tvTripName, R.drawable.ic_signpost_96, itemSizeSmall, itemSizeSmall);
             drawableHelper.setTextViewDrawableFitSize(tvTripStartPosition, R.drawable.ic_flag_filled_96, itemSizeSmall, itemSizeSmall);
             drawableHelper.setTextViewDrawableFitSize(tvTripPeriod, R.drawable.ic_clock_96, itemSizeSmall, itemSizeSmall);
-            drawableHelper.setTextViewDrawableFitSize(tvTripDestination, R.drawable.ic_marker_96, itemSizeSmall, itemSizeSmall);
+            drawableHelper.setTextViewDrawableFitSize(tvTripDestination, R.drawable.ic_marker_normal_red_96, itemSizeSmall, itemSizeSmall);
             drawableHelper.setTextViewDrawableFitSize(tvTripMoney, R.drawable.ic_money_bag_96, itemSizeSmall, itemSizeSmall);
             drawableHelper.setTextViewDrawableFitSize(tvTripMember, R.drawable.ic_user_96, itemSizeSmall, itemSizeSmall);
             drawableHelper.setTextViewDrawableFitSize(tvTripJoiner, R.drawable.ic_airplane_take_off_96, itemSizeSmall, itemSizeSmall);

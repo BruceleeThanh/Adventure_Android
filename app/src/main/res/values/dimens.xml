@@ -44,7 +44,7 @@
     <dimen name="profile_image_largest">100dp</dimen>
     <dimen name="margin_toleftof_profile_image_largest">130dp</dimen>
     <dimen name="margin_toleftof_profile_image_big">120dp</dimen>
-    <dimen name="btn_width_tiny">100dp</dimen>
+    <dimen name="btn_width_tiny">90dp</dimen>
     <dimen name="btn_height_tiny">30dp</dimen>
     <dimen name="margin_belowof_profile_image_largest">30dp</dimen>
     <dimen name="menu_btn_height">35dp</dimen>
@@ -75,6 +75,7 @@
     <dimen name="five_star_icon_width">80.33px</dimen>
     <dimen name="five_star_icon_height">16px</dimen>
     <dimen name="item_icon_size_medium">28px</dimen>
+    <dimen name="item_icon_size_big">32px</dimen>
 
     <dimen name="max_height_et">100dp</dimen>
     <dimen name="max_height_et_large">200dp</dimen>
@@ -82,9 +83,12 @@
 
     <!--Diary trip-->
     <dimen name="background_image_height">200dp</dimen>
+    <dimen name="max_height_album">400dp</dimen>
 
     <!--Notification-->
     <dimen name="noti_icon_size_medium">20dp</dimen>
+
+    <dimen name="map_insert_margin">100dp</dimen>
 
 
 </resources>

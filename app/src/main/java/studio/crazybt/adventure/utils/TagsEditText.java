@@ -234,10 +234,17 @@ public class TagsEditText extends AutoCompleteTextView {
         return mTags;
     }
 
-    public List<Integer> getTagsIndex(){
+    public List<Integer> getTagsIndex() {
+        String[] arrVehicle = getResources().getStringArray(R.array.vehicle);
+        int length = arrVehicle.length;
         List<Integer> arr = new ArrayList<>();
-        for(Tag temp : mTags){
-            arr.add(temp.getIndex());
+        for (Tag temp : mTags) {
+            for (int i = 0; i < length; i++) {
+                if(arrVehicle[i].equals(temp.mSource)){
+                    arr.add(i);
+                    break;
+                }
+            }
         }
         return arr;
     }

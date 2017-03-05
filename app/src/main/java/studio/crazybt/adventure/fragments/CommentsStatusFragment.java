@@ -26,11 +26,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.vanniktech.emoji.EmojiEditText;
+import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.EmojiPopup;
 import com.vanniktech.emoji.EmojiTextView;
 import com.vanniktech.emoji.listeners.OnEmojiPopupDismissListener;
 import com.vanniktech.emoji.listeners.OnEmojiPopupShownListener;
 import com.vanniktech.emoji.listeners.OnSoftKeyboardCloseListener;
+import com.vanniktech.emoji.one.EmojiOneProvider;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -100,6 +102,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
+            EmojiManager.install(new EmojiOneProvider());
             rootView = inflater.inflate(R.layout.fragment_comments_status, container, false);
             ButterKnife.bind(this, rootView);
             if (getArguments() != null) {
@@ -231,7 +234,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
                 emojiPopup.toggle();
                 break;
             case R.id.ivSendComment:
-                if (!StringUtil.isEmpty(eetEditComment))
+                if (!StringUtil.isEmpty(eetComment))
                     createComment();
                 else
                     eetComment.setError(getResources().getString(R.string.field_can_not_empty));

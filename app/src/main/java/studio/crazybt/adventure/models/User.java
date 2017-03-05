@@ -14,9 +14,9 @@ import io.realm.annotations.PrimaryKey;
 public class User extends RealmObject implements Parcelable {
     @PrimaryKey
     private String id;
-
+    @Nullable
     private String firstName;
-
+    @Nullable
     private String lastName;
     @Nullable
     private String password;
@@ -50,7 +50,11 @@ public class User extends RealmObject implements Parcelable {
     public User() {
     }
 
-    public User(String id, String firstName, String lastName, String avatar) {
+    public User(String id) {
+        this.id = id;
+    }
+
+    public User(String id, @Nullable String firstName, @Nullable String lastName, String avatar) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -68,7 +72,7 @@ public class User extends RealmObject implements Parcelable {
         this.lastVisitedAt = null;
     }
 
-    public User(String id, String firstName, String lastName, String avatar, int isFriend) {
+    public User(String id, @Nullable String firstName, @Nullable String lastName, String avatar, int isFriend) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -87,7 +91,7 @@ public class User extends RealmObject implements Parcelable {
         this.isFriend = isFriend;
     }
 
-    public User(String id, String firstName, String lastName, @Nullable String password, @Nullable String email, @Nullable String phoneNumber,
+    public User(String id, @Nullable String firstName, @Nullable String lastName, @Nullable String password, @Nullable String email, @Nullable String phoneNumber,
                 int gender, @Nullable String birthday, @Nullable String address, @Nullable String religion, @Nullable String intro,
                 @Nullable String fbId, String avatar, @Nullable String cover, @Nullable String createAt, @Nullable String lastVisitedAt) {
         this.id = id;
@@ -108,7 +112,7 @@ public class User extends RealmObject implements Parcelable {
         this.lastVisitedAt = lastVisitedAt;
     }
 
-    public User(String id, String firstName, String lastName, @Nullable String password, @Nullable String email, @Nullable String phoneNumber,
+    public User(String id, @Nullable String firstName, @Nullable String lastName, @Nullable String password, @Nullable String email, @Nullable String phoneNumber,
                 int gender, @Nullable String birthday, @Nullable String address, @Nullable String religion, @Nullable String intro,
                 @Nullable String fbId, String avatar, @Nullable String cover, @Nullable String createAt, @Nullable String lastVisitedAt,
                 int isFriend) {
@@ -139,19 +143,21 @@ public class User extends RealmObject implements Parcelable {
         this.id = id;
     }
 
+    @Nullable
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(@Nullable String firstName) {
         this.firstName = firstName;
     }
 
+    @Nullable
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(@Nullable String lastName) {
         this.lastName = lastName;
     }
 

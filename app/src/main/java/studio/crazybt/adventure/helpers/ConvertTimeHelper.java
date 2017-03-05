@@ -43,6 +43,19 @@ public class ConvertTimeHelper {
         return null;
     }
 
+    public static Date convertISODateToDate(String timeStamp) {
+        DateFormat isoFormat = new SimpleDateFormat(ISO_DATE_FORMAT);
+        isoFormat.setTimeZone(TimeZone.getTimeZone(UTC_FORMAT));
+        try {
+            Date date = isoFormat.parse(timeStamp);
+            return date;
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static String convertISODateToPrettyTimeStamp(String timeStamp) {
         if (!(timeStamp == null || timeStamp.isEmpty())) {
 

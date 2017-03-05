@@ -202,7 +202,7 @@
                     android:background="@android:color/transparent"
                     android:drawablePadding="@dimen/margin_small"
                     android:gravity="top"
-                    android:hint="@string/destination_shortcut_create_trip"
+                    android:hint="@string/destination_summary_create_trip"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences"
                     android:maxLines="1"
@@ -261,6 +261,7 @@
                     android:gravity="top"
                     android:hint="@string/money_create_trip"
                     android:maxLines="1"
+                    android:imeOptions="actionNext"
                     android:textColor="@color/primary_text"
                     android:textSize="@dimen/txt_small_medium"/>
 

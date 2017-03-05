@@ -3,12 +3,17 @@ package studio.crazybt.adventure.services;
 import android.content.Context;
 import android.support.annotation.Nullable;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
+import com.android.volley.error.ServerError;
 import com.android.volley.error.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import studio.crazybt.adventure.libs.ApiConstants;
@@ -37,6 +42,21 @@ public class AdventureRequest {
     private Response.ErrorListener error = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
+            NetworkResponse response = error.networkResponse;
+            if (error instanceof ServerError && response != null) {
+                try {
+                    String res = new String(response.data,
+                            HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                    // Now you can use any deserializer to make sense of data
+                    JSONObject obj = new JSONObject(res);
+                } catch (UnsupportedEncodingException e1) {
+                    // Couldn't properly decode data to string
+                    e1.printStackTrace();
+                } catch (JSONException e2) {
+                    // returned data is not JSONObject?
+                    e2.printStackTrace();
+                }
+            }
             if (onAdventureRequestListener != null)
                 onAdventureRequestListener.onAdventureError(-404, "Sự cố kết nối. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau!");
         }

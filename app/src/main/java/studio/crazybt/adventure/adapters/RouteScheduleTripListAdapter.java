@@ -7,9 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
+import studio.crazybt.adventure.helpers.ConvertTimeHelper;
+import studio.crazybt.adventure.models.Route;
 
 /**
  * Created by Brucelee Thanh on 30/09/2016.
@@ -18,9 +22,11 @@ import studio.crazybt.adventure.R;
 public class RouteScheduleTripListAdapter extends RecyclerView.Adapter<RouteScheduleTripListAdapter.ViewHolder> {
 
     private Context rootContext;
+    private List<Route> lstRoute;
 
-    public RouteScheduleTripListAdapter(Context rootContext) {
+    public RouteScheduleTripListAdapter(Context rootContext, List<Route> lstRoute) {
         this.rootContext = rootContext;
+        this.lstRoute = lstRoute;
     }
 
     @Override
@@ -32,12 +38,16 @@ public class RouteScheduleTripListAdapter extends RecyclerView.Adapter<RouteSche
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        Route route = lstRoute.get(position);
+        holder.tvPeriodRoute.setText(ConvertTimeHelper.convertISODateToString(route.getStartAt()) + " - " +
+                ConvertTimeHelper.convertISODateToString(route.getEndAt()));
+        holder.tvTitleRoute.setText(route.getTitle());
+        holder.tvContentRoute.setText(route.getContent());
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return lstRoute.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

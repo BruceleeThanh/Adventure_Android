@@ -195,7 +195,7 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
         drawableHelper.setButtonDrawableFitSize(btnPlacesStartPosition, R.drawable.ic_map_marker_96, itemSizeSmall, itemSizeSmall);
         drawableHelper.setEditTextDrawableFitSize(etCreateTripStartTime, R.drawable.ic_clock_96, itemSizeSmall, itemSizeSmall);
         drawableHelper.setButtonDrawableFitSize(btnResetTime, R.drawable.ic_delete_96, itemSizeSmall, itemSizeSmall);
-        drawableHelper.setEditTextDrawableFitSize(etCreateTripDescriptionSummary, R.drawable.ic_marker_96, itemSizeSmall, itemSizeSmall);
+        drawableHelper.setEditTextDrawableFitSize(etCreateTripDescriptionSummary, R.drawable.ic_marker_normal_red_96, itemSizeSmall, itemSizeSmall);
         drawableHelper.setButtonDrawableFitSize(btnPlacesDestination, R.drawable.ic_map_marker_96, itemSizeSmall, itemSizeSmall);
         drawableHelper.setEditTextDrawableFitSize(etCreateTripMoney, R.drawable.ic_money_bag_96, itemSizeSmall, itemSizeSmall);
         drawableHelper.setEditTextDrawableFitSize(etCreateTripMember, R.drawable.ic_user_96, itemSizeSmall, itemSizeSmall);
@@ -470,11 +470,13 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
         params.put(ApiConstants.KEY_ID_TRIP, place.getIdTrip());
         params.put(ApiConstants.KEY_ORDER, String.valueOf(place.getOrder()));
         params.put(ApiConstants.KEY_TITLE, place.getTitle());
+        params.put(ApiConstants.KEY_ADDRESS, place.getAddress());
         params.put(ApiConstants.KEY_LATITUDE, String.valueOf(place.getLatitude()));
         params.put(ApiConstants.KEY_LONGITUDE, String.valueOf(place.getLongitude()));
         params.put(ApiConstants.KEY_CONTENT, place.getContent());
         params.put(ApiConstants.KEY_TYPE, String.valueOf(place.getType()));
         params.put(ApiConstants.KEY_STATUS, String.valueOf(place.getStatus()));
+        RLog.i("params day: " + params.toString());
         return params;
     }
 

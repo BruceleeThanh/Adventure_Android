@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="@dimen/profile_image_medium"
+        android:layout_height="@dimen/profile_image_medium"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:src="@drawable/img_profile"/>
+
+    <TextView
+        android:id="@+id/tvProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ivProfileImage"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:text="Brucelee Thanh"
+        android:textColor="@color/primary_text"
+        android:textStyle="bold"/>
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/spiPrivacy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/ivProfileImage"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_toRightOf="@+id/ivProfileImage">
+
+    </android.support.v7.widget.AppCompatSpinner>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_below="@+id/ivProfileImage">
+
+        <RelativeLayout
+            android:id="@+id/llCreateProperties"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/margin_big"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <EditText
+                android:id="@+id/etTitleDiaryTrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:background="@android:color/transparent"
+                android:drawablePadding="@dimen/margin_small"
+                android:hint="@string/title_diary_trip"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/txt_small_medium"
+                android:textStyle="bold"/>
+
+            <View
+                android:id="@+id/vLine1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/etTitleDiaryTrip"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@drawable/partition_gray_line_horizontal"/>
+
+            <EditText
+                android:id="@+id/etContentDiaryTrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vLine1"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:background="@android:color/transparent"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="top"
+                android:hint="@string/content_diary_trip"
+                android:minHeight="@dimen/min_height_et"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/txt_small_medium"/>
+
+            <View
+                android:id="@+id/vLine2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/etContentDiaryTrip"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@drawable/partition_gray_line_horizontal"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvImageDiaryTrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vLine2"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_toRightOf="@+id/ivCreateTripRoute"
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/btnAddImageDiaryTrip"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_below="@+id/rvImageDiaryTrip"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:background="@drawable/selector_orange_white_btn_2"
+                android:paddingLeft="@dimen/margin_big"
+                android:paddingRight="@dimen/margin_big"
+                android:text="@string/add_image_diary_trip"
+                android:textAllCaps="false"
+                android:textColor="@color/accent"/>
+
+            <View
+                android:id="@+id/vLine3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/btnAddImageDiaryTrip"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:background="@drawable/partition_gray_line_horizontal"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvDetailDiaryTrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vLine3"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/btnAddDetailDiaryTrip"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_below="@+id/rvDetailDiaryTrip"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:background="@drawable/selector_green_white_btn_2"
+                android:paddingLeft="@dimen/margin_big"
+                android:paddingRight="@dimen/margin_big"
+                android:text="@string/add_calendar_create_trip"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"/>
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</RelativeLayout>

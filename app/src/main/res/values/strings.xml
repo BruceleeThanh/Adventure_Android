@@ -2,7 +2,7 @@
     <string name="app_name">Adventure</string>
     <string name="facebook_app_id">1757209921226171</string>
     <string name="fb_login_protocol_scheme">fb1757209921226171</string>
-    <string name="google_geo_api">AIzaSyBex5eXfETd1C4vuQny3NhXneUb95oiWVg</string>
+    <string name="google_geo_api">AIzaSyDVpmSuzT-tjzo8vr7zM2qk9pGK4YlTOls</string>
 
     <string name="openDrawer">Open navigation drawer</string>
     <string name="closeDrawer">Close navigation drawer</string>
@@ -47,8 +47,24 @@
 
     <!--Trip Schedule-->
     <string name="join_trip_tv_trip_schedule">Tham gia</string>
+    <string name="cancel_request_tv_trip_schedule">Huỷ yêu cầu</string>
+    <string name="accept_invite_tv_trip_schedule">Chấp nhận lời mời</string>
+    <string name="leave_trip_tv_trip_schedule">Rời khỏi chuyến đi</string>
+    <string name="msg_confirm_cancel_request">Bạn có chắc chắn huỷ yêu cầu tham gia chuyến đi này?</string>
     <string name="interested_trip_tv_trip_schedule">Quan tâm</string>
     <string name="contact_trip_tv_trip_schedule">Liên hệ</string>
+    <string name="uninterested_tv_trip_schedule">Huỷ quan tâm</string>
+    <string name="msg_confirm_uninterested">Bạn có chắc chắn huỷ quan tâm chuyến đi này?</string>
+    <string name="msg_confirm_leave_trip">Bạn có chắc chắn rời khỏi chuyến đi này chuyến đi này?</string>
+    <string name="cancel_btn_dialog">Trở về</string>
+
+    <!--Trip Member-->
+    <string name="monitor_trip_member">Trưởng đoàn</string>
+    <string name="member_trip_member">Thành viên</string>
+    <string name="accept_btn_trip_member">Chấp nhận</string>
+    <string name="reject_btn_trip_member">Từ chối</string>
+    <string name="success_accept_trip_member">đã trở thành một phần của chuyến đi.</string>
+    <string name="success_reject_trip_member">Đã từ chối yêu cầu của</string>
 
     <!--Friend and follow-->
     <string name="tb_friend">Bạn bè</string>
@@ -82,6 +98,7 @@
     <string name="discuss_tablayout_trip">Thảo luận</string>
     <string name="diary_tablayout_trip">Nhật ký</string>
     <string name="members_tablayout_trip">Thành viên</string>
+    <string name="request_member_tablayout_trip">Yêu cầu</string>
 
     <!--Drawer menu home page-->
     <string name="profile_drawer_menu_home_page">Trang cá nhân</string>
@@ -107,7 +124,7 @@
     <string name="like_tv_status">Thích</string>
     <string name="comment_tv_status">Bình luận</string>
     <string name="count_like_tv_status">người thích điều này</string>
-    <string name="write_comment_hint_tv_status">Viết bình luận...</string>
+    <string name="write_comment_hint_tv_status">Viết bình luận…</string>
     <string name="persons_like_this_tv_status">Những người thích nội dung này</string>
 
     <!--diary trip detail-->
@@ -149,21 +166,21 @@
 
     <!--Create trip-->
     <string name="title_tb_create_trip">Tạo chuyến đi</string>
-    <string name="name_create_trip">Tên chuyến đi...</string>
-    <string name="description_create_trip">Miêu tả...</string>
-    <string name="start_pos_create_trip">Điểm bắt đầu...</string>
-    <string name="period_create_trip">Thời gian</string>
-    <string name="destination_shortcut_create_trip">Tóm tắt điểm đến...</string>
-    <string name="destination_create_trip">Điểm đến...</string>
-    <string name="money_create_trip">Kinh phí (/người)...</string>
-    <string name="member_create_trip">Số người...</string>
-    <string name="vehicle_create_trip">Phương tiện...</string>
-    <string name="toolbox_create_trip">Chuẩn bị...</string>
-    <string name="note_create_trip">Lưu ý...</string>
-    <string name="title_schedule_create_trip">Tiêu đề...</string>
-    <string name="content_schedule_create_trip">Nội dung...</string>
-    <string name="start_time_create_trip">Bắt đầu...</string>
-    <string name="end_time_create_trip">Kết thúc...</string>
+    <string name="name_create_trip">Tên chuyến đi…</string>
+    <string name="description_create_trip">Miêu tả…</string>
+    <string name="start_pos_create_trip">Điểm bắt đầu…</string>
+    <string name="period_create_trip">Thời gian…</string>
+    <string name="destination_summary_create_trip">Tóm tắt điểm đến…</string>
+    <string name="destination_create_trip">Điểm đến…</string>
+    <string name="money_create_trip">Kinh phí (/người)…</string>
+    <string name="member_create_trip">Số người…</string>
+    <string name="vehicle_create_trip">Phương tiện…</string>
+    <string name="toolbox_create_trip">Chuẩn bị…</string>
+    <string name="note_create_trip">Lưu ý…</string>
+    <string name="title_schedule_create_trip">Tiêu đề…</string>
+    <string name="content_schedule_create_trip">Nội dung…</string>
+    <string name="start_time_create_trip">Bắt đầu…</string>
+    <string name="end_time_create_trip">Kết thúc…</string>
     <string name="map_create_trip">Bản đồ</string>
     <string name="reset_create_trip">Đặt lại</string>
     <string name="add_calendar_create_trip">Thêm chi tiết</string>
@@ -174,6 +191,19 @@
     <string name="error_start_time_route_before_start">Không thể nhỏ hơn ngày bắt đầu chuyến đi</string>
     <string name="error_end_time_route_after_end">Không thể lớn hơn ngày kết thúc chuyến đi</string>
     <string name="success_post_trip">Chuyến đi của bạn đã được đăng</string>
+    <string name="error_null_places">Không tìm thấy địa điểm nào</string>
+
+    <!--Create diary trip-->
+    <string name="title_tb_create_diary_trip">Tạo nhật ký chuyến đi</string>
+    <string name="title_diary_trip">Tiêu đề</string>
+    <string name="content_diary_trip">Nội dung</string>
+    <string name="add_image_diary_trip">Thêm ảnh</string>
+    <string name="add_detail_diary_trip">Thêm chi tiết</string>
+    <string name="day_detail_diary_trip">Ngày…</string>
+    <string name="title_detail_diary_trip">Tiêu đề…</string>
+    <string name="content_detail_diary_trip">Nội dung…</string>
+    <string name="member_trip_privacy">Thành viên chuyến đi</string>
+    <string name="success_create_diary_trip">Nhật ký của bạn đã được đăng</string>
 
     <array name="vehicle">
         <item>Đi bộ</item>

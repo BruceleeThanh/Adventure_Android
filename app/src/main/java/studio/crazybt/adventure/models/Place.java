@@ -1,12 +1,14 @@
 package studio.crazybt.adventure.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 /**
  * Created by Brucelee Thanh on 10/01/2017.
  */
 
-public class Place {
+public class Place implements Parcelable {
     private String id;
 
     private String idTrip;
@@ -170,4 +172,51 @@ public class Place {
     public void setStatus(int status) {
         this.status = status;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.idTrip);
+        dest.writeInt(this.order);
+        dest.writeString(this.title);
+        dest.writeString(this.address);
+        dest.writeDouble(this.latitude);
+        dest.writeDouble(this.longitude);
+        dest.writeString(this.content);
+        dest.writeString(this.createdAt);
+        dest.writeInt(this.type);
+        dest.writeInt(this.status);
+    }
+
+    protected Place(Parcel in) {
+        this.id = in.readString();
+        this.idTrip = in.readString();
+        this.order = in.readInt();
+        this.title = in.readString();
+        this.address = in.readString();
+        this.latitude = in.readDouble();
+        this.longitude = in.readDouble();
+        this.content = in.readString();
+        this.createdAt = in.readString();
+        this.type = in.readInt();
+        this.status = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Place> CREATOR = new Parcelable.Creator<Place>() {
+        @Override
+        public Place createFromParcel(Parcel source) {
+            return new Place(source);
+        }
+
+        @Override
+        public Place[] newArray(int size) {
+            return new Place[size];
+        }
+    };
 }

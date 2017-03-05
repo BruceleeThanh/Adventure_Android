@@ -35,13 +35,19 @@ public class BadgeTabLayout extends TabLayout {
         super(context, attrs, defStyleAttr);
     }
 
+    /*Use for tab icon*/
     public Builder with(int position) {
         Tab tab = getTabAt(position);
         return with(tab);
     }
 
+    public Builder with(int position, String title){
+        Tab tab = getTabAt(position);
+        return with(tab, title);
+    }
+
     /**
-     * Apply a builder for this tab.
+     * Apply a builder for this tab (icon).
      *
      * @param tab for which we create a new builder or retrieve its builder if existed.
      * @return the required Builder.
@@ -54,6 +60,27 @@ public class BadgeTabLayout extends TabLayout {
         Builder builder = mTabBuilders.get(tab.getPosition());
         if (builder == null) {
             builder = new Builder(this, tab);
+            mTabBuilders.put(tab.getPosition(), builder);
+        }
+
+        return builder;
+    }
+
+    /**
+     * Apply a builder for this tab (title).
+     *
+     * @param tab for which we create a new builder or retrieve its builder if existed.
+     * @param title for title of tab (non icon).
+     * @return the required Builder.
+     */
+    public Builder with(Tab tab, String title) {
+        if (tab == null) {
+            throw new IllegalArgumentException("Tab must not be null");
+        }
+
+        Builder builder = mTabBuilders.get(tab.getPosition());
+        if (builder == null) {
+            builder = new Builder(this, tab, title);
             mTabBuilders.put(tab.getPosition(), builder);
         }
 
@@ -79,6 +106,8 @@ public class BadgeTabLayout extends TabLayout {
         Integer mIconColorFilter;
         int mBadgeCount = INVALID_NUMBER;
 
+        TextView mTitle;
+
         boolean mHasBadge = false;
 
         /**
@@ -102,6 +131,39 @@ public class BadgeTabLayout extends TabLayout {
 
             if (mView != null) {
                 this.mIconView = (ImageView) mView.findViewById(R.id.tab_icon);
+                this.mBadgeTextView = (TextView) mView.findViewById(R.id.tab_badge);
+            }
+
+            if (this.mBadgeTextView != null) {
+                this.mHasBadge = mBadgeTextView.getVisibility() == View.VISIBLE;
+                try {
+                    this.mBadgeCount = Integer.parseInt(mBadgeTextView.getText().toString());
+                } catch (NumberFormatException er) {
+                    er.printStackTrace();
+                    this.mBadgeCount = INVALID_NUMBER;
+                }
+            }
+
+            if (this.mIconView != null) {
+                mIconDrawable = mIconView.getDrawable();
+            }
+        }
+
+        private Builder(TabLayout parent, @NonNull TabLayout.Tab tab, String title) {
+            super();
+            this.mContext = parent.getContext();
+            this.mTab = tab;
+            // initialize current tab's custom view.
+            if (tab.getCustomView() != null) {
+                this.mView = tab.getCustomView();
+            } else {
+                this.mView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.tab_custom_title, parent, false);
+            }
+
+            if (mView != null) {
+                this.mTitle = (TextView) mView.findViewById(R.id.tab_title);
+                this.mTitle.setText(title);
                 this.mBadgeTextView = (TextView) mView.findViewById(R.id.tab_badge);
             }
 
@@ -251,6 +313,11 @@ public class BadgeTabLayout extends TabLayout {
                 // be careful if you modify this. make sure your result matches your expectation.
                 if (mIconColorFilter != null) {
                     mIconDrawable.setColorFilter(mIconColorFilter, PorterDuff.Mode.MULTIPLY);
+                }
+            }
+            if(mTitle != null){
+                if(mIconColorFilter != null) {
+                    mTitle.setTextColor(mIconColorFilter);
                 }
             }
 

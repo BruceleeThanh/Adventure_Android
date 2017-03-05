@@ -15,8 +15,9 @@ public class ApiConstants {
     public static final int RESPONSE_CODE_SUCCESS = 200;
 
     // API Urls
-    public static final String API_ROOT = "155.94.144.150:25763/api";
-    public static final String API_SCHEME = "http";
+    //private static final String API_ROOT = "155.94.144.150:25763/api";
+    private static final String API_ROOT = "192.168.1.9:25763/api";
+    private static final String API_SCHEME = "http";
     public static final String API_NORMAL_SIGNUP = "user/sign_up";
     public static final String API_NORMAL_LOGIN = "user/login";
     public static final String API_UPLOAD_IMAGE = "file/upload_image";
@@ -40,7 +41,20 @@ public class ApiConstants {
     public static final String API_CONFIRM_REQUEST_FRIEND = "friend_request/confirm";
     public static final String API_CREATE_TRIP = "trip/create";
     public static final String API_BROWSE_TRIP = "trip/browse";
+    public static final String API_DETAIL_TRIP = "trip/detail";
+    public static final String API_INTERESTED_TRIP = "trip/interested";
+    public static final String API_UNINTERESTED_TRIP = "trip/uninterested";
+    public static final String API_BROWSE_INTERESTED_TRIP = "trip/browse_interested";
     public static final String API_CREATE_PLACE_TRIP_MAP = "trip_map/create_place";
+    public static final String API_CREATE_TRIP_DIARY = "trip_diary/create";
+    public static final String API_BROWSE_TRIP_DIARY = "trip_diary/browse";
+    public static final String API_DETAIL_TRIP_DIARY = "trip_diary/detail";
+    public static final String API_REQUEST_TRIP_MEMBER = "trip_member/request";
+    public static final String API_CANCEL_REQUEST_TRIP_MEMBER = "trip_member/cancel_request";
+    public static final String API_BROWSE_REQUEST_TRIP_MEMBER = "trip_member/browse_request";
+    public static final String API_ACCEPT_REQUEST_TRIP_MEMBER = "trip_member/accept_request";
+    public static final String API_REJECT_REQUEST_TRIP_MEMBER = "trip_member/reject_request";
+    public static final String API_LEAVE_TRIP_TRIP_MEMBER = "trip_member/leave_trip";
 
     // Default params
     public static final String DEF_CODE = "code";
@@ -48,8 +62,6 @@ public class ApiConstants {
     public static final String DEF_DATA = "data";
 
     // Key params
-
-    // user params
     public static final String KEY_ID = "_id";
     public static final String KEY_ID_STATUS = "id_status";
     public static final String KEY_ID_COMMENT = "id_comment";
@@ -117,18 +129,26 @@ public class ApiConstants {
     public static final String KEY_ORDER = "order";
     public static final String KEY_LATITUDE = "latitude";
     public static final String KEY_LONGITUDE = "longitude";
+    public static final String KEY_SCHEDULE = "schedule";
+    public static final String KEY_MAP = "map";
+    public static final String KEY_IS_MEMBER = "is_member";
+    public static final String KEY_IS_INTERESTED = "is_interested";
+    public static final String KEY_MEMBERS = "members";
+    public static final String KEY_ID_TRIP_MEMBER = "id_trip_member";
+    public static final String KEY_DATE = "date";
+    public static final String KEY_DETAIL_DIARY = "detail_diary";
 
 
     public ApiConstants() {
     }
 
-    public static void setBaseUrl() {
+    private static void setBaseUrl() {
         builder = new Uri.Builder();
         builder.scheme(API_SCHEME).encodedAuthority(API_ROOT);
     }
 
     public Uri.Builder getBaseApi() {
-        this.setBaseUrl();
+        setBaseUrl();
         return builder;
     }
 

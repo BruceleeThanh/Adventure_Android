@@ -12,9 +12,11 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
+import studio.crazybt.adventure.fragments.CreateDiaryTripFragment;
 import studio.crazybt.adventure.fragments.CreateStatusFragment;
 import studio.crazybt.adventure.fragments.CreateTripFragment;
 import studio.crazybt.adventure.helpers.FragmentController;
+import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.services.AdventureRequest;
 
 public class InputActivity extends AppCompatActivity {
@@ -23,6 +25,7 @@ public class InputActivity extends AppCompatActivity {
     private FragmentController fragmentController;
     private CreateStatusFragment createStatusFragment;
     private CreateTripFragment createTripFragment;
+    private CreateDiaryTripFragment createDiaryTripFragment;
 
     @BindView(R.id.tbInput)
     Toolbar tbInput;
@@ -36,15 +39,13 @@ public class InputActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         typeShow = intent.getIntExtra("TYPE_SHOW", typeShow);
-        switch (typeShow) {
-            case 1:
-                this.initCreateStatus();
-                break;
-            case 2:
-                this.initCreateTrip();
-                break;
-            default:
-                break;
+        if (typeShow == 1) {
+            initCreateStatus();
+        } else if (typeShow == 2) {
+            initCreateTrip();
+        } else if (typeShow == 3) {
+            String idTrip = intent.getStringExtra(ApiConstants.KEY_ID_TRIP);
+            initCreateDiaryTrip(idTrip);
         }
     }
 
@@ -64,6 +65,16 @@ public class InputActivity extends AppCompatActivity {
         fragmentController.commit();
     }
 
+    private void initCreateDiaryTrip(String idTrip) {
+        Bundle bundle =new Bundle();
+        bundle.putString(ApiConstants.KEY_ID_TRIP, idTrip);
+        createDiaryTripFragment = new CreateDiaryTripFragment();
+        createDiaryTripFragment.setArguments(bundle);
+        getSupportActionBar().setTitle(getResources().getString(R.string.title_tb_create_diary_trip));
+        fragmentController = new FragmentController(this);
+        fragmentController.addFragment_BackStack(R.id.rlInput, createDiaryTripFragment);
+        fragmentController.commit();
+    }
 
     @Override
     public void onBackPressed() {
@@ -93,9 +104,20 @@ public class InputActivity extends AppCompatActivity {
                     createStatusFragment.uploadStatus();
                 } else if (typeShow == 2) {
                     createTripFragment.uploadTrip();
-                    if(createTripFragment.getRequest() != null) {
+                    if (createTripFragment.getRequest() != null) {
                         item.setEnabled(false);
                         createTripFragment.getRequest().setOnNotifyResponseReceived(new AdventureRequest.OnNotifyResponseReceived() {
+                            @Override
+                            public void onNotify() {
+                                item.setEnabled(true);
+                            }
+                        });
+                    }
+                } else if (typeShow == 3) {
+                    createDiaryTripFragment.uploadDiary();
+                    if(createDiaryTripFragment.getAdventureRequest() != null){
+                        item.setEnabled(false);
+                        createDiaryTripFragment.getAdventureRequest().setOnNotifyResponseReceived(new AdventureRequest.OnNotifyResponseReceived() {
                             @Override
                             public void onNotify() {
                                 item.setEnabled(true);

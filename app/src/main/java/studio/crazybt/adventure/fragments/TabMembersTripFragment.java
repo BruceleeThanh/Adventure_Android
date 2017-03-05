@@ -9,10 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.MemberTripListAdapter;
+import studio.crazybt.adventure.models.TripMember;
 
 /**
  * Created by Brucelee Thanh on 13/09/2016.
@@ -25,21 +29,37 @@ public class TabMembersTripFragment extends Fragment {
     private LinearLayoutManager llmMemberTrip;
     private MemberTripListAdapter mtlaAdapter;
 
+    private List<TripMember> lstTripMember;
+    private String ownerTrip;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if(rootView == null){
+        if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_tab_members_trip, container, false);
             ButterKnife.bind(this, rootView);
-            this.initMemberTripList();
         }
         return rootView;
     }
 
-    private void initMemberTripList(){
+    public void setData(List<TripMember> lstTripMember, String ownerTrip) {
+        this.lstTripMember = lstTripMember;
+        this.ownerTrip = ownerTrip;
+        initData();
+    }
+
+    private void initControl() {
+
+    }
+
+    private void initData() {
+        initMemberTripList();
+    }
+
+    private void initMemberTripList() {
         llmMemberTrip = new LinearLayoutManager(getContext());
         rvMemberTrip.setLayoutManager(llmMemberTrip);
-        mtlaAdapter = new MemberTripListAdapter(getContext());
+        mtlaAdapter = new MemberTripListAdapter(getContext(), lstTripMember, ownerTrip);
         rvMemberTrip.setAdapter(mtlaAdapter);
     }
 }

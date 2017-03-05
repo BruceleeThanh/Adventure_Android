@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -39,7 +40,7 @@ public class MyFirebaseMessagingService extends com.google.firebase.messaging.Fi
         this.saveNotificationToRealm(remoteMessage.getData().get("message"));
     }
 
-    private void saveNotificationToRealm(String message){
+    private void saveNotificationToRealm(String message) {
         RLog.i(message);
         boolean isUpdate = false;
         JSONObject item = JsonUtil.createJSONObject(message);
@@ -47,7 +48,7 @@ public class MyFirebaseMessagingService extends com.google.firebase.messaging.Fi
         String recipient = JsonUtil.getString(item, ApiConstants.KEY_RECIPIENT, "");
         String object = JsonUtil.getString(item, ApiConstants.KEY_OBJECT, "");
         String content = JsonUtil.getString(item, ApiConstants.KEY_CONTENT, "");
-        String fcmContent =  JsonUtil.getString(item, ApiConstants.KEY_FCM_CONTENT, "");
+        String fcmContent = JsonUtil.getString(item, ApiConstants.KEY_FCM_CONTENT, "");
         int type = JsonUtil.getInt(item, ApiConstants.KEY_TYPE, -1);
         int clicked = JsonUtil.getInt(item, ApiConstants.KEY_CLICKED, -1);
         int viewed = JsonUtil.getInt(item, ApiConstants.KEY_VIEWED, -1);
@@ -62,11 +63,11 @@ public class MyFirebaseMessagingService extends com.google.firebase.messaging.Fi
 
         realm.beginTransaction();
         Notification notiExisted = realm.where(Notification.class).equalTo("id", noti.getId()).findFirst();
-        if(notiExisted == null){
+        if (notiExisted == null) {
             RealmResults<Notification> notiRealmResults = realm.where(Notification.class).findAll();
             noti.setNotifyId(notiRealmResults.size());
             isUpdate = false;
-        }else{
+        } else {
             noti.setNotifyId(notiExisted.getNotifyId());
             isUpdate = true;
         }
@@ -79,12 +80,12 @@ public class MyFirebaseMessagingService extends com.google.firebase.messaging.Fi
     private void showNotification(Notification noti, boolean isUpdate) {
         Intent intent = new Intent();
         int idIcon = R.mipmap.ic_launcher;
-        if(noti.getType() == 1){
+        if (noti.getType() == 1) {
             idIcon = R.drawable.ic_chat_96;
             intent = new Intent(this, StatusActivity.class);
             intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
             intent.putExtra("data_notify", noti);
-        }else if(noti.getType() == 2){
+        } else if (noti.getType() == 2) {
             idIcon = R.drawable.ic_thumb_up_96;
             intent = new Intent(this, StatusActivity.class);
             intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
@@ -101,10 +102,10 @@ public class MyFirebaseMessagingService extends com.google.firebase.messaging.Fi
                 .setContentTitle("Adventure")
                 .setContentText(noti.getFcmContent())
                 .setContentIntent(pendingIntent);
-        if(!isUpdate){
-            Uri sound= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            builder.setSound(sound);
-        }
+//        Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//        builder.setSound(sound);
+        builder.setVibrate(new long[] {100, 100});
+        builder.setLights(Color.GREEN, 1000, 10000);
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(noti.getNotifyId(), builder.build());
     }

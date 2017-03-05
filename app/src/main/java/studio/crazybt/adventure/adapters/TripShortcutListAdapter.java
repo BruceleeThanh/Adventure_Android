@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindDimen;
@@ -21,6 +22,7 @@ import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.activities.TripActivity;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
 import studio.crazybt.adventure.helpers.DrawableHelper;
+import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.listeners.OnLoadMoreListener;
 import studio.crazybt.adventure.models.Trip;
 
@@ -71,9 +73,10 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         int viewType = getItemViewType(position);
         if (viewType == TRIP_NORMAL) {
+            Date now = new Date();
             TripNormalViewHolder tripNormalViewHolder = (TripNormalViewHolder) holder;
-            Trip trip = lstTrip.get(position);
-            tripNormalViewHolder.tvProfileName.setText(trip.getUser().getFirstName() + " " + trip.getUser().getLastName());
+            final Trip trip = lstTrip.get(position);
+            tripNormalViewHolder.tvProfileName.setText(trip.getOwner().getFirstName() + " " + trip.getOwner().getLastName());
             tripNormalViewHolder.tvTimeUpload.setText(ConvertTimeHelper.convertISODateToPrettyTimeStamp(trip.getCreatedAt()));
 
             // Permission (Trip Privacy)
@@ -84,6 +87,16 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
             } else if (trip.getPermission() == 3) {
                 tripNormalViewHolder.ivPermission.setImageResource(R.drawable.ic_public_96);
             }
+            Date startTime = ConvertTimeHelper.convertISODateToDate(trip.getStartAt());
+            Date endTime = ConvertTimeHelper.convertISODateToDate(trip.getEndAt());
+            if(startTime.compareTo(now) > 0){
+                tripNormalViewHolder.vTripLabel.setBackgroundColor(rootContext.getResources().getColor(R.color.greed_label));
+            }else if(endTime.compareTo(now) > 0){
+                tripNormalViewHolder.vTripLabel.setBackgroundColor(rootContext.getResources().getColor(R.color.yellow_label));
+            }else {
+                tripNormalViewHolder.vTripLabel.setBackgroundColor(rootContext.getResources().getColor(R.color.red_label));
+            }
+
             tripNormalViewHolder.tvTripName.setText(trip.getName());
 
             tripNormalViewHolder.tvTripStartPosition.setText(trip.getStartPosition());
@@ -111,6 +124,9 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(rootContext, TripActivity.class);
+                    intent.putExtra(ApiConstants.KEY_ID_TRIP, trip.getId());
+                    intent.putExtra(ApiConstants.KEY_OWNER, trip.getOwner().getId());
+                    intent.putExtra(ApiConstants.KEY_NAME, trip.getName());
                     rootContext.startActivity(intent);
                 }
             });
@@ -118,6 +134,9 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(rootContext, TripActivity.class);
+                    intent.putExtra(ApiConstants.KEY_ID_TRIP, trip.getId());
+                    intent.putExtra(ApiConstants.KEY_OWNER, trip.getOwner().getId());
+                    intent.putExtra(ApiConstants.KEY_NAME, trip.getName());
                     rootContext.startActivity(intent);
                 }
             });
@@ -153,6 +172,8 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
         public View itemView;
         public DrawableHelper drawableHelper;
 
+        @BindView(R.id.vTripLabel)
+        View vTripLabel;
         @BindView(R.id.rlContentTripShortcut)
         RelativeLayout rlContentTripShortcut;
         @BindView(R.id.ivProfileImage)
@@ -199,7 +220,7 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
             drawableHelper.setTextViewDrawableFitSize(tvTripName, R.drawable.ic_signpost_96, itemSizeTiny, itemSizeTiny);
             drawableHelper.setTextViewDrawableFitSize(tvTripStartPosition, R.drawable.ic_flag_filled_96, itemSizeTiny, itemSizeTiny);
             drawableHelper.setTextViewDrawableFitSize(tvTripPeriod, R.drawable.ic_clock_96, itemSizeTiny, itemSizeTiny);
-            drawableHelper.setTextViewDrawableFitSize(tvTripDestination, R.drawable.ic_marker_96, itemSizeTiny, itemSizeTiny);
+            drawableHelper.setTextViewDrawableFitSize(tvTripDestination, R.drawable.ic_marker_normal_red_96, itemSizeTiny, itemSizeTiny);
             drawableHelper.setTextViewDrawableFitSize(tvTripMoney, R.drawable.ic_money_bag_96, itemSizeTiny, itemSizeTiny);
             drawableHelper.setTextViewDrawableFitSize(tvTripPeople, R.drawable.ic_user_96, itemSizeTiny, itemSizeTiny);
             drawableHelper.setTextViewDrawableFitSize(tvTripMember, R.drawable.ic_airplane_take_off_96, itemSizeTiny, itemSizeTiny);

@@ -11,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.EmojiTextView;
+import com.vanniktech.emoji.one.EmojiOneProvider;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
@@ -42,6 +44,7 @@ public class StatusShortcutListAdapter extends RecyclerView.Adapter<StatusShortc
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        EmojiManager.install(new EmojiOneProvider());
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_status_shortcut, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
@@ -156,6 +159,7 @@ public class StatusShortcutListAdapter extends RecyclerView.Adapter<StatusShortc
 
         public ViewHolder(View itemView) {
             super(itemView);
+            EmojiManager.install(new EmojiOneProvider());
             this.itemView = itemView;
             ButterKnife.bind(this, itemView);
             drawableHelper = new DrawableHelper(itemView.getContext());

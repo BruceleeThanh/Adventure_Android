@@ -24,4 +24,8 @@
     <color name="fab_color_2_press">#FFAB91</color>
     <color name="fab_color_3">#607D8B</color>
     <color name="fab_color_3_press">#B0BEC5</color>
+    <color name="red_label">#E53935</color>
+    <color name="yellow_label">#FDD835</color>
+    <color name="greed_label">#43A047</color>
+
 </resources>

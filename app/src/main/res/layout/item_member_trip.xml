@@ -35,7 +35,7 @@
 
         <Button
             android:id="@+id/btnCallMemberTrip"
-            android:layout_width="@dimen/btn_width_small"
+            android:layout_width="@dimen/btn_width_tiny"
             android:layout_height="@dimen/btn_height_small"
             android:layout_alignParentRight="true"
             android:background="@drawable/selector_gray_white_btn"
@@ -48,7 +48,7 @@
 
         <Button
             android:id="@+id/btnMessageMemberTrip"
-            android:layout_width="@dimen/btn_width_small"
+            android:layout_width="@dimen/btn_width_tiny"
             android:layout_height="@dimen/btn_height_small"
             android:layout_alignBottom="@+id/ivProfileImage"
             android:layout_alignParentRight="true"
@@ -56,17 +56,6 @@
             android:text="@string/message_btn_profile"
             android:textAllCaps="false"
             android:textColor="@color/white"/>
-
-        <TextView
-            android:id="@+id/tvMutualFriend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tvProfileName"
-            android:layout_alignStart="@+id/tvProfileName"
-            android:layout_below="@+id/tvProfileName"
-            android:text="30 bạn chung"
-            android:textColor="@color/secondary_text"
-            android:textSize="@dimen/txt_small"/>
 
         <TextView
             android:id="@+id/tvPermission"

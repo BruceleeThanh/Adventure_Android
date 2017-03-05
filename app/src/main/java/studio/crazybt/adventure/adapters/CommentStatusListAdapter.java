@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.EmojiTextView;
+import com.vanniktech.emoji.one.EmojiOneProvider;
 
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class CommentStatusListAdapter extends RecyclerView.Adapter<CommentStatus
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        EmojiManager.install(new EmojiOneProvider());
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment_status, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
@@ -91,6 +94,7 @@ public class CommentStatusListAdapter extends RecyclerView.Adapter<CommentStatus
 
         public ViewHolder(View itemView) {
             super(itemView);
+            EmojiManager.install(new EmojiOneProvider());
             this.itemView=itemView;
             ButterKnife.bind(this, itemView);
         }

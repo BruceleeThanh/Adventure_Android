@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/etDateDetailDiaryTrip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:paddingRight="@dimen/margin_large"
+        android:background="@drawable/selector_gray_white_tv"
+        android:clickable="true"
+        android:editable="false"
+        android:focusable="false"
+        android:hint="@string/day_detail_diary_trip"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/txt_mid_medium"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/ivDeleteDetailDiaryTrip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/selector_gray_white_tv"
+        android:clickable="true"
+        android:padding="@dimen/margin_medium"
+        android:src="@drawable/ic_clear_grey_600_18dp"/>
+
+    <EditText
+        android:id="@+id/etTitleDetailDiaryTrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etDateDetailDiaryTrip"
+        android:layout_alignLeft="@+id/etDateDetailDiaryTrip"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:hint="@string/title_detail_diary_trip"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/txt_mid_medium"
+        android:gravity="top"
+        android:background="@android:color/transparent"/>
+
+    <EditText
+        android:id="@+id/etContentDetailDiaryTrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etTitleDetailDiaryTrip"
+        android:layout_below="@+id/etTitleDetailDiaryTrip"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:maxHeight="@dimen/max_height_et"
+        android:background="@android:color/transparent"
+        android:hint="@string/content_schedule_create_trip"
+        android:gravity="top"
+        android:minHeight="@dimen/min_height_et"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/txt_mid_medium"/>
+
+    <View
+        android:id="@+id/vLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/etContentDetailDiaryTrip"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:background="@drawable/partition_gray_line_horizontal"/>
+
+</RelativeLayout>

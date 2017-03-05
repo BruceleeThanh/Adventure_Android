@@ -142,6 +142,7 @@ public class TabPublicTripsHomePageFragment extends Fragment implements SwipeRef
         adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override
             public void onAdventureResponse(JSONObject response) {
+                RLog.i(response.toString());
                 if (isLoadMore) {
                     lstTrip.remove(lstTrip.size() - 1);
                     tsaPublicTrips.notifyItemRemoved(lstTrip.size());

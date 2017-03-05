@@ -90,7 +90,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             case R.id.btnLogin:
                 final String token= FirebaseInstanceId.getInstance().getToken();
                 btnLogin.setClickable(false);
-                ToastUtil.showToast(getContext(), token);
                 final ApiConstants apiConstants = new ApiConstants();
                 Uri.Builder url = apiConstants.getApi(apiConstants.API_NORMAL_LOGIN);
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url.build().toString(),

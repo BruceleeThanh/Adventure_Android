@@ -9,7 +9,7 @@
                 tools:context="studio.crazybt.adventure.activities.TripActivity"
                 tools:showIn="@layout/app_bar_trip">
 
-    <android.support.design.widget.TabLayout
+    <studio.crazybt.adventure.utils.BadgeTabLayout
         android:id="@+id/tlTrip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
