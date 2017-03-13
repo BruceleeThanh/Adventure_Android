@@ -258,7 +258,7 @@ public class StringUtil {
     }
 
     public static void setText(TextView textView, String text){
-        if(text == null || text.isEmpty()){
+        if(text == null || text.isEmpty() || text.equals("null")){
             textView.setText("");
         }else{
             textView.setText(text);

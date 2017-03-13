@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
 import studio.crazybt.adventure.models.Route;
+import studio.crazybt.adventure.utils.StringUtil;
 
 /**
  * Created by Brucelee Thanh on 30/09/2016.
@@ -39,10 +40,10 @@ public class RouteScheduleTripListAdapter extends RecyclerView.Adapter<RouteSche
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Route route = lstRoute.get(position);
-        holder.tvPeriodRoute.setText(ConvertTimeHelper.convertISODateToString(route.getStartAt()) + " - " +
+        StringUtil.setText(holder.tvPeriodRoute, ConvertTimeHelper.convertISODateToString(route.getStartAt()) + " - " +
                 ConvertTimeHelper.convertISODateToString(route.getEndAt()));
-        holder.tvTitleRoute.setText(route.getTitle());
-        holder.tvContentRoute.setText(route.getContent());
+        StringUtil.setText(holder.tvTitleRoute, route.getTitle());
+        StringUtil.setText(holder.tvContentRoute, route.getContent());
     }
 
     @Override

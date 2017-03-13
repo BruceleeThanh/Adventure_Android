@@ -56,6 +56,12 @@ public class ConvertTimeHelper {
         return null;
     }
 
+    public static Calendar convertISODateToCalendar(String timeStamp){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(convertISODateToDate(timeStamp));
+        return cal;
+    }
+
     public static String convertISODateToPrettyTimeStamp(String timeStamp) {
         if (!(timeStamp == null || timeStamp.isEmpty())) {
 
@@ -141,5 +147,9 @@ public class ConvertTimeHelper {
         }
         return date;
     }
+
+//    public static String getDayOfWeek(int dayOfWeek){
+//        if()
+//    }
 
 }

@@ -7,40 +7,52 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
+import studio.crazybt.adventure.helpers.ConvertTimeHelper;
+import studio.crazybt.adventure.models.DetailDiary;
 
 /**
  * Created by Brucelee Thanh on 30/09/2016.
  */
 
-public class TimelineDiaryListAdapter extends RecyclerView.Adapter<TimelineDiaryListAdapter.ViewHolder>{
+public class TimelineDiaryListAdapter extends RecyclerView.Adapter<TimelineDiaryListAdapter.ViewHolder> {
 
     private Context rootContext;
+    private List<DetailDiary> lstDetailDiaries;
 
-    public TimelineDiaryListAdapter(Context rootContext) {
+
+    public TimelineDiaryListAdapter(Context rootContext, List<DetailDiary> lstDetailDiaries) {
         this.rootContext = rootContext;
+        this.lstDetailDiaries = lstDetailDiaries;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_diary_trip, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        DetailDiary detailDiary = lstDetailDiaries.get(position);
+        Calendar calendar =  ConvertTimeHelper.convertISODateToCalendar(detailDiary.getDate());
+        holder.tvItemTimelineMonth.setText(calendar.getTime().getDate() + "");
+        holder.tvItemTimelineTitle.setText(detailDiary.getTitle());
+        holder.tvItemTimelineContent.setText(detailDiary.getContent());
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return lstDetailDiaries == null ? 0 : lstDetailDiaries.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tvItemTimelineMonth)
         TextView tvItemTimelineMonth;

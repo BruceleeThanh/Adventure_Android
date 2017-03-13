@@ -66,6 +66,8 @@ public class Trip implements Parcelable {
 
     private int isInterested; // 0. None; 1. Interested
     @Nullable
+    private List<TripDiary> lstTripDiaries;
+    @Nullable
     private List<TripMember> tripMembers;
 
     public Trip() {
@@ -97,7 +99,7 @@ public class Trip implements Parcelable {
                 int amountPeople, int amountMember, @Nullable List<Integer> vehicles, @Nullable List<Route> routes,
                 @Nullable List<String> images, @Nullable String prepare, @Nullable String note, @Nullable String createdAt,
                 int amountInterested, int amountRating, double rating, int permission, int type, @Nullable List<Rating> ratings,
-                @Nullable List<Place> places, int isMember, int isInterested, @Nullable List<TripMember> tripMembers) {
+                @Nullable List<Place> places, int isMember, int isInterested, @Nullable List<TripDiary> lstTripDiaries, @Nullable List<TripMember> tripMembers) {
         this.id = id;
         this.idGroup = idGroup;
         this.owner = owner;
@@ -125,6 +127,7 @@ public class Trip implements Parcelable {
         this.places = places;
         this.isMember = isMember;
         this.isInterested = isInterested;
+        this.lstTripDiaries=lstTripDiaries;
         this.tripMembers = tripMembers;
     }
 
@@ -360,6 +363,15 @@ public class Trip implements Parcelable {
     }
 
     @Nullable
+    public List<TripDiary> getLstTripDiaries() {
+        return lstTripDiaries;
+    }
+
+    public void setLstTripDiaries(@Nullable List<TripDiary> lstTripDiaries) {
+        this.lstTripDiaries = lstTripDiaries;
+    }
+
+    @Nullable
     public List<TripMember> getRequests() {
         List<TripMember> result = null;
         if (tripMembers != null && !tripMembers.isEmpty()) {
@@ -435,6 +447,7 @@ public class Trip implements Parcelable {
         dest.writeTypedList(this.places);
         dest.writeInt(this.isMember);
         dest.writeInt(this.isInterested);
+        dest.writeTypedList(this.lstTripDiaries);
         dest.writeTypedList(this.tripMembers);
     }
 
@@ -467,6 +480,7 @@ public class Trip implements Parcelable {
         this.places = in.createTypedArrayList(Place.CREATOR);
         this.isMember = in.readInt();
         this.isInterested = in.readInt();
+        this.lstTripDiaries=in.createTypedArrayList(TripDiary.CREATOR);
         this.tripMembers = in.createTypedArrayList(TripMember.CREATOR);
     }
 

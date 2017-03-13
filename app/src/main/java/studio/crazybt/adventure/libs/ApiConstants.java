@@ -137,7 +137,8 @@ public class ApiConstants {
     public static final String KEY_ID_TRIP_MEMBER = "id_trip_member";
     public static final String KEY_DATE = "date";
     public static final String KEY_DETAIL_DIARY = "detail_diary";
-
+    public static final String KEY_DIARIES = "diaries";
+    public static final String KEY_ID_TRIP_DIARY = "id_trip_diary";
 
     public ApiConstants() {
     }

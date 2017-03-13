@@ -31,9 +31,11 @@ import studio.crazybt.adventure.fragments.TabRequestMemberTripFragment;
 import studio.crazybt.adventure.fragments.TabScheduleTripFragment;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.listeners.OnStringCallbackListener;
+import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.Place;
 import studio.crazybt.adventure.models.Route;
 import studio.crazybt.adventure.models.Trip;
+import studio.crazybt.adventure.models.TripDiary;
 import studio.crazybt.adventure.models.TripMember;
 import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.AdventureRequest;
@@ -128,7 +130,7 @@ public class TripActivity extends AppCompatActivity {
             public void onAdventureResponse(JSONObject response) {
                 RLog.i(response);
                 JSONObject data = JsonUtil.getJSONObject(response, ApiConstants.DEF_DATA);
-
+                JSONObject owner;
                 // schedule
                 JSONObject schedule = JsonUtil.getJSONObject(data, ApiConstants.KEY_SCHEDULE);
                 List<Integer> lstVehicles = new ArrayList<>();
@@ -181,12 +183,41 @@ public class TripActivity extends AppCompatActivity {
                 }
 
                 // diary
+                JSONArray diaries = JsonUtil.getJSONArray(data, ApiConstants.KEY_DIARIES);
+                List<TripDiary> lstTripDiaries = new ArrayList<TripDiary>();
+                JSONObject diary;
+                if (diaries != null) {
+                    int length = diaries.length();
+                    for(int i=0;i<length;i++){
+                        diary = JsonUtil.getJSONObject(diaries, i);
+                        owner = JsonUtil.getJSONObject(diary, ApiConstants.KEY_OWNER);
+                        JSONArray images = JsonUtil.getJSONArray(diary, ApiConstants.KEY_IMAGES);
+                        List<ImageContent> imageContents = new ArrayList<>();
+                        if (images != null && images.length() > 0) {
+                            for (int j = 0; j < images.length(); j++) {
+                                JSONObject image = JsonUtil.getJSONObject(images, j);
+                                imageContents.add(new ImageContent(
+                                        JsonUtil.getString(image, ApiConstants.KEY_URL, ""),
+                                        JsonUtil.getString(image, ApiConstants.KEY_DESCRIPTION, "")));
+                            }
+                        }
+                        lstTripDiaries.add(new TripDiary(
+                                JsonUtil.getString(diary, ApiConstants.KEY_ID, ""),
+                                new User(JsonUtil.getString(owner, ApiConstants.KEY_ID, ""),
+                                        JsonUtil.getString(owner, ApiConstants.KEY_FIRST_NAME, ""),
+                                        JsonUtil.getString(owner, ApiConstants.KEY_LAST_NAME, ""),
+                                        JsonUtil.getString(owner, ApiConstants.KEY_AVATAR, "")),
+                                JsonUtil.getString(diary, ApiConstants.KEY_TITLE, ""),
+                                imageContents,
+                                JsonUtil.getString(diary, ApiConstants.KEY_CREATED_AT, "")
+                        ));
+                    }
+                }
 
                 // members
                 JSONArray members = JsonUtil.getJSONArray(data, ApiConstants.KEY_MEMBERS);
                 List<TripMember> lstTripMember = new ArrayList<>();
                 JSONObject member;
-                JSONObject owner;
                 if (members != null) {
                     int leng = members.length();
                     for (int i = 0; i < leng; i++) {
@@ -232,12 +263,13 @@ public class TripActivity extends AppCompatActivity {
                         lstPlace,
                         JsonUtil.getInt(schedule, ApiConstants.KEY_IS_MEMBER, -1),
                         JsonUtil.getInt(schedule, ApiConstants.KEY_IS_INTERESTED, -1),
+                        lstTripDiaries,
                         lstTripMember
                 );
                 tabScheduleTripFragment.setTrip(trip);
                 tabMapTripFragment.setLstPlace(trip.getPlaces());
+                tabDiaryTripFragment.setData(trip.getLstTripDiaries(), trip.getId(), trip.getIsMember());
                 tabMembersTripFragment.setData(trip.getMembers(), trip.getOwner().getId());
-                tabDiaryTripFragment.setData(null, trip.getId(), trip.getIsMember());
 
                 if (currentUserId.equals(trip.getOwner().getId())) {
                     tabRequestMemberTripFragment = new TabRequestMemberTripFragment();

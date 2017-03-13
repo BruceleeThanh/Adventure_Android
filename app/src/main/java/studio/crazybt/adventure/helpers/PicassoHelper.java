@@ -24,7 +24,7 @@ public class PicassoHelper {
 
     }
 
-    public void execPicasso(Context context, String url, ImageView imageView) {
+    public static void execPicasso(Context context, String url, ImageView imageView) {
         if (url.isEmpty() || url == null) {
             imageView.setVisibility(View.GONE);
         } else {
@@ -32,7 +32,7 @@ public class PicassoHelper {
         }
     }
 
-    public void execPicasso(Context context, String url, final ZoomableImageView[] zoomableImageView){
+    public static void execPicasso(Context context, String url, final ZoomableImageView[] zoomableImageView){
         if (url.isEmpty() || url == null) {
             zoomableImageView[0].setVisibility(View.GONE);
         } else {

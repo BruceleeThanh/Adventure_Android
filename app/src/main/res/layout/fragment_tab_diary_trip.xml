@@ -4,6 +4,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/tvErrorDiaryTrip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/error_null_diary_trip"
+        android:gravity="center"
+        android:visibility="gone"/>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

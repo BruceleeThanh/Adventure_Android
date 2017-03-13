@@ -1,5 +1,6 @@
 package studio.crazybt.adventure.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -9,33 +10,42 @@ import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.fragments.DiaryTripDetailFragment;
 import studio.crazybt.adventure.fragments.StatusDetailFragment;
 import studio.crazybt.adventure.helpers.FragmentController;
+import studio.crazybt.adventure.libs.ApiConstants;
 
 public class DiaryTripActivity extends SwipeBackActivity {
 
     private SwipeBackLayout swipeBackLayout;
     private FragmentController fragmentController;
+    private String idTripDiary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_trip);
         swipeBackLayout = getSwipeBackLayout();
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(ApiConstants.KEY_ID_TRIP_DIARY)) {
+            idTripDiary = intent.getStringExtra(ApiConstants.KEY_ID_TRIP_DIARY);
+        }
         this.showDiaryDetail();
     }
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1){
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
 
-    private void showDiaryDetail(){
+    private void showDiaryDetail() {
+        DiaryTripDetailFragment diaryTripDetailFragment = new DiaryTripDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(ApiConstants.KEY_ID_TRIP_DIARY, idTripDiary);
+        diaryTripDetailFragment.setArguments(bundle);
         fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack_Animation(R.id.rlDiaryTrip, new DiaryTripDetailFragment());
+        fragmentController.addFragment_BackStack_Animation(R.id.rlDiaryTrip, diaryTripDetailFragment);
         fragmentController.commit();
     }
 }

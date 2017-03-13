@@ -52,8 +52,8 @@ public class CreateDetailDiaryListAdapter extends RecyclerView.Adapter<CreateDet
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         DetailDiary detailDiary = lstDetailDiaries.get(position);
-        holder.etDayDetailDiaryTrip.setText(detailDiary.getDate() == null ? "" : detailDiary.getDate());
-        holder.etDayDetailDiaryTrip.setOnClickListener(new View.OnClickListener() {
+        holder.etDateDetailDiaryTrip.setText(detailDiary.getDate() == null ? "" : detailDiary.getDate());
+        holder.etDateDetailDiaryTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 datePicker();
@@ -89,9 +89,9 @@ public class CreateDetailDiaryListAdapter extends RecyclerView.Adapter<CreateDet
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     if (position < lstDetailDiaries.size())
-                        lstDetailDiaries.get(position).setTitle(holder.etContentDetailDiaryTrip.getText().toString());
+                        lstDetailDiaries.get(position).setContent(holder.etContentDetailDiaryTrip.getText().toString());
                     else
-                        lstDetailDiaries.get(position - 1).setTitle(holder.etContentDetailDiaryTrip.getText().toString());
+                        lstDetailDiaries.get(position - 1).setContent(holder.etContentDetailDiaryTrip.getText().toString());
                 }
             }
         });
@@ -126,7 +126,7 @@ public class CreateDetailDiaryListAdapter extends RecyclerView.Adapter<CreateDet
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.etDateDetailDiaryTrip)
-        EditText etDayDetailDiaryTrip;
+        EditText etDateDetailDiaryTrip;
         @BindView(R.id.ivDeleteDetailDiaryTrip)
         ImageView ivDeleteDetailDiaryTrip;
         @BindView(R.id.etTitleDetailDiaryTrip)
