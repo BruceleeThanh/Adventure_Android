@@ -27,7 +27,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvItemTimelineDay"
+            android:id="@+id/tvItemTimelineDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -40,7 +40,7 @@
             android:textSize="@dimen/txt_tiny"/>
 
         <TextView
-            android:id="@+id/tvItemTimelineDate"
+            android:id="@+id/tvItemTimelineDay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"

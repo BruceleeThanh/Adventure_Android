@@ -76,8 +76,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                     etRepasswordSignup.setError(getResources().getString(R.string.error_repassword_et_signupviaemail));
                 } else {
                     final ApiConstants apiConstants = new ApiConstants();
-                    Uri.Builder url = apiConstants.getApi(apiConstants.API_NORMAL_SIGNUP);
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, url.build().toString(),
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_NORMAL_SIGNUP),
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -117,7 +116,6 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                             return params;
                         }
                     };
-                    RLog.i(url.build().toString());
                     MySingleton.getInstance(this.getContext()).addToRequestQueue(stringRequest, false);
                 }
                 break;

@@ -1,7 +1,6 @@
 package studio.crazybt.adventure.activities;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -38,7 +37,7 @@ import studio.crazybt.adventure.utils.BadgeTabLayout;
 import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
 
-public class HomePageActivity extends AppCompatActivity {
+public class HomePageActivity extends AppCompatActivity{
 
     private BadgeTabLayout tlHomePage;
     private Toolbar toolbar;
@@ -211,20 +210,16 @@ public class HomePageActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toolbar_menu_home_page, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.itemMessage:
-                Intent intent = new Intent(this, MessageActivity.class);
+        getMenuInflater().inflate(R.menu.toolbar_menu_home_page, menu);
+        menu.findItem(R.id.itemMessage).getActionView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), MessageActivity.class);
                 intent.putExtra("TYPE_SHOW", MESSAGE);
                 startActivity(intent);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
+
 }

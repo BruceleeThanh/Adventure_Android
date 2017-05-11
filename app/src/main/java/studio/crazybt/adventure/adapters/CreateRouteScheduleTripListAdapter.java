@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
+import studio.crazybt.adventure.listeners.OnTextWatcher;
 import studio.crazybt.adventure.listeners.OnTimeSetupListener;
 import studio.crazybt.adventure.models.Route;
 import studio.crazybt.adventure.utils.ToastUtil;
@@ -101,27 +102,23 @@ public class CreateRouteScheduleTripListAdapter extends RecyclerView.Adapter<Cre
                 });
             }
         });
-        holder.etTitleRoute.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        holder.etTitleRoute.addTextChangedListener(new OnTextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    lstRoutes.get(position).setTitle(holder.etTitleRoute.getText().toString());
-                }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                lstRoutes.get(position).setTitle(holder.etTitleRoute.getText().toString());
             }
         });
-        holder.etContentRoute.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        holder.etContentRoute.addTextChangedListener(new OnTextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    lstRoutes.get(position).setContent(holder.etContentRoute.getText().toString());
-                }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                lstRoutes.get(position).setContent(holder.etContentRoute.getText().toString());
             }
         });
         holder.ivDeleteRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 lstRoutes.remove(position);
-                notifyItemRemoved(position);
+                notifyDataSetChanged();
             }
         });
     }

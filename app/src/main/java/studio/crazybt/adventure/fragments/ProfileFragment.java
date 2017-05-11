@@ -115,13 +115,12 @@ public class ProfileFragment extends Fragment {
         final ApiConstants apiConstants = new ApiConstants();
         final String token = SharedPref.getInstance(getContext()).getString(apiConstants.KEY_TOKEN, "");
         final JsonUtil jsonUtil = new JsonUtil();
-        Uri.Builder url = apiConstants.getApi(apiConstants.API_TIME_LINE);
         Map<String, String> params = new HashMap<>();
         params.put(apiConstants.KEY_TOKEN, token);
         if(!idUser.equals(CommonConstants.VAL_ID_DEFAULT)){
             params.put(apiConstants.KEY_USER, idUser);
         }
-        CustomRequest customRequest = new CustomRequest(Request.Method.GET, url.build().toString(), params,new Response.Listener<JSONObject>() {
+        CustomRequest customRequest = new CustomRequest(Request.Method.GET, ApiConstants.getUrl(ApiConstants.API_TIME_LINE), params,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 RLog.i(response);

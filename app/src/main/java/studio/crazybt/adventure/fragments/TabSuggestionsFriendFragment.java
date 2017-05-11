@@ -83,10 +83,9 @@ public class TabSuggestionsFriendFragment extends Fragment implements SwipeRefre
         final ApiConstants apiConstants = new ApiConstants();
         final String token = SharedPref.getInstance(getContext()).getString(apiConstants.KEY_TOKEN, "");
         final JsonUtil jsonUtil = new JsonUtil();
-        Uri.Builder url = apiConstants.getApi(apiConstants.API_SUGGEST_FRIEND);
         Map<String, String> params = new HashMap<>();
         params.put(apiConstants.KEY_TOKEN, token);
-        CustomRequest customRequest = new CustomRequest(Request.Method.GET, url.build().toString(), params, new Response.Listener<JSONObject>() {
+        CustomRequest customRequest = new CustomRequest(Request.Method.GET, ApiConstants.getUrl(ApiConstants.API_SUGGEST_FRIEND), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (jsonUtil.getInt(response, apiConstants.DEF_CODE, 0) == 1) {

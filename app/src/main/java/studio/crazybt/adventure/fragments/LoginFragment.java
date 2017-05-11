@@ -91,8 +91,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 final String token= FirebaseInstanceId.getInstance().getToken();
                 btnLogin.setClickable(false);
                 final ApiConstants apiConstants = new ApiConstants();
-                Uri.Builder url = apiConstants.getApi(apiConstants.API_NORMAL_LOGIN);
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, url.build().toString(),
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_NORMAL_LOGIN),
                         new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

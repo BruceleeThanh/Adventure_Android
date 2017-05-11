@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
+import studio.crazybt.adventure.helpers.ConvertTimeHelper;
+
 /**
  * Created by Brucelee Thanh on 10/01/2017.
  */
@@ -51,6 +53,12 @@ public class Route implements Parcelable {
         return startAt;
     }
 
+    @Nullable
+    public String getISOStartAt(){
+        return ConvertTimeHelper.convertDateToISOFormat(
+                ConvertTimeHelper.convertStringToDate(startAt, ConvertTimeHelper.DATE_FORMAT_1));
+    }
+
     public void setStartAt(@Nullable String startAt) {
         this.startAt = startAt;
     }
@@ -58,6 +66,12 @@ public class Route implements Parcelable {
     @Nullable
     public String getEndAt() {
         return endAt;
+    }
+
+    @Nullable
+    public String getISOEndAt(){
+        return ConvertTimeHelper.convertDateToISOFormat(
+                ConvertTimeHelper.convertStringToDate(endAt, ConvertTimeHelper.DATE_FORMAT_1));
     }
 
     public void setEndAt(@Nullable String endAt) {

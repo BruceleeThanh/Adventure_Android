@@ -90,10 +90,9 @@ public class TabFriendHomePageFragment extends Fragment implements View.OnClickL
         final ApiConstants apiConstants = new ApiConstants();
         final String token = SharedPref.getInstance(getContext()).getString(apiConstants.KEY_TOKEN, "");
         final JsonUtil jsonUtil = new JsonUtil();
-        Uri.Builder url = apiConstants.getApi(apiConstants.API_BROWSE_REQUEST_FRIEND);
         Map<String, String> params = new HashMap<>();
         params.put(apiConstants.KEY_TOKEN, token);
-        CustomRequest customRequest = new CustomRequest(Request.Method.GET, url.build().toString(), params, new Response.Listener<JSONObject>() {
+        CustomRequest customRequest = new CustomRequest(Request.Method.GET, ApiConstants.getUrl(ApiConstants.API_BROWSE_REQUEST_FRIEND), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (jsonUtil.getInt(response, apiConstants.DEF_CODE, 0) == 1) {

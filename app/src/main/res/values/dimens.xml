@@ -84,6 +84,7 @@
     <!--Diary trip-->
     <dimen name="background_image_height">200dp</dimen>
     <dimen name="max_height_album">400dp</dimen>
+    <dimen name="image_detail_diary">230dp</dimen>
 
     <!--Notification-->
     <dimen name="noti_icon_size_medium">20dp</dimen>

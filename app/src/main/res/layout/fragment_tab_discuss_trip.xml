@@ -5,6 +5,13 @@
     android:layout_height="match_parent"
     xmlns:fab="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:id="@+id/tvErrorDiscussTrip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"/>
+
     <android.support.v4.widget.SwipeRefreshLayout
 
         android:id="@+id/srlDiscussTrip"
@@ -36,5 +43,6 @@
         fab:fab_colorNormal="@color/primary"
         fab:fab_colorPressed="@color/primary_light"
         fab:fab_colorRipple="#99FFFFFF"
-        fab:fab_size="normal"/>
+        fab:fab_size="normal"
+        android:visibility="gone"/>
 </RelativeLayout>

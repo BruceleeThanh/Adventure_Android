@@ -151,11 +151,10 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
         commentStatusList.clear();
         tvCountLike.setText(status.getAmountLike() + " " + getResources().getString(R.string.count_like_tv_status));
         final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
-        Uri.Builder url = ApiConstants.getApi(ApiConstants.API_BROWSE_COMMENT);
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_ID_STATUS, status.getId());
-        CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
+        CustomRequest customRequest = new CustomRequest(Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_BROWSE_COMMENT), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0) == 1) {
@@ -323,12 +322,11 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
         eetComment.setEnabled(false);
         ivSendComment.setEnabled(false);
         final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
-        Uri.Builder url = ApiConstants.getApi(ApiConstants.API_COMMENT_STATUS);
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_ID_STATUS, status.getId());
         params.put(ApiConstants.KEY_CONTENT, eetComment.getText().toString());
-        CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
+        CustomRequest customRequest = new CustomRequest(Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_COMMENT_STATUS), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0) == 1) {
@@ -363,13 +361,12 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
 
     private void editComment() {
         final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
-        Uri.Builder url = ApiConstants.getApi(ApiConstants.API_COMMENT_EDIT_CONTENT);
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_ID_STATUS, status.getId());
         params.put(ApiConstants.KEY_ID_COMMENT, commentStatusList.get(posItem).getId());
         params.put(ApiConstants.KEY_CONTENT, eetEditComment.getText().toString());
-        CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
+        CustomRequest customRequest = new CustomRequest(Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_COMMENT_EDIT_CONTENT), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0) == 1) {
@@ -400,12 +397,11 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
 
     private void deleteComment() {
         final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
-        Uri.Builder url = ApiConstants.getApi(ApiConstants.API_DELETE_COMMENT);
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_ID_STATUS, status.getId());
         params.put(ApiConstants.KEY_ID_COMMENT, commentStatusList.get(posItem).getId());
-        CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
+        CustomRequest customRequest = new CustomRequest(Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_DELETE_COMMENT), params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 RLog.i(response.toString());

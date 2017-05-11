@@ -10,7 +10,9 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import studio.crazybt.adventure.R;
+import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.ZoomableImageView;
+import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
 
 
@@ -28,6 +30,7 @@ public class PicassoHelper {
         if (url.isEmpty() || url == null) {
             imageView.setVisibility(View.GONE);
         } else {
+            url = ApiConstants.getImageUrl(url);
             Picasso.with(context).load(url).placeholder(R.drawable.img_loading).into(imageView);
         }
     }
@@ -36,6 +39,7 @@ public class PicassoHelper {
         if (url.isEmpty() || url == null) {
             zoomableImageView[0].setVisibility(View.GONE);
         } else {
+            url = ApiConstants.getImageUrl(url);
             Target target = new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -52,6 +56,15 @@ public class PicassoHelper {
 
                 }
             };
+            Picasso.with(context).load(url).placeholder(R.drawable.img_loading).into(target);
+        }
+    }
+
+    public static void execPicasso(Context context, String url, Target target){
+        if (url.isEmpty() || url == null) {
+            return;
+        }else{
+            url = ApiConstants.getImageUrl(url);
             Picasso.with(context).load(url).placeholder(R.drawable.img_loading).into(target);
         }
     }

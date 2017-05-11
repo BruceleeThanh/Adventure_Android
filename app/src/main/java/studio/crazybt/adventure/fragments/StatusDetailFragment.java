@@ -179,11 +179,10 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
                     cbLike.setTextColor(getResources().getColor(R.color.primary));
                 }
                 final String token = SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_TOKEN, "");
-                Uri.Builder url = ApiConstants.getApi(ApiConstants.API_LIKE_STATUS);
                 Map<String, String> params = new HashMap<>();
                 params.put(ApiConstants.KEY_TOKEN, token);
                 params.put(ApiConstants.KEY_ID_STATUS, status.getId());
-                CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
+                CustomRequest customRequest = new CustomRequest(Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_LIKE_STATUS), params, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0) == 1) {

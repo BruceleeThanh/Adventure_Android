@@ -97,7 +97,7 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
     private List<DetailDiary> lstDetailDiaries = null;
     private CreateDetailDiaryListAdapter cddlaAdapter;
 
-    private AdventureRequest adventureRequest;
+    private AdventureRequest adventureRequest = null;
     private String token;
     private String idTrip;
 
@@ -305,38 +305,42 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
         });
     }
 
-    private String getImageUploaded(){
+    private String getImageUploaded() {
         return getJsonArrayFromImageContent(lstImageUploadeds);
     }
 
-    @Nullable
     private String getJsonArrayFromImageContent(List<ImageContent> lstImageContents) {
-        JSONArray jsonArray = new JSONArray();
+        JSONArray jsonArray = null;
         Map<String, String> imageUrl;
-        for (ImageContent temp : lstImageContents) {
-            imageUrl = new HashMap<>();
-            imageUrl.put(ApiConstants.KEY_URL, temp.getUrl());
-            imageUrl.put(ApiConstants.KEY_DESCRIPTION, temp.getDescription());
-            jsonArray.put(new JSONObject(imageUrl));
+        if (lstImageContents != null && !lstImageContents.isEmpty()) {
+            jsonArray = new JSONArray();
+            for (ImageContent temp : lstImageContents) {
+                imageUrl = new HashMap<>();
+                imageUrl.put(ApiConstants.KEY_URL, temp.getUrl());
+                imageUrl.put(ApiConstants.KEY_DESCRIPTION, temp.getDescription());
+                jsonArray.put(new JSONObject(imageUrl));
+            }
         }
-        return jsonArray.toString().isEmpty() ? null : jsonArray.toString();
+        return jsonArray == null ? null : jsonArray.toString();
     }
 
-    private String getDetailDiary(){
+    private String getDetailDiary() {
         return getJsonArrayFromDetailDiary(lstDetailDiaries);
     }
 
-    @Nullable
-    private String  getJsonArrayFromDetailDiary(List<DetailDiary> lstDetailDiaries){
-        JSONArray jsonArray = new JSONArray();
+    private String getJsonArrayFromDetailDiary(List<DetailDiary> lstDetailDiaries) {
+        JSONArray jsonArray = null;
         Map<String, String> detailDiary;
-        for (DetailDiary temp : lstDetailDiaries) {
-            detailDiary = new HashMap<>();
-            detailDiary.put(ApiConstants.KEY_DATE, temp.getDate());
-            detailDiary.put(ApiConstants.KEY_TITLE, temp.getTitle());
-            detailDiary.put(ApiConstants.KEY_CONTENT, temp.getContent());
-            jsonArray.put(new JSONObject(detailDiary));
+        if (lstDetailDiaries != null && !lstDetailDiaries.isEmpty()) {
+            jsonArray = new JSONArray();
+            for (DetailDiary temp : lstDetailDiaries) {
+                detailDiary = new HashMap<>();
+                detailDiary.put(ApiConstants.KEY_DATE, temp.getISODate());
+                detailDiary.put(ApiConstants.KEY_TITLE, temp.getTitle());
+                detailDiary.put(ApiConstants.KEY_CONTENT, temp.getContent());
+                jsonArray.put(new JSONObject(detailDiary));
+            }
         }
-        return jsonArray.toString().isEmpty() ? null : jsonArray.toString();
+        return jsonArray == null ? null : jsonArray.toString();
     }
 }

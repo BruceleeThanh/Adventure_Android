@@ -17,12 +17,13 @@
         <ImageView
             android:id="@+id/ivBackgroundDiaryShortcut"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/img_cover"/>
+            android:src="@drawable/img_diary"/>
 
         <View
+            android:id="@+id/vBlindDiary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/secondary_text70"/>
@@ -47,6 +48,15 @@
             android:layout_marginTop="@dimen/margin_small"
             android:text="Brucelee Thanh"
             android:textColor="@color/white"/>
+
+        <ImageView
+            android:id="@+id/ivPermission"
+            android:layout_width="@dimen/icon_size_tiny"
+            android:layout_height="@dimen/icon_size_tiny"
+            android:layout_alignTop="@+id/tvDateDiaryShortcut"
+            android:layout_toLeftOf="@+id/tvDateDiaryShortcut"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"/>
 
         <TextView
             android:id="@+id/tvDateDiaryShortcut"

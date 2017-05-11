@@ -33,10 +33,12 @@
         <ImageView
             android:id="@+id/ivImageDiary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/image_detail_diary"
             android:layout_below="@+id/tvContentDiary"
             android:adjustViewBounds="true"
-            android:src="@drawable/img_cover"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_diary"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tvImageDetail"
@@ -52,7 +54,8 @@
             android:gravity="center_vertical"
             android:padding="@dimen/margin_medium"
             android:text="@string/image_detail_tv_trip_detail"
-            android:textColor="@color/secondary_text"/>
+            android:textColor="@color/secondary_text"
+            android:visibility="gone"/>
 
         <View
             android:id="@+id/vLine"

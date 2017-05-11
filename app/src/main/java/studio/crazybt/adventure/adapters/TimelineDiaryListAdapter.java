@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
 import studio.crazybt.adventure.models.DetailDiary;
+import studio.crazybt.adventure.utils.StringUtil;
 
 /**
  * Created by Brucelee Thanh on 30/09/2016.
@@ -42,7 +43,9 @@ public class TimelineDiaryListAdapter extends RecyclerView.Adapter<TimelineDiary
     public void onBindViewHolder(ViewHolder holder, int position) {
         DetailDiary detailDiary = lstDetailDiaries.get(position);
         Calendar calendar =  ConvertTimeHelper.convertISODateToCalendar(detailDiary.getDate());
-        holder.tvItemTimelineMonth.setText(calendar.getTime().getDate() + "");
+        StringUtil.setText(holder.tvItemTimelineMonth, "T" + (calendar.get(Calendar.MONTH) + 1) + "\n" + calendar.get(Calendar.YEAR));
+        StringUtil.setText(holder.tvItemTimelineDay, calendar.get(Calendar.DAY_OF_MONTH) + "");
+        StringUtil.setText(holder.tvItemTimelineDate, ConvertTimeHelper.getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
         holder.tvItemTimelineTitle.setText(detailDiary.getTitle());
         holder.tvItemTimelineContent.setText(detailDiary.getContent());
     }
@@ -57,9 +60,9 @@ public class TimelineDiaryListAdapter extends RecyclerView.Adapter<TimelineDiary
         @BindView(R.id.tvItemTimelineMonth)
         TextView tvItemTimelineMonth;
         @BindView(R.id.tvItemTimelineDay)
-        TextView tvDay;
+        TextView tvItemTimelineDay;
         @BindView(R.id.tvItemTimelineDate)
-        TextView tvDate;
+        TextView tvItemTimelineDate;
         @BindView(R.id.tvItemTimelineTitle)
         TextView tvItemTimelineTitle;
         @BindView(R.id.tvItemTimelineContent)

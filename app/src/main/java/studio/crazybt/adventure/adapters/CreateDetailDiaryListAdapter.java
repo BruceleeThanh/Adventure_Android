@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
+import studio.crazybt.adventure.listeners.OnTextWatcher;
 import studio.crazybt.adventure.listeners.OnTimeSetupListener;
 import studio.crazybt.adventure.models.DetailDiary;
 import studio.crazybt.adventure.utils.RLog;
@@ -52,7 +53,7 @@ public class CreateDetailDiaryListAdapter extends RecyclerView.Adapter<CreateDet
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         DetailDiary detailDiary = lstDetailDiaries.get(position);
-        holder.etDateDetailDiaryTrip.setText(detailDiary.getDate() == null ? "" : detailDiary.getDate());
+        holder.etDateDetailDiaryTrip.setText(detailDiary.getDate() == null ? "" : detailDiary.getShortDate());
         holder.etDateDetailDiaryTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +61,7 @@ public class CreateDetailDiaryListAdapter extends RecyclerView.Adapter<CreateDet
                 setOnTimeSetupListener(new OnTimeSetupListener() {
                     @Override
                     public void onTimeSetup(Date date) {
-                        lstDetailDiaries.get(position).setDate(ConvertTimeHelper.convertDateToString(date, ConvertTimeHelper.DATE_FORMAT_2));
+                        lstDetailDiaries.get(position).setDate(ConvertTimeHelper.convertDateToString(date, ConvertTimeHelper.DATE_FORMAT_1));
                         notifyItemChanged(position);
                     }
                 });
@@ -73,26 +74,22 @@ public class CreateDetailDiaryListAdapter extends RecyclerView.Adapter<CreateDet
                 notifyDataSetChanged();
             }
         });
-        holder.etTitleDetailDiaryTrip.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        holder.etTitleDetailDiaryTrip.addTextChangedListener(new OnTextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (position < lstDetailDiaries.size())
-                        lstDetailDiaries.get(position).setTitle(holder.etTitleDetailDiaryTrip.getText().toString());
-                    else
-                        lstDetailDiaries.get(position - 1).setTitle(holder.etTitleDetailDiaryTrip.getText().toString());
-                }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (position < lstDetailDiaries.size())
+                    lstDetailDiaries.get(position).setTitle(holder.etTitleDetailDiaryTrip.getText().toString());
+                else
+                    lstDetailDiaries.get(position - 1).setTitle(holder.etTitleDetailDiaryTrip.getText().toString());
             }
         });
-        holder.etContentDetailDiaryTrip.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        holder.etContentDetailDiaryTrip.addTextChangedListener(new OnTextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (position < lstDetailDiaries.size())
-                        lstDetailDiaries.get(position).setContent(holder.etContentDetailDiaryTrip.getText().toString());
-                    else
-                        lstDetailDiaries.get(position - 1).setContent(holder.etContentDetailDiaryTrip.getText().toString());
-                }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (position < lstDetailDiaries.size())
+                    lstDetailDiaries.get(position).setContent(holder.etContentDetailDiaryTrip.getText().toString());
+                else
+                    lstDetailDiaries.get(position - 1).setContent(holder.etContentDetailDiaryTrip.getText().toString());
             }
         });
     }

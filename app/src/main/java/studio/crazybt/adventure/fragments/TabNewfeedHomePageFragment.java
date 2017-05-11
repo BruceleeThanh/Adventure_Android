@@ -170,12 +170,11 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
             srlNewfeed.setRefreshing(true);
         }
         final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
-        Uri.Builder url = ApiConstants.getApi(ApiConstants.API_NEWS_FEED);
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_PAGE, String.valueOf(pagination));
         params.put(ApiConstants.KEY_PERPAGE, String.valueOf(perPage));
-        AdventureRequest adventureRequest = new AdventureRequest(getContext(), Request.Method.GET, url.build().toString(), params, false);
+        AdventureRequest adventureRequest = new AdventureRequest(getContext(), Request.Method.GET, ApiConstants.getUrl(ApiConstants.API_NEWS_FEED), params, false);
         adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override
             public void onAdventureResponse(JSONObject response) {

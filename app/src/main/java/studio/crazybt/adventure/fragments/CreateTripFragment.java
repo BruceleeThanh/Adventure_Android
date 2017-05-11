@@ -401,8 +401,8 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
             Map<String, String> map;
             for(Route temp : lstRoutes){
                 map = new HashMap<>();
-                map.put(ApiConstants.KEY_START_AT, temp.getStartAt());
-                map.put(ApiConstants.KEY_END_AT, temp.getEndAt());
+                map.put(ApiConstants.KEY_START_AT, temp.getISOStartAt());
+                map.put(ApiConstants.KEY_END_AT, temp.getISOEndAt());
                 map.put(ApiConstants.KEY_TITLE, temp.getTitle());
                 map.put(ApiConstants.KEY_CONTENT, temp.getContent());
                 arr.put(new JSONObject(map));

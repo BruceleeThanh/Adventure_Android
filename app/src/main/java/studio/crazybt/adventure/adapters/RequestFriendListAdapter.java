@@ -89,11 +89,11 @@ public class RequestFriendListAdapter extends RecyclerView.Adapter<RequestFriend
                 final ApiConstants apiConstants = new ApiConstants();
                 final String token = SharedPref.getInstance(rootContext).getString(apiConstants.KEY_TOKEN, "");
                 final JsonUtil jsonUtil = new JsonUtil();
-                Uri.Builder url = apiConstants.getApi(apiConstants.API_CONFIRM_REQUEST_FRIEND);
                 Map<String, String> params = new HashMap<>();
                 params.put(apiConstants.KEY_TOKEN, token);
                 params.put(apiConstants.KEY_ID, requestFriends.get(position).getId());
-                CustomRequest customRequest = new CustomRequest(Request.Method.POST, url.build().toString(), params, new Response.Listener<JSONObject>() {
+                CustomRequest customRequest = new CustomRequest(Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_CONFIRM_REQUEST_FRIEND),
+                        params, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         if(jsonUtil.getInt(response, apiConstants.DEF_CODE, 0) == 1){

@@ -21,6 +21,11 @@ import studio.crazybt.adventure.services.AdventureRequest;
 
 public class InputActivity extends AppCompatActivity {
 
+    private final int CREATE_STATUS_TYPE = 1;
+    private final int CREATE_TRIP_TYPE = 2;
+    private final int CREATE_DIARY_TRIP_TYPE = 3;
+    private final int CREATE_DISCUSS_TRIP = 4;
+
     private static int typeShow = 0;
     private FragmentController fragmentController;
     private CreateStatusFragment createStatusFragment;
@@ -39,13 +44,16 @@ public class InputActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         typeShow = intent.getIntExtra("TYPE_SHOW", typeShow);
-        if (typeShow == 1) {
+        if (typeShow == CREATE_STATUS_TYPE) {
             initCreateStatus();
-        } else if (typeShow == 2) {
+        } else if (typeShow == CREATE_TRIP_TYPE) {
             initCreateTrip();
-        } else if (typeShow == 3) {
+        } else if (typeShow == CREATE_DIARY_TRIP_TYPE) {
             String idTrip = intent.getStringExtra(ApiConstants.KEY_ID_TRIP);
             initCreateDiaryTrip(idTrip);
+        } else if(typeShow == CREATE_DISCUSS_TRIP){
+            String idTrip = intent.getStringExtra(ApiConstants.KEY_ID_TRIP);
+            initCreateDiscussTrip(idTrip);
         }
     }
 
@@ -76,6 +84,17 @@ public class InputActivity extends AppCompatActivity {
         fragmentController.commit();
     }
 
+    private void initCreateDiscussTrip(String idTrip){
+        Bundle bundle = new Bundle();
+        bundle.putString(ApiConstants.KEY_ID_TRIP, idTrip);
+        createStatusFragment = new CreateStatusFragment();
+        createStatusFragment.setArguments(bundle);
+        getSupportActionBar().setTitle(getResources().getString(R.string.title_tb_create_discuss_trip));
+        fragmentController = new FragmentController(this);
+        fragmentController.addFragment_BackStack(R.id.rlInput, createStatusFragment);
+        fragmentController.commit();
+    }
+
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
@@ -99,10 +118,10 @@ public class InputActivity extends AppCompatActivity {
                 onBackPressed();
                 break;
             case R.id.itemPost:
-                if (typeShow == 1) {
+                if (typeShow == CREATE_STATUS_TYPE) {
                     item.setEnabled(false);
                     createStatusFragment.uploadStatus();
-                } else if (typeShow == 2) {
+                } else if (typeShow == CREATE_TRIP_TYPE) {
                     createTripFragment.uploadTrip();
                     if (createTripFragment.getRequest() != null) {
                         item.setEnabled(false);
@@ -113,7 +132,7 @@ public class InputActivity extends AppCompatActivity {
                             }
                         });
                     }
-                } else if (typeShow == 3) {
+                } else if (typeShow == CREATE_DIARY_TRIP_TYPE) {
                     createDiaryTripFragment.uploadDiary();
                     if(createDiaryTripFragment.getAdventureRequest() != null){
                         item.setEnabled(false);
@@ -124,6 +143,9 @@ public class InputActivity extends AppCompatActivity {
                             }
                         });
                     }
+                } else if(typeShow == CREATE_DISCUSS_TRIP){
+                    item.setEnabled(false);
+                    createStatusFragment.uploadStatus();
                 }
                 break;
         }

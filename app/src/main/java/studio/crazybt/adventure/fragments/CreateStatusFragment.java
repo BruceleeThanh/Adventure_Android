@@ -62,11 +62,14 @@ import studio.crazybt.adventure.libs.ApiParams;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.ImageUpload;
 import studio.crazybt.adventure.models.SpinnerItem;
+import studio.crazybt.adventure.services.AdventureRequest;
 import studio.crazybt.adventure.services.MultipartRequest;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
+import studio.crazybt.adventure.utils.StringUtil;
+import studio.crazybt.adventure.utils.ToastUtil;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -106,6 +109,10 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     private final String CURRENT_STATUS_PRIVACY = "current_status_privacy";
 
     private DrawableHelper drawableHelper;
+    private AdventureRequest adventureRequest = null;
+
+    private String idTrip = null;
+    String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
 
     @Nullable
     @Override
@@ -114,19 +121,35 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
             EmojiManager.install(new EmojiOneProvider());
             rootView = inflater.inflate(R.layout.fragment_create_status, container, false);
         }
-        ButterKnife.bind(this, rootView);
-        drawableHelper = new DrawableHelper(getContext());
-        btnAddImage.setOnClickListener(this);
-        btnAddEmojicon.setOnClickListener(this);
-        drawableHelper.setButtonDrawableFitSize(btnAddEmojicon, R.drawable.ic_lol_96, itemSizeSmall, itemSizeSmall);
-        tvProfileName.setText(SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_FIRST_NAME, "") + " " + SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_LAST_NAME, ""));
-        this.setupPopUpEmoji();
-        this.initSpinnerPrivacy();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            idTrip = bundle.getString(ApiConstants.KEY_ID_TRIP);
+        }
+        this.initControls();
+        this.initEvents();
         this.initImageCreateStatusList();
         return rootView;
     }
 
-    private void initSpinnerPrivacy(){
+    private void initControls() {
+        ButterKnife.bind(this, rootView);
+        drawableHelper = new DrawableHelper(getContext());
+        drawableHelper.setButtonDrawableFitSize(btnAddEmojicon, R.drawable.ic_lol_96, itemSizeSmall, itemSizeSmall);
+        tvProfileName.setText(SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_FIRST_NAME, "") + " " + SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_LAST_NAME, ""));
+        this.setupPopUpEmoji();
+        if (idTrip != null) {
+            spiPrivacy.setVisibility(View.GONE);
+        }else{
+            this.initSpinnerPrivacy();
+        }
+    }
+
+    private void initEvents() {
+        btnAddImage.setOnClickListener(this);
+        btnAddEmojicon.setOnClickListener(this);
+    }
+
+    private void initSpinnerPrivacy() {
         int currentPrivacy = SharedPref.getInstance(getContext()).getInt(CURRENT_STATUS_PRIVACY, 2);
         List<SpinnerItem> spinnerItemList = new ArrayList<>();
         spinnerItemList.add(new SpinnerItem(getResources().getString(R.string.only_me_privacy), R.drawable.ic_private_96));
@@ -230,13 +253,11 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
             imageUploadeds = new ArrayList<>();
             final ApiConstants apiConstants = new ApiConstants();
             final String token = SharedPref.getInstance(getContext()).getString(apiConstants.KEY_TOKEN, "");
-            Uri.Builder url = apiConstants.getApi(apiConstants.API_UPLOAD_IMAGE);
             final JsonUtil jsonUtil = new JsonUtil();
-            String sUrl = url.build().toString();
 
             for (int i = 0; i < imagePick.size(); i++) {
                 final int temp = i;
-                MultipartRequest multipartRequest = new MultipartRequest(Request.Method.POST, sUrl,
+                MultipartRequest multipartRequest = new MultipartRequest(Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_UPLOAD_IMAGE),
                         new Response.Listener<NetworkResponse>() {
                             @Override
                             public void onResponse(NetworkResponse response) {
@@ -289,49 +310,42 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     }
 
     private void postSingleStatus(boolean isHaveImage) {
-        final String imageDescriptionString;
-        if (isHaveImage) {
-            imageDescriptionString = this.getImageArray();
+        adventureRequest = new AdventureRequest(getContext(), Request.Method.POST,
+                ApiConstants.getUrl(ApiConstants.API_CREATE_STATUS), getPostSingleStatusParams(isHaveImage), false);
+        getPostSingleStatusResponse();
+
+    }
+
+    private HashMap getPostSingleStatusParams(boolean isHaveImage) {
+        ApiParams params = ApiParams.getBuilder();
+        params.put(ApiConstants.KEY_TOKEN, token);
+        params.put(ApiConstants.KEY_CONTENT, StringUtil.getText(eetContentStatus));
+        params.put(ApiConstants.KEY_IMAGE_DESCRIPTION, isHaveImage ? this.getImageArray() : "");
+        params.putParam(ApiConstants.KEY_PERMISSION, spiPrivacy.getSelectedItemPosition() + 1);
+        if (idTrip != null) {
+            params.put(ApiConstants.KEY_ID_TRIP, idTrip);
+            params.putParam(ApiConstants.KEY_TYPE, 2);
         } else {
-            imageDescriptionString = "";
+            params.putParam(ApiConstants.KEY_TYPE, 1);
         }
-        final ApiConstants apiConstants = new ApiConstants();
-        final String token = SharedPref.getInstance(getContext()).getString(apiConstants.KEY_TOKEN, "");
-        Uri.Builder url = apiConstants.getApi(apiConstants.API_CREATE_STATUS);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url.build().toString(), new Response.Listener<String>() {
+        return params.build();
+    }
+
+    private void getPostSingleStatusResponse() {
+        adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override
-            public void onResponse(String response) {
-                JSONObject jsonObject = JsonUtil.createJSONObject(response);
-                if (JsonUtil.getInt(jsonObject, apiConstants.DEF_CODE, 0) == 1) {
-                    Toast.makeText(getContext(), getResources().getString(R.string.success_post_status), Toast.LENGTH_LONG).show();
+            public void onAdventureResponse(JSONObject response) {
+                if (JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0) == 1) {
+                    Toast.makeText(getContext(), getResources().getString(idTrip == null ? R.string.success_post_status :
+                            R.string.success_post_discuss_trip), Toast.LENGTH_LONG).show();
                 }
                 getActivity().finish();
             }
-        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                RLog.e(error.getMessage());
-
+            public void onAdventureError(int errorCode, String errorMsg) {
+                ToastUtil.showToast(getContext(), errorMsg);
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                String content;
-                if(eetContentStatus.getText().toString() == null){
-                    content = "";
-                }else{
-                    content = eetContentStatus.getText().toString();
-                }
-                ApiParams params = new ApiParams();
-                params.put(apiConstants.KEY_TOKEN, token);
-                params.put(apiConstants.KEY_CONTENT, content);
-                params.put(apiConstants.KEY_IMAGE_DESCRIPTION, imageDescriptionString);
-                params.put(apiConstants.KEY_PERMISSION, String.valueOf(spiPrivacy.getSelectedItemPosition() + 1));
-                params.put(apiConstants.KEY_TYPE, "1");
-                return params;
-            }
-        };
-        MySingleton.getInstance(this.getContext()).addToRequestQueue(stringRequest, false);
+        });
     }
 
     private String getImageArray() {

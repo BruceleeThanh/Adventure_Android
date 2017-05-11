@@ -58,10 +58,20 @@ public class DiaryTripShortcutListAdapter extends RecyclerView.Adapter<DiaryTrip
         });
         if (tripDiary.getImages() != null && !tripDiary.getImages().isEmpty()) {
             PicassoHelper.execPicasso(rootContext, tripDiary.getImages().get(0).getUrl(), holder.ivBackgroundDiaryShortcut);
+        }else{
+            holder.ivBackgroundDiaryShortcut.setImageResource(R.drawable.img_diary);
+            holder.vBlindDiary.setVisibility(View.GONE);
         }
         StringUtil.setText(holder.tvNameDiaryShortcut, tripDiary.getTitle());
         StringUtil.setText(holder.tvAuthorDiaryShortcut, tripDiary.getOwner().getFirstName() + " " +
                 tripDiary.getOwner().getLastName());
+        if (tripDiary.getPermission() == 1) {
+            holder.ivPermission.setImageResource(R.drawable.ic_private_96);
+        } else if (tripDiary.getPermission() == 2) {
+            holder.ivPermission.setImageResource(R.drawable.ic_friend_96);
+        } else if (tripDiary.getPermission() == 3) {
+            holder.ivPermission.setImageResource(R.drawable.ic_public_96);
+        }
         StringUtil.setText(holder.tvDateDiaryShortcut, ConvertTimeHelper.convertISODateToPrettyTimeStamp(tripDiary.getCreatedAt()));
     }
 
@@ -80,8 +90,12 @@ public class DiaryTripShortcutListAdapter extends RecyclerView.Adapter<DiaryTrip
         TextView tvNameDiaryShortcut;
         @BindView(R.id.tvAuthorDiaryShortcut)
         TextView tvAuthorDiaryShortcut;
+        @BindView(R.id.ivPermission)
+        ImageView ivPermission;
         @BindView(R.id.tvDateDiaryShortcut)
         TextView tvDateDiaryShortcut;
+        @BindView(R.id.vBlindDiary)
+        View vBlindDiary;
 
         public ViewHolder(View itemView) {
             super(itemView);

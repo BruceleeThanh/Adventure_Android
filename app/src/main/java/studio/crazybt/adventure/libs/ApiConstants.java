@@ -15,8 +15,12 @@ public class ApiConstants {
     public static final int RESPONSE_CODE_SUCCESS = 200;
 
     // API Urls
+
+    /* Remember: change both API_ROOT and API_ROOT_IMAGE */
     //private static final String API_ROOT = "155.94.144.150:25763/api";
     private static final String API_ROOT = "192.168.1.9:25763/api";
+    private static final String API_ROOT_IMAGES = "192.168.1.9:25763";
+
     private static final String API_SCHEME = "http";
     public static final String API_NORMAL_SIGNUP = "user/sign_up";
     public static final String API_NORMAL_LOGIN = "user/login";
@@ -139,22 +143,23 @@ public class ApiConstants {
     public static final String KEY_DETAIL_DIARY = "detail_diary";
     public static final String KEY_DIARIES = "diaries";
     public static final String KEY_ID_TRIP_DIARY = "id_trip_diary";
+    public static final String KEY_DISCUSS = "discuss";
 
     public ApiConstants() {
     }
 
-    private static void setBaseUrl() {
+    private static void setBaseUrl(String rootUrl) {
         builder = new Uri.Builder();
-        builder.scheme(API_SCHEME).encodedAuthority(API_ROOT);
+        builder.scheme(API_SCHEME).encodedAuthority(rootUrl);
     }
 
-    public Uri.Builder getBaseApi() {
-        setBaseUrl();
+    public Uri.Builder getBaseApi(String rootUrl) {
+        setBaseUrl(rootUrl);
         return builder;
     }
 
-    public static Uri.Builder getApi(String path) {
-        setBaseUrl();
+    public static Uri.Builder getApi(String rootUrl, String path) {
+        setBaseUrl(rootUrl);
         if (path.contains("/")) {
             builder.appendEncodedPath(path);
         } else {
@@ -163,8 +168,24 @@ public class ApiConstants {
         return builder;
     }
 
+    public static Uri.Builder getImageApi(String rootUrl, String path) {
+        StringBuilder sb = new StringBuilder(path);
+        String subPath = sb.deleteCharAt(0).toString();
+        setBaseUrl(rootUrl);
+        if (path.contains("/")) {
+            builder.appendEncodedPath(subPath);
+        } else {
+            builder.appendPath(subPath);
+        }
+        return builder;
+    }
+
     public static String getUrl(String path){
-        return getApi(path).build().toString();
+        return getApi(API_ROOT, path).build().toString();
+    }
+
+    public static String getImageUrl(String path){
+        return getImageApi(API_ROOT_IMAGES, path).build().toString();
     }
 
 }

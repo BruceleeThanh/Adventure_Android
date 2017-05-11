@@ -76,10 +76,9 @@ public class TabNotificationsHomePageFragment extends Fragment implements SwipeR
         srlNotifications.setRefreshing(true);
         notifications.clear();
         final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
-        Uri.Builder url = ApiConstants.getApi(ApiConstants.API_BROWSE_NOTIFICATION);
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
-        AdventureRequest adventureRequest = new AdventureRequest(getContext(), Request.Method.POST, url.build().toString(), params, false);
+        AdventureRequest adventureRequest = new AdventureRequest(getContext(), Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_BROWSE_NOTIFICATION), params, false);
         adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override
             public void onAdventureResponse(JSONObject response) {

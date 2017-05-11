@@ -71,11 +71,11 @@ public class LikesStatusFragment extends Fragment {
     private void loadData() {
         final String token = SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_TOKEN, "");
         final String currentUserID = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_ID, "");
-        Uri.Builder url = ApiConstants.getApi(ApiConstants.API_BROWSE_LIKE);
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_ID_STATUS, status.getId());
-        AdventureRequest adventureRequest = new AdventureRequest(rootView.getContext(), Request.Method.POST, url.build().toString(), params, false);
+        AdventureRequest adventureRequest = new AdventureRequest(rootView.getContext(), Request.Method.POST,
+                ApiConstants.getUrl(ApiConstants.API_BROWSE_LIKE), params, false);
         adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override
             public void onAdventureResponse(JSONObject response) {

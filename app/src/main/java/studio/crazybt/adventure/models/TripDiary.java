@@ -29,11 +29,12 @@ public class TripDiary implements Parcelable {
     @Nullable
     private String createdAt;
 
-    public TripDiary(String id, User owner, String title, List<ImageContent> images, String createdAt) {
+    public TripDiary(String id, User owner, String title, List<ImageContent> images, int permission, String createdAt) {
         this.id = id;
         this.owner = owner;
         this.title = title;
         this.images = images;
+        this.permission = permission;
         this.createdAt = createdAt;
     }
 

@@ -43,6 +43,18 @@ public class DetailDiary implements Parcelable {
         return date;
     }
 
+    @Nullable
+    public String getISODate(){
+        return ConvertTimeHelper.convertDateToISOFormat(
+                ConvertTimeHelper.convertStringToDate(date, ConvertTimeHelper.DATE_FORMAT_1));
+    }
+
+    @Nullable
+    public String getShortDate(){
+        Date d = ConvertTimeHelper.convertStringToDate(date, ConvertTimeHelper.DATE_FORMAT_1);
+        return ConvertTimeHelper.convertDateToString(d, ConvertTimeHelper.DATE_FORMAT_2);
+    }
+
     public void setDate(@Nullable String date) {
         this.date = date;
     }

@@ -206,6 +206,12 @@
     <string name="member_trip_privacy">Thành viên chuyến đi</string>
     <string name="success_create_diary_trip">Nhật ký của bạn đã được đăng</string>
 
+    <!--Create discuss trip-->
+    <string name="title_tb_create_discuss_trip">Thảo luận về chuyến đi</string>
+    <string name="success_post_discuss_trip">Cuộc thảo luận của bạn đã được đăng.</string>
+    <string name="error_null_discuss_trip">Chuyến đi này chưa có cuộc thảo luận.</string>
+    <string name="error_guess_discuss_trip">Chỉ thành viên chuyến đi có thể xem các cuộc thảo luận.</string>
+
     <array name="vehicle">
         <item>Đi bộ</item>
         <item>Xe đạp</item>

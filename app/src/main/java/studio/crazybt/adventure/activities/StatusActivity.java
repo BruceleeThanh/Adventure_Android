@@ -102,11 +102,10 @@ public class StatusActivity extends SwipeBackActivity {
 
     private void loadStatusShortcutFromNotification(Notification notification) {
         final String token = SharedPref.getInstance(this).getString(ApiConstants.KEY_TOKEN, "");
-        Uri.Builder url = ApiConstants.getApi(ApiConstants.API_FIND_ONE_STATUS);
         Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_ID_STATUS, notification.getObject());
-        AdventureRequest adventureRequest = new AdventureRequest(this, Request.Method.POST, url.build().toString(), params, false);
+        AdventureRequest adventureRequest = new AdventureRequest(this, Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_FIND_ONE_STATUS), params, false);
         adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override
             public void onAdventureResponse(JSONObject response) {

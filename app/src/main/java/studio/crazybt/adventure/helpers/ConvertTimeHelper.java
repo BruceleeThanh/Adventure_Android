@@ -148,8 +148,12 @@ public class ConvertTimeHelper {
         return date;
     }
 
-//    public static String getDayOfWeek(int dayOfWeek){
-//        if()
-//    }
+    public static String getDayOfWeek(int dayOfWeek){
+        if(dayOfWeek == 1){
+            return "CN";
+        }else{
+            return "Thứ " + dayOfWeek;
+        }
+    }
 
 }
