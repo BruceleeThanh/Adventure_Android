@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -47,6 +48,12 @@ import studio.crazybt.adventure.utils.SharedPref;
 public class ProfileFragment extends Fragment {
 
     private View rootView;
+    @BindView(R.id.llAction)
+    LinearLayout llAction;
+    @BindView(R.id.tvAddFriend)
+    TextView tvAddFriend;
+    @BindView(R.id.tvFollow)
+    TextView tvFollow;
     @BindView(R.id.tvIntroHostTrip)
     TextView tvIntroHostTrip;
     @BindView(R.id.tvIntroJoinTrip)
@@ -67,6 +74,18 @@ public class ProfileFragment extends Fragment {
 
     private List<Status> statuses;
 
+    private boolean isDefaultUser = false;
+    private String idUser = null;
+    private String username = null;
+
+    public static ProfileFragment newInstance(String idUser, String username) {
+        Bundle args = new Bundle();
+        args.putString(CommonConstants.KEY_ID_USER, idUser);
+        args.putString(CommonConstants.KEY_USERNAME, username);
+        ProfileFragment fragment = new ProfileFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -77,19 +96,27 @@ public class ProfileFragment extends Fragment {
             this.initDrawable();
             this.initTimeline();
             Bundle bundle = this.getArguments();
-            String idUser = CommonConstants.VAL_ID_DEFAULT;
-            String username = CommonConstants.VAL_USERNAME_DEFAUT;
+            idUser = CommonConstants.VAL_ID_DEFAULT;
+            username = CommonConstants.VAL_USERNAME_DEFAUT;
             if (bundle != null) {
                 idUser = bundle.getString(CommonConstants.KEY_ID_USER);
                 username = bundle.getString(CommonConstants.KEY_USERNAME);
             }
-            ((ProfileActivity) getActivity()).setSupportActionBar(toolbar);
-            ((ProfileActivity) getActivity()).getSupportActionBar().setTitle(username);
-            ((ProfileActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            isDefaultUser = idUser.equals(CommonConstants.VAL_ID_DEFAULT);
+            this.initControls();
             this.loadData(idUser);
         }
 
         return rootView;
+    }
+
+    private void initControls(){
+        ((ProfileActivity) getActivity()).setSupportActionBar(toolbar);
+        ((ProfileActivity) getActivity()).getSupportActionBar().setTitle(username);
+        ((ProfileActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(isDefaultUser){
+            llAction.setVisibility(View.GONE);
+        }
     }
 
     private void initDrawable() {

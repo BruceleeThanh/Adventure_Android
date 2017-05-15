@@ -4,9 +4,9 @@
             xmlns:tools="http://schemas.android.com/tools"
             tools:context=".activities.HomePageActivity">
     <item
-        android:id="@+id/search_view"
+        android:id="@+id/svSearchUser"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Search"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="always"/>
+        app:showAsAction="always|collapseActionView"/>
 </tools:menu>

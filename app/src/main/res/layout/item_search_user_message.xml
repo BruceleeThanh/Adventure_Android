@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/margin_medium"
+    android:paddingBottom="@dimen/margin_medium">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="@dimen/profile_image_medium"
+        android:layout_height="@dimen/profile_image_medium"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:src="@drawable/img_profile2"/>
+
+    <TextView
+        android:id="@+id/tvProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium_big"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:text="Brucelee Thanh"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/txt_small_medium"/>
+
+
+</RelativeLayout>

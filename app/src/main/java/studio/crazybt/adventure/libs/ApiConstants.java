@@ -59,6 +59,7 @@ public class ApiConstants {
     public static final String API_ACCEPT_REQUEST_TRIP_MEMBER = "trip_member/accept_request";
     public static final String API_REJECT_REQUEST_TRIP_MEMBER = "trip_member/reject_request";
     public static final String API_LEAVE_TRIP_TRIP_MEMBER = "trip_member/leave_trip";
+    public static final String API_SEARCH_FRIEND = "friend/search";
 
     // Default params
     public static final String DEF_CODE = "code";
@@ -144,6 +145,12 @@ public class ApiConstants {
     public static final String KEY_DIARIES = "diaries";
     public static final String KEY_ID_TRIP_DIARY = "id_trip_diary";
     public static final String KEY_DISCUSS = "discuss";
+    public static final String KEY_FRIENDS = "friends";
+    public static final String KEY_STRANGERS = "strangers";
+    public static final String KEY_TOTAL = "total";
+    public static final String KEY_TOTAL_FRIEND = "total_friend";
+    public static final String KEY_TOTAL_STRANGER = "total_stranger";
+    public static final String KEY_KEYWORD = "keyword";
 
     public ApiConstants() {
     }

@@ -48,6 +48,14 @@ public class FragmentController {
         fragmentTransaction.replace(id, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
     }
 
+    public static void addFragment_Animation(FragmentActivity fragmentActivity, int id, Object obj){
+        FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        fragmentTransaction.add(id, (Fragment) obj, obj.getClass().getName());
+        fragmentTransaction.commit();
+    }
+
     public void addFragment_BackStack_Animation(int id, Object obj){
         this.setCustomAnimations();
         fragmentTransaction.replace(id, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
@@ -55,6 +63,13 @@ public class FragmentController {
 
     public void removeFragment(Object obj){
         fragmentTransaction.remove((Fragment) obj);
+    }
+
+    public static void removeFragment(FragmentActivity fragmentActivity, Object obj){
+        FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove((Fragment) obj);
+        fragmentTransaction.commit();
     }
 
     public void commit(){

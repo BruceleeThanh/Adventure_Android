@@ -89,10 +89,7 @@ public class HomePageActivity extends AppCompatActivity{
                 switch (menuItem.getItemId()) {
                     // Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.itemProfile:
-                        Intent intent = new Intent(HomePageActivity.this, ProfileActivity.class);
-                        intent.putExtra(CommonConstants.KEY_ID_USER, CommonConstants.VAL_ID_DEFAULT);
-                        intent.putExtra(CommonConstants.KEY_USERNAME, userName);
-                        startActivity(intent);
+                        startActivity(ProfileActivity.newInstance(getBaseContext(), CommonConstants.VAL_ID_DEFAULT, userName));
                         return true;
                     case R.id.itemLogout:
                         SharedPref.getInstance(getBaseContext()).putString(ApiConstants.KEY_TOKEN, "");

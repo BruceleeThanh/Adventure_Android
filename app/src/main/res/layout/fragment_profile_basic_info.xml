@@ -1,24 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingLeft="@dimen/margin_small"
+    android:paddingRight="@dimen/margin_small"
+    android:paddingTop="@dimen/margin_medium">
 
-    <LinearLayout
-        android:id="@+id/llBasicInfo"
-        android:orientation="vertical"
+    <RelativeLayout
+        android:id="@+id/rlBasicInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_gray_white_btn"
-        android:divider="@drawable/partition_gray_line_horizontal"
-        android:showDividers="beginning">
+        android:padding="@dimen/margin_medium">
 
         <TextView
+            android:id="@+id/tvBasicInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:text="@string/label_basic_profile_info"
+            android:textStyle="bold"/>
 
-    </LinearLayout>
+        <View
+            android:id="@+id/vLine1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/tvBasicInfo"
+            android:layout_marginTop="@dimen/margin_small"
+            android:background="@drawable/partition_gray_line_horizontal"/>
 
+        <TextView
+            android:id="@+id/tvFirstName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/firstname_et_signupviaemail"
+            android:layout_alignBaseline="@+id/etFirstName"/>
 
+        <EditText
+            android:id="@+id/etFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_toRightOf="@+id/tvFirstName"
+            android:layout_below="@+id/vLine1"/>
+
+        <TextView
+            android:id="@+id/tvLastName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="@string/lastname_et_signupviaemail"
+            android:layout_alignBaseline="@+id/etLastName"/>
+
+        <EditText
+            android:id="@+id/etLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_alignLeft="@+id/etFirstName"
+            android:layout_below="@+id/etFirstName"/>
+    </RelativeLayout>
 </RelativeLayout>

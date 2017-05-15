@@ -87,10 +87,14 @@
 
     <!--Profile-->
     <string name="message_btn_profile">Tin nhắn</string>
+    <string name="edit_profile_info">Sửa thông tin cá nhân</string>
     <string name="information_btn_profile">Thông tin</string>
     <string name="trip_btn_profile">Chuyến đi</string>
     <string name="friend_btn_profile">Bạn bè</string>
     <string name="photo_btn_profile">Ảnh</string>
+
+    <!--Edit profile info-->
+    <string name="label_basic_profile_info">Thông tin cá nhân</string>
 
     <!--item TabLayout Trip-->
     <string name="schedule_tablayout_trip">Lịch trình</string>
@@ -221,5 +225,10 @@
         <item>Tàu hoả</item>
         <item>Tàu thuỷ</item>
     </array>
+
+    <!--Search user-->
+    <string name="label_friend_search_user">Bạn bè</string>
+    <string name="label_people_search_user">Mọi người</string>
+    <string name="label_empty_search_friend">Không tìm thấy người dùng nào.</string>
 
 </resources>
