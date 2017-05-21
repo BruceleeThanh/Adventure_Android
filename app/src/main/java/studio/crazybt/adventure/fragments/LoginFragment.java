@@ -78,7 +78,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }else{
             memory = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_PHONE_NUMBER_EMAIL, "");
         }
-        if(memory != ""){
+        if(!memory.equals("")){
             etPhoneEmailLogin.setText(memory);
         }
         return rootView;
@@ -90,59 +90,42 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             case R.id.btnLogin:
                 final String token= FirebaseInstanceId.getInstance().getToken();
                 btnLogin.setClickable(false);
-                final ApiConstants apiConstants = new ApiConstants();
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_NORMAL_LOGIN),
                         new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        JsonUtil jsonUtil = new JsonUtil();
-                        JSONObject jsonObject = jsonUtil.createJSONObject(response);
-                        int code = jsonUtil.getInt(jsonObject, apiConstants.DEF_CODE, -4);
+                        JSONObject jsonObject = JsonUtil.createJSONObject(response);
+                        int code = JsonUtil.getInt(jsonObject, ApiConstants.DEF_CODE, -4);
                         RLog.i(code);
                         if(code == 1){
-                            String id;
-                            String email;
-                            String phoneNumber;
-                            String firstName;
-                            String lastName;
-                            int gender;
-                            String address;
-                            String religion;
-                            String intro;
-                            String idFacebook;
-                            String avatar;
-                            String cover;
-                            String createdAt;
-                            String latestActive;
-                            jsonObject = jsonUtil.getJSONObject(jsonObject, apiConstants.DEF_DATA);
-                            SharedPref.getInstance(getContext()).putString(apiConstants.KEY_ID, jsonUtil.getString(jsonObject, apiConstants.KEY_ID, ""));
-                            SharedPref.getInstance(getContext()).putString(apiConstants.KEY_TOKEN, jsonUtil.getString(jsonObject, apiConstants.KEY_TOKEN, ""));
-                            SharedPref.getInstance(getContext()).putString(apiConstants.KEY_PHONE_NUMBER_EMAIL, etPhoneEmailLogin.getText().toString());
-                            SharedPref.getInstance(getContext()).putString(apiConstants.KEY_FIRST_NAME, jsonUtil.getString(jsonObject, apiConstants.KEY_FIRST_NAME, ""));
-                            SharedPref.getInstance(getContext()).putString(apiConstants.KEY_LAST_NAME, jsonUtil.getString(jsonObject, apiConstants.KEY_LAST_NAME, ""));
-
-                            id = JsonUtil.getString(jsonObject, ApiConstants.KEY_ID, "");
-                            email = JsonUtil.getString(jsonObject, ApiConstants.KEY_EMAIL, "");
-                            phoneNumber = JsonUtil.getString(jsonObject, ApiConstants.KEY_PHONE_NUMBER, "");
-                            firstName = JsonUtil.getString(jsonObject, ApiConstants.KEY_FIRST_NAME, "");
-                            lastName = JsonUtil.getString(jsonObject, ApiConstants.KEY_LAST_NAME,"");
-                            gender=JsonUtil.getInt(jsonObject,ApiConstants.KEY_GENDER, 0);
-                            address = JsonUtil.getString(jsonObject,ApiConstants.KEY_ADDRESS, "");
-                            religion=JsonUtil.getString(jsonObject,ApiConstants.KEY_RELIGION, "");
-                            intro = JsonUtil.getString(jsonObject,ApiConstants.KEY_INTRO, "");
-                            idFacebook = JsonUtil.getString(jsonObject, ApiConstants.KEY_ID_FACEBOOK, "");
-                            avatar = JsonUtil.getString(jsonObject, ApiConstants.KEY_AVATAR, "");
-                            cover = JsonUtil.getString(jsonObject, ApiConstants.KEY_COVER, "");
-                            createdAt=JsonUtil.getString(jsonObject, ApiConstants.KEY_CREATED_AT, "");
-                            latestActive=JsonUtil.getString(jsonObject, ApiConstants.KEY_LATEST_ACTIVE, "");
+                            JSONObject data = JsonUtil.getJSONObject(jsonObject, ApiConstants.DEF_DATA);
+                            
+                            SharedPref.getInstance(getContext()).putString(ApiConstants.KEY_ID, JsonUtil.getString(data, ApiConstants.KEY_ID, ""));
+                            SharedPref.getInstance(getContext()).putString(ApiConstants.KEY_TOKEN, JsonUtil.getString(data, ApiConstants.KEY_TOKEN, ""));
+                            SharedPref.getInstance(getContext()).putString(ApiConstants.KEY_PHONE_NUMBER_EMAIL, etPhoneEmailLogin.getText().toString());
 
                             realm.beginTransaction();
                             RealmResults<User> userRealmResults = realm.where(User.class).findAll();
                             userRealmResults.deleteAllFromRealm();
-                            User user = new User(id, firstName, lastName, "", email, phoneNumber, gender, "birthday", address, religion,
-                                    intro, idFacebook, avatar, cover, createdAt, latestActive);
-                            User userRealm = realm.copyToRealmOrUpdate(user);
-                            realm.insertOrUpdate(userRealm);
+                            User user = new User(
+                                    JsonUtil.getString(data, ApiConstants.KEY_ID, ""),
+                                    JsonUtil.getString(data, ApiConstants.KEY_FIRST_NAME, ""),
+                                    JsonUtil.getString(data, ApiConstants.KEY_LAST_NAME, ""),
+                                    null,
+                                    JsonUtil.getString(data, ApiConstants.KEY_EMAIL, ""),
+                                    JsonUtil.getString(data, ApiConstants.KEY_PHONE_NUMBER, ""),
+                                    JsonUtil.getInt(data, ApiConstants.KEY_GENDER, -1),
+                                    JsonUtil.getString(data, ApiConstants.KEY_BIRTHDAY, ""),
+                                    JsonUtil.getString(data, ApiConstants.KEY_ADDRESS, ""),
+                                    JsonUtil.getString(data, ApiConstants.KEY_RELIGION, ""),
+                                    JsonUtil.getString(data, ApiConstants.KEY_INTRO, ""),
+                                    JsonUtil.getString(data, ApiConstants.KEY_ID_FACEBOOK, ""),
+                                    JsonUtil.getString(data, ApiConstants.KEY_AVATAR, ""),
+                                    JsonUtil.getString(data, ApiConstants.KEY_AVATAR_ACTUAL, ""),
+                                    JsonUtil.getString(data, ApiConstants.KEY_COVER, ""),
+                                    JsonUtil.getString(data, ApiConstants.KEY_CREATED_AT, ""),
+                                    JsonUtil.getString(data, ApiConstants.KEY_LAST_VISITED_AT, ""));
+                            realm.copyToRealmOrUpdate(user);
                             realm.commitTransaction();
 
                             Toast.makeText(getContext(), getResources().getString(R.string.login_success_loginviaemail), Toast.LENGTH_LONG).show();
@@ -168,9 +151,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<>();
-                        params.put(apiConstants.KEY_PHONE_NUMBER_EMAIL, etPhoneEmailLogin.getText().toString());
-                        params.put(apiConstants.KEY_PASSWORD, etPasswordLogin.getText().toString());
-                        params.put(apiConstants.KEY_FCM_TOKEN, token);
+                        params.put(ApiConstants.KEY_PHONE_NUMBER_EMAIL, etPhoneEmailLogin.getText().toString());
+                        params.put(ApiConstants.KEY_PASSWORD, etPasswordLogin.getText().toString());
+                        params.put(ApiConstants.KEY_FCM_TOKEN, token);
                         return params;
                     }
                 };

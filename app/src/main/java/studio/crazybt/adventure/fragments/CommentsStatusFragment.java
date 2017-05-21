@@ -51,6 +51,7 @@ import studio.crazybt.adventure.adapters.CommentStatusListAdapter;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
 import studio.crazybt.adventure.helpers.DrawableHelper;
 import studio.crazybt.adventure.helpers.FragmentController;
+import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.models.CommentStatus;
 import studio.crazybt.adventure.models.Status;
@@ -91,7 +92,6 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
     private LinearLayoutManager llmCommentStatus;
     private CommentStatusListAdapter cslaCommentStatus;
     private DrawableHelper drawableHelper;
-    private FragmentController fragmentController;
     private List<CommentStatus> commentStatusList;
     private Status status;
     private Realm realm;
@@ -225,9 +225,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
                 bundle.putParcelable("data", status);
                 LikesStatusFragment likesStatusFragment = new LikesStatusFragment();
                 likesStatusFragment.setArguments(bundle);
-                fragmentController = new FragmentController(getActivity());
-                fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, likesStatusFragment);
-                fragmentController.commit();
+                FragmentController.replaceFragment_BackStack_Animation(getActivity(), R.id.rlStatus, likesStatusFragment);
                 break;
             case R.id.ivEmoticon:
                 emojiPopup.toggle();
@@ -294,7 +292,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
         dialog.setContentView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
         ImageView ivProfileImage = (ImageView) dialog.findViewById(R.id.ivProfileImage);
-
+        PicassoHelper.execPicasso_ProfileImage(getContext(), commentStatusList.get(posItem).getUser().getAvatar(), ivProfileImage);
         TextView tvProfileName = (TextView) dialog.findViewById(R.id.tvProfileName);
         String profileName = commentStatusList.get(posItem).getUser().getFirstName() + " " + commentStatusList.get(posItem).getUser().getLastName();
         tvProfileName.setText(profileName);

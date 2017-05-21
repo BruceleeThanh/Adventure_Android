@@ -21,7 +21,8 @@
             android:layout_marginTop="@dimen/margin_medium"
             android:clickable="true"
             android:foreground="@drawable/selector_gray_white_tv"
-            android:src="@drawable/img_profile"/>
+            android:src="@drawable/img_profile"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/tvProfileName"

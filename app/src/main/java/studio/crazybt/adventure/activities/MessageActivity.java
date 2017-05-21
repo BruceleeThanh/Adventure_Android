@@ -22,7 +22,6 @@ public class MessageActivity extends AppCompatActivity {
     @BindView(R.id.tbMessage)
     Toolbar tbMessage;
     private static int typeShow = 0;
-    private FragmentController fragmentController;
     private SearchUserFragment searchUserFragment = null;
 
     @Override
@@ -45,9 +44,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void showMessage(){
-        fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack_Animation(R.id.rlMessage, new MessageFragment());
-        fragmentController.commit();
+        FragmentController.replaceFragment_BackStack_Animation(this, R.id.rlMessage, new MessageFragment());
     }
 
     @Override

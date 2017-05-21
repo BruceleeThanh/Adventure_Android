@@ -20,9 +20,10 @@
         android:hint="@string/email_et_loginviaemail"
         android:layout_below="@+id/ivAdventureLogoLogin"
         android:layout_centerHorizontal="true"
-        android:maxLines="1"
+        android:singleLine="true"
         android:layout_marginTop="@dimen/margin_big"
-        android:imeOptions="actionNext"/>
+        android:imeOptions="actionNext"
+        android:inputType="textEmailAddress"/>
 
     <!--<EditText-->
         <!--android:id="@+id/etPassword"-->

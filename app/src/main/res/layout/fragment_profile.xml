@@ -53,7 +53,8 @@
         android:padding="3dp"
         android:src="@drawable/img_profile"
         app:layout_anchor="@id/main.appbar"
-        app:layout_anchorGravity="bottom|left|end"/>
+        app:layout_anchorGravity="bottom|left|end"
+        android:scaleType="centerCrop"/>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"

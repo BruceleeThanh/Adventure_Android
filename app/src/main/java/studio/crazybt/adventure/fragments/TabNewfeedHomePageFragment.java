@@ -32,6 +32,7 @@ import studio.crazybt.adventure.activities.InputActivity;
 import studio.crazybt.adventure.activities.StatusActivity;
 import studio.crazybt.adventure.adapters.NewfeedListAdapter;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.listeners.OnLoadMoreListener;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.Status;
@@ -152,15 +153,11 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
         switch (view.getId()) {
             case R.id.fabCreateStatus:
                 fabOrigin.close(true);
-                Intent intentStatus = new Intent(getActivity(), InputActivity.class);
-                intentStatus.putExtra("TYPE_SHOW", CREATE_STATUS);
-                startActivity(intentStatus);
+                startActivity(InputActivity.newInstance(getContext(), CommonConstants.ACT_CREATE_STATUS));
                 break;
             case R.id.fabCreateTrip:
                 fabOrigin.close(true);
-                Intent intentTrip = new Intent(getActivity(), InputActivity.class);
-                intentTrip.putExtra("TYPE_SHOW", CREATE_TRIP);
-                startActivity(intentTrip);
+                startActivity(InputActivity.newInstance(getContext(), CommonConstants.ACT_CREATE_TRIP));
                 break;
         }
     }

@@ -139,13 +139,11 @@ public class ProfileFragment extends Fragment {
 
     private void loadData(String idUser) {
         statuses.clear();
-        final ApiConstants apiConstants = new ApiConstants();
-        final String token = SharedPref.getInstance(getContext()).getString(apiConstants.KEY_TOKEN, "");
-        final JsonUtil jsonUtil = new JsonUtil();
+        final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
         Map<String, String> params = new HashMap<>();
-        params.put(apiConstants.KEY_TOKEN, token);
+        params.put(ApiConstants.KEY_TOKEN, token);
         if(!idUser.equals(CommonConstants.VAL_ID_DEFAULT)){
-            params.put(apiConstants.KEY_USER, idUser);
+            params.put(ApiConstants.KEY_USER, idUser);
         }
         CustomRequest customRequest = new CustomRequest(Request.Method.GET, ApiConstants.getUrl(ApiConstants.API_TIME_LINE), params,new Response.Listener<JSONObject>() {
             @Override
@@ -156,24 +154,24 @@ public class ProfileFragment extends Fragment {
                 String lastName;
                 String createdAt;
                 String content;
-                if (jsonUtil.getInt(response, apiConstants.DEF_CODE, 0) == 1) {
-                    JSONArray data = jsonUtil.getJSONArray(response, apiConstants.DEF_DATA);
+                if (JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0) == 1) {
+                    JSONArray data = JsonUtil.getJSONArray(response, ApiConstants.DEF_DATA);
                     for (int i = 0; i < data.length(); i++) {
                         List<ImageContent> imageContents = new ArrayList<>();
-                        JSONObject dataObject = jsonUtil.getJSONObject(data, i);
-                        content = jsonUtil.getString(dataObject, apiConstants.KEY_CONTENT, "");
-                        createdAt = jsonUtil.getString(dataObject, apiConstants.KEY_CREATED_AT, "");
-                        JSONObject owner = jsonUtil.getJSONObject(dataObject, apiConstants.KEY_OWNER);
-                        id = jsonUtil.getString(owner, apiConstants.KEY_ID, "");
-                        firstName = jsonUtil.getString(owner, apiConstants.KEY_FIRST_NAME, "");
-                        lastName = jsonUtil.getString(owner, apiConstants.KEY_LAST_NAME, "");
-                        JSONArray images = jsonUtil.getJSONArray(dataObject, apiConstants.KEY_IMAGES);
+                        JSONObject dataObject = JsonUtil.getJSONObject(data, i);
+                        content = JsonUtil.getString(dataObject, ApiConstants.KEY_CONTENT, "");
+                        createdAt = JsonUtil.getString(dataObject, ApiConstants.KEY_CREATED_AT, "");
+                        JSONObject owner = JsonUtil.getJSONObject(dataObject, ApiConstants.KEY_OWNER);
+                        id = JsonUtil.getString(owner, ApiConstants.KEY_ID, "");
+                        firstName = JsonUtil.getString(owner, ApiConstants.KEY_FIRST_NAME, "");
+                        lastName = JsonUtil.getString(owner, ApiConstants.KEY_LAST_NAME, "");
+                        JSONArray images = JsonUtil.getJSONArray(dataObject, ApiConstants.KEY_IMAGES);
                         if (images != null && images.length() > 0) {
                             for (int j = 0; j < images.length(); j++) {
-                                JSONObject image = jsonUtil.getJSONObject(images, j);
+                                JSONObject image = JsonUtil.getJSONObject(images, j);
                                 imageContents.add(new ImageContent(
-                                        jsonUtil.getString(image, apiConstants.KEY_URL, ""),
-                                        jsonUtil.getString(image, apiConstants.KEY_DESCRIPTION, "")));
+                                        JsonUtil.getString(image, ApiConstants.KEY_URL, ""),
+                                        JsonUtil.getString(image, ApiConstants.KEY_DESCRIPTION, "")));
                             }
                         }
                         statuses.add(

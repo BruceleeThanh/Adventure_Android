@@ -15,7 +15,6 @@ import studio.crazybt.adventure.libs.ApiConstants;
 public class DiaryTripActivity extends SwipeBackActivity {
 
     private SwipeBackLayout swipeBackLayout;
-    private FragmentController fragmentController;
     private String idTripDiary;
 
     @Override
@@ -44,8 +43,6 @@ public class DiaryTripActivity extends SwipeBackActivity {
         Bundle bundle = new Bundle();
         bundle.putString(ApiConstants.KEY_ID_TRIP_DIARY, idTripDiary);
         diaryTripDetailFragment.setArguments(bundle);
-        fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack_Animation(R.id.rlDiaryTrip, diaryTripDetailFragment);
-        fragmentController.commit();
+        FragmentController.replaceFragment_BackStack_Animation(this, R.id.rlDiaryTrip, diaryTripDetailFragment);
     }
 }

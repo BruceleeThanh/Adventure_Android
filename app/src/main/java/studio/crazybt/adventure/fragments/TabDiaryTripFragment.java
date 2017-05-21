@@ -29,6 +29,7 @@ import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.InputActivity;
 import studio.crazybt.adventure.adapters.DiaryTripShortcutListAdapter;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.models.DetailDiary;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.TripDiary;
@@ -42,8 +43,6 @@ import studio.crazybt.adventure.utils.ToastUtil;
  * Created by Brucelee Thanh on 12/09/2016.
  */
 public class TabDiaryTripFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
-
-    private static final int CREATE_DIARY_TRIP = 3;
 
     @BindView(R.id.srlDiaryTripShortcut)
     SwipeRefreshLayout srlDiaryTripShortcut;
@@ -179,10 +178,7 @@ public class TabDiaryTripFragment extends Fragment implements View.OnClickListen
     public void onClick(View v) {
         int id = v.getId();
         if (R.id.fabCreateDiaryTrip == id) {
-            Intent intent = new Intent(getActivity(), InputActivity.class);
-            intent.putExtra("TYPE_SHOW", CREATE_DIARY_TRIP);
-            intent.putExtra(ApiConstants.KEY_ID_TRIP, idTrip);
-            startActivity(intent);
+            startActivity(InputActivity.newInstance_ForTrip(getContext(), CommonConstants.ACT_CREATE_DIARY_TRIP, idTrip));
         }
     }
 

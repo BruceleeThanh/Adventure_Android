@@ -30,6 +30,22 @@ public class CustomRequest extends Request<JSONObject> {
     private Map<String, String> params;
     private Response.Listener listener;
 
+    public CustomRequest(int method, String url, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) {
+        super(method, url, errorListener);
+        RLog.d(url);
+        this.method = method;
+        this.url = url;
+        this.listener = responseListener;
+        this.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+    @Override
+    public void setParams(Map<String, String> params) {
+        this.params = params;
+    }
 
     public CustomRequest(int method, String url, Map<String, String> params, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) {
         super(method, url, errorListener);

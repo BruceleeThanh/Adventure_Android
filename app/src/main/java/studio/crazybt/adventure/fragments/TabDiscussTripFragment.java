@@ -23,14 +23,13 @@ import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.InputActivity;
 import studio.crazybt.adventure.adapters.StatusShortcutListAdapter;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.models.Status;
 
 /**
  * Created by Brucelee Thanh on 12/09/2016.
  */
 public class TabDiscussTripFragment extends Fragment implements View.OnClickListener {
-
-    private final int CREATE_DISCUSS_TRIP = 4;
 
     private View rootView;
     private StatusShortcutListAdapter sslaDiscussTrip;
@@ -91,10 +90,7 @@ public class TabDiscussTripFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.fabCreateDiscussTrip){
-            Intent intentStatus = new Intent(getActivity(), InputActivity.class);
-            intentStatus.putExtra("TYPE_SHOW", CREATE_DISCUSS_TRIP);
-            intentStatus.putExtra(ApiConstants.KEY_ID_TRIP, idTrip);
-            startActivity(intentStatus);
+            startActivity(InputActivity.newInstance_ForTrip(getContext(), CommonConstants.ACT_CREATE_DISCUSS_TRIP, idTrip));
         }
     }
 }

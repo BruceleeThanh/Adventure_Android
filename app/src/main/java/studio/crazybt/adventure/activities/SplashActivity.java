@@ -16,7 +16,6 @@ import studio.crazybt.adventure.utils.SharedPref;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private FragmentController fragmentController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +24,7 @@ public class SplashActivity extends AppCompatActivity {
 //        FacebookSdk.sdkInitialize(getApplicationContext());
 //        AppEventsLogger.activateApp(this);
         if(SharedPref.getInstance(this).getString(ApiConstants.KEY_TOKEN, "").equals("")){
-            fragmentController = new FragmentController(this);
-            fragmentController.addFragment_BackStack(R.id.rlSplash, new SplashFragment());
-            fragmentController.commit();
+            FragmentController.replaceFragment_BackStack(this, R.id.rlSplash, new SplashFragment());
         }else{
             Intent homePageIntent = new Intent(this, HomePageActivity.class);
             startActivity(homePageIntent);

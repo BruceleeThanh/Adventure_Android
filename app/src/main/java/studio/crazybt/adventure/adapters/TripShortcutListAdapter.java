@@ -22,6 +22,7 @@ import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.activities.TripActivity;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
 import studio.crazybt.adventure.helpers.DrawableHelper;
+import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.listeners.OnLoadMoreListener;
 import studio.crazybt.adventure.models.Trip;
@@ -76,6 +77,7 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
             Date now = new Date();
             TripNormalViewHolder tripNormalViewHolder = (TripNormalViewHolder) holder;
             final Trip trip = lstTrip.get(position);
+            PicassoHelper.execPicasso_ProfileImage(rootContext, trip.getOwner().getAvatar(), tripNormalViewHolder.ivProfileImage);
             tripNormalViewHolder.tvProfileName.setText(trip.getOwner().getFirstName() + " " + trip.getOwner().getLastName());
             tripNormalViewHolder.tvTimeUpload.setText(ConvertTimeHelper.convertISODateToPrettyTimeStamp(trip.getCreatedAt()));
 
@@ -101,8 +103,8 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             tripNormalViewHolder.tvTripStartPosition.setText(trip.getStartPosition());
 
-            tripNormalViewHolder.tvTripPeriod.setText(ConvertTimeHelper.convertISODateToString(trip.getStartAt()) + " - " +
-                    ConvertTimeHelper.convertISODateToString(trip.getEndAt()));
+            tripNormalViewHolder.tvTripPeriod.setText(ConvertTimeHelper.convertISODateToString(trip.getStartAt(), ConvertTimeHelper.DATE_FORMAT_1) + " - " +
+                    ConvertTimeHelper.convertISODateToString(trip.getEndAt(), ConvertTimeHelper.DATE_FORMAT_1));
 
             tripNormalViewHolder.tvTripDestination.setText(trip.getDestinationSummary());
 

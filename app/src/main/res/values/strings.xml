@@ -94,7 +94,27 @@
     <string name="photo_btn_profile">Ảnh</string>
 
     <!--Edit profile info-->
+    <string name="title_edit_profile_info">Chỉnh sửa thông tin cá nhân</string>
+    <string name="label_image_profile">Ảnh trang cá nhân</string>
     <string name="label_basic_profile_info">Thông tin cá nhân</string>
+    <string name="label_contact_profile_info">Thông tin liên hệ</string>
+    <string name="label_detail_profile_info">Chi tiết về bạn</string>
+    <string name="label_birthday">Ngày sinh</string>
+    <string name="label_gender">Giới tính</string>
+    <string name="label_email">Email</string>
+    <string name="label_phone_number">Số điện thoại</string>
+    <string name="label_address">Địa chỉ</string>
+    <string name="label_religion">Tôn giáo</string>
+    <string name="label_intro">Giới thiệu</string>
+    <string name="update_btn_edit_profile_info">Cập nhật</string>
+    <string name="choose_birthday_hint">Chọn ngày sinh…</string>
+    <array name="arr_gender">
+        <item>Nam</item>
+        <item>Nữ</item>
+        <item>Khác</item>
+    </array>
+    <string name="success_edit_profile_info">Cập nhật thông tin cá nhân thành công</string>
+
 
     <!--item TabLayout Trip-->
     <string name="schedule_tablayout_trip">Lịch trình</string>

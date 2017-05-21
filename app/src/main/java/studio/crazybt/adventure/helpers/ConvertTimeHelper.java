@@ -28,9 +28,9 @@ public class ConvertTimeHelper {
     public static final String MINUTE_LATER = " phút trước";
     public static final String JUST_NOW = "Vừa xong";
 
-    public static String convertISODateToString(String timeStamp) {
+    public static String convertISODateToString(String timeStamp, String format) {
         DateFormat isoFormat = new SimpleDateFormat(ISO_DATE_FORMAT);
-        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_1);
+        DateFormat dateFormat = new SimpleDateFormat(format);
         isoFormat.setTimeZone(TimeZone.getTimeZone(UTC_FORMAT));
         try {
             Date date = isoFormat.parse(timeStamp);
@@ -67,7 +67,7 @@ public class ConvertTimeHelper {
 
             DateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
             DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_1);
-            String dateString = convertISODateToString(timeStamp);
+            String dateString = convertISODateToString(timeStamp, DATE_FORMAT_1);
             Date date = null;
             try {
                 date = dateFormat.parse(dateString);
@@ -133,8 +133,13 @@ public class ConvertTimeHelper {
     }
 
     public static String convertDateToString(Date date, String format){
+        String result = null;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-        return simpleDateFormat.format(date);
+        try{
+            result = simpleDateFormat.format(date);
+        }finally {
+            return result;
+        }
     }
 
     public static Date convertStringToDate(String timeStamp, String format){

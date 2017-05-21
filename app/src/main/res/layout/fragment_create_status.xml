@@ -12,7 +12,8 @@
         android:layout_height="@dimen/profile_image_medium"
         android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_medium"
-        android:src="@drawable/img_profile"/>
+        android:src="@drawable/img_profile"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/tvProfileName"

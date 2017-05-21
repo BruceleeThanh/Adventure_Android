@@ -166,8 +166,8 @@ public class TabScheduleTripFragment extends Fragment implements View.OnClickLis
         StringUtil.setText(tvScheduleTripName, trip.getName());
         StringUtil.setText(tvScheduleTripDescription, trip.getDescription());
         StringUtil.setText(tvScheduleTripStartPosition, trip.getStartPosition());
-        StringUtil.setText(tvScheduleTripPeriod, ConvertTimeHelper.convertISODateToString(trip.getStartAt()) + " - " +
-                ConvertTimeHelper.convertISODateToString(trip.getEndAt()));
+        StringUtil.setText(tvScheduleTripPeriod, ConvertTimeHelper.convertISODateToString(trip.getStartAt(), ConvertTimeHelper.DATE_FORMAT_1) + " - " +
+                ConvertTimeHelper.convertISODateToString(trip.getEndAt(), ConvertTimeHelper.DATE_FORMAT_1));
         StringUtil.setText(tvScheduleTripDestination, trip.getDestinationSummary());
         StringUtil.setText(tvScheduleTripMoney, trip.getExpense());
         StringUtil.setText(tvScheduleTripPeople, String.valueOf(trip.getAmountPeople()) + " "

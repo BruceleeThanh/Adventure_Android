@@ -20,7 +20,6 @@ import studio.crazybt.adventure.R;
 public class SplashFragment extends Fragment implements View.OnClickListener {
 
     private View rootView;
-    private FragmentController fragmentController;
 
     @BindView(R.id.btnLoginViaEmail)
     Button btnLoginViaEmail;
@@ -43,14 +42,10 @@ public class SplashFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnLoginViaEmail:
-                fragmentController = new FragmentController((AppCompatActivity) this.getActivity());
-                fragmentController.addFragment_BackStack(R.id.rlSplash, new LoginFragment());
-                fragmentController.commit();
+                FragmentController.replaceFragment_BackStack(getActivity(), R.id.rlSplash, new LoginFragment());
                 break;
             case R.id.btnSignupViaEmail:
-                fragmentController = new FragmentController((AppCompatActivity) this.getActivity());
-                fragmentController.addFragment_BackStack(R.id.rlSplash, new SignupFragment());
-                fragmentController.commit();
+                FragmentController.replaceFragment_BackStack(getActivity(), R.id.rlSplash, new SignupFragment());
                 break;
         }
     }

@@ -36,7 +36,6 @@ import studio.crazybt.adventure.utils.ToastUtil;
 public class StatusActivity extends SwipeBackActivity {
 
     private SwipeBackLayout swipeBackLayout;
-    private FragmentController fragmentController;
     private static int typeShow = 0;
     StatusDetailFragment statusDetailFragment;
     Status status;
@@ -170,9 +169,7 @@ public class StatusActivity extends SwipeBackActivity {
         bundle.putParcelable("data", status);
         statusDetailFragment = new StatusDetailFragment();
         statusDetailFragment.setArguments(bundle);
-        fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, statusDetailFragment);
-        fragmentController.commit();
+        FragmentController.replaceFragment_BackStack_Animation(this, R.id.rlStatus, statusDetailFragment);
     }
 
     private void showStatusLikes() {
@@ -180,9 +177,7 @@ public class StatusActivity extends SwipeBackActivity {
         bundle.putParcelable("data", status);
         LikesStatusFragment likesStatusFragment = new LikesStatusFragment();
         likesStatusFragment.setArguments(bundle);
-        fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, likesStatusFragment);
-        fragmentController.commit();
+        FragmentController.replaceFragment_BackStack_Animation(this, R.id.rlStatus, likesStatusFragment);
     }
 
     private void showStatusComments() {
@@ -190,8 +185,6 @@ public class StatusActivity extends SwipeBackActivity {
         bundle.putParcelable("data", status);
         CommentsStatusFragment commentsStatusFragment = new CommentsStatusFragment();
         commentsStatusFragment.setArguments(bundle);
-        fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, commentsStatusFragment);
-        fragmentController.commit();
+        FragmentController.replaceFragment_BackStack_Animation(this, R.id.rlStatus, commentsStatusFragment);
     }
 }

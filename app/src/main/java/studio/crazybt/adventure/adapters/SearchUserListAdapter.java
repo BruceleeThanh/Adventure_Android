@@ -13,6 +13,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
+import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.models.User;
 
 /**
@@ -21,11 +22,11 @@ import studio.crazybt.adventure.models.User;
 
 public class SearchUserListAdapter extends RecyclerView.Adapter<SearchUserListAdapter.ViewHolder>{
 
-    private Context context = null;
+    private Context rootContext = null;
     private List<User> lstUsers = null;
 
     public SearchUserListAdapter(Context context, List<User> lstUsers) {
-        this.context = context;
+        this.rootContext = context;
         this.lstUsers = lstUsers;
     }
 
@@ -37,6 +38,7 @@ public class SearchUserListAdapter extends RecyclerView.Adapter<SearchUserListAd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        PicassoHelper.execPicasso_ProfileImage(rootContext, lstUsers.get(position).getAvatar(), holder.ivProfileImage);
         holder.tvProfileName.setText(lstUsers.get(position).getFirstName() + " " + lstUsers.get(position).getLastName());
     }
 

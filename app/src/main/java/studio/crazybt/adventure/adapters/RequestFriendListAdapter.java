@@ -26,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
+import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.models.Friend;
@@ -63,6 +64,7 @@ public class RequestFriendListAdapter extends RecyclerView.Adapter<RequestFriend
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        PicassoHelper.execPicasso_ProfileImage(rootContext, requestFriends.get(position).getSender().getAvatar(), holder.ivProfileImage);
         holder.tvProfileName.setText(requestFriends.get(position).getSender().getFirstName() + " " + requestFriends.get(position).getSender().getLastName());
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override

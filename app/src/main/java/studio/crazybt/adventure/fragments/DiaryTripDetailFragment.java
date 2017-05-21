@@ -243,9 +243,7 @@ public class DiaryTripDetailFragment extends Fragment implements View.OnClickLis
             bundle.putParcelable("data", tripDiary);
             ImageDiaryTripFragment imageDiaryTripFragment = new ImageDiaryTripFragment();
             imageDiaryTripFragment.setArguments(bundle);
-            FragmentController fragmentController = new FragmentController(getActivity());
-            fragmentController.addFragment_BackStack_Animation(R.id.rlDiaryTrip, imageDiaryTripFragment);
-            fragmentController.commit();
+            FragmentController.replaceFragment_BackStack_Animation(getActivity(), R.id.rlDiaryTrip, imageDiaryTripFragment);
         }
     }
 }

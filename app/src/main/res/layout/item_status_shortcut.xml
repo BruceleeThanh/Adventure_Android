@@ -24,7 +24,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/margin_medium"
             android:clickable="true"
-            android:src="@drawable/img_profile"/>
+            android:src="@drawable/img_profile"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/tvProfileName"

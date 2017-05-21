@@ -1,5 +1,6 @@
 package studio.crazybt.adventure.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,25 +16,43 @@ import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.fragments.CreateDiaryTripFragment;
 import studio.crazybt.adventure.fragments.CreateStatusFragment;
 import studio.crazybt.adventure.fragments.CreateTripFragment;
+import studio.crazybt.adventure.fragments.EditProfileInfoFragment;
+import studio.crazybt.adventure.fragments.ProfileBasicInfoFragment;
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.services.AdventureRequest;
 
 public class InputActivity extends AppCompatActivity {
 
-    private final int CREATE_STATUS_TYPE = 1;
-    private final int CREATE_TRIP_TYPE = 2;
-    private final int CREATE_DIARY_TRIP_TYPE = 3;
-    private final int CREATE_DISCUSS_TRIP = 4;
-
     private static int typeShow = 0;
-    private FragmentController fragmentController;
     private CreateStatusFragment createStatusFragment;
     private CreateTripFragment createTripFragment;
     private CreateDiaryTripFragment createDiaryTripFragment;
+    private EditProfileInfoFragment editProfileInfoFragment;
 
     @BindView(R.id.tbInput)
     Toolbar tbInput;
+
+    public static Intent newInstance(Context context, int typeShow) {
+        Intent intent = new Intent(context, InputActivity.class);
+        intent.putExtra(CommonConstants.KEY_TYPE_SHOW, typeShow);
+        return intent;
+    }
+
+    public static Intent newInstance_ForTrip(Context context, int typeShow, String idTrip) {
+        Intent intent = new Intent(context, InputActivity.class);
+        intent.putExtra(CommonConstants.KEY_TYPE_SHOW, typeShow);
+        intent.putExtra(ApiConstants.KEY_ID_TRIP, idTrip);
+        return intent;
+    }
+
+    public static Intent newInstance_ForUser(Context context, int typeShow, String idUser) {
+        Intent intent = new Intent(context, InputActivity.class);
+        intent.putExtra(CommonConstants.KEY_TYPE_SHOW, typeShow);
+        intent.putExtra(CommonConstants.KEY_ID_USER, idUser);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,56 +62,58 @@ public class InputActivity extends AppCompatActivity {
         setSupportActionBar(tbInput);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
-        typeShow = intent.getIntExtra("TYPE_SHOW", typeShow);
-        if (typeShow == CREATE_STATUS_TYPE) {
+        typeShow = intent.getIntExtra(CommonConstants.KEY_TYPE_SHOW, typeShow);
+        if (typeShow == CommonConstants.ACT_CREATE_STATUS) {
             initCreateStatus();
-        } else if (typeShow == CREATE_TRIP_TYPE) {
+        } else if (typeShow == CommonConstants.ACT_CREATE_TRIP) {
             initCreateTrip();
-        } else if (typeShow == CREATE_DIARY_TRIP_TYPE) {
+        } else if (typeShow == CommonConstants.ACT_CREATE_DIARY_TRIP) {
             String idTrip = intent.getStringExtra(ApiConstants.KEY_ID_TRIP);
             initCreateDiaryTrip(idTrip);
-        } else if(typeShow == CREATE_DISCUSS_TRIP){
+        } else if (typeShow == CommonConstants.ACT_CREATE_DISCUSS_TRIP) {
             String idTrip = intent.getStringExtra(ApiConstants.KEY_ID_TRIP);
             initCreateDiscussTrip(idTrip);
+        } else if (typeShow == CommonConstants.ACT_EDIT_PROFILE_INFO) {
+            initEditProfileInfo();
+        } else if(typeShow == CommonConstants.ACT_VIEW_PROFILE_INFO){
+
         }
     }
 
     private void initCreateStatus() {
         createStatusFragment = new CreateStatusFragment();
         getSupportActionBar().setTitle(getResources().getString(R.string.title_tb_create_status));
-        fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack(R.id.rlInput, createStatusFragment);
-        fragmentController.commit();
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, createStatusFragment);
     }
 
     private void initCreateTrip() {
         createTripFragment = new CreateTripFragment();
         getSupportActionBar().setTitle(getResources().getString(R.string.title_tb_create_trip));
-        fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack(R.id.rlInput, createTripFragment);
-        fragmentController.commit();
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, createTripFragment);
     }
 
     private void initCreateDiaryTrip(String idTrip) {
-        Bundle bundle =new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putString(ApiConstants.KEY_ID_TRIP, idTrip);
         createDiaryTripFragment = new CreateDiaryTripFragment();
         createDiaryTripFragment.setArguments(bundle);
         getSupportActionBar().setTitle(getResources().getString(R.string.title_tb_create_diary_trip));
-        fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack(R.id.rlInput, createDiaryTripFragment);
-        fragmentController.commit();
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, createDiaryTripFragment);
     }
 
-    private void initCreateDiscussTrip(String idTrip){
+    private void initCreateDiscussTrip(String idTrip) {
         Bundle bundle = new Bundle();
         bundle.putString(ApiConstants.KEY_ID_TRIP, idTrip);
         createStatusFragment = new CreateStatusFragment();
         createStatusFragment.setArguments(bundle);
         getSupportActionBar().setTitle(getResources().getString(R.string.title_tb_create_discuss_trip));
-        fragmentController = new FragmentController(this);
-        fragmentController.addFragment_BackStack(R.id.rlInput, createStatusFragment);
-        fragmentController.commit();
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, createStatusFragment);
+    }
+
+    private void initEditProfileInfo() {
+        getSupportActionBar().setTitle(getResources().getString(R.string.title_edit_profile_info));
+        editProfileInfoFragment = EditProfileInfoFragment.newInstance(CommonConstants.ACT_EDIT_PROFILE_INFO, CommonConstants.VAL_ID_DEFAULT);
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, editProfileInfoFragment);
     }
 
     @Override
@@ -108,6 +129,12 @@ public class InputActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar_menu_input, menu);
+
+        if (typeShow == CommonConstants.ACT_EDIT_PROFILE_INFO) {
+            MenuItem menuItem = menu.findItem(R.id.itemPost);
+            menuItem.setTitle(getResources().getString(R.string.update_btn_edit_profile_info));
+        }
+
         return true;
     }
 
@@ -118,10 +145,16 @@ public class InputActivity extends AppCompatActivity {
                 onBackPressed();
                 break;
             case R.id.itemPost:
-                if (typeShow == CREATE_STATUS_TYPE) {
+                if (typeShow == CommonConstants.ACT_CREATE_STATUS) {
                     item.setEnabled(false);
                     createStatusFragment.uploadStatus();
-                } else if (typeShow == CREATE_TRIP_TYPE) {
+                    createStatusFragment.getRequest().setOnNotifyResponseReceived(new AdventureRequest.OnNotifyResponseReceived() {
+                        @Override
+                        public void onNotify() {
+                            item.setEnabled(true);
+                        }
+                    });
+                } else if (typeShow == CommonConstants.ACT_CREATE_TRIP) {
                     createTripFragment.uploadTrip();
                     if (createTripFragment.getRequest() != null) {
                         item.setEnabled(false);
@@ -132,9 +165,9 @@ public class InputActivity extends AppCompatActivity {
                             }
                         });
                     }
-                } else if (typeShow == CREATE_DIARY_TRIP_TYPE) {
+                } else if (typeShow == CommonConstants.ACT_CREATE_DIARY_TRIP) {
                     createDiaryTripFragment.uploadDiary();
-                    if(createDiaryTripFragment.getAdventureRequest() != null){
+                    if (createDiaryTripFragment.getAdventureRequest() != null) {
                         item.setEnabled(false);
                         createDiaryTripFragment.getAdventureRequest().setOnNotifyResponseReceived(new AdventureRequest.OnNotifyResponseReceived() {
                             @Override
@@ -143,9 +176,24 @@ public class InputActivity extends AppCompatActivity {
                             }
                         });
                     }
-                } else if(typeShow == CREATE_DISCUSS_TRIP){
+                } else if (typeShow == CommonConstants.ACT_CREATE_DISCUSS_TRIP) {
                     item.setEnabled(false);
                     createStatusFragment.uploadStatus();
+                    createStatusFragment.getRequest().setOnNotifyResponseReceived(new AdventureRequest.OnNotifyResponseReceived() {
+                        @Override
+                        public void onNotify() {
+                            item.setEnabled(true);
+                        }
+                    });
+                } else if(typeShow == CommonConstants.ACT_EDIT_PROFILE_INFO){
+                    item.setEnabled(false);
+                    editProfileInfoFragment.updateProfile();
+                    editProfileInfoFragment.getAdventureRequest().setOnNotifyResponseReceived(new AdventureRequest.OnNotifyResponseReceived() {
+                        @Override
+                        public void onNotify() {
+                            item.setEnabled(true);
+                        }
+                    });
                 }
                 break;
         }

@@ -18,12 +18,18 @@ public class ApiConstants {
 
     /* Remember: change both API_ROOT and API_ROOT_IMAGE */
     //private static final String API_ROOT = "155.94.144.150:25763/api";
-    private static final String API_ROOT = "192.168.1.9:25763/api";
-    private static final String API_ROOT_IMAGES = "192.168.1.9:25763";
+
+    private static final String API_ROOT = "192.168.1.83:25763/api";
+    private static final String API_ROOT_IMAGES = "192.168.1.83:25763";
+
+//    private static final String API_ROOT = "192.168.1.9:25763/api";
+//    private static final String API_ROOT_IMAGES = "192.168.1.9:25763";
 
     private static final String API_SCHEME = "http";
     public static final String API_NORMAL_SIGNUP = "user/sign_up";
     public static final String API_NORMAL_LOGIN = "user/login";
+    public static final String API_PROFILE_USER = "user/profile";
+    public static final String API_EDIT_PROFILE_USER = "user/edit_profile";
     public static final String API_UPLOAD_IMAGE = "file/upload_image";
     public static final String API_CREATE_STATUS = "status/create";
     public static final String API_FIND_ONE_STATUS = "status/find_one";
@@ -79,6 +85,7 @@ public class ApiConstants {
     public static final String KEY_LAST_NAME = "last_name";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_GENDER = "gender";
+    public static final String KEY_BIRTHDAY = "birthday";
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_RELIGION = "religion";
     public static final String KEY_INTRO = "intro";
@@ -100,9 +107,11 @@ public class ApiConstants {
     public static final String KEY_URL = "url";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_CREATED_AT = "created_at";
+    public static final String KEY_LAST_VISITED_AT = "last_visited_at";
     public static final String KEY_OWNER = "owner";
     public static final String KEY_IMAGES = "images";
     public static final String KEY_AVATAR = "avatar";
+    public static final String KEY_AVATAR_ACTUAL = "avatar_actual";
     public static final String KEY_COVER = "cover";
     public static final String KEY_PAGE = "page";
     public static final String KEY_PERPAGE = "per_page";

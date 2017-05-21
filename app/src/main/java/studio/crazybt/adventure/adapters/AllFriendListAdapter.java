@@ -14,6 +14,7 @@ import java.util.List;
 
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
+import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.models.Friend;
 import studio.crazybt.adventure.models.User;
@@ -45,6 +46,7 @@ public class AllFriendListAdapter extends RecyclerView.Adapter<AllFriendListAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+        PicassoHelper.execPicasso_ProfileImage(rootContext, users.get(position).getAvatar(), holder.ivProfileImage);
         holder.tvProfileName.setText(users.get(position).getFirstName() + " " + users.get(position).getLastName());
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override

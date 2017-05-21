@@ -2,7 +2,9 @@
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -10,13 +12,62 @@
         android:background="@color/white"
         android:paddingLeft="@dimen/margin_small"
         android:paddingRight="@dimen/margin_small"
-        android:paddingTop="@dimen/margin_medium">
+        android:paddingTop="@dimen/margin_small">
+
+        <RelativeLayout
+            android:id="@+id/rlImageProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_gray_white_btn"
+            android:padding="@dimen/margin_medium">
+
+            <TextView
+                android:id="@+id/tvImageProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_image_profile"
+                android:textStyle="bold"/>
+
+            <View
+                android:id="@+id/vLine4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tvImageProfile"
+                android:layout_marginTop="@dimen/margin_small"
+                android:background="@drawable/partition_gray_line_horizontal"/>
+
+            <ImageView
+                android:id="@+id/ivCover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:src="@drawable/img_cover"
+                android:layout_below="@+id/vLine4"
+                android:scaleType="centerCrop"
+                android:clickable="true"
+                android:adjustViewBounds="true"/>
+
+            <ImageView
+                android:id="@+id/ivAvatar"
+                android:layout_width="@dimen/profile_image_largest"
+                android:layout_height="@dimen/profile_image_largest"
+                android:src="@drawable/img_profile"
+                android:layout_below="@id/ivCover"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-40dp"
+                android:clickable="true"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"/>
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rlBasicInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/rlImageProfile"
             android:background="@drawable/bg_gray_white_btn"
+            android:layout_marginTop="@dimen/margin_medium"
             android:padding="@dimen/margin_medium">
 
             <TextView
@@ -48,7 +99,10 @@
                 android:layout_below="@+id/vLine1"
                 android:layout_marginLeft="@dimen/margin_big"
                 android:layout_marginTop="@dimen/margin_medium"
-                android:layout_toRightOf="@+id/tvFirstName"/>
+                android:layout_toRightOf="@+id/tvFirstName"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:textSize="@dimen/txt_small_medium"/>
 
             <TextView
                 android:id="@+id/tvLastName"
@@ -56,7 +110,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/etLastName"
                 android:layout_marginTop="@dimen/margin_medium"
-                android:text="@string/lastname_et_signupviaemail"/>
+                android:text="@string/lastname_et_signupviaemail"
+                android:imeOptions="actionNext"
+                android:singleLine="true"/>
 
             <EditText
                 android:id="@+id/etLastName"
@@ -64,23 +120,28 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/etFirstName"
                 android:layout_below="@+id/etFirstName"
-                android:layout_marginTop="@dimen/margin_medium"/>
+                android:layout_marginTop="@dimen/margin_medium"
+                android:textSize="@dimen/txt_small_medium"/>
 
             <TextView
-                android:id="@+id/tvBirthday"
+                android:id="@+id/tvBirthdayLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/etBirthday"
+                android:layout_alignBaseline="@+id/tvBirthday"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:text="@string/label_birthday"/>
 
-            <EditText
-                android:id="@+id/etBirthday"
+            <TextView
+                android:id="@+id/tvBirthday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/etFirstName"
                 android:layout_below="@+id/etLastName"
-                android:layout_marginTop="@dimen/margin_medium"/>
+                android:layout_marginTop="@dimen/margin_medium"
+                android:hint="@string/choose_birthday_hint"
+                android:clickable="true"
+                android:textSize="@dimen/txt_small_medium"
+                android:padding="@dimen/margin_small"/>
 
             <TextView
                 android:id="@+id/tvGender"
@@ -95,7 +156,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/etFirstName"
-                android:layout_below="@+id/etBirthday"
+                android:layout_below="@+id/tvBirthday"
                 android:layout_marginTop="@dimen/margin_medium"/>
 
         </RelativeLayout>
@@ -139,7 +200,11 @@
                 android:layout_below="@+id/etEmail"
                 android:layout_marginLeft="@dimen/margin_medium"
                 android:layout_marginTop="@dimen/margin_medium"
-                android:layout_toRightOf="@+id/tvPhoneNumber"/>
+                android:layout_toRightOf="@+id/tvPhoneNumber"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:inputType="phone"
+                android:textSize="@dimen/txt_small_medium"/>
 
             <TextView
                 android:id="@+id/tvEmail"
@@ -154,7 +219,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/etPhoneNumber"
                 android:layout_below="@+id/vLine2"
-                android:layout_marginTop="@dimen/margin_medium"/>
+                android:layout_marginTop="@dimen/margin_medium"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:inputType="textEmailAddress"
+                android:textSize="@dimen/txt_small_medium"/>
 
             <TextView
                 android:id="@+id/tvAddress"
@@ -169,7 +238,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/etPhoneNumber"
                 android:layout_below="@+id/etPhoneNumber"
-                android:layout_marginTop="@dimen/margin_medium"/>
+                android:layout_marginTop="@dimen/margin_medium"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:textSize="@dimen/txt_small_medium"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -179,7 +251,8 @@
             android:layout_below="@+id/rlContactInfo"
             android:layout_marginTop="@dimen/margin_medium"
             android:background="@drawable/bg_gray_white_btn"
-            android:padding="@dimen/margin_medium">
+            android:padding="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_big">
 
             <TextView
                 android:id="@+id/tvDetailInfo"
@@ -213,7 +286,9 @@
                 android:layout_marginTop="@dimen/margin_medium"
                 android:layout_toRightOf="@+id/tvIntro"
                 android:minHeight="@dimen/min_height_et"
-                android:gravity="top"/>
+                android:gravity="top"
+                android:imeOptions="actionDone"
+                android:textSize="@dimen/txt_small_medium"/>
 
             <TextView
                 android:id="@+id/tvReligion"
@@ -228,7 +303,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/etIntro"
                 android:layout_below="@+id/vLine3"
-                android:layout_marginTop="@dimen/margin_medium"/>
+                android:layout_marginTop="@dimen/margin_medium"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:textSize="@dimen/txt_small_medium"/>
 
         </RelativeLayout>
 

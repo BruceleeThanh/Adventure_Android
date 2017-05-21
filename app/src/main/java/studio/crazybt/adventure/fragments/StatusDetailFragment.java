@@ -36,6 +36,7 @@ import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.adapters.ImageStatusDetailListAdapter;
 import studio.crazybt.adventure.helpers.DrawableHelper;
+import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.models.Status;
 import studio.crazybt.adventure.services.CustomRequest;
@@ -53,7 +54,6 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
     private LinearLayoutManager llmImageStatusDetail;
     private ImageStatusDetailListAdapter isdlaImageStatusDetail;
     private DrawableHelper drawableHelper;
-    private FragmentController fragmentController;
 
     private Status status;
 
@@ -112,6 +112,7 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
     }
 
     private void loadData(){
+        PicassoHelper.execPicasso_ProfileImage(getContext(), status.getUser().getAvatar(), ivProfileImage);
         tvProfileName.setText(status.getUser().getFirstName() + " " + status.getUser().getLastName());
         if (status.getPermission() == 1) {
             ivPermission.setImageResource(R.drawable.ic_private_96);
@@ -219,27 +220,21 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
                 bundle.putParcelable("data", status);
                 LikesStatusFragment likesStatusFragment = new LikesStatusFragment();
                 likesStatusFragment.setArguments(bundle);
-                fragmentController = new FragmentController(getActivity());
-                fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, likesStatusFragment);
-                fragmentController.commit();
+                FragmentController.replaceFragment_BackStack_Animation(getActivity(), R.id.rlStatus, likesStatusFragment);
                 break;
             case R.id.tvCountComment:
                 Bundle bundle1 = new Bundle();
                 bundle1.putParcelable("data", status);
                 CommentsStatusFragment commentsStatusFragment = new CommentsStatusFragment();
                 commentsStatusFragment.setArguments(bundle1);
-                fragmentController = new FragmentController(getActivity());
-                fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, commentsStatusFragment);
-                fragmentController.commit();
+                FragmentController.replaceFragment_BackStack_Animation(getActivity(),R.id.rlStatus, commentsStatusFragment);
                 break;
             case R.id.tvComment:
                 Bundle bundle2 = new Bundle();
                 bundle2.putParcelable("data", status);
                 CommentsStatusFragment commentsStatusFragment1 = new CommentsStatusFragment();
                 commentsStatusFragment1.setArguments(bundle2);
-                fragmentController = new FragmentController(getActivity());
-                fragmentController.addFragment_BackStack_Animation(R.id.rlStatus, commentsStatusFragment1);
-                fragmentController.commit();
+                FragmentController.replaceFragment_BackStack_Animation(getActivity(), R.id.rlStatus, commentsStatusFragment1);
                 break;
         }
     }

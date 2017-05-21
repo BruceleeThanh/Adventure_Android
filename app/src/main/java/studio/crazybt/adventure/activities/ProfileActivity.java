@@ -18,7 +18,6 @@ import studio.crazybt.adventure.libs.CommonConstants;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private FragmentController fragmentController;
     private boolean isDefaultUser = false;
 
     public static Intent newInstance(Context context, String idUser, String username) {
@@ -42,9 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         ProfileFragment profileFragment = ProfileFragment.newInstance(idUser, username);
-        fragmentController = new FragmentController(this);
-        fragmentController.addFragment(R.id.rlProfile, profileFragment);
-        fragmentController.commit();
+        FragmentController.replaceFragment(this, R.id.rlProfile, profileFragment);
 
         isDefaultUser = idUser.equals(CommonConstants.VAL_ID_DEFAULT);
     }
@@ -72,12 +69,12 @@ public class ProfileActivity extends AppCompatActivity {
         if(isDefaultUser){
             MenuItem item = menu.findItem(R.id.itemIconRightToolbar);
             item.setTitle(R.string.edit_profile_info);
-            item.setIcon(R.drawable.ic_settings_white_24dp);
+            item.setIcon(R.drawable.ic_mode_edit_white_24dp);
         }
         return true;
     }
 
     private void editProfileClick(){
-        
+        startActivity(InputActivity.newInstance(getBaseContext(), CommonConstants.ACT_EDIT_PROFILE_INFO));
     }
 }

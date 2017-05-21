@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
+import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.models.CommentStatus;
 
 /**
@@ -47,6 +48,7 @@ public class CommentStatusListAdapter extends RecyclerView.Adapter<CommentStatus
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         CommentStatus commentStatus = commentStatusList.get(position);
+        PicassoHelper.execPicasso_ProfileImage(rootContext, commentStatus.getUser().getAvatar(), holder.ivProfileImage);
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

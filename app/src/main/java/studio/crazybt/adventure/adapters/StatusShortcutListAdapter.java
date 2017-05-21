@@ -37,7 +37,6 @@ import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.activities.StatusActivity;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
 import studio.crazybt.adventure.helpers.DrawableHelper;
-import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.CommonConstants;
@@ -54,7 +53,6 @@ import studio.crazybt.adventure.utils.SharedPref;
 public class StatusShortcutListAdapter extends RecyclerView.Adapter<StatusShortcutListAdapter.ViewHolder> {
 
     private Context rootContext;
-    private FragmentController fragmentController;
     private List<Status> lstStatuses = null;
 
     public static final int STATUS_DETAIL = 1;
@@ -78,6 +76,7 @@ public class StatusShortcutListAdapter extends RecyclerView.Adapter<StatusShortc
         final Status status = lstStatuses.get(position);
 
         // User avatar
+        PicassoHelper.execPicasso_ProfileImage(rootContext, status.getUser().getAvatar(), holder.ivProfileImage);
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

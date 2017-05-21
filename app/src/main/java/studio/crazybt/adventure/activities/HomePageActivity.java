@@ -23,18 +23,22 @@ import com.android.volley.Request;
 
 import org.json.JSONObject;
 
+import io.realm.Realm;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.TabLayoutAdapter;
 import studio.crazybt.adventure.fragments.TabFriendHomePageFragment;
 import studio.crazybt.adventure.fragments.TabNewfeedHomePageFragment;
 import studio.crazybt.adventure.fragments.TabNotificationsHomePageFragment;
 import studio.crazybt.adventure.fragments.TabPublicTripsHomePageFragment;
+import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.ApiParams;
 import studio.crazybt.adventure.libs.CommonConstants;
+import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.AdventureRequest;
 import studio.crazybt.adventure.utils.BadgeTabLayout;
 import studio.crazybt.adventure.utils.RLog;
+import studio.crazybt.adventure.utils.RealmUtils;
 import studio.crazybt.adventure.utils.SharedPref;
 
 public class HomePageActivity extends AppCompatActivity{
@@ -44,9 +48,10 @@ public class HomePageActivity extends AppCompatActivity{
     private NavigationView navView;
     public DrawerLayout dlHomePage;
     private View navHeader;
-    private LinearLayout llUserCover;
+    private ImageView ivUserCover;
     private ImageView ivUserAvatar;
     private TextView tvUserName;
+    private Realm realm;
 
     private final int MESSAGE = 1;
 
@@ -62,6 +67,8 @@ public class HomePageActivity extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        realm = Realm.getDefaultInstance();
+
         this.initNavigationDrawer();
         this.initTablayout();
     }
@@ -70,10 +77,14 @@ public class HomePageActivity extends AppCompatActivity{
         navView = (NavigationView) findViewById(R.id.navView);
         // nav header set item
         navHeader = navView.getHeaderView(0);
-        llUserCover = (LinearLayout) navHeader.findViewById(R.id.llUserCover);
+        ivUserCover = (ImageView) navHeader.findViewById(R.id.ivUserCover);
         ivUserAvatar = (ImageView) navHeader.findViewById(R.id.ivUserAvatar);
         tvUserName = (TextView) navHeader.findViewById(R.id.tvUserName);
-        final String userName = SharedPref.getInstance(this).getString(ApiConstants.KEY_FIRST_NAME, "") + " " + SharedPref.getInstance(this).getString(ApiConstants.KEY_LAST_NAME, "");
+
+        User storageUser = realm.where(User.class).equalTo("id", SharedPref.getInstance(this).getString(ApiConstants.KEY_ID, "")).findFirst();
+        PicassoHelper.execPicasso_ProfileImage(getBaseContext(), storageUser.getCover(), ivUserCover);
+        PicassoHelper.execPicasso_ProfileImage(getBaseContext(), storageUser.getAvatar(), ivUserAvatar);
+        final String userName = storageUser.getFirstName() + " " + storageUser.getLastName();
         tvUserName.setText(userName);
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

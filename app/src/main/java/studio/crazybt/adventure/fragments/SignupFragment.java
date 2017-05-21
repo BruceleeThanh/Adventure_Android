@@ -40,7 +40,6 @@ import studio.crazybt.adventure.utils.RLog;
 public class SignupFragment extends Fragment implements View.OnClickListener {
 
     private View rootView;
-    private FragmentController fragmentController;
     @BindView(R.id.etPhoneEmailSignup)
     TextView etPhoneEmailSignup;
     @BindView(R.id.etFirstNameSignup)
@@ -89,9 +88,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener {
                                             Bundle bundle = new Bundle();
                                             bundle.putString("phoneNumber", etPhoneEmailSignup.getText().toString());
                                             loginFragment.setArguments(bundle);
-                                            fragmentController = new FragmentController((AppCompatActivity) getActivity());
-                                            fragmentController.addFragment_BackStack(R.id.rlSplash, loginFragment);
-                                            fragmentController.commit();
+                                            FragmentController.replaceFragment_BackStack(getActivity(), R.id.rlSplash, loginFragment);
                                         }else if(jsonObject.getInt(apiConstants.DEF_CODE) == -1){
                                             Toast.makeText(getContext(), getResources().getString(R.string.error_phonenumber_email_signupviaemail), Toast.LENGTH_LONG).show();
                                         }

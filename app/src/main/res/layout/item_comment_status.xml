@@ -11,7 +11,8 @@
         android:layout_width="@dimen/profile_image_small"
         android:layout_height="@dimen/profile_image_small"
         android:src="@drawable/img_profile"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/tvProfileName"

@@ -1,7 +1,6 @@
 package studio.crazybt.adventure.services;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
@@ -9,7 +8,6 @@ import com.android.volley.error.ServerError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,20 +18,20 @@ import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.utils.JsonUtil;
 
 /**
- * Created by Brucelee Thanh on 15/12/2016.
+ * Created by Brucelee Thanh on 18/05/2017.
  */
 
-public class AdventureRequest {
+public class AdventureFileRequest {
 
-    private CustomRequest customRequest;
+    private MultipartRequest multipartRequest;
     private Response.Listener<JSONObject> response = new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject response) {
             if (JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0) == 1) {
-                if (onAdventureRequestListener != null)
-                    onAdventureRequestListener.onAdventureResponse(response);
-            } else if (onAdventureRequestListener != null)
-                onAdventureRequestListener.onAdventureError(JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0),
+                if (onAdventureFileRequestListener != null)
+                    onAdventureFileRequestListener.onAdventureFileResponse(response);
+            } else if (onAdventureFileRequestListener != null)
+                onAdventureFileRequestListener.onAdventureFileError(JsonUtil.getInt(response, ApiConstants.DEF_CODE, 0),
                         JsonUtil.getString(response, ApiConstants.DEF_MSG, ""));
 
         }
@@ -57,47 +55,30 @@ public class AdventureRequest {
                     e2.printStackTrace();
                 }
             }
-            if (onAdventureRequestListener != null)
-                onAdventureRequestListener.onAdventureError(-404, "Sự cố kết nối. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau!");
+            if (onAdventureFileRequestListener != null)
+                onAdventureFileRequestListener.onAdventureFileError(-404, "Sự cố kết nối. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau!");
         }
     };
 
-    public AdventureRequest(Context context, int method, String url, Map<String, String> params, boolean hasCache) {
-        customRequest = new CustomRequest(method, url, params, response, error);
-        MySingleton.getInstance(context).addToRequestQueue(customRequest, hasCache);
+    public AdventureFileRequest(Context context, String url, Map<String, String> params, Map<String , DataPart> byteData, boolean hasCache) {
+        multipartRequest = new MultipartRequest(url, params, byteData, response, error);
+        MySingleton.getInstance(context).addToRequestQueue(multipartRequest, hasCache);
     }
 
-    public AdventureRequest(int method, String url) {
-        customRequest = new CustomRequest(method, url, response, error);
-    }
-
-    public AdventureRequest(int method, String url, Map<String, String> params) {
-        customRequest = new CustomRequest(method, url, params, response, error);
-    }
-
-    public void execute(Context context, boolean hasCache){
-        MySingleton.getInstance(context).addToRequestQueue(customRequest, hasCache);
-    }
-
-    public void setParams(Map<String, String> params) {
-        customRequest.setParams(params);
-    }
-
-
-    private OnAdventureRequestListener onAdventureRequestListener;
+    private OnAdventureFileRequestListener onAdventureFileRequestListener;
     public OnNotifyResponseReceived onNotifyResponseReceived;
 
-    public void setOnAdventureRequestListener(OnAdventureRequestListener listener) {
-        onAdventureRequestListener = listener;
+    public void setOnAdventureFileRequestListener(OnAdventureFileRequestListener listener) {
+        onAdventureFileRequestListener = listener;
     }
 
     public void setOnNotifyResponseReceived(OnNotifyResponseReceived listener){
         onNotifyResponseReceived = listener;
     }
 
-    public interface OnAdventureRequestListener {
-        void onAdventureResponse(JSONObject response);
-        void onAdventureError(int errorCode, String errorMsg);
+    public interface OnAdventureFileRequestListener {
+        void onAdventureFileResponse(JSONObject response);
+        void onAdventureFileError(int errorCode, String errorMsg);
     }
 
     public interface OnNotifyResponseReceived{

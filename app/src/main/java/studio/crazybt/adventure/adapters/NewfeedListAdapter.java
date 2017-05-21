@@ -34,7 +34,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.activities.StatusActivity;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
-import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.activities.TripActivity;
@@ -56,7 +55,6 @@ import studio.crazybt.adventure.utils.SharedPref;
 public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context rootContext;
-    private FragmentController fragmentController;
     private List<Status> statuses;
     private PicassoHelper picassoHelper = new PicassoHelper();
 
@@ -116,6 +114,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 final Status statusItem = statuses.get(position);
 
                 // User avatar
+                PicassoHelper.execPicasso_ProfileImage(rootContext, statusItem.getUser().getAvatar(), statusViewHolder.ivProfileImage);
                 statusViewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

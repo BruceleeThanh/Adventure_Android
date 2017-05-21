@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -41,14 +42,17 @@ import java.util.Map;
 import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.CreateRouteScheduleTripListAdapter;
 import studio.crazybt.adventure.adapters.SpinnerAdapter;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
 import studio.crazybt.adventure.helpers.DrawableHelper;
+import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.models.Route;
 import studio.crazybt.adventure.models.SpinnerItem;
+import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.AdventureRequest;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.RLog;
@@ -77,6 +81,8 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
 
     @BindView(R.id.spiPrivacy)
     AppCompatSpinner spiPrivacy;
+    @BindView(R.id.ivProfileImage)
+    ImageView ivProfileImage;
     @BindView(R.id.tvProfileName)
     TextView tvProfileName;
     @BindView(R.id.etCreateTripName)
@@ -121,6 +127,7 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
     private CreateRouteScheduleTripListAdapter crstlaAdapter;
     private List<Route> lstRoutes;
     private AdventureRequest adventureRequest;
+    private Realm realm;
 
     private String token;
     private final String CURRENT_TRIP_PRIVACY = "current_trip_privacy";
@@ -147,6 +154,9 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
 
     private void initControls() {
         token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
+
+        realm = Realm.getDefaultInstance();
+
         btnPlacesStartPosition.setOnClickListener(this);
         btnPlacesDestination.setOnClickListener(this);
         etCreateTripStartTime.setOnClickListener(this);
@@ -184,7 +194,9 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
     }
 
     private void initCreator() {
-        tvProfileName.setText(SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_FIRST_NAME, "") + " " + SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_LAST_NAME, ""));
+        User storageUser = realm.where(User.class).equalTo("id", SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_ID, "")).findFirst();
+        PicassoHelper.execPicasso_ProfileImage(getContext(), storageUser.getAvatar(), ivProfileImage);
+        tvProfileName.setText(storageUser.getFirstName() + " " + storageUser.getLastName());
     }
 
     private void initDrawableView() {
@@ -347,19 +359,19 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
     }
 
     public void uploadTrip() {
-        if(StringUtil.isEmpty(etCreateTripName)){
+        if (StringUtil.isEmpty(etCreateTripName)) {
             etCreateTripName.setError(getResources().getString(R.string.field_can_not_empty));
             etCreateTripName.requestFocus();
-        } else if(StringUtil.isEmpty(tetCreateTripStartPosition)){
+        } else if (StringUtil.isEmpty(tetCreateTripStartPosition)) {
             tetCreateTripStartPosition.setError(getResources().getString(R.string.field_can_not_empty));
             tetCreateTripStartPosition.requestFocus();
-        } else if (StringUtil.isEmpty(etCreateTripStartTime)){
+        } else if (StringUtil.isEmpty(etCreateTripStartTime)) {
             etCreateTripStartTime.setError(getResources().getString(R.string.field_can_not_empty));
             etCreateTripStartTime.requestFocus();
-        } else if(StringUtil.isEmpty(etCreateTripMember)){
+        } else if (StringUtil.isEmpty(etCreateTripMember)) {
             etCreateTripMember.setError(getResources().getString(R.string.field_can_not_empty));
             etCreateTripMember.requestFocus();
-        }else {
+        } else {
             SharedPref.getInstance(getContext()).putInt(CURRENT_TRIP_PRIVACY, spiPrivacy.getSelectedItemPosition());
             String url = ApiConstants.getUrl(ApiConstants.API_CREATE_TRIP);
             adventureRequest = new AdventureRequest(getContext(), Request.Method.POST, url, getTripParams(), false);
@@ -399,7 +411,7 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
         } else {
             JSONArray arr = new JSONArray();
             Map<String, String> map;
-            for(Route temp : lstRoutes){
+            for (Route temp : lstRoutes) {
                 map = new HashMap<>();
                 map.put(ApiConstants.KEY_START_AT, temp.getISOStartAt());
                 map.put(ApiConstants.KEY_END_AT, temp.getISOEndAt());
@@ -450,7 +462,7 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
         placeRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override
             public void onAdventureResponse(JSONObject response) {
-                if(index == lstPlaceTrip.size() - 1){
+                if (index == lstPlaceTrip.size() - 1) {
                     ToastUtil.showToast(getContext(), R.string.success_post_trip);
                     getActivity().finish();
                     RLog.i(response.toString());

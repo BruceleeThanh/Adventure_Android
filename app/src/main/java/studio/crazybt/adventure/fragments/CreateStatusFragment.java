@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,16 +54,22 @@ import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.zelory.compressor.Compressor;
+import io.realm.Realm;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.ImageCreateStatusListAdapter;
 import studio.crazybt.adventure.adapters.SpinnerAdapter;
 import studio.crazybt.adventure.helpers.DrawableHelper;
+import studio.crazybt.adventure.helpers.ImagePickerHelper;
+import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.ApiParams;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.ImageUpload;
 import studio.crazybt.adventure.models.SpinnerItem;
+import studio.crazybt.adventure.models.User;
+import studio.crazybt.adventure.services.AdventureFileRequest;
 import studio.crazybt.adventure.services.AdventureRequest;
+import studio.crazybt.adventure.services.DataPart;
 import studio.crazybt.adventure.services.MultipartRequest;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
@@ -94,6 +101,8 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     RecyclerView rvImageCreateStatus;
     @BindView(R.id.eetContentStatus)
     EmojiEditText eetContentStatus;
+    @BindView(R.id.ivProfileImage)
+    ImageView ivProfileImage;
     @BindView(R.id.tvProfileName)
     TextView tvProfileName;
     @BindView(R.id.spiPrivacy)
@@ -104,15 +113,20 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
 
     private EmojiPopup emojiPopup;
 
+    private String token = null;
+
     private final int TAKEPHOTO_REQUEST = 100;
     private final int PICK_IMAGE_REQUEST = 200;
     private final String CURRENT_STATUS_PRIVACY = "current_status_privacy";
 
     private DrawableHelper drawableHelper;
     private AdventureRequest adventureRequest = null;
+    private AdventureFileRequest adventureFileRequest = null;
 
     private String idTrip = null;
-    String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
+    private Realm realm;
+
+    private int countImageUploaded = 0;
 
     @Nullable
     @Override
@@ -126,6 +140,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
             idTrip = bundle.getString(ApiConstants.KEY_ID_TRIP);
         }
         this.initControls();
+        this.initCreator();
         this.initEvents();
         this.initImageCreateStatusList();
         return rootView;
@@ -133,13 +148,17 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
 
     private void initControls() {
         ButterKnife.bind(this, rootView);
+        token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
+
+        realm = Realm.getDefaultInstance();
+
         drawableHelper = new DrawableHelper(getContext());
         drawableHelper.setButtonDrawableFitSize(btnAddEmojicon, R.drawable.ic_lol_96, itemSizeSmall, itemSizeSmall);
-        tvProfileName.setText(SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_FIRST_NAME, "") + " " + SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_LAST_NAME, ""));
         this.setupPopUpEmoji();
+
         if (idTrip != null) {
             spiPrivacy.setVisibility(View.GONE);
-        }else{
+        } else {
             this.initSpinnerPrivacy();
         }
     }
@@ -147,6 +166,12 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     private void initEvents() {
         btnAddImage.setOnClickListener(this);
         btnAddEmojicon.setOnClickListener(this);
+    }
+
+    private void initCreator() {
+        User storageUser = realm.where(User.class).equalTo("id", SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_ID, "")).findFirst();
+        PicassoHelper.execPicasso_ProfileImage(getContext(), storageUser.getAvatar(), ivProfileImage);
+        tvProfileName.setText(storageUser.getFirstName() + " " + storageUser.getLastName());
     }
 
     private void initSpinnerPrivacy() {
@@ -172,13 +197,6 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.btnTakePhoto:
-//                Intent intentCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                File out = Environment.getExternalStorageDirectory();
-//                out = new File(out, out.getName());
-//                intentCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(out));
-//                startActivityForResult(intentCapture, TAKEPHOTO_REQUEST);
-//                break;
             case R.id.btnAddEmojicon:
                 emojiPopup.toggle();
                 break;
@@ -194,7 +212,8 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
             imagePick.clear();
             imageList = data.getParcelableArrayListExtra(ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES);
             for (int i = 0; i < imageList.size(); i++) {
-                imagePick.add(new ImageUpload(Compressor.getDefault(getContext()).compressToBitmap(new File(imageList.get(i).getPath()))));
+                imagePick.add(new ImageUpload(new Compressor.Builder(getContext())
+                        .setQuality(0).build().compressToBitmap(new File(imageList.get(i).getPath()))));
             }
             imagePick.addAll(imageTake);
             icslaAdapter.notifyDataSetChanged();
@@ -202,17 +221,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     }
 
     private void showFileChooser() {
-        ImagePicker.create(this)
-                .folderMode(true) // folder mode (false by default)
-                .folderTitle(getResources().getString(R.string.folder_title)) // folder selection title
-                .imageTitle(getResources().getString(R.string.choose_image_title)) // image selection title
-                .single() // single mode
-                .multi() // multi mode (default mode)
-                .limit(99) // max images can be selected (99 by default)
-                .showCamera(true) // show camera or not (true by default)
-                .imageDirectory(getResources().getString(R.string.take_photo_btn_create_status)) // directory name for captured image  ("Camera" folder by default)
-                .origin(imageList) // original selected images, used in multi mode
-                .start(PICK_IMAGE_REQUEST); // start image picker activity with request code
+        ImagePickerHelper.showMultiImageChooser(this, imageList, PICK_IMAGE_REQUEST);
     }
 
     private void setupPopUpEmoji() {
@@ -241,82 +250,77 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        return encodedImage;
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
 
     public void uploadStatus() {
         SharedPref.getInstance(getContext()).putInt(CURRENT_STATUS_PRIVACY, spiPrivacy.getSelectedItemPosition());
+        countImageUploaded = 0;
+        postSingleStatus();
+
         if (imagePick.isEmpty()) {
-            this.postSingleStatus(false);
+            execPostSingleStatus(false);
         } else {
             imageUploadeds = new ArrayList<>();
-            final ApiConstants apiConstants = new ApiConstants();
-            final String token = SharedPref.getInstance(getContext()).getString(apiConstants.KEY_TOKEN, "");
-            final JsonUtil jsonUtil = new JsonUtil();
-
             for (int i = 0; i < imagePick.size(); i++) {
-                final int temp = i;
-                MultipartRequest multipartRequest = new MultipartRequest(Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_UPLOAD_IMAGE),
-                        new Response.Listener<NetworkResponse>() {
-                            @Override
-                            public void onResponse(NetworkResponse response) {
-                                RLog.i(response);
-                                String resultResponse = new String(response.data);
-                                JSONObject jsonObject = jsonUtil.createJSONObject(resultResponse);
-                                if (JsonUtil.getInt(jsonObject, apiConstants.DEF_CODE, 0) == 1) {
-                                    jsonObject = jsonUtil.getJSONObject(jsonObject, apiConstants.DEF_DATA);
-                                    imageUploadeds.add(new ImageContent(jsonUtil.getString(jsonObject, apiConstants.KEY_LINK, "")));
-                                }
-                                if (temp == imagePick.size() - 1) {
-                                    postSingleStatus(true);
-                                }
-                                RLog.i("fucking res " + resultResponse);
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (temp == imagePick.size() - 1) {
-                            postSingleStatus(true);
-                        }
-                        RLog.e("fucking err " + error.getMessage());
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() {
-                        Map<String, String> params = new HashMap<>();
-                        params.put(apiConstants.KEY_TOKEN, token);
-                        return params;
-                    }
-
-                    @Override
-                    protected Map<String, DataPart> getByteData() {
-                        Map<String, DataPart> params = new HashMap<>();
-                        // file name could found file base or direct access from real path
-                        // for now just get bitmap data from ImageView
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        imagePick.get(temp).getBitmap().compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
-                        params.put(apiConstants.KEY_FILE, new DataPart("cover.jpg", byteArrayOutputStream.toByteArray(), "image/jpeg"));
-                        return params;
-                    }
-                };
-                multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-                        DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                        0,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                MySingleton.getInstance(this.getContext()).addToRequestQueue(multipartRequest, false);
+                uploadImage(i);
             }
         }
     }
 
-    private void postSingleStatus(boolean isHaveImage) {
-        adventureRequest = new AdventureRequest(getContext(), Request.Method.POST,
-                ApiConstants.getUrl(ApiConstants.API_CREATE_STATUS), getPostSingleStatusParams(isHaveImage), false);
-        getPostSingleStatusResponse();
-
+    private void uploadImage(int index) {
+        adventureFileRequest = new AdventureFileRequest(getContext(), ApiConstants.getUrl(ApiConstants.API_UPLOAD_IMAGE), getUploadImageParams(), getUploadImageByteData(imagePick.get(index)), false);
+        getUploadImageResponse();
     }
 
-    private HashMap getPostSingleStatusParams(boolean isHaveImage) {
+    private Map<String, String> getUploadImageParams() {
+        Map<String, String> params = new HashMap<>();
+        params.put(ApiConstants.KEY_TOKEN, token);
+        return params;
+    }
+
+    private Map<String, DataPart> getUploadImageByteData(ImageUpload imageUpload) {
+        Map<String, DataPart> params = new HashMap<>();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        imageUpload.getBitmap().compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream);
+        params.put(ApiConstants.KEY_FILE, new DataPart("cover.jpg", byteArrayOutputStream.toByteArray(), "image/jpeg"));
+        return params;
+    }
+
+    private void getUploadImageResponse() {
+        adventureFileRequest.setOnAdventureFileRequestListener(new AdventureFileRequest.OnAdventureFileRequestListener() {
+            @Override
+            public void onAdventureFileResponse(JSONObject response) {
+                JSONObject data = JsonUtil.getJSONObject(response, ApiConstants.DEF_DATA);
+                imageUploadeds.add(new ImageContent(JsonUtil.getString(data, ApiConstants.KEY_LINK, "")));
+                countImageUploaded++;
+                if (countImageUploaded == imagePick.size()) {
+                    execPostSingleStatus(true);
+                }
+            }
+
+            @Override
+            public void onAdventureFileError(int errorCode, String errorMsg) {
+                countImageUploaded++;
+                if (countImageUploaded == imagePick.size()) {
+                    execPostSingleStatus(true);
+                }
+            }
+        });
+    }
+
+    private void postSingleStatus() {
+        adventureRequest = new AdventureRequest(Request.Method.POST,
+                ApiConstants.getUrl(ApiConstants.API_CREATE_STATUS));
+        getPostSingleStatusResponse();
+    }
+
+    private void execPostSingleStatus(boolean isHaveImage) {
+        adventureRequest.setParams(getPostSingleStatusParams(isHaveImage));
+        adventureRequest.execute(getContext(), false);
+    }
+
+    private Map<String, String> getPostSingleStatusParams(boolean isHaveImage) {
         ApiParams params = ApiParams.getBuilder();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_CONTENT, StringUtil.getText(eetContentStatus));
@@ -341,20 +345,27 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
                 }
                 getActivity().finish();
             }
+
             @Override
             public void onAdventureError(int errorCode, String errorMsg) {
                 ToastUtil.showToast(getContext(), errorMsg);
+                if (adventureRequest.onNotifyResponseReceived != null) {
+                    adventureRequest.onNotifyResponseReceived.onNotify();
+                }
             }
         });
     }
 
+    public AdventureRequest getRequest() {
+        return adventureRequest;
+    }
+
     private String getImageArray() {
-        ApiConstants apiConstants = new ApiConstants();
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < imageUploadeds.size(); i++) {
             Map<String, String> imageUrl = new HashMap<>();
-            imageUrl.put(apiConstants.KEY_URL, imageUploadeds.get(i).getUrl());
-            imageUrl.put(apiConstants.KEY_DESCRIPTION, imageUploadeds.get(i).getDescription());
+            imageUrl.put(ApiConstants.KEY_URL, imageUploadeds.get(i).getUrl());
+            imageUrl.put(ApiConstants.KEY_DESCRIPTION, imageUploadeds.get(i).getDescription());
             jsonArray.put(new JSONObject(imageUrl));
         }
         return jsonArray.toString();

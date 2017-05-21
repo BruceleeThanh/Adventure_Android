@@ -27,7 +27,7 @@ public class PicassoHelper {
     }
 
     public static void execPicasso(Context context, String url, ImageView imageView) {
-        if (url.isEmpty() || url == null) {
+        if (url == null || url.isEmpty()) {
             imageView.setVisibility(View.GONE);
         } else {
             url = ApiConstants.getImageUrl(url);
@@ -35,8 +35,17 @@ public class PicassoHelper {
         }
     }
 
+    public static void execPicasso_ProfileImage(Context context, String url, ImageView imageView) {
+        if (url != null && !url.isEmpty()) {
+            url = ApiConstants.getImageUrl(url);
+            Picasso.with(context).load(url).placeholder(R.drawable.img_loading).into(imageView);
+        }else{
+            imageView.setImageResource(R.drawable.img_profile);
+        }
+    }
+
     public static void execPicasso(Context context, String url, final ZoomableImageView[] zoomableImageView){
-        if (url.isEmpty() || url == null) {
+        if (url == null || url.isEmpty()) {
             zoomableImageView[0].setVisibility(View.GONE);
         } else {
             url = ApiConstants.getImageUrl(url);
@@ -61,9 +70,7 @@ public class PicassoHelper {
     }
 
     public static void execPicasso(Context context, String url, Target target){
-        if (url.isEmpty() || url == null) {
-            return;
-        }else{
+        if (url != null && !url.isEmpty()) {
             url = ApiConstants.getImageUrl(url);
             Picasso.with(context).load(url).placeholder(R.drawable.img_loading).into(target);
         }

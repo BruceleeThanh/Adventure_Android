@@ -40,8 +40,8 @@ public class RouteScheduleTripListAdapter extends RecyclerView.Adapter<RouteSche
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Route route = lstRoute.get(position);
-        StringUtil.setText(holder.tvPeriodRoute, ConvertTimeHelper.convertISODateToString(route.getStartAt()) + " - " +
-                ConvertTimeHelper.convertISODateToString(route.getEndAt()));
+        StringUtil.setText(holder.tvPeriodRoute, ConvertTimeHelper.convertISODateToString(route.getStartAt(), ConvertTimeHelper.DATE_FORMAT_1) + " - " +
+                ConvertTimeHelper.convertISODateToString(route.getEndAt(), ConvertTimeHelper.DATE_FORMAT_1));
         StringUtil.setText(holder.tvTitleRoute, route.getTitle());
         StringUtil.setText(holder.tvContentRoute, route.getContent());
     }

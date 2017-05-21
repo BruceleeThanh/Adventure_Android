@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
+import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.listeners.OnStringCallbackListener;
 import studio.crazybt.adventure.models.TripMember;
@@ -56,6 +57,7 @@ public class RequestMemberTripListAdapter extends RecyclerView.Adapter<RequestMe
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final TripMember tripMember = lstTripMember.get(position);
+        PicassoHelper.execPicasso_ProfileImage(rootContext, tripMember.getOwner().getAvatar(), holder.ivProfileImage);
         holder.tvProfileName.setText(tripMember.getOwner().getFirstName() + " " + tripMember.getOwner().getLastName());
         holder.tvProfileName.setOnClickListener(new View.OnClickListener() {
             @Override

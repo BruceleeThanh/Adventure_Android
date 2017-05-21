@@ -17,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.ProfileActivity;
+import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.models.User;
 
@@ -53,6 +54,7 @@ public class LikesStatusListAdapter extends RecyclerView.Adapter<LikesStatusList
                 rootContext.startActivity(intent);
             }
         });
+        PicassoHelper.execPicasso_ProfileImage(rootContext, user.getAvatar(), holder.ivProfileImage);
         holder.tvProfileName.setText(user.getFirstName() + " " + user.getLastName());
         if (user.getIsFriend() == -1) {
             holder.btnFriendOrFollow.setVisibility(View.GONE);

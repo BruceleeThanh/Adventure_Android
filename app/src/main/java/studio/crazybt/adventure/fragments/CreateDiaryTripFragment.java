@@ -40,17 +40,23 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.zelory.compressor.Compressor;
+import io.realm.Realm;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.CreateDetailDiaryListAdapter;
 import studio.crazybt.adventure.adapters.ImageCreateStatusListAdapter;
 import studio.crazybt.adventure.adapters.SpinnerAdapter;
+import studio.crazybt.adventure.helpers.ImagePickerHelper;
+import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.models.DetailDiary;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.ImageUpload;
 import studio.crazybt.adventure.models.RequestFriend;
 import studio.crazybt.adventure.models.SpinnerItem;
+import studio.crazybt.adventure.models.User;
+import studio.crazybt.adventure.services.AdventureFileRequest;
 import studio.crazybt.adventure.services.AdventureRequest;
+import studio.crazybt.adventure.services.DataPart;
 import studio.crazybt.adventure.services.MultipartRequest;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
@@ -98,8 +104,11 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
     private CreateDetailDiaryListAdapter cddlaAdapter;
 
     private AdventureRequest adventureRequest = null;
+    private AdventureFileRequest adventureFileRequest = null;
+    private Realm realm;
     private String token;
     private String idTrip;
+    private int countImageUploaded = 0;
 
     @Nullable
     @Override
@@ -122,6 +131,7 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
         lstImageUploads = new ArrayList<>();
         lstDetailDiaries = new ArrayList<>();
         token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
+        realm = Realm.getDefaultInstance();
     }
 
     private void initEvents() {
@@ -142,7 +152,9 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
     }
 
     private void initCreator() {
-        tvProfileName.setText(SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_FIRST_NAME, "") + " " + SharedPref.getInstance(rootView.getContext()).getString(ApiConstants.KEY_LAST_NAME, ""));
+        User storageUser = realm.where(User.class).equalTo("id", SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_ID, "")).findFirst();
+        PicassoHelper.execPicasso_ProfileImage(getContext(), storageUser.getAvatar(), ivProfileImage);
+        tvProfileName.setText(storageUser.getFirstName() + " " + storageUser.getLastName());
     }
 
     private void initImagesList() {
@@ -184,98 +196,87 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
             lstImageUploads.clear();
             lstImages = data.getParcelableArrayListExtra(ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES);
             for (int i = 0; i < lstImages.size(); i++) {
-                lstImageUploads.add(new ImageUpload(Compressor.getDefault(getContext()).compressToBitmap(new File(lstImages.get(i).getPath()))));
+                lstImageUploads.add(new ImageUpload(new Compressor.Builder(getContext())
+                        .setQuality(0).build().compressToBitmap(new File(lstImages.get(i).getPath()))));
             }
             icslaAdapter.notifyDataSetChanged();
         }
     }
 
     private void showFileChooser() {
-        ImagePicker.create(this)
-                .folderMode(true) // folder mode (false by default)
-                .folderTitle(getResources().getString(R.string.folder_title)) // folder selection title
-                .imageTitle(getResources().getString(R.string.choose_image_title)) // image selection title
-                .single() // single mode
-                .multi() // multi mode (default mode)
-                .limit(99) // max images can be selected (99 by default)
-                .showCamera(true) // show camera or not (true by default)
-                .imageDirectory(getResources().getString(R.string.take_photo_btn_create_status)) // directory name for captured image  ("Camera" folder by default)
-                .origin(lstImages) // original selected images, used in multi mode
-                .start(PICK_IMAGE_REQUEST); // start image picker activity with request code
+        ImagePickerHelper.showMultiImageChooser(this, lstImages, PICK_IMAGE_REQUEST);
     }
 
     public void uploadDiary() {
         if (StringUtil.isEmpty(etTitleDiaryTrip)) {
             etTitleDiaryTrip.setError(getResources().getString(R.string.field_can_not_empty));
         } else {
+            uploadSingleDiary();
             if (lstImageUploads.isEmpty()) {
-                uploadSingleDiary();
+                execUploadSingleDiary();
             } else {
                 lstImageUploadeds = new ArrayList<>();
                 for (int i = 0; i < lstImageUploads.size(); i++) {
-                    final int temp = i;
-                    MultipartRequest multipartRequest = new MultipartRequest(Request.Method.POST,
-                            ApiConstants.getUrl(ApiConstants.API_UPLOAD_IMAGE),
-                            new Response.Listener<NetworkResponse>() {
-                                @Override
-                                public void onResponse(NetworkResponse response) {
-                                    RLog.i(response);
-                                    String resultResponse = new String(response.data);
-                                    JSONObject jsonObject = JsonUtil.createJSONObject(resultResponse);
-                                    if (JsonUtil.getInt(jsonObject, ApiConstants.DEF_CODE, 0) == 1) {
-                                        jsonObject = JsonUtil.getJSONObject(jsonObject, ApiConstants.DEF_DATA);
-                                        lstImageUploadeds.add(new ImageContent(JsonUtil.getString(jsonObject, ApiConstants.KEY_LINK, "")));
-                                    }
-                                    if (temp == lstImageUploads.size() - 1) {
-                                        uploadSingleDiary();
-                                    }
-                                    RLog.i("fucking res " + resultResponse);
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            if (temp == lstImageUploads.size() - 1) {
-                                uploadSingleDiary();
-                            }
-                            RLog.e("fucking err " + error.getMessage());
-                        }
-                    }) {
-                        @Override
-                        protected Map<String, String> getParams() {
-                            Map<String, String> params = new HashMap<>();
-                            params.put(ApiConstants.KEY_TOKEN, token);
-                            return params;
-                        }
-
-                        @Override
-                        protected Map<String, DataPart> getByteData() {
-                            Map<String, DataPart> params = new HashMap<>();
-                            // file name could found file base or direct access from real path
-                            // for now just get bitmap data from ImageView
-                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                            lstImageUploads.get(temp).getBitmap().compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream);
-                            params.put(ApiConstants.KEY_FILE, new DataPart("cover.jpg", byteArrayOutputStream.toByteArray(), "image/jpeg"));
-                            return params;
-                        }
-                    };
-                    multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
-                            DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                            0,
-                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                    MySingleton.getInstance(this.getContext()).addToRequestQueue(multipartRequest, false);
+                    uploadImage(i);
                 }
             }
         }
     }
 
+    private void uploadImage(int index) {
+        adventureFileRequest = new AdventureFileRequest(getContext(), ApiConstants.getUrl(ApiConstants.API_UPLOAD_IMAGE), getUploadImageParams(), getUploadImageByteData(lstImageUploads.get(index)), false);
+        getUploadImageResponse();
+    }
+
+    private Map<String, String> getUploadImageParams() {
+        Map<String, String> params = new HashMap<>();
+        params.put(ApiConstants.KEY_TOKEN, token);
+        return params;
+    }
+
+    private Map<String, DataPart> getUploadImageByteData(ImageUpload imageUpload) {
+        Map<String, DataPart> params = new HashMap<>();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        imageUpload.getBitmap().compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream);
+        params.put(ApiConstants.KEY_FILE, new DataPart("cover.jpg", byteArrayOutputStream.toByteArray(), "image/jpeg"));
+        return params;
+    }
+
+    private void getUploadImageResponse() {
+        adventureFileRequest.setOnAdventureFileRequestListener(new AdventureFileRequest.OnAdventureFileRequestListener() {
+            @Override
+            public void onAdventureFileResponse(JSONObject response) {
+                JSONObject data = JsonUtil.getJSONObject(response, ApiConstants.DEF_DATA);
+                lstImageUploadeds.add(new ImageContent(JsonUtil.getString(data, ApiConstants.KEY_LINK, "")));
+                countImageUploaded++;
+                if (countImageUploaded == lstImageUploads.size()) {
+                    execUploadSingleDiary();
+                }
+            }
+
+            @Override
+            public void onAdventureFileError(int errorCode, String errorMsg) {
+                countImageUploaded++;
+                if (countImageUploaded == lstImageUploads.size()) {
+                    execUploadSingleDiary();
+                }
+            }
+        });
+    }
+
     private void uploadSingleDiary() {
-        adventureRequest = new AdventureRequest(getContext(), Request.Method.POST,
-                ApiConstants.getUrl(ApiConstants.API_CREATE_TRIP_DIARY), getUploadSingleDiaryParams(), false);
+        adventureRequest = new AdventureRequest(Request.Method.POST,
+                ApiConstants.getUrl(ApiConstants.API_CREATE_TRIP_DIARY));
         getUploadSingleDiaryResponse();
     }
 
-    private HashMap getUploadSingleDiaryParams() {
-        HashMap<String, String> params = new HashMap<>();
+    private void execUploadSingleDiary(){
+        adventureRequest.setParams(getUploadSingleDiaryParams());
+        adventureRequest.execute(getContext(), false);
+    }
+
+    private Map<String, String> getUploadSingleDiaryParams() {
+        Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_ID_TRIP, idTrip);
         params.put(ApiConstants.KEY_TITLE, StringUtil.getText(etTitleDiaryTrip));
