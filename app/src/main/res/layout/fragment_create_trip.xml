@@ -3,12 +3,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:TagsEditText="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/ablCreateTrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tbCreateTrip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/primary"
+            android:elevation="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:titleTextAppearance="@style/TextAppearance.Adventure.Title">
+
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:layout_below="@+id/ablCreateTrip">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -142,63 +163,10 @@
                     android:background="@drawable/partition_gray_line_horizontal"/>
 
                 <EditText
-                    android:id="@+id/etCreateTripStartTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/vLine3"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:background="@drawable/selector_gray_white_tv"
-                    android:clickable="true"
-                    android:drawablePadding="@dimen/margin_small"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:gravity="center_vertical"
-                    android:hint="@string/start_time_create_trip"
-                    android:textColor="@color/primary_text"
-                    android:textSize="@dimen/txt_small_medium"/>
-
-                <EditText
-                    android:id="@+id/etCreateTripEndTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/etCreateTripStartTime"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:background="@drawable/selector_gray_white_tv"
-                    android:clickable="true"
-                    android:drawablePadding="@dimen/margin_small"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:gravity="center_vertical"
-                    android:hint="@string/end_time_create_trip"
-                    android:textColor="@color/primary_text"
-                    android:textSize="@dimen/txt_small_medium"/>
-
-                <Button
-                    android:id="@+id/btnResetTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_alignBottom="@+id/etCreateTripStartTime"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/selector_orange_white_btn_2"
-                    android:paddingLeft="@dimen/margin_small"
-                    android:text="@string/reset_create_trip"
-                    android:textAllCaps="false"
-                    android:textColor="@color/accent"/>
-
-                <View
-                    android:id="@+id/vLine4"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/etCreateTripEndTime"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:background="@drawable/partition_gray_line_horizontal"/>
-
-                <EditText
                     android:id="@+id/etCreateTripDescriptionSummary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/vLine4"
+                    android:layout_below="@+id/vLine3"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:background="@android:color/transparent"
                     android:drawablePadding="@dimen/margin_small"
@@ -244,10 +212,63 @@
                     android:textColor="@color/primary"/>
 
                 <View
-                    android:id="@+id/vLine5"
+                    android:id="@+id/vLine4"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@+id/tetCreateTripDestination"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:background="@drawable/partition_gray_line_horizontal"/>
+
+                <EditText
+                    android:id="@+id/etCreateTripStartTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/vLine4"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:background="@drawable/selector_gray_white_tv"
+                    android:clickable="true"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:gravity="center_vertical"
+                    android:hint="@string/start_time_create_trip"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/txt_small_medium"/>
+
+                <EditText
+                    android:id="@+id/etCreateTripEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/etCreateTripStartTime"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:background="@drawable/selector_gray_white_tv"
+                    android:clickable="true"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:gravity="center_vertical"
+                    android:hint="@string/end_time_create_trip"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/txt_small_medium"/>
+
+                <Button
+                    android:id="@+id/btnResetTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_alignTop="@+id/etCreateTripStartTime"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/selector_orange_white_btn_2"
+                    android:paddingLeft="@dimen/margin_small"
+                    android:text="@string/reset_create_trip"
+                    android:textAllCaps="false"
+                    android:textColor="@color/accent"/>
+
+                <View
+                    android:id="@+id/vLine5"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/etCreateTripEndTime"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:background="@drawable/partition_gray_line_horizontal"/>
 

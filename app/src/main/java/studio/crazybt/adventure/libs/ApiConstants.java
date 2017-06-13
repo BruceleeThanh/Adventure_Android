@@ -2,6 +2,9 @@ package studio.crazybt.adventure.libs;
 
 import android.net.Uri;
 
+import studio.crazybt.adventure.utils.RealmUtils;
+import studio.crazybt.adventure.utils.SharedPref;
+
 
 /**
  * Created by Brucelee Thanh on 07/10/2016.
@@ -19,15 +22,22 @@ public class ApiConstants {
     /* Remember: change both API_ROOT and API_ROOT_IMAGE */
     //private static final String API_ROOT = "155.94.144.150:25763/api";
 
-    private static final String API_ROOT = "192.168.1.83:25763/api";
-    private static final String API_ROOT_IMAGES = "192.168.1.83:25763";
+    private static final String FIRST_API_ROOT = "192.168.1.83:25763/api";
+    private static final String FIRST_API_ROOT_IMAGES = "192.168.1.83:25763";
 
 //    private static final String API_ROOT = "192.168.1.9:25763/api";
 //    private static final String API_ROOT_IMAGES = "192.168.1.9:25763";
 
+//    private static final String API_ROOT = "192.168.7.125:25763/api";
+//    private static final String API_ROOT_IMAGES = "192.168.7.125:25763";
+
+    private static String API_ROOT = SharedPref.getInstance(RealmUtils.getApplication()).getString("API_ROOT", null);
+    private static String API_ROOT_IMAGES = SharedPref.getInstance(RealmUtils.getApplication()).getString("API_ROOT_IMAGES", null);
+
     private static final String API_SCHEME = "http";
     public static final String API_NORMAL_SIGNUP = "user/sign_up";
     public static final String API_NORMAL_LOGIN = "user/login";
+    public static final String API_FB_LOGIN = "user/fb_login";
     public static final String API_PROFILE_USER = "user/profile";
     public static final String API_EDIT_PROFILE_USER = "user/edit_profile";
     public static final String API_UPLOAD_IMAGE = "file/upload_image";
@@ -66,6 +76,23 @@ public class ApiConstants {
     public static final String API_REJECT_REQUEST_TRIP_MEMBER = "trip_member/reject_request";
     public static final String API_LEAVE_TRIP_TRIP_MEMBER = "trip_member/leave_trip";
     public static final String API_SEARCH_FRIEND = "friend/search";
+    public static final String API_CREATE_GROUP = "group/create";
+    public static final String API_BROWSE_GROUP = "group/browse";
+    public static final String API_DETAIL_GROUP = "group/detail";
+    public static final String API_INFO_GROUP = "group/info";
+    public static final String API_BROWSE_GROUP_MEMBER = "group_member/browse";
+    public static final String API_REQUEST_GROUP_MEMBER = "group_member/request";
+    public static final String API_BROWSE_REQUEST_GROUP_MEMBER = "group_member/browse_request";
+    public static final String API_CANCEL_REQUEST_GROUP_MEMBER = "group_member/cancel_request";
+    public static final String API_ACCEPT_REQUEST_GROUP_MEMBER = "group_member/accept_request";
+    public static final String API_REJECT_REQUEST_GROUP_MEMBER = "group_member/reject_request";
+    public static final String API_INVITE_GROUP_MEMBER = "group_member/invite";
+    public static final String API_LEAVE_GROUP_GROUP_MEMBER = "group_member/leave_group";
+    public static final String API_REMOVE_MEMBER_GROUP_MEMBER = "group_member/remove_member";
+    public static final String API_MAKE_ADMIN_GROUP_MEMBER = "group_member/make_admin";
+    public static final String API_REMOVE_ADMIN_GROUP_MEMBER = "group_member/remove_admin";
+    public static final String API_BLOCK_MEMBER_GROUP_MEMBER = "group_member/block_member";
+    public static final String API_UNBLOCK_MEMBER_GROUP_MEMBER = "group_member/unblock_member";
 
     // Default params
     public static final String DEF_CODE = "code";
@@ -92,6 +119,7 @@ public class ApiConstants {
     public static final String KEY_ID_FACEBOOK = "id_facebook";
     public static final String KEY_TOKEN = "token";
     public static final String KEY_FCM_TOKEN = "fcm_token";
+    public static final String KEY_FB_TOKEN = "fb_token";
     public static final String KEY_FILE = "file";
     public static final String KEY_LINK = "link";
     public static final String KEY_CONTENT = "content";
@@ -159,9 +187,53 @@ public class ApiConstants {
     public static final String KEY_TOTAL = "total";
     public static final String KEY_TOTAL_FRIEND = "total_friend";
     public static final String KEY_TOTAL_STRANGER = "total_stranger";
+    public static final String KEY_TOTAL_MEMBER = "total_member";
     public static final String KEY_KEYWORD = "keyword";
+    public static final String KEY_GROUP_CREATE = "group_create";
+    public static final String KEY_GROUP_MANAGE = "group_manage";
+    public static final String KEY_GROUP_JOIN = "group_join";
+    public static final String KEY_GROUP_REQUEST = "group_request";
+    public static final String KEY_GROUP_SUGGEST = "group_suggest";
+    public static final String KEY_GROUP_INVITE = "group_invite";
+    public static final String KEY_YOUR_STATUS = "your_status";
+    public static final String KEY_GROUP_POST = "group_post";
+    public static final String KEY_GROUP_IMAGES = "group_images";
+    public static final String KEY_TYPE_ITEM = "type_item";
+    public static final String KEY_GROUP = "group";
+    public static final String KEY_REQUESTS = "requests";
+    public static final String KEY_BLOCKS = "blocks";
+    public static final String KEY_ADMINS = "admins";
+    public static final String KEY_ID_GROUP_MEMBER = "id_group_member";
+    public static final String KEY_MESSAGE = "message";
 
     public ApiConstants() {
+
+    }
+
+    public static String getFirstApiRoot(){
+        return FIRST_API_ROOT;
+    }
+
+    public static String getFirstApiRootImages(){
+        return FIRST_API_ROOT_IMAGES;
+    }
+
+    public static void setApiRoot(String url){
+        API_ROOT = url;
+        SharedPref.getInstance(RealmUtils.getApplication()).putString("API_ROOT", url);
+    }
+
+    public static String getApiRoot(){
+        return API_ROOT;
+    }
+
+    public static void setApiRootImages(String urlImages){
+        API_ROOT_IMAGES = urlImages;
+        SharedPref.getInstance(RealmUtils.getApplication()).putString("API_ROOT_IMAGES", urlImages);
+    }
+
+    public static String getApiRootImages(){
+        return API_ROOT_IMAGES;
     }
 
     private static void setBaseUrl(String rootUrl) {
@@ -174,7 +246,7 @@ public class ApiConstants {
         return builder;
     }
 
-    public static Uri.Builder getApi(String rootUrl, String path) {
+    private static Uri.Builder getApi(String rootUrl, String path) {
         setBaseUrl(rootUrl);
         if (path.contains("/")) {
             builder.appendEncodedPath(path);
@@ -184,7 +256,7 @@ public class ApiConstants {
         return builder;
     }
 
-    public static Uri.Builder getImageApi(String rootUrl, String path) {
+    private static Uri.Builder getImageApi(String rootUrl, String path) {
         StringBuilder sb = new StringBuilder(path);
         String subPath = sb.deleteCharAt(0).toString();
         setBaseUrl(rootUrl);
@@ -201,7 +273,11 @@ public class ApiConstants {
     }
 
     public static String getImageUrl(String path){
-        return getImageApi(API_ROOT_IMAGES, path).build().toString();
+        if(path.contains("https://") || path.contains("http://")){
+            return path;
+        }else{
+            return getImageApi(API_ROOT_IMAGES, path).build().toString();
+        }
     }
 
 }

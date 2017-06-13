@@ -132,16 +132,6 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
                     rootContext.startActivity(intent);
                 }
             });
-            tripNormalViewHolder.tvTripDetail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(rootContext, TripActivity.class);
-                    intent.putExtra(ApiConstants.KEY_ID_TRIP, trip.getId());
-                    intent.putExtra(ApiConstants.KEY_OWNER, trip.getOwner().getId());
-                    intent.putExtra(ApiConstants.KEY_NAME, trip.getName());
-                    rootContext.startActivity(intent);
-                }
-            });
             tripNormalViewHolder.tvProfileName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -204,8 +194,6 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView tvTripInterested;
         @BindView(R.id.tvTripRate)
         TextView tvTripRate;
-        @BindView(R.id.tvTripDetail)
-        TextView tvTripDetail;
         @BindDimen(R.dimen.item_icon_size_tiny)
         float itemSizeTiny;
         @BindDimen(R.dimen.five_star_icon_width)

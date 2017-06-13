@@ -72,5 +72,16 @@
             android:textAllCaps="false"
             android:textColor="@color/secondary_text"/>
 
+        <ImageView
+            android:id="@+id/ivMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/margin_medium"
+            android:paddingLeft="@dimen/margin_medium"
+            android:src="@drawable/ic_email_green_500_24dp"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 </android.support.v7.widget.CardView>

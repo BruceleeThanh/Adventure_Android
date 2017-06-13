@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.CRC32;
 
 import studio.crazybt.adventure.utils.RLog;
 
@@ -45,6 +46,18 @@ public class CustomRequest extends Request<JSONObject> {
     @Override
     public void setParams(Map<String, String> params) {
         this.params = params;
+    }
+
+    public void setMethod(int method) {
+        this.method = method;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setListener(Response.Listener listener) {
+        this.listener = listener;
     }
 
     public CustomRequest(int method, String url, Map<String, String> params, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) {

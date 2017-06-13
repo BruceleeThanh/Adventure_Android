@@ -23,6 +23,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
             android:clickable="true"
             android:src="@drawable/img_profile"
             android:scaleType="centerCrop"/>
@@ -31,7 +32,6 @@
             android:id="@+id/tvProfileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_medium"
             android:layout_marginRight="@dimen/margin_medium"
             android:layout_toRightOf="@+id/ivProfileImage"
             android:background="@drawable/selector_gray_white_tv"
@@ -45,7 +45,6 @@
             android:layout_width="@dimen/icon_size_tiny"
             android:layout_height="@dimen/icon_size_tiny"
             android:layout_alignBottom="@+id/ivProfileImage"
-            android:layout_marginLeft="@dimen/margin_medium"
             android:layout_marginRight="@dimen/margin_small"
             android:layout_toRightOf="@id/ivProfileImage"/>
 
@@ -54,11 +53,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/ivProfileImage"
-            android:layout_marginRight="@dimen/margin_medium"
             android:layout_toRightOf="@id/ivPermission"
             android:text="12 giờ trước"
             android:textColor="@color/secondary_text"
             android:textSize="@dimen/txt_small"/>
+
+        <ImageView
+            android:id="@+id/ivOptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/margin_small"
+            android:paddingLeft="@dimen/margin_small"
+            android:paddingRight="@dimen/margin_small"
+            android:paddingBottom="@dimen/margin_small"
+            android:src="@drawable/ic_keyboard_arrow_down_grey_500_18dp"/>
 
         <com.vanniktech.emoji.EmojiTextView
             android:id="@+id/etvContentStatus"

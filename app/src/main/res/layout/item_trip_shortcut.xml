@@ -275,25 +275,6 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/txt_small"/>
 
-            <TextView
-                android:id="@+id/tvTripDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/tvTripJoiner"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/llTripMoney"
-                android:background="@drawable/selector_gray_white_tv"
-                android:clickable="true"
-                android:drawablePadding="@dimen/margin_small"
-                android:drawableRight="@drawable/ic_arrow_forward_grey_500_18dp"
-                android:gravity="center_vertical"
-                android:paddingBottom="@dimen/margin_small"
-                android:paddingLeft="@dimen/margin_medium"
-                android:paddingRight="@dimen/margin_medium"
-                android:paddingTop="@dimen/margin_small"
-                android:text="@string/trip_detail_tv_trip_shortcut"
-                android:textColor="@color/white"
-                android:textSize="@dimen/txt_small"/>
             </RelativeLayout>
 
         </RelativeLayout>

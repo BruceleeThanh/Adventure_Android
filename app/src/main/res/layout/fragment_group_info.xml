@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/ablGroupInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tbGroupInfo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/primary"
+            android:elevation="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:titleTextAppearance="@style/TextAppearance.Adventure.Title">
+
+        </android.support.v7.widget.Toolbar>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/ncvGroupInfo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ablGroupInfo">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civCover"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="@dimen/margin_medium_big"
+
+                android:src="@drawable/img_cover"/>
+
+            <TextView
+                android:id="@+id/tvNameGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/civCover"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_toRightOf="@+id/civCover"
+                android:text="Hội đi lầy.!"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/txt_medium"/>
+
+            <TextView
+                android:id="@+id/tvPermissionGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvNameGroup"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_toRightOf="@+id/civCover"
+                android:text="Nhóm công khai"
+                android:textColor="@color/secondary_text"/>
+
+            <View
+                android:id="@+id/vLine1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/civCover"
+                android:background="@drawable/partition_gray_line_horizontal"/>
+
+            <TextView
+                android:id="@+id/tvLabelDescriptionGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vLine1"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/label_description_group"/>
+
+            <TextView
+                android:id="@+id/tvDescriptionGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvLabelDescriptionGroup"
+                android:layout_margin="@dimen/margin_medium"
+                android:hint="@string/hint_description_group"
+                android:textColor="@color/primary_text"/>
+
+            <View
+                android:id="@+id/vLine2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tvDescriptionGroup"
+                android:background="@drawable/partition_gray_line_horizontal"/>
+
+            <TextView
+                android:id="@+id/tvLabelGroupCreatedAt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vLine2"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/label_group_created_at"/>
+
+            <TextView
+                android:id="@+id/tvGroupCreatedAt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvLabelGroupCreatedAt"
+                android:layout_margin="@dimen/margin_medium"
+                android:textColor="@color/primary_text"/>
+
+            <View
+                android:id="@+id/vLine3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tvGroupCreatedAt"
+                android:background="@drawable/partition_gray_line_horizontal"/>
+
+            <TextView
+                android:id="@+id/tvLabelImagesGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vLine3"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/label_images_group"/>
+
+            <TextView
+                android:id="@+id/tvImagesGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvLabelImagesGroup"
+                android:layout_margin="@dimen/margin_medium"
+                android:hint="@string/hint_images_group"
+                android:visibility="gone"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvImagesGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvLabelImagesGroup"
+                android:layout_margin="@dimen/margin_medium"/>
+
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

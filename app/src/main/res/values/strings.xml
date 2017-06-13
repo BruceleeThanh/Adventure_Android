@@ -8,6 +8,7 @@
     <string name="closeDrawer">Close navigation drawer</string>
 
     <!--General-->
+    <string name="title_search">Tìm kiếm</string>
     <string name="field_can_not_empty">Không được để trống trường này</string>
     <!--Splash-->
     <string name="login_via_email_btn_splash">Đăng nhập qua email</string>
@@ -40,7 +41,7 @@
     <string name="trip_detail_tv_trip_shortcut">Chi tiết</string>
     <string name="unit_people_tv_trip_shortcut">người</string>
     <string name="textview_null">Không có</string>
-    
+
     <!--Status shortcut-->
     <string name="today_tv_status_shortcut">Hôm nay, </string>
     <string name="yesterday_tv_status_shortcut">Hôm qua, </string>
@@ -57,6 +58,7 @@
     <string name="msg_confirm_uninterested">Bạn có chắc chắn huỷ quan tâm chuyến đi này?</string>
     <string name="msg_confirm_leave_trip">Bạn có chắc chắn rời khỏi chuyến đi này chuyến đi này?</string>
     <string name="cancel_btn_dialog">Trở về</string>
+    <string name="hint_msg_request_member">Giới thiệu đôi chút về bạn…</string>
 
     <!--Trip Member-->
     <string name="monitor_trip_member">Trưởng đoàn</string>
@@ -165,6 +167,7 @@
 
     <!--Create status-->
     <string name="title_tb_create_status">Đăng trạng thái</string>
+    <string name="title_tb_edit_image_create_status">Sửa ảnh trạng thái</string>
     <string name="post_tb_right_btn_create_status">Đăng</string>
     <string name="insert_status_hint_create_status">Chia sẻ cảm xúc của bạn!</string>
     <string name="add_image_btn_create_status">Thêm ảnh</string>
@@ -174,13 +177,20 @@
     <string name="warning_havenot_image">Bạn không có ảnh để chọn. Hãy chụp ảnh!</string>
     <string name="folder_title">Thư mục</string>
     <string name="choose_image_title">Chọn ảnh</string>
-    <string name="success_post_status">Trạng thái của bạn đã được đăng.</string>
+    <string name="success_post_status">Đăng trạng thái thành công.</string>
     <string name="only_me_privacy">Chỉ mình tôi</string>
     <string name="friend_privacy">Bạn bè</string>
     <string name="public_privacy">Công khai</string>
+    <string name="description_image">Miêu tả ảnh…</string>
+    <string name="done_btn_edit_image_create_status">Cập nhật</string>
 
     <string name="error_connect">Lỗi kết nối</string>
-    
+
+    <string name="cancel_create_post">Huỷ bỏ thao tác</string>
+    <string name="msg_confirm_cancel_create_post">Các dữ liệu bạn vừa nhập sẽ không được lưu lại.</string>
+    <string name="confirm_cancel_create_post">Huỷ bỏ </string>
+    <string name="reject_cancel_create_post">Tiếp tục nhập</string>
+
     <!--Dialog comment status-->
     <string name="copy_dialog_comment_status">Sao chép</string>
     <string name="edit_dialog_comment_status">Sửa</string>
@@ -215,7 +225,7 @@
     <string name="error_start_time_after_end">Không thể lớn hơn ngày kết thúc</string>
     <string name="error_start_time_route_before_start">Không thể nhỏ hơn ngày bắt đầu chuyến đi</string>
     <string name="error_end_time_route_after_end">Không thể lớn hơn ngày kết thúc chuyến đi</string>
-    <string name="success_post_trip">Chuyến đi của bạn đã được đăng</string>
+    <string name="success_post_trip">Tạo chuyến đi thành công.</string>
     <string name="error_null_places">Không tìm thấy địa điểm nào</string>
 
     <!--Create diary trip-->
@@ -228,7 +238,7 @@
     <string name="title_detail_diary_trip">Tiêu đề…</string>
     <string name="content_detail_diary_trip">Nội dung…</string>
     <string name="member_trip_privacy">Thành viên chuyến đi</string>
-    <string name="success_create_diary_trip">Nhật ký của bạn đã được đăng</string>
+    <string name="success_create_diary_trip">Đăng nhật ký thành công.</string>
 
     <!--Create discuss trip-->
     <string name="title_tb_create_discuss_trip">Thảo luận về chuyến đi</string>
@@ -250,5 +260,97 @@
     <string name="label_friend_search_user">Bạn bè</string>
     <string name="label_people_search_user">Mọi người</string>
     <string name="label_empty_search_friend">Không tìm thấy người dùng nào.</string>
+
+    <!--Group-->
+    <string name="title_tb_group">Nhóm</string>
+    <string name="title_tb_create_group">Tạo nhóm</string>
+    <string name="manage_tablayout_group">Quản trị</string>
+    <string name="join_tablayout_group">Tham gia</string>
+    <string name="suggestions_tablayout_group">Đề xuất</string>
+    <string name="invite_tablayout_group">Lời mời</string>
+    <string name="error_group_create_null">Bạn chưa tạo nhóm nào.</string>
+    <string name="error_group_manage_null">Bạn chưa quản trị nhóm nào.</string>
+    <string name="error_group_join_null">Bạn chưa tham gia nhóm nào</string>
+    <string name="error_group_suggest_null">Hiện tại chưa có đề xuất nào.</string>
+    <string name="error_group_invite_null">Bạn chưa có lời mời tham gia nhóm nào.</string>
+    <string name="error_group_request_null">Bạn chưa yêu cầu tham gia nhóm nào.</string>
+
+    <!--Create group-->
+    <string name="title_name_group">Tên nhóm</string>
+    <string name="hint_label_description_group">Miêu tả…</string>
+    <string name="label_cover_image_group">Ảnh đại diện nhóm</string>
+    <string name="open_group_permission">Nhóm công khai</string>
+    <string name="close_group_permission">Nhóm kín</string>
+    <string name="secret_group_permission">Nhóm bí mật</string>
+    <string name="create_group_btn">Tạo</string>
+    <string name="success_create_group">Tạo nhóm thành công.</string>
+
+    <!--Tab Manage Group-->
+    <string name="label_group_your_create">Nhóm bạn tạo</string>
+    <string name="label_group_your_manage">Nhóm bạn quản trị</string>
+
+    <!-- Tab suggestions group-->
+    <string name="label_group_your_request">Nhóm đã gửi yêu cầu tham gia</string>
+    <string name="label_group_suggestions">Nhóm đề xuất</string>
+
+    <!--Detail group-->
+    <string name="join_group">Tham gia</string>
+    <string name="joined_group">Đã tham gia</string>
+    <string name="requested_member_group">Đã yêu cầu</string>
+    <string name="leave_group">Rời khỏi nhóm</string>
+    <string name="msg_confirm_leave_group">Bạn có chắc chắn muốn rời khỏi nhóm này?</string>
+    <string name="msg_request_member_group_sent">Đã gửi yêu cầu tham gia nhóm.</string>
+    <string name="msg_cancel_request_member_group_sent">Đã huỷ yêu cầu tham gia nhóm.</string>
+    <string name="msg_leave_group_sent">Đã rời khỏi nhóm.</string>
+    <string name="title_cancel_request_member_group">Huỷ yêu cầu</string>
+    <string name="not_btn_dialog">Không</string>
+    <string name="msg_confirm_cancel_request_member_group">Bạn có chắc chắn huỷ yêu cầu tham gia nhóm này?</string>
+    <string name="group_member">Thành viên</string>
+    <string name="group_info">Thông tin</string>
+    <string name="label_group_member">thành viên</string>
+    <string name="center_dot">·</string>
+    <string name="label_not_permission_in_group">Bạn không thể xem các bài viết trong nhóm này.</string>
+    <string name="label_empty_post_group">Nhóm chưa có bài đăng nào.</string>
+
+    <!--Group info-->
+    <string name="title_group_info">Thông tin nhóm</string>
+    <string name="label_description_group">Miêu tả</string>
+    <string name="hint_description_group">Nhóm chưa có miêu tả.</string>
+    <string name="label_images_group">Ảnh</string>
+    <string name="hint_images_group">Nhóm chưa có ảnh nào.</string>
+    <string name="label_not_permission_see_images_in_group">Bạn không thể xem các ảnh trong nhóm này.</string>
+    <string name="label_group_created_at">Ngày tạo nhóm</string>
+    
+    <!--Group member-->
+    <string name="title_tb_group_member">Thành viên nhóm</string>
+    <string name="title_admin_group">Quản trị</string>
+    <string name="title_group_admin">Quản trị</string>
+    <string name="title_member_group">Thành viên</string>
+    <string name="title_group_member">Thành viên</string>
+    <string name="title_group_request_member">Yêu cầu</string>
+    <string name="title_group_block_member">Bị chặn</string>
+    <string name="title_group_invite_member">Mời tham gia</string>
+    <string name="label_error_group_member_empty">Nhóm chưa có thành viên nào.</string>
+    <string name="label_error_group_admin_empty">Nhóm chưa có người quản trị nào.</string>
+    <string name="label_error_group_request_member_empty">Nhóm chưa có lời yêu cầu tham gia nào.</string>
+    <string name="label_error_group_block_member_empty">Nhóm chưa có thành viên nào bị chặn.</string>
+    <string name="label_joined_group_at">Tham gia</string>
+    <string name="label_created_group_at">Đã tạo nhóm</string>
+    <string name="label_block_member_group_at">Bị chặn</string>
+    <string name="label_request_member_group_at">Gửi yêu cầu</string>
+    <string name="label_accept_request_member">Chấp nhận</string>
+    <string name="label_reject_request_member">Từ chối</string>
+    <string name="success_accept_request_member_group">đã được thêm vào nhóm.</string>
+    <string name="label_make_admin_group">Cấp quyền quản trị</string>
+    <string name="label_remove_admin_group">Loại bỏ quyền quản trị</string>
+    <string name="label_remove_member_group">Loại khỏi nhóm</string>
+    <string name="label_block_member_group">Chặn khỏi nhóm</string>
+    <string name="label_unblock_member_group">Bỏ chặn</string>
+    <string name="success_remove_member_group">đã được loại khỏi nhóm.</string>
+    <string name="success_make_admin_group">đã trở thành quản trị nhóm.</string>
+    <string name="success_remove_admin_group">đã không còn là quản trị nhóm.</string>
+    <string name="success_block_member_group">đã bị chặn.</string>
+    <string name="success_unblock_member_group">đã không còn bị chặn.</string>
+
 
 </resources>

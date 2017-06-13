@@ -41,8 +41,7 @@ public class CommentStatusListAdapter extends RecyclerView.Adapter<CommentStatus
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         EmojiManager.install(new EmojiOneProvider());
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment_status, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override

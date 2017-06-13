@@ -1,6 +1,7 @@
 package studio.crazybt.adventure.utils;
 
 import android.app.Application;
+import android.content.Context;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -17,5 +18,15 @@ public class RealmUtils extends Application {
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
                 .name("AdventureDB").build();
         Realm.setDefaultConfiguration(realmConfiguration);
+    }
+
+    private static Application sApplication;
+
+    public static Application getApplication() {
+        return sApplication;
+    }
+
+    public static Context getContext() {
+        return getApplication().getApplicationContext();
     }
 }

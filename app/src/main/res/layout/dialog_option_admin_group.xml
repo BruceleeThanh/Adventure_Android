@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="190dp"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvRemoveAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/selector_gray_white_tv"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_remove_circle_outline_grey_400_18dp"
+        android:drawablePadding="@dimen/margin_small"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/margin_medium"
+        android:text="@string/label_remove_admin_group"/>
+
+    <TextView
+        android:id="@+id/tvRemoveMember"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/selector_gray_white_tv"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_remove_circle_grey_400_18dp"
+        android:drawablePadding="@dimen/margin_small"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/margin_medium"
+        android:text="@string/label_remove_member_group"/>
+
+    <TextView
+        android:id="@+id/tvBlockMember"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/selector_gray_white_tv"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_block_grey_400_18dp"
+        android:drawablePadding="@dimen/margin_small"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/margin_medium"
+        android:text="@string/label_block_member_group"/>
+
+</LinearLayout>

@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/ablCreateDiaryTrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tbCreateDiaryTrip"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/primary"
+            android:elevation="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:titleTextAppearance="@style/TextAppearance.Adventure.Title">
+
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
     <ImageView
         android:id="@+id/ivProfileImage"
@@ -10,8 +33,9 @@
         android:layout_height="@dimen/profile_image_medium"
         android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_medium"
+        android:scaleType="centerCrop"
         android:src="@drawable/img_profile"
-        android:scaleType="centerCrop"/>
+        android:layout_below="@id/ablCreateDiaryTrip"/>
 
     <TextView
         android:id="@+id/tvProfileName"
@@ -37,15 +61,15 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_below="@+id/ivProfileImage">
+        android:layout_below="@+id/ivProfileImage"
+        android:layout_marginTop="@dimen/margin_medium">
 
         <RelativeLayout
             android:id="@+id/llCreateProperties"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/margin_big"
-            android:layout_marginTop="@dimen/margin_medium">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:paddingBottom="@dimen/margin_big">
 
             <EditText
                 android:id="@+id/etTitleDiaryTrip"
@@ -76,9 +100,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/vLine1"
-                android:layout_marginTop="@dimen/margin_medium"
                 android:layout_marginLeft="@dimen/margin_medium"
                 android:layout_marginRight="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
                 android:background="@android:color/transparent"
                 android:drawablePadding="@dimen/margin_small"
                 android:gravity="top"
@@ -110,8 +134,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:layout_below="@+id/rvImageDiaryTrip"
-                android:layout_marginTop="@dimen/margin_medium"
                 android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
                 android:background="@drawable/selector_orange_white_btn_2"
                 android:paddingLeft="@dimen/margin_big"
                 android:paddingRight="@dimen/margin_big"
@@ -141,8 +165,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:layout_below="@+id/rvDetailDiaryTrip"
-                android:layout_marginTop="@dimen/margin_medium"
                 android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
                 android:background="@drawable/selector_green_white_btn_2"
                 android:paddingLeft="@dimen/margin_big"
                 android:paddingRight="@dimen/margin_big"

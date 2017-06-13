@@ -13,6 +13,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        //multiDexEnabled true
     }
     buildTypes {
         release {
@@ -32,7 +33,15 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
+    //compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
+    compile('org.apache.httpcomponents:httpmime:4.3.5') {
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+    compile('io.socket:socket.io-client:0.8.3') {
+        // excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
     compile 'com.vanniktech:emoji-one:0.4.0'
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
@@ -41,22 +50,15 @@ dependencies {
     compile 'com.google.android.gms:play-services-places:10.2.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'me.imid.swipebacklayout.lib:library:1.0.0'
     compile 'dev.dworks.libs:volleyplus:+'
     compile 'com.github.clans:fab:1.6.4'
     compile 'id.zelory:compressor:1.0.3'
     compile 'com.github.nguyenhoanglam:ImagePicker:1.1.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    //compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
-    compile('org.apache.httpcomponents:httpmime:4.3.5') {
-        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-    }
-    compile ('io.socket:socket.io-client:0.8.3') {
-        // excluding org.json which is provided by Android
-        exclude group: 'org.json', module: 'json'
-    }
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
+    testCompile 'junit:junit:4.12'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

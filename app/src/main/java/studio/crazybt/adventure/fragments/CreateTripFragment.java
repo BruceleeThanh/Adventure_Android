@@ -7,10 +7,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -79,6 +84,8 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
     private Date startDate = null;
     private Date endDate = null;
 
+    @BindView(R.id.tbCreateTrip)
+    Toolbar tbCreateTrip;
     @BindView(R.id.spiPrivacy)
     AppCompatSpinner spiPrivacy;
     @BindView(R.id.ivProfileImage)
@@ -153,6 +160,12 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
     }
 
     private void initControls() {
+
+        setHasOptionsMenu(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(tbCreateTrip);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_tb_create_trip);
+
         token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
 
         realm = Realm.getDefaultInstance();
@@ -551,5 +564,30 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
                 // The user canceled the operation.
             }
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_menu_input, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            getActivity().onBackPressed();
+        }else if(id == R.id.itemPost){
+            uploadTrip();
+            if (getRequest() != null) {
+                item.setEnabled(false);
+                getRequest().setOnNotifyResponseReceived(new AdventureRequest.OnNotifyResponseReceived() {
+                    @Override
+                    public void onNotify() {
+                        item.setEnabled(true);
+                    }
+                });
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

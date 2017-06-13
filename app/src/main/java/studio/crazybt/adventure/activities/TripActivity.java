@@ -55,13 +55,6 @@ public class TripActivity extends AppCompatActivity {
     private AdventureRequest adventureRequest;
     private Trip trip;
 
-    private TabScheduleTripFragment tabScheduleTripFragment;
-    private TabMapTripFragment tabMapTripFragment;
-    private TabDiaryTripFragment tabDiaryTripFragment;
-    private TabDiscussTripFragment tabDiscussTripFragment;
-    private TabMembersTripFragment tabMembersTripFragment;
-    private TabRequestMemberTripFragment tabRequestMemberTripFragment;
-
     private List<TripMember> lstRequest = null;
 
     private TabLayoutAdapter tabLayoutAdapter;
@@ -88,47 +81,40 @@ public class TripActivity extends AppCompatActivity {
         this.loadData();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
     public void initTablayout() {
         tlTrip = (BadgeTabLayout) findViewById(R.id.tlTrip);
         tlTrip.setTabGravity(TabLayout.GRAVITY_FILL);
         vpTrip = (ViewPager) findViewById(R.id.vpTrip);
         tabLayoutAdapter = new TabLayoutAdapter(getSupportFragmentManager());
-        initTabFragment();
-        tabLayoutAdapter.addFragment(tabScheduleTripFragment, getResources().getString(R.string.schedule_tablayout_trip));
-        tabLayoutAdapter.addFragment(tabMapTripFragment, getResources().getString(R.string.map_tablayout_trip));
-        tabLayoutAdapter.addFragment(tabDiscussTripFragment, getResources().getString(R.string.discuss_tablayout_trip));
-        tabLayoutAdapter.addFragment(tabDiaryTripFragment, getResources().getString(R.string.diary_tablayout_trip));
-        tabLayoutAdapter.addFragment(tabMembersTripFragment, getResources().getString(R.string.members_tablayout_trip));
+        tabLayoutAdapter.addFragment(new TabScheduleTripFragment(), getResources().getString(R.string.schedule_tablayout_trip));
+        tabLayoutAdapter.addFragment(new TabMapTripFragment(), getResources().getString(R.string.map_tablayout_trip));
+        tabLayoutAdapter.addFragment(new TabDiscussTripFragment(), getResources().getString(R.string.discuss_tablayout_trip));
+        tabLayoutAdapter.addFragment(new TabDiaryTripFragment(), getResources().getString(R.string.diary_tablayout_trip));
+        tabLayoutAdapter.addFragment(new TabMembersTripFragment(), getResources().getString(R.string.members_tablayout_trip));
         vpTrip.setAdapter(tabLayoutAdapter);
         vpTrip.setOffscreenPageLimit(4);
         tlTrip.setupWithViewPager(vpTrip);
     }
 
-    private void initTabFragment() {
-        tabScheduleTripFragment = new TabScheduleTripFragment();
-        tabMapTripFragment = new TabMapTripFragment();
-        tabDiaryTripFragment = new TabDiaryTripFragment();
-        tabDiscussTripFragment = new TabDiscussTripFragment();
-        tabMembersTripFragment = new TabMembersTripFragment();
-    }
-
     private void loadData() {
-        String url = ApiConstants.getUrl(ApiConstants.API_DETAIL_TRIP);
-        adventureRequest = new AdventureRequest(this, Request.Method.POST, url, getParams(), false);
+        adventureRequest = new AdventureRequest(this, Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_DETAIL_TRIP), getParams(), false);
         getResponse();
     }
 
-    private HashMap getParams() {
+    private Map<String ,String > getParams() {
         String token = SharedPref.getInstance(this).getString(ApiConstants.KEY_TOKEN, "");
-        HashMap<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_ID_TRIP, idTrip);
         return params;
     }
 
     private void getResponse() {
-        final int tabSelectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary);
-        final int tabUnselectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary_background_content);
         adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override
             public void onAdventureResponse(JSONObject response) {
@@ -190,9 +176,9 @@ public class TripActivity extends AppCompatActivity {
                 JSONArray discuss = JsonUtil.getJSONArray(data, ApiConstants.KEY_DISCUSS);
                 List<Status> lstDiscuss = new ArrayList<Status>();
                 JSONObject status;
-                if(discuss != null){
+                if (discuss != null) {
                     int length = discuss.length();
-                    for(int i = 0;i<length;i++){
+                    for (int i = 0; i < length; i++) {
                         status = JsonUtil.getJSONObject(discuss, i);
                         List<ImageContent> imageContents = new ArrayList<>();
                         owner = JsonUtil.getJSONObject(status, ApiConstants.KEY_OWNER);
@@ -273,6 +259,7 @@ public class TripActivity extends AppCompatActivity {
                                         JsonUtil.getString(owner, ApiConstants.KEY_FIRST_NAME, ""),
                                         JsonUtil.getString(owner, ApiConstants.KEY_LAST_NAME, ""),
                                         JsonUtil.getString(owner, ApiConstants.KEY_AVATAR, "")),
+                                JsonUtil.getString(member, ApiConstants.KEY_MESSAGE, null),
                                 JsonUtil.getString(member, ApiConstants.KEY_CREATED_AT, ""),
                                 JsonUtil.getInt(member, ApiConstants.KEY_STATUS, -1)
                         ));
@@ -311,66 +298,8 @@ public class TripActivity extends AppCompatActivity {
                         lstTripDiaries,
                         lstTripMember
                 );
-                tabScheduleTripFragment.setTrip(trip);
-                tabMapTripFragment.setLstPlace(trip.getPlaces());
-                tabDiscussTripFragment.setData(trip.getLstDiscuss(), trip.getId(), trip.getIsMember());
-                tabDiaryTripFragment.setData(trip.getLstTripDiaries(), trip.getId(), trip.getIsMember());
-                tabMembersTripFragment.setData(trip.getMembers(), trip.getOwner().getId());
 
-                if (currentUserId.equals(trip.getOwner().getId())) {
-                    tabRequestMemberTripFragment = new TabRequestMemberTripFragment();
-                    tabLayoutAdapter.addFragment(tabRequestMemberTripFragment, getResources().getString(R.string.request_member_tablayout_trip));
-                    tabLayoutAdapter.notifyDataSetChanged();
-                    vpTrip.setAdapter(tabLayoutAdapter);
-                    vpTrip.setOffscreenPageLimit(5);
-                    if (trip.getRequests() != null && !trip.getRequests().isEmpty()) {
-                        lstRequest = trip.getRequests();
-                        tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
-                                .hasBadge().badgeCount(lstRequest.size()).build();
-                        tlTrip.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                            @Override
-                            public void onTabSelected(TabLayout.Tab tab) {
-                                if (tab.getPosition() == 5 && !lstRequest.isEmpty()) {
-                                    tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
-                                            .hasBadge().iconColor(tabSelectedIconColor).badgeCount(lstRequest.size()).build();
-                                } else {
-                                    tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
-                                            .noBadge().iconColor(tabSelectedIconColor).build();
-                                }
-                            }
-
-                            @Override
-                            public void onTabUnselected(TabLayout.Tab tab) {
-                                if (tab.getPosition() == 5 && !lstRequest.isEmpty()) {
-                                    tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
-                                            .hasBadge().iconColor(tabUnselectedIconColor).badgeCount(lstRequest.size()).build();
-                                } else {
-                                    tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
-                                            .noBadge().iconColor(tabUnselectedIconColor).build();
-                                }
-                            }
-
-                            @Override
-                            public void onTabReselected(TabLayout.Tab tab) {
-
-                            }
-                        });
-                    }
-                    tabRequestMemberTripFragment.setData(lstRequest);
-                    tabRequestMemberTripFragment.setOnStringCallbackListener(new OnStringCallbackListener() {
-                        @Override
-                        public void onStringCallback(String response) {
-                            readRequestMemberResponse(response);
-                            if (lstRequest != null && lstRequest.size() > 0) {
-                                tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
-                                        .hasBadge().iconColor(tabSelectedIconColor).badgeCount(lstRequest.size()).build();
-                            } else {
-                                tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
-                                        .noBadge().iconColor(tabSelectedIconColor).build();
-                            }
-                        }
-                    });
-                }
+                bindingData();
             }
 
             @Override
@@ -386,7 +315,84 @@ public class TripActivity extends AppCompatActivity {
         trip.setAmountMember(JsonUtil.getInt(schedule, ApiConstants.KEY_AMOUNT_MEMBER, -1));
         trip.setAmountRating(JsonUtil.getInt(schedule, ApiConstants.KEY_AMOUNT_RATING, -1));
         trip.setRating(JsonUtil.getDouble(schedule, ApiConstants.KEY_RATING, -1));
-        tabScheduleTripFragment.setTrip(trip);
+        TabScheduleTripFragment tabSchedule = (TabScheduleTripFragment) getSupportFragmentManager().findFragmentByTag(TabLayoutAdapter.makeFragmentName(R.id.vpTrip, 0));
+        tabSchedule.setTrip(trip);
+    }
+
+    private void bindingData(){
+
+        final int tabSelectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary);
+        final int tabUnselectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary_background_content);
+
+        TabScheduleTripFragment tabSchedule = (TabScheduleTripFragment) getSupportFragmentManager().findFragmentByTag(TabLayoutAdapter.makeFragmentName(R.id.vpTrip, 0));
+        TabMapTripFragment tabMap = (TabMapTripFragment) getSupportFragmentManager().findFragmentByTag(TabLayoutAdapter.makeFragmentName(R.id.vpTrip, 1));
+        TabDiscussTripFragment tabDiscuss = (TabDiscussTripFragment) getSupportFragmentManager().findFragmentByTag(TabLayoutAdapter.makeFragmentName(R.id.vpTrip, 2));
+        TabDiaryTripFragment tabDiary = (TabDiaryTripFragment) getSupportFragmentManager().findFragmentByTag(TabLayoutAdapter.makeFragmentName(R.id.vpTrip, 3));
+        TabMembersTripFragment tabMembers = (TabMembersTripFragment) getSupportFragmentManager().findFragmentByTag(TabLayoutAdapter.makeFragmentName(R.id.vpTrip, 4));
+        tabSchedule.setTrip(trip);
+        tabMap.setLstPlace(trip.getPlaces());
+        tabDiscuss.setData(trip.getLstDiscuss(), trip.getId(), trip.getIsMember());
+        tabDiary.setData(trip.getLstTripDiaries(), trip.getId(), trip.getIsMember());
+        tabMembers.setData(trip.getMembers(), trip.getOwner().getId());
+
+        if (currentUserId.equals(trip.getOwner().getId())) {
+            tabLayoutAdapter.addFragment(new TabRequestMemberTripFragment(), getResources().getString(R.string.request_member_tablayout_trip));
+            tabLayoutAdapter.notifyDataSetChanged();
+            //vpTrip.setAdapter(tabLayoutAdapter);
+            vpTrip.setOffscreenPageLimit(5);
+            if (trip.getRequests() != null && !trip.getRequests().isEmpty()) {
+                lstRequest = trip.getRequests();
+                tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
+                        .hasBadge().badgeCount(lstRequest.size()).build();
+                tlTrip.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        if (tab.getPosition() == 5){
+                            if(!lstRequest.isEmpty()) {
+                                tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
+                                        .hasBadge().iconColor(tabSelectedIconColor).badgeCount(lstRequest.size()).build();
+                            } else {
+                                tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
+                                        .noBadge().iconColor(tabSelectedIconColor).build();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+                        if (tab.getPosition() == 5) {
+                            if (!lstRequest.isEmpty()) {
+                                tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
+                                        .hasBadge().iconColor(tabUnselectedIconColor).badgeCount(lstRequest.size()).build();
+                            } else {
+                                tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
+                                        .noBadge().iconColor(tabUnselectedIconColor).build();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+
+                    }
+                });
+            }
+            TabRequestMemberTripFragment tabRequestMember = (TabRequestMemberTripFragment) getSupportFragmentManager().findFragmentByTag(TabLayoutAdapter.makeFragmentName(R.id.vpTrip, 5));
+            tabRequestMember.setData(lstRequest);
+            tabRequestMember.setOnStringCallbackListener(new OnStringCallbackListener() {
+                @Override
+                public void onStringCallback(String response) {
+                    readRequestMemberResponse(response);
+                    if (lstRequest != null && lstRequest.size() > 0) {
+                        tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
+                                .hasBadge().iconColor(tabSelectedIconColor).badgeCount(lstRequest.size()).build();
+                    } else {
+                        tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
+                                .noBadge().iconColor(tabSelectedIconColor).build();
+                    }
+                }
+            });
+        }
     }
 
     @Override

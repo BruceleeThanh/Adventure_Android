@@ -10,6 +10,7 @@ import android.os.Parcelable;
 public class ImageContent implements Parcelable {
     private String url;
     private String description;
+    private String idStatus;
 
     public ImageContent() {
     }
@@ -22,6 +23,12 @@ public class ImageContent implements Parcelable {
     public ImageContent(String url, String description) {
         this.url = url;
         this.description = description;
+    }
+
+    public ImageContent(String url, String description, String idStatus) {
+        this.url = url;
+        this.description = description;
+        this.idStatus = idStatus;
     }
 
     public String getUrl() {
@@ -40,6 +47,14 @@ public class ImageContent implements Parcelable {
         this.description = description;
     }
 
+    public String getIdStatus() {
+        return idStatus;
+    }
+
+    public void setIdStatus(String idStatus) {
+        this.idStatus = idStatus;
+    }
+
 
     @Override
     public int describeContents() {
@@ -50,14 +65,16 @@ public class ImageContent implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.url);
         dest.writeString(this.description);
+        dest.writeString(this.idStatus);
     }
 
     protected ImageContent(Parcel in) {
         this.url = in.readString();
         this.description = in.readString();
+        this.idStatus = in.readString();
     }
 
-    public static final Parcelable.Creator<ImageContent> CREATOR = new Parcelable.Creator<ImageContent>() {
+    public static final Creator<ImageContent> CREATOR = new Creator<ImageContent>() {
         @Override
         public ImageContent createFromParcel(Parcel source) {
             return new ImageContent(source);

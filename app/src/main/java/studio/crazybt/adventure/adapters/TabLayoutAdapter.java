@@ -12,6 +12,10 @@ import java.util.List;
  */
 public class TabLayoutAdapter extends FragmentPagerAdapter {
 
+    public static String makeFragmentName(int viewPagerId, int index) {
+        return "android:switcher:" + viewPagerId + ":" + index;
+    }
+
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
 

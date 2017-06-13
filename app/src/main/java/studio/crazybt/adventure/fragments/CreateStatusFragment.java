@@ -1,5 +1,7 @@
 package studio.crazybt.adventure.fragments;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -7,11 +9,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -53,12 +63,14 @@ import java.util.Map;
 import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnTouch;
 import id.zelory.compressor.Compressor;
 import io.realm.Realm;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.ImageCreateStatusListAdapter;
 import studio.crazybt.adventure.adapters.SpinnerAdapter;
 import studio.crazybt.adventure.helpers.DrawableHelper;
+import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.helpers.ImagePickerHelper;
 import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
@@ -86,13 +98,14 @@ import static android.app.Activity.RESULT_OK;
 
 public class CreateStatusFragment extends Fragment implements View.OnClickListener {
 
-    private View rootView;
-    private List<ImageUpload> imagePick;
-    private List<ImageUpload> imageTake;
-    private ImageCreateStatusListAdapter icslaAdapter;
-    private ArrayList<Image> imageList;
-    private List<ImageContent> imageUploadeds;
+    private View rootView = null;
+    private ArrayList<ImageUpload> imagePick = null;
+    private ImageCreateStatusListAdapter icslaAdapter = null;
+    private ArrayList<Image> imageList = null;
+    private EditImageCreateStatusFragment editImageCreateStatusFragment = null;
 
+    @BindView(R.id.tbCreateStatus)
+    Toolbar tbCreateStatus;
     @BindView(R.id.btnAddEmojicon)
     Button btnAddEmojicon;
     @BindView(R.id.btnAddImage)
@@ -140,14 +153,25 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
             idTrip = bundle.getString(ApiConstants.KEY_ID_TRIP);
         }
         this.initControls();
-        this.initCreator();
         this.initEvents();
+        this.initCreator();
         this.initImageCreateStatusList();
         return rootView;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setHasOptionsMenu(true);
+    }
+
     private void initControls() {
         ButterKnife.bind(this, rootView);
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(tbCreateStatus);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
 
         realm = Realm.getDefaultInstance();
@@ -158,14 +182,32 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
 
         if (idTrip != null) {
             spiPrivacy.setVisibility(View.GONE);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.title_tb_create_discuss_trip));
         } else {
             this.initSpinnerPrivacy();
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_tb_create_status);
         }
+
+        imagePick = new ArrayList<>();
+        imageList = new ArrayList<>();
+        editImageCreateStatusFragment = EditImageCreateStatusFragment.newInstance(imagePick, imageList);
     }
 
     private void initEvents() {
         btnAddImage.setOnClickListener(this);
         btnAddEmojicon.setOnClickListener(this);
+        editImageCreateStatusFragment.setOnFinishListener(new EditImageCreateStatusFragment.OnFinishListener() {
+            @Override
+            public void onFinish(ArrayList<ImageUpload> imageUploads, ArrayList<Image> images) {
+                if(imageUploads != null && images != null) {
+                    imagePick.clear();
+                    imageList.clear();
+                    imagePick.addAll(imageUploads);
+                    imageList.addAll(images);
+                    icslaAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     private void initCreator() {
@@ -186,23 +228,18 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     }
 
     private void initImageCreateStatusList() {
-        imagePick = new ArrayList<>();
-        imageTake = new ArrayList<>();
-        icslaAdapter = new ImageCreateStatusListAdapter(imagePick, getContext());
+        icslaAdapter = new ImageCreateStatusListAdapter(getActivity(), imagePick, imageList, editImageCreateStatusFragment, getContext());
         rvImageCreateStatus.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rvImageCreateStatus.setAdapter(icslaAdapter);
     }
 
-
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btnAddEmojicon:
-                emojiPopup.toggle();
-                break;
-            case R.id.btnAddImage:
-                this.showFileChooser();
-                break;
+        int id = view.getId();
+        if (id == R.id.btnAddEmojicon) {
+            emojiPopup.toggle();
+        } else if (id == R.id.btnAddImage) {
+            this.showFileChooser();
         }
     }
 
@@ -210,12 +247,14 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             imagePick.clear();
-            imageList = data.getParcelableArrayListExtra(ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES);
+            imageList.clear();
+            imageList.addAll(data.<Image>getParcelableArrayListExtra(ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES));
             for (int i = 0; i < imageList.size(); i++) {
-                imagePick.add(new ImageUpload(new Compressor.Builder(getContext())
-                        .setQuality(0).build().compressToBitmap(new File(imageList.get(i).getPath()))));
+                if(imageList.get(i).getPath() != null) {
+                    imagePick.add(new ImageUpload(new Compressor.Builder(getContext())
+                            .setQuality(0).build().compressToBitmap(new File(imageList.get(i).getPath()))));
+                }
             }
-            imagePick.addAll(imageTake);
             icslaAdapter.notifyDataSetChanged();
         }
     }
@@ -261,7 +300,6 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
         if (imagePick.isEmpty()) {
             execPostSingleStatus(false);
         } else {
-            imageUploadeds = new ArrayList<>();
             for (int i = 0; i < imagePick.size(); i++) {
                 uploadImage(i);
             }
@@ -270,7 +308,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
 
     private void uploadImage(int index) {
         adventureFileRequest = new AdventureFileRequest(getContext(), ApiConstants.getUrl(ApiConstants.API_UPLOAD_IMAGE), getUploadImageParams(), getUploadImageByteData(imagePick.get(index)), false);
-        getUploadImageResponse();
+        getUploadImageResponse(index);
     }
 
     private Map<String, String> getUploadImageParams() {
@@ -287,12 +325,12 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
         return params;
     }
 
-    private void getUploadImageResponse() {
+    private void getUploadImageResponse(final int index) {
         adventureFileRequest.setOnAdventureFileRequestListener(new AdventureFileRequest.OnAdventureFileRequestListener() {
             @Override
             public void onAdventureFileResponse(JSONObject response) {
                 JSONObject data = JsonUtil.getJSONObject(response, ApiConstants.DEF_DATA);
-                imageUploadeds.add(new ImageContent(JsonUtil.getString(data, ApiConstants.KEY_LINK, "")));
+                imagePick.get(index).setUrl(JsonUtil.getString(data, ApiConstants.KEY_LINK, ""));
                 countImageUploaded++;
                 if (countImageUploaded == imagePick.size()) {
                     execPostSingleStatus(true);
@@ -362,12 +400,50 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
 
     private String getImageArray() {
         JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < imageUploadeds.size(); i++) {
+        for (int i = 0; i < imagePick.size(); i++) {
             Map<String, String> imageUrl = new HashMap<>();
-            imageUrl.put(ApiConstants.KEY_URL, imageUploadeds.get(i).getUrl());
-            imageUrl.put(ApiConstants.KEY_DESCRIPTION, imageUploadeds.get(i).getDescription());
+            imageUrl.put(ApiConstants.KEY_URL, imagePick.get(i).getUrl());
+            imageUrl.put(ApiConstants.KEY_DESCRIPTION, imagePick.get(i).getDescription());
             jsonArray.put(new JSONObject(imageUrl));
         }
         return jsonArray.toString();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.toolbar_menu_input, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final MenuItem temp = item;
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            getActivity().onBackPressed();
+        }else if(id == R.id.itemPost){
+            item.setEnabled(false);
+            uploadStatus();
+            getRequest().setOnNotifyResponseReceived(new AdventureRequest.OnNotifyResponseReceived() {
+                @Override
+                public void onNotify() {
+                    temp.setEnabled(true);
+                }
+            });
+        }
+        return false;
     }
 }

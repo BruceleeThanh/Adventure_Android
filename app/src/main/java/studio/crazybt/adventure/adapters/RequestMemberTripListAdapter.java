@@ -1,12 +1,15 @@
 package studio.crazybt.adventure.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +31,7 @@ import studio.crazybt.adventure.models.TripMember;
 import studio.crazybt.adventure.services.AdventureRequest;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.SharedPref;
+import studio.crazybt.adventure.utils.StringUtil;
 import studio.crazybt.adventure.utils.ToastUtil;
 
 /**
@@ -91,11 +95,43 @@ public class RequestMemberTripListAdapter extends RecyclerView.Adapter<RequestMe
                         tripMember.getOwner().getFirstName() + " " + tripMember.getOwner().getLastName());
             }
         });
+        if(tripMember.getMessage() == null || tripMember.getMessage().isEmpty()){
+            holder.ivMessage.setVisibility(View.GONE);
+        }else{
+            holder.ivMessage.setVisibility(View.VISIBLE);
+            holder.ivMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    loadDialogReadMessageRequest(tripMember.getMessage());
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
         return lstTripMember == null ? 0 : lstTripMember.size();
+    }
+
+    private void loadDialogReadMessageRequest(String message){
+        LayoutInflater li = LayoutInflater.from(rootContext);
+        View dialogView = li.inflate(R.layout.dialog_read_message_request_trip_member, null);
+        final Dialog dialog = new Dialog(rootContext);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
+
+        TextView tvMessageRequestMember = (TextView) dialog.findViewById(R.id.tvMessageRequestMember);
+        StringUtil.setText(tvMessageRequestMember, message);
+
+        Button btnDone = (Button) dialog.findViewById(R.id.btnDone);
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+        dialog.show();
     }
 
     //region Accept Trip Member
@@ -185,6 +221,8 @@ public class RequestMemberTripListAdapter extends RecyclerView.Adapter<RequestMe
         Button btnRightFriendTemplate;
         @BindView(R.id.tvMutualFriend)
         TextView tvMutualFriend;
+        @BindView(R.id.ivMessage)
+        ImageView ivMessage;
 
         public ViewHolder(View itemView) {
             super(itemView);

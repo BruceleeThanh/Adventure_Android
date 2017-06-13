@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/ivLabelGroupYourCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_group_grey_500_24dp"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginLeft="@dimen/margin_medium"/>
+
+    <TextView
+        android:id="@+id/tvLabelGroupYourCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_group_your_create"
+        android:layout_toRightOf="@+id/ivLabelGroupYourCreate"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium_big"
+        android:textColor="@color/secondary_text"
+        android:textStyle="bold"
+        android:textSize="@dimen/txt_small_medium"/>
+
+    <View
+        android:id="@+id/vLine1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/ivLabelGroupYourCreate"
+        android:layout_marginTop="@dimen/margin_small"
+        android:background="@drawable/partition_gray_line_horizontal"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvGroupYourCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vLine1"
+        android:layout_marginTop="@dimen/margin_small"/>
+
+    <TextView
+        android:id="@+id/tvEmptyGroupYourCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vLine1"
+        android:text="@string/error_group_create_null"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_small"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/ivLabelGroupYourManage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_public_grey_500_24dp"
+        android:layout_below="@+id/rvGroupYourCreate"
+        android:layout_marginTop="@dimen/margin_medium_big"
+        android:layout_marginLeft="@dimen/margin_medium"/>
+
+    <TextView
+        android:id="@+id/tvLabelGroupYourManage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvGroupYourCreate"
+        android:text="@string/label_group_your_manage"
+        android:layout_toRightOf="@+id/ivLabelGroupYourManage"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_big"
+        android:textColor="@color/secondary_text"
+        android:textStyle="bold"
+        android:textSize="@dimen/txt_small_medium"/>
+
+    <View
+        android:id="@+id/vLine2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/ivLabelGroupYourManage"
+        android:layout_marginTop="@dimen/margin_small"
+        android:background="@drawable/partition_gray_line_horizontal"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvGroupYourManage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vLine2"
+        android:layout_marginTop="@dimen/margin_small"/>
+
+    <TextView
+        android:id="@+id/tvEmptyGroupYourManage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vLine2"
+        android:text="@string/error_group_manage_null"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_small"
+        android:visibility="gone"/>
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fabCreateGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/fab_add"
+        fab:fab_colorNormal="@color/fab_color_2"
+        fab:fab_colorPressed="@color/fab_color_2_press"
+        fab:fab_colorRipple="#99FFFFFF"
+        fab:fab_size="normal"/>
+</RelativeLayout>

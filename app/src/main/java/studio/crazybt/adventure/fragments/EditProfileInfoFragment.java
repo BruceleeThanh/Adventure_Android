@@ -6,7 +6,12 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -60,6 +65,8 @@ public class EditProfileInfoFragment extends Fragment {
 
     private View rootView = null;
 
+    @BindView(R.id.tbEditProfile)
+    Toolbar tbEditProfile;
     @BindView(R.id.ivCover)
     ImageView ivCover;
     @BindView(R.id.ivAvatar)
@@ -129,6 +136,12 @@ public class EditProfileInfoFragment extends Fragment {
 
     private void initControls() {
         ButterKnife.bind(this, rootView);
+
+        setHasOptionsMenu(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(tbEditProfile);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.title_edit_profile_info));
+
         realm = Realm.getDefaultInstance();
         token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
         initSpiGender();
@@ -248,7 +261,7 @@ public class EditProfileInfoFragment extends Fragment {
     }
 
     private void bindingData() {
-        PicassoHelper.execPicasso_ProfileImage(getContext(), user.getCover(), ivCover);
+        PicassoHelper.execPicasso_CoverImage(getContext(), user.getCover(), ivCover);
         PicassoHelper.execPicasso_ProfileImage(getContext(), user.getAvatarActual(), ivAvatar);
         setDefaultGender(user.getGender());
         StringUtil.setText(etFirstName, user.getFirstName());
@@ -262,6 +275,7 @@ public class EditProfileInfoFragment extends Fragment {
     }
 
     public void updateProfile(){
+        uploadProfileInfo();
         if(coverUpload != null){
             uploadCoverImage();
         }else{
@@ -275,7 +289,7 @@ public class EditProfileInfoFragment extends Fragment {
             hasAvatarUploaded = true;
         }
         if(hasAllImageUploaded()){
-            uploadProfileInfo();
+            execUploadProfileInfo();
         }
     }
 
@@ -317,7 +331,7 @@ public class EditProfileInfoFragment extends Fragment {
                 hasCoverUploaded = true;
                 user.setCover(coverUploaded.getUrl());
                 if(hasAllImageUploaded()){
-                    uploadProfileInfo();
+                    execUploadProfileInfo();
                 }
             }
 
@@ -326,7 +340,7 @@ public class EditProfileInfoFragment extends Fragment {
                 ToastUtil.showToast(getContext(), errorMsg);
                 hasCoverUploaded = true;
                 if(hasAllImageUploaded()){
-                    uploadProfileInfo();
+                    execUploadProfileInfo();
                 }
             }
         });
@@ -341,7 +355,7 @@ public class EditProfileInfoFragment extends Fragment {
                 hasAvatarActualUploaded = true;
                 user.setAvatarActual(avatarActualUploaded.getUrl());
                 if(hasAllImageUploaded()){
-                    uploadProfileInfo();
+                    execUploadProfileInfo();
                 }
             }
 
@@ -350,7 +364,7 @@ public class EditProfileInfoFragment extends Fragment {
                 ToastUtil.showToast(getContext(), errorMsg);
                 hasAvatarActualUploaded = true;
                 if(hasAllImageUploaded()){
-                    uploadProfileInfo();
+                    execUploadProfileInfo();
                 }
             }
         });
@@ -365,7 +379,7 @@ public class EditProfileInfoFragment extends Fragment {
                 hasAvatarUploaded = true;
                 user.setAvatar(avatarUploaded.getUrl());
                 if(hasAllImageUploaded()){
-                    uploadProfileInfo();
+                    execUploadProfileInfo();
                 }
             }
 
@@ -374,7 +388,7 @@ public class EditProfileInfoFragment extends Fragment {
                 ToastUtil.showToast(getContext(), errorMsg);
                 hasAvatarUploaded = true;
                 if(hasAllImageUploaded()){
-                    uploadProfileInfo();
+                    execUploadProfileInfo();
                 }
             }
         });
@@ -386,8 +400,13 @@ public class EditProfileInfoFragment extends Fragment {
 
     public void uploadProfileInfo() {
         getDataFromView();
-        adventureRequest = new AdventureRequest(getContext(), Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_EDIT_PROFILE_USER), getUploadProfileInfoParams(), false);
+        adventureRequest = new AdventureRequest(Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_EDIT_PROFILE_USER));
         getUploadProfileInfoResponse();
+    }
+
+    public void execUploadProfileInfo(){
+        adventureRequest.setParams(getUploadProfileInfoParams());
+        adventureRequest.execute(getContext(), false);
     }
 
     private Map<String, String> getUploadProfileInfoParams() {
@@ -433,18 +452,47 @@ public class EditProfileInfoFragment extends Fragment {
     }
 
     private void getDataFromView() {
-        user.setFirstName(StringUtil.getText(etFirstName));
-        user.setLastName(StringUtil.getText(etLastName));
-        user.setEmail(StringUtil.getText(etEmail));
-        user.setPhoneNumber(StringUtil.getText(etPhoneNumber));
-        user.setGender(spiGender.getSelectedItemPosition() + 1);
-        user.setAddress(StringUtil.getText(etAddress));
-        user.setReligion(StringUtil.getText(etReligion));
-        user.setIntro(StringUtil.getText(etIntro));
+        if(user == null){
+            user = new User();
+        }else {
+            user.setFirstName(StringUtil.getText(etFirstName));
+            user.setLastName(StringUtil.getText(etLastName));
+            user.setEmail(StringUtil.getText(etEmail));
+            user.setPhoneNumber(StringUtil.getText(etPhoneNumber));
+            user.setGender(spiGender.getSelectedItemPosition() + 1);
+            user.setAddress(StringUtil.getText(etAddress));
+            user.setReligion(StringUtil.getText(etReligion));
+            user.setIntro(StringUtil.getText(etIntro));
+        }
     }
 
     public AdventureRequest getAdventureRequest() {
         return adventureRequest;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_menu_input, menu);
+        MenuItem menuItem = menu.findItem(R.id.itemPost);
+        menuItem.setTitle(getResources().getString(R.string.update_btn_edit_profile_info));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            getActivity().onBackPressed();
+        }else if(id == R.id.itemPost){
+            item.setEnabled(false);
+            updateProfile();
+            getAdventureRequest().setOnNotifyResponseReceived(new AdventureRequest.OnNotifyResponseReceived() {
+                @Override
+                public void onNotify() {
+                    item.setEnabled(true);
+                }
+            });
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

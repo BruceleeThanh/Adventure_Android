@@ -151,17 +151,6 @@
                 android:textColor="@color/primary_text"/>
 
             <TextView
-                android:id="@+id/tvScheduleTripPeriod"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_small"
-                android:layout_marginTop="@dimen/margin_small"
-                android:drawablePadding="@dimen/margin_small"
-                android:gravity="center_vertical"
-                android:hint="@string/period_create_trip"
-                android:textColor="@color/primary_text"/>
-
-            <TextView
                 android:id="@+id/tvScheduleTripDestination"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -170,6 +159,17 @@
                 android:drawablePadding="@dimen/margin_small"
                 android:gravity="center_vertical"
                 android:hint="@string/destination_summary_create_trip"
+                android:textColor="@color/primary_text"/>
+
+            <TextView
+                android:id="@+id/tvScheduleTripPeriod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_small"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:hint="@string/period_create_trip"
                 android:textColor="@color/primary_text"/>
 
             <TextView

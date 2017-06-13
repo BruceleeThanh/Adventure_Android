@@ -1,14 +1,18 @@
 package studio.crazybt.adventure.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,7 +60,8 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private Context rootContext;
     private List<Status> statuses;
-    private PicassoHelper picassoHelper = new PicassoHelper();
+    private String idUser = null;
+    private Dialog dialog;
 
     private final int STATUS = 0;
     private final int TRIP = 1;
@@ -73,6 +78,7 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public NewfeedListAdapter(Context rootContext, List<Status> statuses) {
         this.rootContext = rootContext;
         this.statuses = statuses;
+        idUser = SharedPref.getInstance(rootContext).getString(ApiConstants.KEY_ID, null);
     }
 
     @Override
@@ -146,11 +152,32 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     statusViewHolder.ivPermission.setImageResource(R.drawable.ic_public_96);
                 }
 
+                // Options
+                if(statusItem.getUser().getId().equals(idUser)){
+                    statusViewHolder.ivOptions.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int[] values = new int[2];
+                            v.getLocationOnScreen(values);
+                            loadOptionStatus(true, rootContext, statusItem, values[0], values[1]);
+                        }
+                    });
+                }else {
+                    statusViewHolder.ivOptions.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int[] values = new int[2];
+                            v.getLocationOnScreen(values);
+                            loadOptionStatus(false, rootContext, statusItem, values[0], values[1]);
+                        }
+                    });
+                }
+
                 // Status create time
                 statusViewHolder.tvTimeUpload.setText(ConvertTimeHelper.convertISODateToPrettyTimeStamp(statusItem.getCreatedAt()));
 
                 // Remove content status if not exits
-                if (statusItem.getContent().equals("") || statusItem.getContent() == null) {
+                if (statusItem.getContent() == null || statusItem.getContent().equals("")) {
                     statusViewHolder.etvContentStatus.setVisibility(View.GONE);
                 } else {
                     statusViewHolder.etvContentStatus.setVisibility(View.VISIBLE);
@@ -185,49 +212,49 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     statusViewHolder.llImageStatusUp.setVisibility(View.VISIBLE);
                     statusViewHolder.ivUpItem1.setVisibility(View.VISIBLE);
                     if (countImage == 1) {
-                        picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                        PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
                         statusViewHolder.llImageStatusDown.setVisibility(View.GONE);
                         statusViewHolder.ivUpItem2.setVisibility(View.GONE);
                     } else {
                         statusViewHolder.ivUpItem2.setVisibility(View.VISIBLE);
                         if (countImage == 2) {
-                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
-                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                            PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                            PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
                             statusViewHolder.llImageStatusDown.setVisibility(View.GONE);
                         } else {
                             statusViewHolder.llImageStatusDown.setVisibility(View.VISIBLE);
                             statusViewHolder.ivDownItem1.setVisibility(View.VISIBLE);
                             if (countImage == 3) {
-                                picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
-                                picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
-                                picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
+                                PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                                PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                                PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
                                 statusViewHolder.ivDownItem2.setVisibility(View.GONE);
                                 statusViewHolder.rlDownItem3.setVisibility(View.GONE);
                             } else {
                                 statusViewHolder.ivDownItem2.setVisibility(View.VISIBLE);
                                 if (countImage == 4) {
-                                    picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
-                                    picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
-                                    picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
-                                    picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
+                                    PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                                    PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                                    PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
+                                    PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
                                     statusViewHolder.rlDownItem3.setVisibility(View.GONE);
                                 } else {
                                     statusViewHolder.rlDownItem3.setVisibility(View.VISIBLE);
                                     statusViewHolder.ivDownItem3.setVisibility(View.VISIBLE);
                                     if (countImage == 5) {
                                         statusViewHolder.tvDownItem3.setVisibility(View.GONE);
-                                        picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
-                                        picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
-                                        picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
-                                        picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
-                                        picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(4).getUrl(), statusViewHolder.ivDownItem3);
+                                        PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                                        PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                                        PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
+                                        PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
+                                        PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(4).getUrl(), statusViewHolder.ivDownItem3);
                                     } else {
                                         if (countImage > 5) {
-                                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
-                                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
-                                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
-                                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
-                                            picassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(4).getUrl(), statusViewHolder.ivDownItem3);
+                                            PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(0).getUrl(), statusViewHolder.ivUpItem1);
+                                            PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(1).getUrl(), statusViewHolder.ivUpItem2);
+                                            PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(2).getUrl(), statusViewHolder.ivDownItem1);
+                                            PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(3).getUrl(), statusViewHolder.ivDownItem2);
+                                            PicassoHelper.execPicasso(rootContext, statusItem.getImageContents().get(4).getUrl(), statusViewHolder.ivDownItem3);
                                             statusViewHolder.tvDownItem3.setVisibility(View.VISIBLE);
                                             statusViewHolder.tvDownItem3.setText("+" + (countImage - 5));
                                         }
@@ -344,13 +371,6 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         rootContext.startActivity(intent);
                     }
                 });
-                tripViewHolder.tvTripDetail.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(rootContext, TripActivity.class);
-                        rootContext.startActivity(intent);
-                    }
-                });
                 tripViewHolder.tvProfileName.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -378,6 +398,43 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return statuses == null ? 0 : statuses.size();
     }
 
+    private void loadOptionStatus(boolean isOwner, Context context, Status status, int x, int y) {
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_option_status);
+        dialog.setCanceledOnTouchOutside(true);
+        WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
+        wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+        wmlp.x = x;
+        wmlp.y = y;
+        TextView tvCopyStatus = (TextView) dialog.findViewById(R.id.tvCopyStatus);
+        tvCopyStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        TextView tvEditStatus = (TextView) dialog.findViewById(R.id.tvEditStatus);
+        tvEditStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        TextView tvDeleteStatus = (TextView) dialog.findViewById(R.id.tvDeleteStatus);
+        tvDeleteStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        if(!isOwner){
+            tvEditStatus.setVisibility(View.GONE);
+            tvDeleteStatus.setVisibility(View.GONE);
+        }
+        dialog.show();
+    }
+
     public class StatusViewHolder extends RecyclerView.ViewHolder {
 
         public View itemView;
@@ -391,6 +448,8 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvTimeUpload;
         @BindView(R.id.ivPermission)
         ImageView ivPermission;
+        @BindView(R.id.ivOptions)
+        ImageView ivOptions;
         @BindView(R.id.etvContentStatus)
         EmojiTextView etvContentStatus;
         @BindView(R.id.tvCountLike)
@@ -470,8 +529,6 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvTripInterested;
         @BindView(R.id.tvTripRate)
         TextView tvTripRate;
-        @BindView(R.id.tvTripDetail)
-        TextView tvTripDetail;
         @BindDimen(R.dimen.item_icon_size_small)
         float itemSizeSmall;
         @BindDimen(R.dimen.five_star_icon_width)

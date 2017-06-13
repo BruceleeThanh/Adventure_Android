@@ -208,7 +208,11 @@ public class User extends RealmObject implements Parcelable {
     }
 
     public String getISOBirthday(){
-        return ConvertTimeHelper.convertDateToISOFormat(birthday);
+        if(birthday != null){
+            return ConvertTimeHelper.convertDateToISOFormat(birthday);
+        }else{
+            return null;
+        }
     }
 
     public String getShortBirthday() {

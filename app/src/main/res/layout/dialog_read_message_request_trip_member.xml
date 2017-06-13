@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/margin_medium">
+
+    <TextView
+        android:id="@+id/tvMessageRequestMember"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:textSize="@dimen/txt_small_medium"
+        android:gravity="top"
+        android:textColor="@color/primary_text"/>
+
+    <Button
+        android:id="@+id/btnDone"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/btn_height_small"
+        android:layout_below="@id/tvMessageRequestMember"
+        android:layout_marginTop="@dimen/margin_big"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/selector_green_btn"
+        android:text="OK"
+        android:textAllCaps="false"
+        android:textColor="@color/white"/>
+
+</RelativeLayout>

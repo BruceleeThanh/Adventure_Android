@@ -128,7 +128,7 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
             cbLike.setChecked(true);
             cbLike.setTextColor(getResources().getColor(R.color.primary));
         }
-        tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(status.getCreatedAt()));
+        tvTimeUpload.setText(ConvertTimeHelper.convertISODateToPrettyTimeStamp(status.getCreatedAt()));
         tvCountLike.setText(String.valueOf(status.getAmountLike()));
         tvCountComment.setText(String.valueOf(status.getAmountComment()));
         if(status.getIsComment() == 1){

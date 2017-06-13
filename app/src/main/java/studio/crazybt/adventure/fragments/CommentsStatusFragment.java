@@ -298,7 +298,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
         tvProfileName.setText(profileName);
 
         TextView tvTimeUpload = (TextView) dialog.findViewById(R.id.tvTimeUpload);
-        tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(commentStatusList.get(posItem).getCreatedAt()));
+        tvTimeUpload.setText(ConvertTimeHelper.convertISODateToPrettyTimeStamp(commentStatusList.get(posItem).getCreatedAt()));
 
         EmojiTextView etvContentComment = (EmojiTextView) dialog.findViewById(R.id.etvContentComment);
         etvContentComment.setText(commentStatusList.get(posItem).getContent());

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/ivLabelGroupYourRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:src="@drawable/ic_person_add_gray_24dp"/>
+
+    <TextView
+        android:id="@+id/tvLabelGroupYourRequest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium_big"
+        android:layout_toRightOf="@+id/ivLabelGroupYourRequest"
+        android:text="@string/label_group_your_request"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/txt_small_medium"
+        android:textStyle="bold"/>
+
+    <View
+        android:id="@+id/vLine1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/ivLabelGroupYourRequest"
+        android:layout_marginTop="@dimen/margin_small"
+        android:background="@drawable/partition_gray_line_horizontal"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvGroupYourRequest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vLine1"
+        android:layout_marginTop="@dimen/margin_small"/>
+
+    <TextView
+        android:id="@+id/tvEmptyGroupYourRequest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vLine1"
+        android:layout_marginTop="@dimen/margin_small"
+        android:gravity="center"
+        android:text="@string/error_group_request_null"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/ivLabelGroupSuggestions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvGroupYourRequest"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium_big"
+        android:src="@drawable/ic_public_grey_500_24dp"/>
+
+    <TextView
+        android:id="@+id/tvLabelGroupYourManage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvGroupYourRequest"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_big"
+        android:layout_toRightOf="@+id/ivLabelGroupSuggestions"
+        android:text="@string/label_group_suggestions"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/txt_small_medium"
+        android:textStyle="bold"/>
+
+    <View
+        android:id="@+id/vLine2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/ivLabelGroupSuggestions"
+        android:layout_marginTop="@dimen/margin_small"
+        android:background="@drawable/partition_gray_line_horizontal"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvGroupSuggestions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/vLine2"
+        android:layout_marginTop="@dimen/margin_small"/>
+
+    <TextView
+        android:id="@+id/tvEmptyGroupSuggestions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vLine2"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/margin_small"
+        android:gravity="center"
+        android:text="@string/error_group_suggest_null"
+        android:visibility="gone"/>
+</RelativeLayout>

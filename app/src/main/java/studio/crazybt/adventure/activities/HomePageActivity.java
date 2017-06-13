@@ -1,6 +1,8 @@
 package studio.crazybt.adventure.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.opengl.ETC1;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -10,10 +12,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,6 +46,8 @@ import studio.crazybt.adventure.utils.BadgeTabLayout;
 import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.RealmUtils;
 import studio.crazybt.adventure.utils.SharedPref;
+import studio.crazybt.adventure.utils.StringUtil;
+import studio.crazybt.adventure.utils.ToastUtil;
 
 public class HomePageActivity extends AppCompatActivity{
 
@@ -82,7 +90,7 @@ public class HomePageActivity extends AppCompatActivity{
         tvUserName = (TextView) navHeader.findViewById(R.id.tvUserName);
 
         User storageUser = realm.where(User.class).equalTo("id", SharedPref.getInstance(this).getString(ApiConstants.KEY_ID, "")).findFirst();
-        PicassoHelper.execPicasso_ProfileImage(getBaseContext(), storageUser.getCover(), ivUserCover);
+        PicassoHelper.execPicasso_CoverImage(getBaseContext(), storageUser.getCover(), ivUserCover);
         PicassoHelper.execPicasso_ProfileImage(getBaseContext(), storageUser.getAvatar(), ivUserAvatar);
         final String userName = storageUser.getFirstName() + " " + storageUser.getLastName();
         tvUserName.setText(userName);
@@ -107,6 +115,9 @@ public class HomePageActivity extends AppCompatActivity{
                         Intent intent1 = new Intent(HomePageActivity.this, SplashActivity.class);
                         startActivity(intent1);
                         finish();
+                        return true;
+                    case R.id.itemGroup:
+                        startActivity(GroupActivity.newInstance(getBaseContext()));
                         return true;
                     default:
                         Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();

@@ -62,6 +62,10 @@ public class AdventureRequest {
         }
     };
 
+    public AdventureRequest (){
+
+    }
+
     public AdventureRequest(Context context, int method, String url, Map<String, String> params, boolean hasCache) {
         customRequest = new CustomRequest(method, url, params, response, error);
         MySingleton.getInstance(context).addToRequestQueue(customRequest, hasCache);
@@ -83,6 +87,9 @@ public class AdventureRequest {
         customRequest.setParams(params);
     }
 
+    public void setUrl(String url){
+        customRequest.setUrl(url);
+    }
 
     private OnAdventureRequestListener onAdventureRequestListener;
     public OnNotifyResponseReceived onNotifyResponseReceived;

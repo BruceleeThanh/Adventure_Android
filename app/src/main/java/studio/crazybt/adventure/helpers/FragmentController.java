@@ -15,69 +15,69 @@ import studio.crazybt.adventure.R;
  */
 public class FragmentController {
 
-//    public void addFragment(int id, Object obj){
-//        fragmentTransaction.replace(id, (Fragment) obj, obj.getClass().getName());
+//    public void addFragment(int layoutParent, Object obj){
+//        fragmentTransaction.replace(layoutParent, (Fragment) obj, obj.getClass().getName());
 //    }
-    public static void replaceFragment(FragmentActivity fragmentActivity, int id, Object obj){
+    public static void replaceFragment(FragmentActivity fragmentActivity, int layoutParent, Object obj){
         FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(id, (Fragment) obj, obj.getClass().getName());
+        fragmentTransaction.replace(layoutParent, (Fragment) obj, obj.getClass().getName());
         fragmentTransaction.commit();
     }
 
-    public static void replaceFragment_Animation(FragmentActivity fragmentActivity, int id, Object obj){
+    public static void replaceFragment_Animation(FragmentActivity fragmentActivity, int layoutParent, Object obj){
         FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-        fragmentTransaction.replace(id, (Fragment) obj, obj.getClass().getName());
+        fragmentTransaction.replace(layoutParent, (Fragment) obj, obj.getClass().getName());
         fragmentTransaction.commit();
     }
 
-//    public void addFragment_BackStack(int id, Object obj){
-//        fragmentTransaction.replace(id, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
+//    public void addFragment_BackStack(int layoutParent, Object obj){
+//        fragmentTransaction.replace(layoutParent, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
 //    }
-    public static void replaceFragment_BackStack(FragmentActivity fragmentActivity, int id, Object obj){
+    public static void replaceFragment_BackStack(FragmentActivity fragmentActivity, int layoutParent, Object obj){
         FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(id, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
+        fragmentTransaction.replace(layoutParent, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
         fragmentTransaction.commit();
     }
 
-    public static void replaceFragment_BackStack_Animation(FragmentActivity fragmentActivity, int id, Object obj){
+    public static void replaceFragment_BackStack_Animation(FragmentActivity fragmentActivity, int layoutParent, Object obj){
         FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-        fragmentTransaction.replace(id, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
+        fragmentTransaction.replace(layoutParent, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
         fragmentTransaction.commit();
     }
 
-    public static void addFragment(FragmentActivity fragmentActivity, int id, Object obj){
+    public static void addFragment(FragmentActivity fragmentActivity, int layoutParent, Object obj){
         FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(id, (Fragment) obj, obj.getClass().getName());
+        fragmentTransaction.add(layoutParent, (Fragment) obj, obj.getClass().getName());
         fragmentTransaction.commit();
     }
 
-    public static void addFragment_BackStack(FragmentActivity fragmentActivity, int id, Object obj){
+    public static void addFragment_BackStack(FragmentActivity fragmentActivity, int layoutParent, Object obj){
         FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(id, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
+        fragmentTransaction.add(layoutParent, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
         fragmentTransaction.commit();
     }
 
-    public static void addFragment_Animation(FragmentActivity fragmentActivity, int id, Object obj){
-        FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-        fragmentTransaction.add(id, (Fragment) obj, obj.getClass().getName());
-        fragmentTransaction.commit();
-    }
-
-    public static void addFragment_BackStack_Animation(FragmentActivity fragmentActivity, int id, Object obj){
+    public static void addFragment_Animation(FragmentActivity fragmentActivity, int layoutParent, Object obj){
         FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-        fragmentTransaction.add(id, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
+        fragmentTransaction.add(layoutParent, (Fragment) obj, obj.getClass().getName());
+        fragmentTransaction.commit();
+    }
+
+    public static void addFragment_BackStack_Animation(FragmentActivity fragmentActivity, int layoutParent, Object obj){
+        FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        fragmentTransaction.add(layoutParent, (Fragment) obj, obj.getClass().getName()).addToBackStack(obj.getClass().getName());
         fragmentTransaction.commit();
     }
 

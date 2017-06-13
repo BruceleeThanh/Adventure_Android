@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_medium">
+
+    <TextView
+        android:id="@+id/tvLabelApiRoot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="API ROOT: "
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/etApiRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLabelApiRoot"/>
+
+    <TextView
+        android:id="@+id/tvLabelApiRootImages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="API ROOT IMAGES: "
+        android:textStyle="bold"
+        android:layout_below="@+id/etApiRoot"/>
+
+    <EditText
+        android:id="@+id/etApiRootImages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLabelApiRootImages"/>
+
+    <Button
+        android:id="@+id/btnCancelEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/btn_height_small"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/etApiRootImages"
+        android:layout_marginLeft="@dimen/margin_big"
+        android:layout_marginRight="@dimen/margin_big"
+        android:layout_marginTop="@dimen/margin_big"
+        android:background="@drawable/selector_gray_white_btn"
+        android:text="@string/cancel_dialog"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btnConfirmEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/btn_height_small"
+        android:layout_below="@id/etApiRootImages"
+        android:layout_marginTop="@dimen/margin_big"
+        android:layout_toLeftOf="@id/btnCancelEdit"
+        android:background="@drawable/selector_green_btn"
+        android:text="@string/update_dialog"
+        android:textAllCaps="false"
+        android:textColor="@color/white"/>
+
+</RelativeLayout>

@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.models.ImageContent;
+import studio.crazybt.adventure.utils.StringUtil;
 
 /**
  * Created by Brucelee Thanh on 24/09/2016.
@@ -24,7 +25,6 @@ public class ImageStatusDetailListAdapter extends RecyclerView.Adapter<ImageStat
 
     private Context rootContext;
     private List<ImageContent> imageContents;
-    private PicassoHelper picassoHelper = new PicassoHelper();
 
     public ImageStatusDetailListAdapter(Context rootContext, List<ImageContent> imageContents) {
         this.rootContext = rootContext;
@@ -34,18 +34,17 @@ public class ImageStatusDetailListAdapter extends RecyclerView.Adapter<ImageStat
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_image_status_detail, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        picassoHelper.execPicasso(rootContext, imageContents.get(position).getUrl(), holder.ivImageStatusDetail);
-        if (imageContents.get(position).getDescription().equals("") || imageContents.get(position).getDescription() == null){
+        PicassoHelper.execPicasso(rootContext, imageContents.get(position).getUrl(), holder.ivImageStatusDetail);
+        if (imageContents.get(position).getDescription() == null || imageContents.get(position).getDescription().equals("")){
             holder.tvDescriptionImageStatusDetail.setVisibility(View.GONE);
         }else{
             holder.tvDescriptionImageStatusDetail.setVisibility(View.VISIBLE);
-            holder.tvDescriptionImageStatusDetail.setText(imageContents.get(position).getDescription());
+            StringUtil.setText_Gone(holder.tvDescriptionImageStatusDetail, imageContents.get(position).getDescription());
         }
     }
 

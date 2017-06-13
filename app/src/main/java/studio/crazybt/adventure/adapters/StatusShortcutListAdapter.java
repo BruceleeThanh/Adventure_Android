@@ -106,6 +106,8 @@ public class StatusShortcutListAdapter extends RecyclerView.Adapter<StatusShortc
             holder.ivPermission.setImageResource(R.drawable.ic_friend_96);
         } else if (status.getPermission() == 3) {
             holder.ivPermission.setImageResource(R.drawable.ic_public_96);
+        } else{
+            holder.ivPermission.setVisibility(View.GONE);
         }
 
         // Status create time

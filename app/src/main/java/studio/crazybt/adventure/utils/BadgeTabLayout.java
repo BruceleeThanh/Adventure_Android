@@ -46,6 +46,11 @@ public class BadgeTabLayout extends TabLayout {
         return with(tab, title);
     }
 
+    public Builder with(int position, int titleResId){
+        Tab tab = getTabAt(position);
+        return with(tab, getResources().getString(titleResId));
+    }
+
     /**
      * Apply a builder for this tab (icon).
      *

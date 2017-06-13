@@ -15,6 +15,7 @@ public class TripMember implements Parcelable {
     private String idTrip;
     @Nullable
     private User owner;
+    private String message;
     @Nullable
     private String createdAt;
 
@@ -23,10 +24,11 @@ public class TripMember implements Parcelable {
     public TripMember() {
     }
 
-    public TripMember(String id, @Nullable String idTrip, @Nullable User owner, @Nullable String createdAt, int status) {
+    public TripMember(String id, String idTrip, User owner, String message, String createdAt, int status) {
         this.id = id;
         this.idTrip = idTrip;
         this.owner = owner;
+        this.message = message;
         this.createdAt = createdAt;
         this.status = status;
     }
@@ -57,6 +59,14 @@ public class TripMember implements Parcelable {
         this.owner = owner;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     @Nullable
     public String getCreatedAt() {
         return createdAt;
@@ -85,6 +95,7 @@ public class TripMember implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.idTrip);
         dest.writeParcelable(this.owner, flags);
+        dest.writeString(this.message);
         dest.writeString(this.createdAt);
         dest.writeInt(this.status);
     }
@@ -93,11 +104,12 @@ public class TripMember implements Parcelable {
         this.id = in.readString();
         this.idTrip = in.readString();
         this.owner = in.readParcelable(User.class.getClassLoader());
+        this.message = in.readString();
         this.createdAt = in.readString();
         this.status = in.readInt();
     }
 
-    public static final Parcelable.Creator<TripMember> CREATOR = new Parcelable.Creator<TripMember>() {
+    public static final Creator<TripMember> CREATOR = new Creator<TripMember>() {
         @Override
         public TripMember createFromParcel(Parcel source) {
             return new TripMember(source);

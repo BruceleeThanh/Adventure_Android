@@ -173,6 +173,9 @@ public class TabMapTripFragment extends Fragment {
     }
 
     private void initData() {
+
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
         if (map != null) {
             if (!lstPlace.isEmpty()) {
                 if (lstPlace.size() == 1) {
@@ -192,7 +195,7 @@ public class TabMapTripFragment extends Fragment {
                     LatLngBounds latLngBounds = new LatLngBounds.Builder()
                             .include(latLng1).include(latLng2).build();
                     int margin = getResources().getDimensionPixelSize(R.dimen.margin_big);
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(latLngBounds, margin);
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(latLngBounds, width, height, margin);
                     map.animateCamera(cameraUpdate);
                 }
                 MarkerOptions marker;

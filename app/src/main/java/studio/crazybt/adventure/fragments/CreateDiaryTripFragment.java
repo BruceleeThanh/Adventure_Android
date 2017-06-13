@@ -5,11 +5,16 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -73,6 +78,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class CreateDiaryTripFragment extends Fragment implements View.OnClickListener {
 
+    @BindView(R.id.tbCreateDiaryTrip)
+    Toolbar tbCreateDiaryTrip;
     @BindView(R.id.ivProfileImage)
     ImageView ivProfileImage;
     @BindView(R.id.tvProfileName)
@@ -96,9 +103,10 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
 
     private ArrayList<Image> lstImages;
     private final int PICK_IMAGE_REQUEST = 200;
-    private List<ImageUpload> lstImageUploads = null;
-    private List<ImageContent> lstImageUploadeds = null;
+    private ArrayList<ImageUpload> lstImageUploads = null;
+    private ArrayList<ImageContent> lstImageUploadeds = null;
     private ImageCreateStatusListAdapter icslaAdapter;
+    private EditImageCreateStatusFragment editImageCreateStatusFragment = null;
 
     private List<DetailDiary> lstDetailDiaries = null;
     private CreateDetailDiaryListAdapter cddlaAdapter;
@@ -128,8 +136,15 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
 
     private void initControls() {
         ButterKnife.bind(this, rootView);
+
+        setHasOptionsMenu(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(tbCreateDiaryTrip);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_tb_create_diary_trip);
+
         lstImageUploads = new ArrayList<>();
         lstDetailDiaries = new ArrayList<>();
+        editImageCreateStatusFragment = EditImageCreateStatusFragment.newInstance(lstImageUploads, lstImages);
         token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
         realm = Realm.getDefaultInstance();
     }
@@ -158,7 +173,7 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
     }
 
     private void initImagesList() {
-        icslaAdapter = new ImageCreateStatusListAdapter(lstImageUploads, getContext());
+        icslaAdapter = new ImageCreateStatusListAdapter(getActivity(), lstImageUploads, lstImages, editImageCreateStatusFragment, getContext());
         rvImageDiaryTrip.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rvImageDiaryTrip.setAdapter(icslaAdapter);
     }
@@ -343,5 +358,30 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
             }
         }
         return jsonArray == null ? null : jsonArray.toString();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.toolbar_menu_input, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            getActivity().onBackPressed();
+        }else if(id == R.id.itemPost){
+            uploadDiary();
+            if (getAdventureRequest() != null) {
+                item.setEnabled(false);
+                getAdventureRequest().setOnNotifyResponseReceived(new AdventureRequest.OnNotifyResponseReceived() {
+                    @Override
+                    public void onNotify() {
+                        item.setEnabled(true);
+                    }
+                });
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

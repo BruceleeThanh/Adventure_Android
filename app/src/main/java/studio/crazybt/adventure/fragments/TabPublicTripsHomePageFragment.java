@@ -25,6 +25,7 @@ import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.adapters.TripShortcutListAdapter;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.listeners.OnLoadMoreListener;
+import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.Route;
 import studio.crazybt.adventure.models.Trip;
 import studio.crazybt.adventure.models.User;
@@ -154,10 +155,13 @@ public class TabPublicTripsHomePageFragment extends Fragment implements SwipeRef
                     JSONObject item = JsonUtil.getJSONObject(data, i);
                     JSONObject owner = JsonUtil.getJSONObject(item, ApiConstants.KEY_OWNER);
                     JSONArray images = JsonUtil.getJSONArray(item, ApiConstants.KEY_IMAGES);
-                    List<String> lstImages = new ArrayList<>();
-                    if (images != null) {
+                    List<ImageContent> imageContents = new ArrayList<>();
+                    if (images != null && images.length() > 0) {
                         for (int j = 0; j < images.length(); j++) {
-                            lstImages.add(JsonUtil.getString(images, j, ""));
+                            JSONObject image = JsonUtil.getJSONObject(images, j);
+                            imageContents.add(new ImageContent(
+                                    JsonUtil.getString(image, ApiConstants.KEY_URL, ""),
+                                    JsonUtil.getString(image, ApiConstants.KEY_DESCRIPTION, "")));
                         }
                     }
                     lstTrip.add(new Trip(
@@ -172,7 +176,7 @@ public class TabPublicTripsHomePageFragment extends Fragment implements SwipeRef
                             JsonUtil.getString(item, ApiConstants.KEY_START_POSITION, ""),
                             JsonUtil.getString(item, ApiConstants.KEY_DESTINATION_SUMMARY, ""),
                             JsonUtil.getString(item, ApiConstants.KEY_EXPENSE, ""),
-                            lstImages,
+                            imageContents,
                             JsonUtil.getInt(item, ApiConstants.KEY_AMOUNT_PEOPLE, 1),
                             JsonUtil.getInt(item, ApiConstants.KEY_AMOUNT_MEMBER, 1),
                             JsonUtil.getInt(item, ApiConstants.KEY_AMOUNT_INTERESTED, 0),

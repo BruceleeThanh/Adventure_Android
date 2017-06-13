@@ -8,6 +8,13 @@ import android.text.TextWatcher;
  */
 
 public abstract class OnTextWatcher implements TextWatcher{
+
+    private int position;
+
+    public void updatePosition(int position) {
+        this.position = position;
+    }
+
     @Override
     public void afterTextChanged(Editable s) {
 

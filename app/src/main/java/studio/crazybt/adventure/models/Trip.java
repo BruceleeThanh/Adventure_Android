@@ -46,7 +46,7 @@ public class Trip implements Parcelable {
     @Nullable
     private List<Route> routes;
     @Nullable
-    private List<String> images;
+    private List<ImageContent> images;
     @Nullable
     private String prepare;
     @Nullable
@@ -77,7 +77,7 @@ public class Trip implements Parcelable {
     }
 
     public Trip(String id, User owner, String name, @Nullable String startAt, @Nullable String endAt, @Nullable String startPosition,
-                @Nullable String destinationSummary, @Nullable String expense, @Nullable List<String> images, int amountPeople,
+                @Nullable String destinationSummary, @Nullable String expense, @Nullable List<ImageContent> images, int amountPeople,
                 int amountMember, int amountInterested, int amountRating, double rating, @Nullable String createdAt, int permission) {
         this.id = id;
         this.owner = owner;
@@ -100,7 +100,7 @@ public class Trip implements Parcelable {
     public Trip(String id, @Nullable String idGroup, User owner, String name, @Nullable String description, @Nullable String startAt,
                 @Nullable String endAt, @Nullable String startPosition, @Nullable String destinationSummary, @Nullable String expense,
                 int amountPeople, int amountMember, @Nullable List<Integer> vehicles, @Nullable List<Route> routes,
-                @Nullable List<String> images, @Nullable String prepare, @Nullable String note, @Nullable String createdAt,
+                @Nullable List<ImageContent> images, @Nullable String prepare, @Nullable String note, @Nullable String createdAt,
                 int amountInterested, int amountRating, double rating, int permission, int type, @Nullable List<Rating> ratings,
                 @Nullable List<Place> places, int isMember, int isInterested, @Nullable List<Status> lstDiscuss,
                 @Nullable List<TripDiary> lstTripDiaries, @Nullable List<TripMember> tripMembers) {
@@ -282,11 +282,11 @@ public class Trip implements Parcelable {
     }
 
     @Nullable
-    public List<String> getImages() {
+    public List<ImageContent> getImages() {
         return images;
     }
 
-    public void setImages(@Nullable List<String> images) {
+    public void setImages(@Nullable List<ImageContent> images) {
         this.images = images;
     }
 
@@ -427,6 +427,7 @@ public class Trip implements Parcelable {
         return result;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -451,7 +452,7 @@ public class Trip implements Parcelable {
         dest.writeDouble(this.rating);
         dest.writeList(this.vehicles);
         dest.writeTypedList(this.routes);
-        dest.writeStringList(this.images);
+        dest.writeTypedList(this.images);
         dest.writeString(this.prepare);
         dest.writeString(this.note);
         dest.writeString(this.createdAt);
@@ -485,7 +486,7 @@ public class Trip implements Parcelable {
         this.vehicles = new ArrayList<Integer>();
         in.readList(this.vehicles, Integer.class.getClassLoader());
         this.routes = in.createTypedArrayList(Route.CREATOR);
-        this.images = in.createStringArrayList();
+        this.images = in.createTypedArrayList(ImageContent.CREATOR);
         this.prepare = in.readString();
         this.note = in.readString();
         this.createdAt = in.readString();

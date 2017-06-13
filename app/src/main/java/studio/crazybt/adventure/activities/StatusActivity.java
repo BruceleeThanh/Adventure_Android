@@ -1,8 +1,8 @@
 package studio.crazybt.adventure.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.android.volley.Request;
@@ -24,6 +24,7 @@ import studio.crazybt.adventure.fragments.LikesStatusFragment;
 import studio.crazybt.adventure.fragments.StatusDetailFragment;
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.Notification;
 import studio.crazybt.adventure.models.Status;
@@ -41,13 +42,20 @@ public class StatusActivity extends SwipeBackActivity {
     Status status;
     Realm realm;
 
+    public static Intent newInstance(Context context, int typeShow, Status status){
+        Intent intent = new Intent(context, StatusActivity.class);
+        intent.putExtra(CommonConstants.KEY_TYPE_SHOW, typeShow);
+        intent.putExtra(CommonConstants.KEY_DATA, status);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
         swipeBackLayout = getSwipeBackLayout();
         Intent intent = getIntent();
-        typeShow = intent.getIntExtra("TYPE_SHOW", typeShow);
+        typeShow = intent.getIntExtra(CommonConstants.KEY_TYPE_SHOW, typeShow);
         if (intent.hasExtra("data")) {
             status = intent.getParcelableExtra("data");
             this.remoteShow(typeShow);
@@ -62,20 +70,13 @@ public class StatusActivity extends SwipeBackActivity {
         }
     }
 
-    private void remoteShow(int typeShow){
-        switch (typeShow) {
-            case 1:
-                this.showStatusDetail();
-                break;
-            case 2:
-                this.showStatusLikes();
-                break;
-            case 3:
-                this.showStatusComments();
-                break;
-            default:
-                break;
-        }
+    private void remoteShow(int typeShow) {
+        if (typeShow == CommonConstants.ACT_STATUS_DETAIL)
+            this.showStatusDetail();
+        else if (typeShow == CommonConstants.ACT_STATUS_LIKE)
+            this.showStatusLikes();
+        else if (typeShow == CommonConstants.ACT_STATUS_COMMENT)
+            this.showStatusComments();
     }
 
     @Override

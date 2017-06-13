@@ -3,6 +3,7 @@ package studio.crazybt.adventure.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.database.DatabaseUtils;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -260,6 +261,14 @@ public class StringUtil {
     public static void setText(TextView textView, String text){
         if(text == null || text.isEmpty() || text.equals("null")){
             textView.setText("");
+        }else{
+            textView.setText(text);
+        }
+    }
+
+    public static void setText_Gone(TextView textView, String text){
+        if(text == null || text.isEmpty() || text.equals("null")){
+            textView.setVisibility(View.GONE);
         }else{
             textView.setText(text);
         }

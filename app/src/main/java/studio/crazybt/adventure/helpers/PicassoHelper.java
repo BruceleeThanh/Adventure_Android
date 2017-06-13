@@ -35,12 +35,30 @@ public class PicassoHelper {
         }
     }
 
+    public static void execPicasso_KeepDefault(Context context, String url, ImageView imageView) {
+        if (url != null && url.isEmpty()) {
+            url = ApiConstants.getImageUrl(url);
+            Picasso.with(context).load(url).placeholder(R.drawable.img_loading).into(imageView);
+        }else{
+            imageView.setImageDrawable(imageView.getDrawable());
+        }
+    }
+
     public static void execPicasso_ProfileImage(Context context, String url, ImageView imageView) {
         if (url != null && !url.isEmpty()) {
             url = ApiConstants.getImageUrl(url);
             Picasso.with(context).load(url).placeholder(R.drawable.img_loading).into(imageView);
         }else{
             imageView.setImageResource(R.drawable.img_profile);
+        }
+    }
+
+    public static void execPicasso_CoverImage(Context context, String url, ImageView imageView) {
+        if (url != null && !url.isEmpty()) {
+            url = ApiConstants.getImageUrl(url);
+            Picasso.with(context).load(url).placeholder(R.drawable.img_loading).into(imageView);
+        }else{
+            imageView.setImageResource(R.drawable.img_cover);
         }
     }
 

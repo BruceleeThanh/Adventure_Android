@@ -1,5 +1,6 @@
 package studio.crazybt.adventure.fragments;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,6 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,6 +24,7 @@ import com.android.volley.Request;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
@@ -32,6 +37,7 @@ import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.models.Trip;
 import studio.crazybt.adventure.services.AdventureRequest;
 import studio.crazybt.adventure.utils.JsonUtil;
+import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
 import studio.crazybt.adventure.utils.StringUtil;
 import studio.crazybt.adventure.utils.ToastUtil;
@@ -92,17 +98,22 @@ public class TabScheduleTripFragment extends Fragment implements View.OnClickLis
     private RouteScheduleTripListAdapter cstlaAdapter;
     private DrawableHelper drawableHelper;
     private Trip trip;
-    String currentUserId = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_ID, "");
+    private String currentUserId = null;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_tab_schedule_trip, container, false);
-            ButterKnife.bind(this, rootView);
-            this.initControl();
         }
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ButterKnife.bind(this, rootView);
+        this.initControl();
     }
 
     public Trip getTrip() {
@@ -136,6 +147,7 @@ public class TabScheduleTripFragment extends Fragment implements View.OnClickLis
     }
 
     private void initData() {
+        currentUserId = SharedPref.getInstance(getActivity()).getString(ApiConstants.KEY_ID, "");
         if (!currentUserId.equals(trip.getOwner().getId())) {
             llAction.setVisibility(View.VISIBLE);
             if (trip.getIsMember() == 1) {
@@ -157,6 +169,8 @@ public class TabScheduleTripFragment extends Fragment implements View.OnClickLis
                 tvScheduleInterested.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
                 tvScheduleInterested.setTextColor(getContext().getResources().getColor(R.color.primary));
             }
+        }else{
+            llAction.setVisibility(View.GONE);
         }
         StringUtil.setText(tvScheduleJoiner, String.valueOf(trip.getAmountMember()));
         StringUtil.setText(tvScheduleCountInterested, String.valueOf(trip.getAmountInterested()));
@@ -206,7 +220,7 @@ public class TabScheduleTripFragment extends Fragment implements View.OnClickLis
         if (id == R.id.tvScheduleJoin) {
             tvScheduleJoin.setEnabled(false);
             if (trip.getIsMember() == 4) {
-                requestTripMember();
+                loadDialogMessageRequest();
             } else if (trip.getIsMember() == 1) {
                 new AlertDialog.Builder(getContext())
                         .setTitle(R.string.cancel_request_tv_trip_schedule)
@@ -283,16 +297,49 @@ public class TabScheduleTripFragment extends Fragment implements View.OnClickLis
     }
 
     //region Request Trip Member
-    private void requestTripMember() {
+    private void loadDialogMessageRequest(){
+        LayoutInflater li = LayoutInflater.from(getContext());
+        View dialogView = li.inflate(R.layout.dialog_message_request_trip_member, null);
+        final Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
+
+        final EditText etMessageRequestMember = (EditText) dialog.findViewById(R.id.etMessageRequestMember);
+
+        Button btnConfirmEdit = (Button) dialog.findViewById(R.id.btnConfirmRequest);
+        btnConfirmEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestTripMember(StringUtil.getText(etMessageRequestMember));
+                dialog.cancel();
+            }
+        });
+
+        Button btnCancelEdit = (Button) dialog.findViewById(R.id.btnCancelRequest);
+        btnCancelEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+
+            }
+        });
+        tvScheduleJoin.setEnabled(true);
+        dialog.show();
+    }
+
+    private void requestTripMember(String message) {
+        tvScheduleJoin.setEnabled(false);
         adventureRequest = new AdventureRequest(getContext(), Request.Method.POST,
-                ApiConstants.getUrl(ApiConstants.API_REQUEST_TRIP_MEMBER), getRequestTripMemberParams(), false);
+                ApiConstants.getUrl(ApiConstants.API_REQUEST_TRIP_MEMBER), getRequestTripMemberParams(message), false);
         getRequestTripMemberResponse();
     }
 
-    private HashMap getRequestTripMemberParams() {
-        HashMap<String, String> params = new HashMap<>();
+    private Map<String ,String > getRequestTripMemberParams(String message) {
+        Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_ID_TRIP, trip.getId());
+        params.put(ApiConstants.KEY_MESSAGE, message);
         return params;
     }
 
