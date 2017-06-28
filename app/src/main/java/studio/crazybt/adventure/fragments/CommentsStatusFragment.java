@@ -294,7 +294,7 @@ public class CommentsStatusFragment extends Fragment implements View.OnClickList
         ImageView ivProfileImage = (ImageView) dialog.findViewById(R.id.ivProfileImage);
         PicassoHelper.execPicasso_ProfileImage(getContext(), commentStatusList.get(posItem).getUser().getAvatar(), ivProfileImage);
         TextView tvProfileName = (TextView) dialog.findViewById(R.id.tvProfileName);
-        String profileName = commentStatusList.get(posItem).getUser().getFirstName() + " " + commentStatusList.get(posItem).getUser().getLastName();
+        String profileName = commentStatusList.get(posItem).getUser().getFullName();
         tvProfileName.setText(profileName);
 
         TextView tvTimeUpload = (TextView) dialog.findViewById(R.id.tvTimeUpload);

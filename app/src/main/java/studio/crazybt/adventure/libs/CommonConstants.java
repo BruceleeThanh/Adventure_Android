@@ -53,4 +53,8 @@ public class CommonConstants {
     public static final int VAL_CLOSE_GROUP = 2;
     public static final int VAL_OPEN_GROUP = 3;
 
+    // Search user activity
+    public static final int ACT_SEARCH_USER_GROUP_INVITE_MEMBER = 1;
+    public static final int ACT_SEARCH_USER_MESSAGE = 2;
+
 }

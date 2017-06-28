@@ -122,16 +122,16 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             statusViewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    rootContext.startActivity(ProfileActivity.newInstance(rootContext, statusItem.getUser().getId(), statusItem.getUser().getFirstName() + " " + statusItem.getUser().getLastName()));
+                    rootContext.startActivity(ProfileActivity.newInstance(rootContext, statusItem.getUser().getId(), statusItem.getUser().getFullName()));
                 }
             });
 
             // User name
-            statusViewHolder.tvProfileName.setText(statusItem.getUser().getFirstName() + " " + statusItem.getUser().getLastName());
+            statusViewHolder.tvProfileName.setText(statusItem.getUser().getFullName());
             statusViewHolder.tvProfileName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    rootContext.startActivity(ProfileActivity.newInstance(rootContext, statusItem.getUser().getId(), statusItem.getUser().getFirstName() + " " + statusItem.getUser().getLastName()));
+                    rootContext.startActivity(ProfileActivity.newInstance(rootContext, statusItem.getUser().getId(), statusItem.getUser().getFullName()));
                 }
             });
 
@@ -142,6 +142,8 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 statusViewHolder.ivPermission.setImageResource(R.drawable.ic_friend_96);
             } else if (statusItem.getPermission() == 3) {
                 statusViewHolder.ivPermission.setImageResource(R.drawable.ic_public_96);
+            } else {
+                statusViewHolder.ivPermission.setVisibility(View.GONE);
             }
 
             // Options
@@ -341,7 +343,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             TripNormalViewHolder tripNormalViewHolder = (TripNormalViewHolder) holder;
             final Trip trip = (Trip) lstPosts.get(position);
             PicassoHelper.execPicasso_ProfileImage(rootContext, trip.getOwner().getAvatar(), tripNormalViewHolder.ivProfileImage);
-            tripNormalViewHolder.tvProfileName.setText(trip.getOwner().getFirstName() + " " + trip.getOwner().getLastName());
+            tripNormalViewHolder.tvProfileName.setText(trip.getOwner().getFullName());
             tripNormalViewHolder.tvTimeUpload.setText(ConvertTimeHelper.convertISODateToPrettyTimeStamp(trip.getCreatedAt()));
 
             // Permission (Trip Privacy)
@@ -351,9 +353,15 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 tripNormalViewHolder.ivPermission.setImageResource(R.drawable.ic_friend_96);
             } else if (trip.getPermission() == 3) {
                 tripNormalViewHolder.ivPermission.setImageResource(R.drawable.ic_public_96);
+            } else {
+                tripNormalViewHolder.ivPermission.setVisibility(View.GONE);
             }
+
+            // Start at, end at
             Date startTime = ConvertTimeHelper.convertISODateToDate(trip.getStartAt());
             Date endTime = ConvertTimeHelper.convertISODateToDate(trip.getEndAt());
+
+            // Time label
             if (startTime.compareTo(now) > 0) {
                 tripNormalViewHolder.vTripLabel.setBackgroundColor(rootContext.getResources().getColor(R.color.greed_label));
             } else if (endTime.compareTo(now) > 0) {

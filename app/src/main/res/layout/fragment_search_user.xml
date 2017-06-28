@@ -5,31 +5,25 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <ImageView
-        android:id="@+id/ivLabelFriend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_group_grey_500_24dp"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_marginLeft="@dimen/margin_medium"/>
-
     <TextView
         android:id="@+id/tvLabelFriend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_friend_search_user"
-        android:layout_toRightOf="@+id/ivLabelFriend"
-        android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_medium_big"
+        android:text="@string/label_friend_search_user"
         android:textColor="@color/secondary_text"
+        android:textSize="@dimen/txt_small_medium"
         android:textStyle="bold"
-        android:textSize="@dimen/txt_small_medium"/>
+        android:drawableLeft="@drawable/ic_group_grey_500_24dp"
+        android:gravity="center_vertical"
+        android:drawablePadding="@dimen/margin_medium"
+        android:paddingLeft="@dimen/margin_medium"/>
 
     <View
         android:id="@+id/vLine1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/ivLabelFriend"
+        android:layout_below="@+id/tvLabelFriend"
         android:layout_marginTop="@dimen/margin_small"
         android:background="@drawable/partition_gray_line_horizontal"/>
 
@@ -45,38 +39,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/vLine1"
-        android:text="@string/label_empty_search_friend"
-        android:gravity="center"
         android:layout_marginTop="@dimen/margin_small"
+        android:gravity="center"
+        android:text="@string/label_empty_search_friend"
         android:visibility="gone"/>
-
-    <ImageView
-        android:id="@+id/ivLabelStranger"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_public_grey_500_24dp"
-        android:layout_below="@+id/rvSearchFriend"
-        android:layout_marginTop="@dimen/margin_medium_big"
-        android:layout_marginLeft="@dimen/margin_medium"/>
 
     <TextView
         android:id="@+id/tvLabelStranger"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rvSearchFriend"
-        android:text="@string/label_people_search_user"
-        android:layout_toRightOf="@+id/ivLabelStranger"
-        android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_big"
+        android:drawableLeft="@drawable/ic_public_grey_500_24dp"
+        android:drawablePadding="@dimen/margin_medium"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/margin_medium"
+        android:text="@string/label_people_search_user"
         android:textColor="@color/secondary_text"
-        android:textStyle="bold"
-        android:textSize="@dimen/txt_small_medium"/>
+        android:textSize="@dimen/txt_small_medium"
+        android:textStyle="bold"/>
 
     <View
         android:id="@+id/vLine2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/ivLabelStranger"
+        android:layout_below="@+id/tvLabelStranger"
         android:layout_marginTop="@dimen/margin_small"
         android:background="@drawable/partition_gray_line_horizontal"/>
 
@@ -92,12 +79,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/vLine2"
-        android:text="@string/label_empty_search_friend"
-        android:gravity="center"
         android:layout_marginTop="@dimen/margin_small"
+        android:gravity="center"
+        android:text="@string/label_empty_search_friend"
         android:visibility="gone"/>
-
-
 
 
 </RelativeLayout>

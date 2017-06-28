@@ -59,7 +59,7 @@ public class GroupBlockMemberListAdapter extends RecyclerView.Adapter<GroupBlock
     public void onBindViewHolder(ViewHolder holder, int position) {
         GroupMember groupMember = lstGroupBlockMembers.get(position);
         PicassoHelper.execPicasso_ProfileImage(rootContext, groupMember.getOwner().getAvatar(), holder.ivProfileImage);
-        StringUtil.setText(holder.tvProfileName, groupMember.getOwner().getFirstName() + " " + groupMember.getOwner().getLastName());
+        StringUtil.setText(holder.tvProfileName, groupMember.getOwner().getFullName());
         StringUtil.setText(holder.tvJoinedAt, rootContext.getResources().getString(R.string.label_block_member_group_at) + " " + groupMember.getShortCreatedAt());
         holder.ivGroupMemberOptions.setVisibility(View.VISIBLE);
     }
@@ -134,8 +134,7 @@ public class GroupBlockMemberListAdapter extends RecyclerView.Adapter<GroupBlock
             adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
                 @Override
                 public void onAdventureResponse(JSONObject response) {
-                    ToastUtil.showToast(rootContext, lstGroupBlockMembers.get(index).getOwner().getFirstName() + " " +
-                            lstGroupBlockMembers.get(index).getOwner().getLastName() + " " + rootContext.getResources().getString(R.string.success_unblock_member_group));
+                    ToastUtil.showToast(rootContext, lstGroupBlockMembers.get(index).getOwner().getFullName() + " " + rootContext.getResources().getString(R.string.success_unblock_member_group));
                     lstGroupBlockMembers.remove(index);
                     notifyDataSetChanged();
                 }

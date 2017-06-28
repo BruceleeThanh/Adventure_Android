@@ -2,6 +2,8 @@ package studio.crazybt.adventure.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +80,7 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
             TripNormalViewHolder tripNormalViewHolder = (TripNormalViewHolder) holder;
             final Trip trip = lstTrip.get(position);
             PicassoHelper.execPicasso_ProfileImage(rootContext, trip.getOwner().getAvatar(), tripNormalViewHolder.ivProfileImage);
-            tripNormalViewHolder.tvProfileName.setText(trip.getOwner().getFirstName() + " " + trip.getOwner().getLastName());
+            tripNormalViewHolder.tvProfileName.setText(trip.getOwner().getFullName());
             tripNormalViewHolder.tvTimeUpload.setText(ConvertTimeHelper.convertISODateToPrettyTimeStamp(trip.getCreatedAt()));
 
             // Permission (Trip Privacy)
@@ -92,11 +94,11 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
             Date startTime = ConvertTimeHelper.convertISODateToDate(trip.getStartAt());
             Date endTime = ConvertTimeHelper.convertISODateToDate(trip.getEndAt());
             if(startTime.compareTo(now) > 0){
-                tripNormalViewHolder.vTripLabel.setBackgroundColor(rootContext.getResources().getColor(R.color.greed_label));
+                tripNormalViewHolder.vTripLabel.setBackgroundColor(ContextCompat.getColor(rootContext, R.color.greed_label));
             }else if(endTime.compareTo(now) > 0){
-                tripNormalViewHolder.vTripLabel.setBackgroundColor(rootContext.getResources().getColor(R.color.yellow_label));
+                tripNormalViewHolder.vTripLabel.setBackgroundColor(ContextCompat.getColor(rootContext, R.color.yellow_label));
             }else {
-                tripNormalViewHolder.vTripLabel.setBackgroundColor(rootContext.getResources().getColor(R.color.red_label));
+                tripNormalViewHolder.vTripLabel.setBackgroundColor(ContextCompat.getColor(rootContext, R.color.red_label));
             }
 
             tripNormalViewHolder.tvTripName.setText(trip.getName());

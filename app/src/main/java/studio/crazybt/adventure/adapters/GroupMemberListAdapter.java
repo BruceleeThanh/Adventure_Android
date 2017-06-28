@@ -59,7 +59,7 @@ public class GroupMemberListAdapter extends RecyclerView.Adapter<GroupMemberList
     public void onBindViewHolder(ViewHolder holder, int position) {
         GroupMember groupMember = lstGroupMembers.get(position);
         PicassoHelper.execPicasso_ProfileImage(rootContext, groupMember.getOwner().getAvatar(), holder.ivProfileImage);
-        StringUtil.setText(holder.tvProfileName, groupMember.getOwner().getFirstName() + " " + groupMember.getOwner().getLastName());
+        StringUtil.setText(holder.tvProfileName, groupMember.getOwner().getFullName());
         if(groupMember.getPermission() == CommonConstants.VAL_PER_GROUP_CREATOR){
             StringUtil.setText(holder.tvJoinedAt, rootContext.getResources().getString(R.string.label_created_group_at) + " " + groupMember.getShortCreatedAt());
         }else{
@@ -158,8 +158,7 @@ public class GroupMemberListAdapter extends RecyclerView.Adapter<GroupMemberList
             adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
                 @Override
                 public void onAdventureResponse(JSONObject response) {
-                    ToastUtil.showToast(rootContext, lstGroupMembers.get(index).getOwner().getFirstName() + " " +
-                            lstGroupMembers.get(index).getOwner().getLastName() + " " + rootContext.getResources().getString(R.string.success_make_admin_group));
+                    ToastUtil.showToast(rootContext, lstGroupMembers.get(index).getOwner().getFullName() + " " + rootContext.getResources().getString(R.string.success_make_admin_group));
                     lstGroupMembers.remove(index);
                     notifyDataSetChanged();
                 }
@@ -189,8 +188,7 @@ public class GroupMemberListAdapter extends RecyclerView.Adapter<GroupMemberList
             adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
                 @Override
                 public void onAdventureResponse(JSONObject response) {
-                    ToastUtil.showToast(rootContext, lstGroupMembers.get(index).getOwner().getFirstName() + " " +
-                    lstGroupMembers.get(index).getOwner().getLastName() + " " + rootContext.getResources().getString(R.string.success_remove_member_group));
+                    ToastUtil.showToast(rootContext, lstGroupMembers.get(index).getOwner().getFullName() + " " + rootContext.getResources().getString(R.string.success_remove_member_group));
                     lstGroupMembers.remove(index);
                     notifyDataSetChanged();
                 }
@@ -220,8 +218,7 @@ public class GroupMemberListAdapter extends RecyclerView.Adapter<GroupMemberList
             adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
                 @Override
                 public void onAdventureResponse(JSONObject response) {
-                    ToastUtil.showToast(rootContext, lstGroupMembers.get(index).getOwner().getFirstName() + " " +
-                            lstGroupMembers.get(index).getOwner().getLastName() + " " + rootContext.getResources().getString(R.string.success_block_member_group));
+                    ToastUtil.showToast(rootContext, lstGroupMembers.get(index).getOwner().getFullName() + " " + rootContext.getResources().getString(R.string.success_block_member_group));
                     lstGroupMembers.remove(index);
                     notifyDataSetChanged();
                 }

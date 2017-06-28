@@ -117,7 +117,7 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
             @Override
             public void onLoadMore() {
                 RLog.e("isRefreshing" + srlNewfeed.isRefreshing());
-                if (!srlNewfeed.isRefreshing()){
+                if (!srlNewfeed.isRefreshing()) {
                     statuses.add(null);
                     nlaNewfeed.notifyItemInserted(statuses.size() - 1);
                     loadData(true, page + 1);
@@ -128,20 +128,23 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
 
     }
 
-    private void initScrollNewsfeed(){
+    private void initScrollNewsfeed() {
         rvNewfeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(dy > 0){
+                if (dy > 0) {
                     totalItemCount = llmNewFeed.getItemCount();
                     lastVisibleItem = llmNewFeed.findLastVisibleItemPosition();
 
-                    if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                        if (nlaNewfeed.onLoadMoreListener != null) {
-                            nlaNewfeed.onLoadMoreListener.onLoadMore();
+
+                    if(!rvNewfeed.canScrollVertically(1)){
+                        if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                            if (nlaNewfeed.onLoadMoreListener != null) {
+                                nlaNewfeed.onLoadMoreListener.onLoadMore();
+                            }
+                            isLoading = true;
                         }
-                        isLoading = true;
                     }
                 }
             }
@@ -163,7 +166,7 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
     }
 
     private void loadData(final boolean isLoadMore, final int pagination) {
-        if (!isLoadMore){
+        if (!isLoadMore) {
             srlNewfeed.setRefreshing(true);
         }
         final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
@@ -176,10 +179,10 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
             @Override
             public void onAdventureResponse(JSONObject response) {
                 // pagination - load more
-                if(isLoadMore){
-                    statuses.remove(statuses.size() -1 );
+                if (isLoadMore) {
+                    statuses.remove(statuses.size() - 1);
                     nlaNewfeed.notifyItemRemoved(statuses.size());
-                }else{
+                } else {
                     statuses.clear();
                 }
                 JSONArray data = JsonUtil.getJSONArray(response, ApiConstants.DEF_DATA);
@@ -216,20 +219,20 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
                 nlaNewfeed.notifyDataSetChanged();
                 initScrollNewsfeed();
                 page = pagination;
-                if(isLoadMore){
+                if (isLoadMore) {
                     isLoading = false;
-                }else{
+                } else {
                     srlNewfeed.setRefreshing(false);
                 }
             }
 
             @Override
             public void onAdventureError(int errorCode, String errorMsg) {
-                if(isLoadMore){
-                    statuses.remove(statuses.size() -1 );
+                if (isLoadMore) {
+                    statuses.remove(statuses.size() - 1);
                     nlaNewfeed.notifyItemRemoved(statuses.size());
                     isLoading = false;
-                }else{
+                } else {
                     srlNewfeed.setRefreshing(false);
                 }
                 ToastUtil.showToast(getContext(), errorMsg);

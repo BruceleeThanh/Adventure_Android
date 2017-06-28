@@ -137,9 +137,36 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     private AdventureFileRequest adventureFileRequest = null;
 
     private String idTrip = null;
+    private String idGroup = null;
+
     private Realm realm;
 
     private int countImageUploaded = 0;
+
+    public static CreateStatusFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        CreateStatusFragment fragment = new CreateStatusFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static CreateStatusFragment newInstance_Group(String idGroup) {
+        Bundle args = new Bundle();
+        args.putString(ApiConstants.KEY_ID_GROUP, idGroup);
+        CreateStatusFragment fragment = new CreateStatusFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static CreateStatusFragment newInstance_Trip(String idTrip) {
+        Bundle args = new Bundle();
+        args.putString(ApiConstants.KEY_ID_TRIP, idTrip);
+        CreateStatusFragment fragment = new CreateStatusFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -148,10 +175,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
             EmojiManager.install(new EmojiOneProvider());
             rootView = inflater.inflate(R.layout.fragment_create_status, container, false);
         }
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            idTrip = bundle.getString(ApiConstants.KEY_ID_TRIP);
-        }
+        this.loadInstance();
         this.initControls();
         this.initEvents();
         this.initCreator();
@@ -165,6 +189,14 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
         setHasOptionsMenu(true);
     }
 
+    private void loadInstance(){
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            idTrip = bundle.getString(ApiConstants.KEY_ID_TRIP, idTrip);
+            idGroup = bundle.getString(ApiConstants.KEY_ID_GROUP, idGroup);
+        }
+    }
+
     private void initControls() {
         ButterKnife.bind(this, rootView);
 
@@ -172,7 +204,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
+        token = SharedPref.getInstance(getContext()).getAccessToken();
 
         realm = Realm.getDefaultInstance();
 
@@ -183,6 +215,9 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
         if (idTrip != null) {
             spiPrivacy.setVisibility(View.GONE);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.title_tb_create_discuss_trip));
+        } else if(idGroup != null){
+            spiPrivacy.setVisibility(View.GONE);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.title_tb_create_status_group));
         } else {
             this.initSpinnerPrivacy();
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_tb_create_status);
@@ -213,7 +248,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
     private void initCreator() {
         User storageUser = realm.where(User.class).equalTo("id", SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_ID, "")).findFirst();
         PicassoHelper.execPicasso_ProfileImage(getContext(), storageUser.getAvatar(), ivProfileImage);
-        tvProfileName.setText(storageUser.getFirstName() + " " + storageUser.getLastName());
+        tvProfileName.setText(storageUser.getFullName());
     }
 
     private void initSpinnerPrivacy() {
@@ -363,12 +398,18 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_CONTENT, StringUtil.getText(eetContentStatus));
         params.put(ApiConstants.KEY_IMAGE_DESCRIPTION, isHaveImage ? this.getImageArray() : "");
-        params.putParam(ApiConstants.KEY_PERMISSION, spiPrivacy.getSelectedItemPosition() + 1);
+
         if (idTrip != null) {
             params.put(ApiConstants.KEY_ID_TRIP, idTrip);
             params.putParam(ApiConstants.KEY_TYPE, 2);
-        } else {
+            params.putParam(ApiConstants.KEY_PERMISSION, 4);
+        } if (idGroup != null){
+            params.put(ApiConstants.KEY_ID_GROUP, idGroup);
+            params.putParam(ApiConstants.KEY_TYPE, 3);
+            params.putParam(ApiConstants.KEY_PERMISSION, 4);
+        } else{
             params.putParam(ApiConstants.KEY_TYPE, 1);
+            params.putParam(ApiConstants.KEY_PERMISSION, spiPrivacy.getSelectedItemPosition() + 1);
         }
         return params.build();
     }

@@ -55,6 +55,7 @@ import studio.crazybt.adventure.helpers.ConvertTimeHelper;
 import studio.crazybt.adventure.helpers.DrawableHelper;
 import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.libs.ApiParams;
 import studio.crazybt.adventure.models.Route;
 import studio.crazybt.adventure.models.SpinnerItem;
 import studio.crazybt.adventure.models.User;
@@ -144,13 +145,30 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
     private final int SET_END_TIME = 2;
     private boolean isPlaceInStartPosition = false;
 
+    private String idGroup = null;
+
+    public static CreateTripFragment newInstance() {
+        Bundle args = new Bundle();
+        CreateTripFragment fragment = new CreateTripFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static CreateTripFragment newInstance_Group(String idGroup) {
+        Bundle args = new Bundle();
+        args.putString(ApiConstants.KEY_ID_GROUP, idGroup);
+        CreateTripFragment fragment = new CreateTripFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_create_trip, container, false);
         }
-        ButterKnife.bind(this, rootView);
+        this.loadInstance();
         this.initControls();
         this.initCreator();
         this.initSpinnerPrivacy();
@@ -159,12 +177,26 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
         return rootView;
     }
 
+    private void loadInstance(){
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            idGroup = bundle.getString(ApiConstants.KEY_ID_GROUP, idGroup);
+        }
+    }
+
     private void initControls() {
+        ButterKnife.bind(this, rootView);
 
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).setSupportActionBar(tbCreateTrip);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_tb_create_trip);
+
+        if(idGroup != null){
+            spiPrivacy.setVisibility(View.GONE);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_tb_create_trip_group);
+        }else{
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_tb_create_trip);
+        }
 
         token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
 
@@ -209,7 +241,7 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
     private void initCreator() {
         User storageUser = realm.where(User.class).equalTo("id", SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_ID, "")).findFirst();
         PicassoHelper.execPicasso_ProfileImage(getContext(), storageUser.getAvatar(), ivProfileImage);
-        tvProfileName.setText(storageUser.getFirstName() + " " + storageUser.getLastName());
+        tvProfileName.setText(storageUser.getFullName());
     }
 
     private void initDrawableView() {
@@ -392,8 +424,8 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private HashMap getTripParams() {
-        HashMap<String, String> params = new HashMap<>();
+    private Map<String, String> getTripParams() {
+        ApiParams params = ApiParams.getBuilder();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_NAME, StringUtil.getText(etCreateTripName));
         params.put(ApiConstants.KEY_DESCRIPTION, StringUtil.getText(etCreateTripDescription));
@@ -408,8 +440,16 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
         params.put(ApiConstants.KEY_IMAGES, null); // chưa có images
         params.put(ApiConstants.KEY_PREPARE, StringUtil.getText(etCreateTripToolbox));
         params.put(ApiConstants.KEY_NOTE, StringUtil.getText(etCreateTripNote));
-        params.put(ApiConstants.KEY_PERMISSION, String.valueOf(spiPrivacy.getSelectedItemPosition() + 1));
-        params.put(ApiConstants.KEY_TYPE, "1");
+
+        if (idGroup != null){
+            params.put(ApiConstants.KEY_ID_GROUP, idGroup);
+            params.putParam(ApiConstants.KEY_PERMISSION, 4);
+            params.putParam(ApiConstants.KEY_TYPE, 2);
+        }else{
+            params.put(ApiConstants.KEY_PERMISSION, String.valueOf(spiPrivacy.getSelectedItemPosition() + 1));
+            params.putParam(ApiConstants.KEY_TYPE, 1);
+        }
+
         return params;
     }
 
@@ -462,8 +502,8 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
             lstPlaceTrip.add(new studio.crazybt.adventure.models.Place(idTrip, temp.getAddress().toString(),
                     temp.getLatLng().latitude, temp.getLatLng().longitude, 2));
         }
-        int leng = lstPlaceTrip.size();
-        for (int i = 0; i < leng; i++) {
+        int length = lstPlaceTrip.size();
+        for (int i = 0; i < length; i++) {
             uploadPlace(i);
         }
     }
@@ -489,8 +529,8 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
         });
     }
 
-    private HashMap getPlacesParams(studio.crazybt.adventure.models.Place place) {
-        HashMap<String, String> params = new HashMap<>();
+    private Map<String, String> getPlacesParams(studio.crazybt.adventure.models.Place place) {
+        Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_ID_TRIP, place.getIdTrip());
         params.put(ApiConstants.KEY_ORDER, String.valueOf(place.getOrder()));
@@ -501,7 +541,6 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
         params.put(ApiConstants.KEY_CONTENT, place.getContent());
         params.put(ApiConstants.KEY_TYPE, String.valueOf(place.getType()));
         params.put(ApiConstants.KEY_STATUS, String.valueOf(place.getStatus()));
-        RLog.i("params day: " + params.toString());
         return params;
     }
 

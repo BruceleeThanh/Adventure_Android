@@ -78,7 +78,7 @@ public class Trip implements Parcelable {
 
     public Trip(String id, User owner, String name, @Nullable String startAt, @Nullable String endAt, @Nullable String startPosition,
                 @Nullable String destinationSummary, @Nullable String expense, @Nullable List<ImageContent> images, int amountPeople,
-                int amountMember, int amountInterested, int amountRating, double rating, @Nullable String createdAt, int permission) {
+                int amountMember, int amountInterested, int amountRating, double rating, @Nullable String createdAt, int permission, int type) {
         this.id = id;
         this.owner = owner;
         this.name = name;
@@ -95,6 +95,7 @@ public class Trip implements Parcelable {
         this.rating = rating;
         this.createdAt = createdAt;
         this.permission = permission;
+        this.type = type;
     }
 
     public Trip(String id, @Nullable String idGroup, User owner, String name, @Nullable String description, @Nullable String startAt,

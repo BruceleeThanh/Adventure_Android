@@ -62,7 +62,7 @@ public class RequestMemberTripListAdapter extends RecyclerView.Adapter<RequestMe
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final TripMember tripMember = lstTripMember.get(position);
         PicassoHelper.execPicasso_ProfileImage(rootContext, tripMember.getOwner().getAvatar(), holder.ivProfileImage);
-        holder.tvProfileName.setText(tripMember.getOwner().getFirstName() + " " + tripMember.getOwner().getLastName());
+        holder.tvProfileName.setText(tripMember.getOwner().getFullName());
         holder.tvProfileName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,7 +83,7 @@ public class RequestMemberTripListAdapter extends RecyclerView.Adapter<RequestMe
                 holder.btnLeftFriendTemplate.setEnabled(false);
                 acceptRequest(tripMember.getId());
                 getAcceptRequestResponse(holder, position,
-                        tripMember.getOwner().getFirstName() + " " + tripMember.getOwner().getLastName());
+                        tripMember.getOwner().getFullName());
             }
         });
         holder.btnRightFriendTemplate.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +92,7 @@ public class RequestMemberTripListAdapter extends RecyclerView.Adapter<RequestMe
                 holder.btnRightFriendTemplate.setEnabled(false);
                 rejectRequest(tripMember.getId());
                 getRejectRequestResponse(holder, position,
-                        tripMember.getOwner().getFirstName() + " " + tripMember.getOwner().getLastName());
+                        tripMember.getOwner().getFullName());
             }
         });
         if(tripMember.getMessage() == null || tripMember.getMessage().isEmpty()){

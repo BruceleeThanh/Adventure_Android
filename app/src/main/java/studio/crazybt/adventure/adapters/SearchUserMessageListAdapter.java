@@ -20,12 +20,12 @@ import studio.crazybt.adventure.models.User;
  * Created by Brucelee Thanh on 12/05/2017.
  */
 
-public class SearchUserListAdapter extends RecyclerView.Adapter<SearchUserListAdapter.ViewHolder>{
+public class SearchUserMessageListAdapter extends RecyclerView.Adapter<SearchUserMessageListAdapter.ViewHolder>{
 
     private Context rootContext = null;
     private List<User> lstUsers = null;
 
-    public SearchUserListAdapter(Context context, List<User> lstUsers) {
+    public SearchUserMessageListAdapter(Context context, List<User> lstUsers) {
         this.rootContext = context;
         this.lstUsers = lstUsers;
     }
@@ -39,7 +39,7 @@ public class SearchUserListAdapter extends RecyclerView.Adapter<SearchUserListAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         PicassoHelper.execPicasso_ProfileImage(rootContext, lstUsers.get(position).getAvatar(), holder.ivProfileImage);
-        holder.tvProfileName.setText(lstUsers.get(position).getFirstName() + " " + lstUsers.get(position).getLastName());
+        holder.tvProfileName.setText(lstUsers.get(position).getFullName());
     }
 
     @Override

@@ -38,7 +38,6 @@ public class GroupRequestMemberListAdapter extends RecyclerView.Adapter<GroupReq
 
     private Context rootContext;
     private List<GroupMember> lstGroupMembers = null;
-    private AdventureRequest adventureRequest = null;
     private AdventureRequest.OnNotifyResponseReceived onNotifyResponseReceived;
 
     public GroupRequestMemberListAdapter(Context rootContext, List<GroupMember> lstGroupMembers) {
@@ -49,16 +48,14 @@ public class GroupRequestMemberListAdapter extends RecyclerView.Adapter<GroupReq
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend_template, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        adventureRequest = viewHolder.adventureRequest;
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         GroupMember groupMember = lstGroupMembers.get(position);
         PicassoHelper.execPicasso_ProfileImage(rootContext, groupMember.getOwner().getAvatar(), holder.ivProfileImage);
-        StringUtil.setText(holder.tvProfileName, groupMember.getOwner().getFirstName() + " " + groupMember.getOwner().getLastName());
+        StringUtil.setText(holder.tvProfileName, groupMember.getOwner().getFullName());
         StringUtil.setText(holder.tvMutualFriend, rootContext.getResources().getString(R.string.label_request_member_group_at) + " " + groupMember.getShortCreatedAt());
     }
 
@@ -137,8 +134,7 @@ public class GroupRequestMemberListAdapter extends RecyclerView.Adapter<GroupReq
             adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
                 @Override
                 public void onAdventureResponse(JSONObject response) {
-                    ToastUtil.showToast(rootContext, lstGroupMembers.get(index).getOwner().getFirstName() + " " +
-                            lstGroupMembers.get(index).getOwner().getLastName() + " " +
+                    ToastUtil.showToast(rootContext, lstGroupMembers.get(index).getOwner().getFullName() + " " +
                             rootContext.getResources().getString(R.string.success_accept_request_member_group));
                     lstGroupMembers.remove(index);
                     notifyDataSetChanged();

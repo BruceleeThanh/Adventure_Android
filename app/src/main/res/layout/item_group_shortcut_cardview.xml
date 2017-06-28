@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cvTripShortcut"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_medium"
+    android:background="@color/white"
+    android:elevation="@dimen/margin_medium"
+    android:layout_margin="@dimen/margin_small">
+
+    <RelativeLayout
+        android:id="@+id/rlGroupShortcut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:paddingBottom="@dimen/margin_medium"
+        android:paddingTop="@dimen/margin_small">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civCover"
+            android:layout_width="@dimen/btn_width_small"
+            android:layout_height="@dimen/btn_width_small"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:src="@drawable/img_cover"/>
+
+        <TextView
+            android:id="@+id/tvNameGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/civCover"
+            android:layout_alignRight="@+id/civCover"
+            android:layout_below="@+id/civCover"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_small"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/txt_small"/>
+
+        <ImageView
+            android:id="@+id/ivRemoveInvite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/civCover"
+            android:background="@drawable/selector_gray_white_tv"
+            android:clickable="true"
+            android:padding="@dimen/margin_small"
+            android:src="@drawable/ic_clear_grey_600_18dp"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

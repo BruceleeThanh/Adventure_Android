@@ -254,6 +254,14 @@ public class StringUtil {
         return false;
     }
 
+    public static boolean isNull(String text){
+        if(text == null || text.isEmpty() || text.equals("null")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public static String getText(EditText editText){
         return isEmpty(editText) ? "" : editText.getText().toString();
     }

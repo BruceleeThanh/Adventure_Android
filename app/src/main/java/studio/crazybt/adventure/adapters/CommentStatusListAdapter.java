@@ -55,7 +55,7 @@ public class CommentStatusListAdapter extends RecyclerView.Adapter<CommentStatus
                 rootContext.startActivity(intent);
             }
         });
-        holder.tvProfileName.setText(commentStatus.getUser().getFirstName() + " " + commentStatus.getUser().getLastName());
+        holder.tvProfileName.setText(commentStatus.getUser().getFullName());
         holder.tvProfileName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

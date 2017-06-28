@@ -8,7 +8,9 @@ import java.util.Date;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
+import studio.crazybt.adventure.utils.StringUtil;
 
 /**
  * Created by Brucelee Thanh on 23/10/2016.
@@ -59,6 +61,16 @@ public class User extends RealmObject implements Parcelable {
         this.id = id;
     }
 
+    public User(String id, String firstName, String lastName, String intro, String avatar, String avatarActual, String cover) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.intro = intro;
+        this.avatar = avatar;
+        this.avatarActual = avatarActual;
+        this.cover = cover;
+    }
+
     public User(String id, String firstName, String lastName, String avatar) {
         this.id = id;
         this.firstName = firstName;
@@ -96,6 +108,27 @@ public class User extends RealmObject implements Parcelable {
         this.isFriend = isFriend;
     }
 
+    public User(String id, String firstName, String lastName, String email, String phoneNumber,
+                int gender, String birthday, String address, String religion, String intro,
+                String fbId, String avatar, String avatarActual, String cover, String createAt, String lastVisitedAt) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.birthday = StringUtil.isNull(birthday) ? null : ConvertTimeHelper.convertISODateToDate(birthday);
+        this.address = address;
+        this.religion = religion;
+        this.intro = intro;
+        this.fbId = fbId;
+        this.avatar = avatar;
+        this.avatarActual = avatarActual;
+        this.cover = cover;
+        this.createAt = createAt;
+        this.lastVisitedAt = lastVisitedAt;
+    }
+
     public User(String id, String firstName, String lastName, String password, String email, String phoneNumber,
                 int gender, String birthday, String address, String religion, String intro,
                 String fbId, String avatar, String avatarActual, String cover, String createAt, String lastVisitedAt) {
@@ -106,7 +139,7 @@ public class User extends RealmObject implements Parcelable {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
-        this.birthday = ConvertTimeHelper.convertISODateToDate(birthday);
+        this.birthday = StringUtil.isNull(birthday) ? null : ConvertTimeHelper.convertISODateToDate(birthday);
         this.address = address;
         this.religion = religion;
         this.intro = intro;
@@ -129,7 +162,7 @@ public class User extends RealmObject implements Parcelable {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
-        this.birthday = ConvertTimeHelper.convertISODateToDate(birthday);
+        this.birthday = StringUtil.isNull(birthday) ? null : ConvertTimeHelper.convertISODateToDate(birthday);
         this.address = address;
         this.religion = religion;
         this.intro = intro;
@@ -167,6 +200,9 @@ public class User extends RealmObject implements Parcelable {
         this.lastName = lastName;
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 
     public String getPassword() {
         return password;
@@ -198,6 +234,15 @@ public class User extends RealmObject implements Parcelable {
         return gender;
     }
 
+    public int getLabelGender() {
+        if (gender == 1) {
+            return R.string.label_male_gender;
+        } else if (gender == 2) {
+            return R.string.label_female_gender;
+        }
+        return R.string.label_other_gender;
+    }
+
     public void setGender(int gender) {
         this.gender = gender;
     }
@@ -207,10 +252,10 @@ public class User extends RealmObject implements Parcelable {
         return birthday;
     }
 
-    public String getISOBirthday(){
-        if(birthday != null){
+    public String getISOBirthday() {
+        if (birthday != null) {
             return ConvertTimeHelper.convertDateToISOFormat(birthday);
-        }else{
+        } else {
             return null;
         }
     }
@@ -224,8 +269,8 @@ public class User extends RealmObject implements Parcelable {
     }
 
     /**
-    * @param birthday must be ISODate format
-    * */
+     * @param birthday must be ISODate format
+     */
     public void setBirthday(String birthday) {
         this.birthday = ConvertTimeHelper.convertISODateToDate(birthday);
     }

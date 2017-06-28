@@ -113,7 +113,7 @@ public class StatusDetailFragment extends Fragment implements View.OnClickListen
 
     private void loadData(){
         PicassoHelper.execPicasso_ProfileImage(getContext(), status.getUser().getAvatar(), ivProfileImage);
-        tvProfileName.setText(status.getUser().getFirstName() + " " + status.getUser().getLastName());
+        tvProfileName.setText(status.getUser().getFullName());
         if (status.getPermission() == 1) {
             ivPermission.setImageResource(R.drawable.ic_private_96);
         } else if (status.getPermission() == 2) {

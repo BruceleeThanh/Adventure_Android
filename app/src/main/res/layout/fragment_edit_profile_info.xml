@@ -82,7 +82,10 @@
                     android:layout_marginTop="-40dp"
                     android:adjustViewBounds="true"
                     android:clickable="true"
+                    android:background="@drawable/bg_white_border_iv"
+                    android:padding="2dp"
                     android:scaleType="centerCrop"
+                    android:cropToPadding="true"
                     android:src="@drawable/img_profile"/>
 
             </RelativeLayout>

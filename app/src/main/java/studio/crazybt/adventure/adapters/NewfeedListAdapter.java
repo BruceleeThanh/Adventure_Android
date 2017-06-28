@@ -126,19 +126,19 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     public void onClick(View view) {
                         Intent intent = new Intent(rootContext, ProfileActivity.class);
                         intent.putExtra(CommonConstants.KEY_ID_USER, statusItem.getUser().getId());
-                        intent.putExtra(CommonConstants.KEY_USERNAME, statusItem.getUser().getFirstName() + " " + statusItem.getUser().getLastName());
+                        intent.putExtra(CommonConstants.KEY_USERNAME, statusItem.getUser().getFullName());
                         rootContext.startActivity(intent);
                     }
                 });
 
                 // User name
-                statusViewHolder.tvProfileName.setText(statusItem.getUser().getFirstName() + " " + statusItem.getUser().getLastName());
+                statusViewHolder.tvProfileName.setText(statusItem.getUser().getFullName());
                 statusViewHolder.tvProfileName.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(rootContext, ProfileActivity.class);
                         intent.putExtra(CommonConstants.KEY_ID_USER, statusItem.getUser().getId());
-                        intent.putExtra(CommonConstants.KEY_USERNAME, statusItem.getUser().getFirstName() + " " + statusItem.getUser().getLastName());
+                        intent.putExtra(CommonConstants.KEY_USERNAME, statusItem.getUser().getFullName());
                         rootContext.startActivity(intent);
                     }
                 });

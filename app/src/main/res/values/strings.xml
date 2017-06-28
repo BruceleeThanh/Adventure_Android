@@ -8,7 +8,7 @@
     <string name="closeDrawer">Close navigation drawer</string>
 
     <!--General-->
-    <string name="title_search">Tìm kiếm</string>
+    <string name="title_search">Tìm kiếm…</string>
     <string name="field_can_not_empty">Không được để trống trường này</string>
     <!--Splash-->
     <string name="login_via_email_btn_splash">Đăng nhập qua email</string>
@@ -88,6 +88,11 @@
     <string name="error_browse_friend">Không có bạn bè nào.</string>
 
     <!--Profile-->
+    <string name="count_trip_created_profile">Tổ chức %1$d chuyến đi</string>
+    <string name="count_trip_joined_profile">Tham gia %1$d chuyến đi</string>
+    <string name="count_place_arrived_profile">Đặt chân tới %1$d địa điểm</string>
+    <string name="count_follower_profile">%1$d người đang theo dõi</string>
+
     <string name="message_btn_profile">Tin nhắn</string>
     <string name="edit_profile_info">Sửa thông tin cá nhân</string>
     <string name="information_btn_profile">Thông tin</string>
@@ -96,11 +101,13 @@
     <string name="photo_btn_profile">Ảnh</string>
 
     <!--Edit profile info-->
+    <string name="label_tb_profile_basic_info">Thông tin cá nhân</string>
     <string name="title_edit_profile_info">Chỉnh sửa thông tin cá nhân</string>
     <string name="label_image_profile">Ảnh trang cá nhân</string>
     <string name="label_basic_profile_info">Thông tin cá nhân</string>
     <string name="label_contact_profile_info">Thông tin liên hệ</string>
     <string name="label_detail_profile_info">Chi tiết về bạn</string>
+    <string name="label_connective_profile_info">Kết nối</string>
     <string name="label_birthday">Ngày sinh</string>
     <string name="label_gender">Giới tính</string>
     <string name="label_email">Email</string>
@@ -115,6 +122,10 @@
         <item>Nữ</item>
         <item>Khác</item>
     </array>
+
+    <string name="label_male_gender">Name</string>
+    <string name="label_female_gender">Nữ</string>
+    <string name="label_other_gender">Khác</string>
     <string name="success_edit_profile_info">Cập nhật thông tin cá nhân thành công</string>
 
 
@@ -351,6 +362,14 @@
     <string name="success_remove_admin_group">đã không còn là quản trị nhóm.</string>
     <string name="success_block_member_group">đã bị chặn.</string>
     <string name="success_unblock_member_group">đã không còn bị chặn.</string>
+    <string name="success_invite_member_group">Đã gửi lời mời tới</string>
+    <string name="invite_btn_group_invite_member">Mời</string>
+    <string name="success_remove_invite_member_group">Đã xoá lời mời vào nhóm </string>
 
+    <!--Create status in group-->
+    <string name="title_tb_create_status_group">Đăng trạng thái trong nhóm</string>
+
+    <!--Create trip in group-->
+    <string name="title_tb_create_trip_group">Tạo chuyến đi trong nhóm</string>
 
 </resources>

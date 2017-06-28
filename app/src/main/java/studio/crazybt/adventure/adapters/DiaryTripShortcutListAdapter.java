@@ -63,8 +63,7 @@ public class DiaryTripShortcutListAdapter extends RecyclerView.Adapter<DiaryTrip
             holder.vBlindDiary.setVisibility(View.GONE);
         }
         StringUtil.setText(holder.tvNameDiaryShortcut, tripDiary.getTitle());
-        StringUtil.setText(holder.tvAuthorDiaryShortcut, tripDiary.getOwner().getFirstName() + " " +
-                tripDiary.getOwner().getLastName());
+        StringUtil.setText(holder.tvAuthorDiaryShortcut, tripDiary.getOwner().getFullName());
         if (tripDiary.getPermission() == 1) {
             holder.ivPermission.setImageResource(R.drawable.ic_private_96);
         } else if (tripDiary.getPermission() == 2) {

@@ -139,7 +139,7 @@ public class GroupMemberActivity extends AppCompatActivity {
             tabLayoutAdapter.addFragment(TabGroupRequestMemberFragment.newInstance(), getResources().getString(R.string.title_group_request_member));
             tabLayoutAdapter.addFragment(TabGroupBlockMemberFragment.newInstance(), getResources().getString(R.string.title_group_block_member));
         }
-        tabLayoutAdapter.addFragment(new TabGroupInviteMemberFragment(), getResources().getString(R.string.title_group_invite_member));
+        tabLayoutAdapter.addFragment(TabGroupInviteMemberFragment.newInstance(idGroup), getResources().getString(R.string.title_group_invite_member));
         vpGroupMember.setAdapter(tabLayoutAdapter);
         vpGroupMember.setOffscreenPageLimit(4);
         tlGroupMember.setupWithViewPager(vpGroupMember);
@@ -232,7 +232,6 @@ public class GroupMemberActivity extends AppCompatActivity {
             tabGroupRequestMember.groupRequestMemberAdapter.setOnNotifyResponseReceived(new AdventureRequest.OnNotifyResponseReceived() {
                 @Override
                 public void onNotify() {
-                    RLog.i("NOTIFY");
                     if(!lstRequests.isEmpty()){
                         tlGroupMember.with(2, R.string.title_group_request_member).iconColor(tabSelectedIconColor).hasBadge().badgeCount(lstRequests.size()).build();
                     }else{

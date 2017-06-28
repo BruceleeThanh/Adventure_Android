@@ -1,8 +1,6 @@
 package studio.crazybt.adventure.activities;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.opengl.ETC1;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -12,22 +10,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.URISyntaxException;
 
 import io.realm.Realm;
 import studio.crazybt.adventure.R;
@@ -44,10 +42,7 @@ import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.AdventureRequest;
 import studio.crazybt.adventure.utils.BadgeTabLayout;
 import studio.crazybt.adventure.utils.RLog;
-import studio.crazybt.adventure.utils.RealmUtils;
 import studio.crazybt.adventure.utils.SharedPref;
-import studio.crazybt.adventure.utils.StringUtil;
-import studio.crazybt.adventure.utils.ToastUtil;
 
 public class HomePageActivity extends AppCompatActivity{
 
@@ -60,28 +55,46 @@ public class HomePageActivity extends AppCompatActivity{
     private ImageView ivUserAvatar;
     private TextView tvUserName;
     private Realm realm;
+    private String idUser;
 
     private final int MESSAGE = 1;
 
     private static int notificationCount = 0;
+
+    private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket(ApiConstants.getBaseUrl());
+
+        } catch (URISyntaxException e) {}
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
+        initControls();
+        initActionBar();
+        initNavigationDrawer();
+        initTablayout();
+    }
+
+    private void initControls(){
+        idUser = SharedPref.getInstance(getBaseContext()).getString(ApiConstants.KEY_ID, null);
+        realm = Realm.getDefaultInstance();
+        mSocket.connect();
+        mSocket.emit(ApiConstants.SOCKET_USER_ONLINE, idUser);
+    }
+
+    private void initActionBar(){
         toolbar = (Toolbar) findViewById(R.id.tbHomePage);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        realm = Realm.getDefaultInstance();
-
-        this.initNavigationDrawer();
-        this.initTablayout();
     }
 
-    public void initNavigationDrawer() {
+    private void initNavigationDrawer() {
         navView = (NavigationView) findViewById(R.id.navView);
         // nav header set item
         navHeader = navView.getHeaderView(0);
@@ -92,7 +105,7 @@ public class HomePageActivity extends AppCompatActivity{
         User storageUser = realm.where(User.class).equalTo("id", SharedPref.getInstance(this).getString(ApiConstants.KEY_ID, "")).findFirst();
         PicassoHelper.execPicasso_CoverImage(getBaseContext(), storageUser.getCover(), ivUserCover);
         PicassoHelper.execPicasso_ProfileImage(getBaseContext(), storageUser.getAvatar(), ivUserAvatar);
-        final String userName = storageUser.getFirstName() + " " + storageUser.getLastName();
+        final String userName = storageUser.getFullName();
         tvUserName.setText(userName);
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -152,7 +165,7 @@ public class HomePageActivity extends AppCompatActivity{
         actionBarDrawerToggle.syncState();
     }
 
-    public void initTablayout() {
+    private void initTablayout() {
         final int tabSelectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary);
         final int tabUnselectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary_background_content);
         tlHomePage = (BadgeTabLayout) findViewById(R.id.tlHomePage);
@@ -241,4 +254,9 @@ public class HomePageActivity extends AppCompatActivity{
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSocket.disconnect();
+    }
 }

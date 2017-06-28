@@ -1,6 +1,7 @@
 package studio.crazybt.adventure.helpers;
 
 import android.app.Activity;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -51,10 +52,14 @@ public class FragmentController {
         fragmentTransaction.commit();
     }
 
-    public static void addFragment(FragmentActivity fragmentActivity, int layoutParent, Object obj){
+    public static void addFragment(FragmentActivity fragmentActivity, int layoutParent, Object obj, @Nullable String tag){
         FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(layoutParent, (Fragment) obj, obj.getClass().getName());
+        if(tag == null){
+            fragmentTransaction.add(layoutParent, (Fragment) obj, obj.getClass().getName());
+        }else{
+            fragmentTransaction.add(layoutParent, (Fragment) obj, tag);
+        }
         fragmentTransaction.commit();
     }
 
@@ -93,5 +98,10 @@ public class FragmentController {
         for (int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
             fragmentManager.popBackStack();
         }
+    }
+
+    public static Fragment getFragment(FragmentActivity fragmentActivity, String tag){
+        FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+        return fragmentManager.findFragmentByTag(tag);
     }
 }

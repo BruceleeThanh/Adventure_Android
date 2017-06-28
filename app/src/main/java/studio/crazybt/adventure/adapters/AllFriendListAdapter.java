@@ -47,13 +47,13 @@ public class AllFriendListAdapter extends RecyclerView.Adapter<AllFriendListAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         PicassoHelper.execPicasso_ProfileImage(rootContext, users.get(position).getAvatar(), holder.ivProfileImage);
-        holder.tvProfileName.setText(users.get(position).getFirstName() + " " + users.get(position).getLastName());
+        holder.tvProfileName.setText(users.get(position).getFullName());
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(rootContext, ProfileActivity.class);
                 intent.putExtra(CommonConstants.KEY_ID_USER, users.get(position).getId());
-                intent.putExtra(CommonConstants.KEY_USERNAME, users.get(position).getFirstName() + " " + users.get(position).getLastName());
+                intent.putExtra(CommonConstants.KEY_USERNAME, users.get(position).getFullName());
                 rootContext.startActivity(intent);
             }
         });
@@ -62,7 +62,7 @@ public class AllFriendListAdapter extends RecyclerView.Adapter<AllFriendListAdap
             public void onClick(View view) {
                 Intent intent = new Intent(rootContext, ProfileActivity.class);
                 intent.putExtra(CommonConstants.KEY_ID_USER, users.get(position).getId());
-                intent.putExtra(CommonConstants.KEY_USERNAME, users.get(position).getFirstName() + " " + users.get(position).getLastName());
+                intent.putExtra(CommonConstants.KEY_USERNAME, users.get(position).getFullName());
                 rootContext.startActivity(intent);
             }
         });

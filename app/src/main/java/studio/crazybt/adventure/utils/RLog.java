@@ -28,6 +28,8 @@ public class RLog {
         if(BuildConfig.DEBUG){
             Log.i(TAG, String.valueOf(message));
         }
+
+        Log.i(TAG, String.valueOf(message));
     }
 
     public static void w(Object message){

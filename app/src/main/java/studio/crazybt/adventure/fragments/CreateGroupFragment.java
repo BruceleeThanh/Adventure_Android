@@ -92,12 +92,18 @@ public class CreateGroupFragment extends Fragment {
 
     private String token = null;
 
+    public static CreateGroupFragment newInstance() {
+        Bundle args = new Bundle();
+        CreateGroupFragment fragment = new CreateGroupFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_create_group, container, false);
-
         }
         initControls();
         return rootView;
@@ -125,7 +131,7 @@ public class CreateGroupFragment extends Fragment {
     private void initCreator() {
         User storageUser = realm.where(User.class).equalTo("id", SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_ID, "")).findFirst();
         PicassoHelper.execPicasso_ProfileImage(getContext(), storageUser.getAvatar(), ivProfileImage);
-        tvProfileName.setText(storageUser.getFirstName() + " " + storageUser.getLastName());
+        tvProfileName.setText(storageUser.getFullName());
     }
 
     private void initSpinnerPermission() {

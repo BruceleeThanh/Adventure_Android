@@ -34,6 +34,7 @@ public class ApiConstants {
     private static String API_ROOT = SharedPref.getInstance(RealmUtils.getApplication()).getString("API_ROOT", null);
     private static String API_ROOT_IMAGES = SharedPref.getInstance(RealmUtils.getApplication()).getString("API_ROOT_IMAGES", null);
 
+    // apis
     private static final String API_SCHEME = "http";
     public static final String API_NORMAL_SIGNUP = "user/sign_up";
     public static final String API_NORMAL_LOGIN = "user/login";
@@ -87,12 +88,17 @@ public class ApiConstants {
     public static final String API_ACCEPT_REQUEST_GROUP_MEMBER = "group_member/accept_request";
     public static final String API_REJECT_REQUEST_GROUP_MEMBER = "group_member/reject_request";
     public static final String API_INVITE_GROUP_MEMBER = "group_member/invite";
+    public static final String API_REMOVE_INVITE_GROUP_MEMBER = "group_member/remove_invite";
+    public static final String API_SEARCH_INVITE_GROUP_MEMBER = "group_member/search_invite";
     public static final String API_LEAVE_GROUP_GROUP_MEMBER = "group_member/leave_group";
     public static final String API_REMOVE_MEMBER_GROUP_MEMBER = "group_member/remove_member";
     public static final String API_MAKE_ADMIN_GROUP_MEMBER = "group_member/make_admin";
     public static final String API_REMOVE_ADMIN_GROUP_MEMBER = "group_member/remove_admin";
     public static final String API_BLOCK_MEMBER_GROUP_MEMBER = "group_member/block_member";
     public static final String API_UNBLOCK_MEMBER_GROUP_MEMBER = "group_member/unblock_member";
+
+    // socket
+    public static final String SOCKET_USER_ONLINE = "user_online";
 
     // Default params
     public static final String DEF_CODE = "code";
@@ -105,6 +111,7 @@ public class ApiConstants {
     public static final String KEY_ID_COMMENT = "id_comment";
     public static final String KEY_ID_GROUP = "id_group";
     public static final String KEY_ID_TRIP = "id_trip";
+    public static final String KEY_ID_USER = "id_user";
     public static final String KEY_PHONE_NUMBER_EMAIL = "phone_number_email";
     public static final String KEY_PHONE_NUMBER = "phone_number";
     public static final String KEY_EMAIL = "email";
@@ -126,7 +133,6 @@ public class ApiConstants {
     public static final String KEY_IMAGE_DESCRIPTION = "image_description";
     public static final String KEY_PERMISSION = "permission";
     public static final String KEY_TYPE = "type";
-    public static final String KEY_LATEST_ACTIVE = "latest_active";
     public static final String KEY_AMOUNT_LIKE = "amount_like";
     public static final String KEY_AMOUNT_COMMENT = "amount_comment";
     public static final String KEY_IS_LIKE = "is_like";
@@ -205,6 +211,14 @@ public class ApiConstants {
     public static final String KEY_ADMINS = "admins";
     public static final String KEY_ID_GROUP_MEMBER = "id_group_member";
     public static final String KEY_MESSAGE = "message";
+    public static final String KEY_SUMMARY_INFO = "summary_info";
+    public static final String KEY_TIME_LINE = "time_line";
+    public static final String KEY_INFO = "info";
+    public static final String KEY_USER_POST = "user_post";
+    public static final String KEY_COUNT_TRIP_CREATED = "count_trip_created";
+    public static final String KEY_COUNT_TRIP_JOINED = "count_trip_joined";
+    public static final String KEY_COUNT_PLACE_ARRIVED = "count_place_arrived";
+    public static final String KEY_COUNT_FOLLOWER = "count_follower";
 
     public ApiConstants() {
 
@@ -239,6 +253,13 @@ public class ApiConstants {
     private static void setBaseUrl(String rootUrl) {
         builder = new Uri.Builder();
         builder.scheme(API_SCHEME).encodedAuthority(rootUrl);
+    }
+
+    public static String getBaseUrl(){ // http://ip:port
+        String s = API_ROOT;
+        String[] parts = s.split("/");
+        setBaseUrl(parts[0]);
+        return builder.build().toString();
     }
 
     public Uri.Builder getBaseApi(String rootUrl) {

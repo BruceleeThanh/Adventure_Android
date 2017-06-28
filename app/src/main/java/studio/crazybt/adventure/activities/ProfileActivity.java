@@ -19,6 +19,8 @@ import studio.crazybt.adventure.libs.CommonConstants;
 public class ProfileActivity extends AppCompatActivity {
 
     private boolean isDefaultUser = false;
+    private String idUser = null;
+    private String username = null;
 
     public static Intent newInstance(Context context, String idUser, String username) {
         Intent intent = new Intent(context, ProfileActivity.class);
@@ -31,19 +33,26 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        String idUser = CommonConstants.VAL_ID_DEFAULT;
-        String username = CommonConstants.VAL_USERNAME_DEFAUT;
+
+        loadInstance();
+        initProfileFragment();
+    }
+
+    private void loadInstance(){
+        idUser = CommonConstants.VAL_ID_DEFAULT;
+        username = CommonConstants.VAL_USERNAME_DEFAUT;
+
         if (getIntent().getStringExtra("ID_USER") != null) {
-            idUser = getIntent().getStringExtra("ID_USER").toString();
+            idUser = getIntent().getStringExtra("ID_USER");
         }
         if (getIntent().getStringExtra("USERNAME") != null) {
-            username = getIntent().getStringExtra("USERNAME").toString();
+            username = getIntent().getStringExtra("USERNAME");
         }
-
-        ProfileFragment profileFragment = ProfileFragment.newInstance(idUser, username);
-        FragmentController.replaceFragment(this, R.id.rlProfile, profileFragment);
-
         isDefaultUser = idUser.equals(CommonConstants.VAL_ID_DEFAULT);
+    }
+
+    private void initProfileFragment(){
+        FragmentController.replaceFragment(this, R.id.rlProfile, ProfileFragment.newInstance(idUser, username));
     }
 
     @Override
@@ -59,6 +68,15 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() <= 0) {
+            finish();
+        } else {
+            super.onBackPressed();
+        }
     }
 
 

@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
+import studio.crazybt.adventure.adapters.GroupShortcutInviteListAdapter;
 import studio.crazybt.adventure.adapters.GroupShortcutListAdapter;
 import studio.crazybt.adventure.models.Group;
 
@@ -31,7 +32,7 @@ public class TabInviteGroupFragment extends Fragment {
     RecyclerView rvGroupInvite;
 
     private View rootView = null;
-    private GroupShortcutListAdapter groupInviteAdapter = null;
+    private GroupShortcutInviteListAdapter groupInviteAdapter = null;
     private List<Group> lstGroupInvites = null;
 
     public static TabInviteGroupFragment newInstance() {
@@ -51,7 +52,6 @@ public class TabInviteGroupFragment extends Fragment {
         }
         initControls();
         initEvents();
-        initGroupInvitesList();
         return rootView;
     }
 
@@ -65,14 +65,14 @@ public class TabInviteGroupFragment extends Fragment {
     }
 
     private void initGroupInvitesList(){
-        groupInviteAdapter = new GroupShortcutListAdapter(getActivity(), getContext(), lstGroupInvites);
-        rvGroupInvite.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+        groupInviteAdapter = new GroupShortcutInviteListAdapter(getActivity(), getContext(), lstGroupInvites);
+        rvGroupInvite.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rvGroupInvite.setAdapter(groupInviteAdapter);
     }
 
     public void setGroupInvitesData(List<Group> lstGroupInvites){
-        this.lstGroupInvites.clear();
-        this.lstGroupInvites.addAll(lstGroupInvites);
+        this.lstGroupInvites = lstGroupInvites;
+        initGroupInvitesList();
         if(this.lstGroupInvites.isEmpty()){
             tvEmptyGroupInvite.setVisibility(View.VISIBLE);
             rvGroupInvite.setVisibility(View.GONE);
@@ -81,5 +81,9 @@ public class TabInviteGroupFragment extends Fragment {
             rvGroupInvite.setVisibility(View.VISIBLE);
         }
         groupInviteAdapter.notifyDataSetChanged();
+    }
+
+    public GroupShortcutInviteListAdapter getGroupInviteAdapter() {
+        return groupInviteAdapter;
     }
 }

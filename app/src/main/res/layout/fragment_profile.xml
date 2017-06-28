@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:fitsSystemWindows="true"
     tools:context=".activities.SplashActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -50,216 +49,224 @@
         android:layout_height="@dimen/profile_image_largest"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:background="@drawable/bg_white_border_iv"
-        android:padding="3dp"
+        android:padding="2dp"
+        android:scaleType="centerCrop"
+        android:cropToPadding="true"
         android:src="@drawable/img_profile"
         app:layout_anchor="@id/main.appbar"
-        app:layout_anchorGravity="bottom|left|end"
-        android:scaleType="centerCrop"/>
+        app:layout_anchorGravity="bottom|left|end"/>
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srlProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <RelativeLayout
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nsvTimeline"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:descendantFocusability="blocksDescendants">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
-                android:id="@+id/llAction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvProfileName"
-                android:layout_marginLeft="@dimen/margin_toleftof_profile_image_largest"
-                android:layout_marginTop="@dimen/margin_big"
-                android:divider="@drawable/partition_gray_line_vertical"
-                android:orientation="horizontal"
-                android:showDividers="middle">
-
-                <TextView
-                    android:id="@+id/tvAddFriend"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/selector_gray_white_tv"
-                    android:clickable="true"
-                    android:drawableLeft="@drawable/ic_person_add_gray_24dp"
-                    android:drawablePadding="@dimen/margin_small"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="@dimen/margin_medium"
-                    android:paddingRight="@dimen/margin_medium"
-                    android:text="@string/add_friend_btn_friend_and_follow"
-                    android:textColor="@color/secondary_text"/>
-
-                <TextView
-                    android:id="@+id/tvFollow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/selector_gray_white_tv"
-                    android:clickable="true"
-                    android:drawableLeft="@drawable/ic_add_alert_gray_24dp"
-                    android:drawablePadding="@dimen/margin_small"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="@dimen/margin_medium"
-                    android:paddingRight="@dimen/margin_medium"
-                    android:text="@string/follow_btn_friend_and_follow"
-                    android:textColor="@color/secondary_text"/>
-
-            </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/rlInfoIntro"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_more_than_large"
-                android:background="@color/white"
-                android:paddingBottom="@dimen/margin_medium"
-                android:paddingTop="@dimen/margin_medium">
-
-
-                <TextView
-                    android:id="@+id/tvIntroInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_medium"
-                    android:layout_marginRight="@dimen/margin_medium"
-                    android:text="Một thằng coder thích thiên nhiên, ước mơ cứu cả thế giới bằng chính đôi bàn tay gõ phím của mình.!"
-                    android:textColor="@color/primary_text"/>
+                android:layout_height="match_parent"
+                android:descendantFocusability="blocksDescendants">
 
                 <LinearLayout
-                    android:id="@+id/llIntro"
-                    android:layout_width="match_parent"
+                    android:id="@+id/llAction"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvIntroInfo"
-                    android:layout_marginLeft="@dimen/margin_medium"
-                    android:layout_marginRight="@dimen/margin_medium"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:background="@drawable/bg_gray_white_btn"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvIntroHostTrip"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_medium"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:drawablePadding="@dimen/margin_small"
-                        android:gravity="center_vertical"
-                        android:text="Tổ chức 162 chuyến đi"
-                        android:textColor="@color/primary_text"/>
-
-                    <TextView
-                        android:id="@+id/tvIntroJoinTrip"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/ivProfileImage"
-                        android:layout_marginLeft="@dimen/margin_medium"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:drawablePadding="@dimen/margin_small"
-                        android:gravity="center_vertical"
-                        android:text="Tham gia 29 chuyến đi"
-                        android:textColor="@color/primary_text"/>
-
-                    <TextView
-                        android:id="@+id/tvIntroPlace"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/ivProfileImage"
-                        android:layout_marginLeft="@dimen/margin_medium"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:drawablePadding="@dimen/margin_small"
-                        android:gravity="center_vertical"
-                        android:text="Đặt chân tới 1234 địa điểm"
-                        android:textColor="@color/primary_text"/>
-
-                    <TextView
-                        android:id="@+id/tvIntroFollowing"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/ivProfileImage"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:layout_marginLeft="@dimen/margin_medium"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:drawablePadding="@dimen/margin_small"
-                        android:gravity="center_vertical"
-                        android:text="12962 người đang theo dõi"
-                        android:textColor="@color/primary_text"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/menu_btn_height"
-                    android:layout_below="@+id/llIntro"
-                    android:layout_marginLeft="@dimen/margin_medium"
-                    android:layout_marginRight="@dimen/margin_medium"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:background="@drawable/bg_gray_white_btn"
+                    android:layout_below="@+id/tvProfileName"
+                    android:layout_marginLeft="@dimen/margin_toleftof_profile_image_largest"
+                    android:layout_marginTop="@dimen/margin_big"
                     android:divider="@drawable/partition_gray_line_vertical"
-                    android:dividerPadding="@dimen/margin_small"
                     android:orientation="horizontal"
                     android:showDividers="middle">
 
                     <TextView
-                        android:id="@+id/tvMenuInfo"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
+                        android:id="@+id/tvAddFriend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/selector_gray_white_tv"
                         android:clickable="true"
-                        android:gravity="center"
-                        android:text="@string/information_btn_profile"
+                        android:drawableLeft="@drawable/ic_person_add_gray_24dp"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/margin_medium"
+                        android:paddingRight="@dimen/margin_medium"
+                        android:text="@string/add_friend_btn_friend_and_follow"
                         android:textColor="@color/secondary_text"/>
 
                     <TextView
-                        android:id="@+id/tvMenuTrip"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
+                        android:id="@+id/tvFollow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/selector_gray_white_tv"
                         android:clickable="true"
-                        android:gravity="center"
-                        android:text="@string/trip_btn_profile"
+                        android:drawableLeft="@drawable/ic_add_alert_gray_24dp"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/margin_medium"
+                        android:paddingRight="@dimen/margin_medium"
+                        android:text="@string/follow_btn_friend_and_follow"
                         android:textColor="@color/secondary_text"/>
 
-                    <TextView
-                        android:id="@+id/tvMenuFriend"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/selector_gray_white_tv"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:text="@string/friend_btn_profile"
-                        android:textColor="@color/secondary_text"/>
-
-                    <TextView
-                        android:id="@+id/tvMenuPhoto"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/selector_gray_white_tv"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:text="@string/photo_btn_profile"
-                        android:textColor="@color/secondary_text"/>
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:id="@+id/rlInfoIntro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_more_than_large"
+                    android:background="@color/white"
+                    android:paddingBottom="@dimen/margin_medium"
+                    android:paddingTop="@dimen/margin_medium">
+
+
+                    <TextView
+                        android:id="@+id/tvIntroInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_medium"
+                        android:layout_marginRight="@dimen/margin_medium"
+                        android:textColor="@color/primary_text"
+                        android:textAlignment="center"
+                        android:layout_marginBottom="@dimen/margin_medium"/>
+
+                    <LinearLayout
+                        android:id="@+id/llIntro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvIntroInfo"
+                        android:layout_marginLeft="@dimen/margin_medium"
+                        android:layout_marginRight="@dimen/margin_medium"
+                        android:background="@drawable/bg_gray_white_btn"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvIntroCreatedTrip"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_medium"
+                            android:layout_marginTop="@dimen/margin_medium"
+                            android:drawablePadding="@dimen/margin_small"
+                            android:gravity="center_vertical"
+                            android:text=""
+                            android:textColor="@color/primary_text"/>
+
+                        <TextView
+                            android:id="@+id/tvIntroJoinedTrip"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/ivProfileImage"
+                            android:layout_marginLeft="@dimen/margin_medium"
+                            android:layout_marginTop="@dimen/margin_medium"
+                            android:drawablePadding="@dimen/margin_small"
+                            android:gravity="center_vertical"
+                            android:text=""
+                            android:textColor="@color/primary_text"/>
+
+                        <TextView
+                            android:id="@+id/tvIntroPlaceArrived"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/ivProfileImage"
+                            android:layout_marginLeft="@dimen/margin_medium"
+                            android:layout_marginTop="@dimen/margin_medium"
+                            android:drawablePadding="@dimen/margin_small"
+                            android:gravity="center_vertical"
+                            android:text=""
+                            android:textColor="@color/primary_text"/>
+
+                        <TextView
+                            android:id="@+id/tvIntroFollower"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/ivProfileImage"
+                            android:layout_marginBottom="@dimen/margin_medium"
+                            android:layout_marginLeft="@dimen/margin_medium"
+                            android:layout_marginTop="@dimen/margin_medium"
+                            android:drawablePadding="@dimen/margin_small"
+                            android:gravity="center_vertical"
+                            android:text=""
+                            android:textColor="@color/primary_text"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/menu_btn_height"
+                        android:layout_below="@+id/llIntro"
+                        android:layout_marginLeft="@dimen/margin_medium"
+                        android:layout_marginRight="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:background="@drawable/bg_gray_white_btn"
+                        android:divider="@drawable/partition_gray_line_vertical"
+                        android:dividerPadding="@dimen/margin_small"
+                        android:orientation="horizontal"
+                        android:showDividers="middle">
+
+                        <TextView
+                            android:id="@+id/tvMenuInfo"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:background="@drawable/selector_gray_white_tv"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:text="@string/information_btn_profile"
+                            android:textColor="@color/secondary_text"/>
+
+                        <TextView
+                            android:id="@+id/tvMenuTrip"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:background="@drawable/selector_gray_white_tv"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:text="@string/trip_btn_profile"
+                            android:textColor="@color/secondary_text"/>
+
+                        <TextView
+                            android:id="@+id/tvMenuFriend"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:background="@drawable/selector_gray_white_tv"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:text="@string/friend_btn_profile"
+                            android:textColor="@color/secondary_text"/>
+
+                        <TextView
+                            android:id="@+id/tvMenuPhoto"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:background="@drawable/selector_gray_white_tv"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:text="@string/photo_btn_profile"
+                            android:textColor="@color/secondary_text"/>
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvTimeline"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/rlInfoIntro"
+                    android:background="@color/primary_background_content"
+                    android:nestedScrollingEnabled="false"/>
 
             </RelativeLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvTimeline"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/rlInfoIntro"
-                android:background="@color/primary_background_content"
-                android:nestedScrollingEnabled="false"/>
-
-        </RelativeLayout>
-
-    </android.support.v4.widget.NestedScrollView>
-
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>

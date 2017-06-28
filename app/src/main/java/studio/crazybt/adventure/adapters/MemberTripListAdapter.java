@@ -54,7 +54,7 @@ public class MemberTripListAdapter extends RecyclerView.Adapter<MemberTripListAd
     public void onBindViewHolder(ViewHolder holder, int position) {
         TripMember tripMember = lstTripMember.get(position);
         PicassoHelper.execPicasso_ProfileImage(rootContext, tripMember.getOwner().getAvatar(), holder.ivProfileImage);
-        holder.tvProfileName.setText(tripMember.getOwner().getFirstName() + " " + tripMember.getOwner().getLastName());
+        holder.tvProfileName.setText(tripMember.getOwner().getFullName());
         holder.tvProfileName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

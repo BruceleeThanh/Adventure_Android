@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<RelativeLayout
+    android:id="@+id/rlGroupInviteMember"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <EditText
+        android:id="@+id/etSearchPeople"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height_small"
+        android:layout_margin="@dimen/margin_medium"
+        android:drawableRight="@drawable/places_ic_search"
+        android:drawablePadding="@dimen/margin_medium"
+        android:paddingRight="@dimen/margin_medium"
+        android:hint="@string/title_search"
+        android:textSize="@dimen/txt_small_medium"
+        android:gravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:imeOptions="actionSearch"
+        android:inputType="text"/>
+
+    <RelativeLayout
+        android:id="@+id/rlSearchPeopleResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/etSearchPeople"/>
 
 </RelativeLayout>

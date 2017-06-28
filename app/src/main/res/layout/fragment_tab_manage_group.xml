@@ -6,31 +6,25 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
-    <ImageView
-        android:id="@+id/ivLabelGroupYourCreate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_group_grey_500_24dp"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_marginLeft="@dimen/margin_medium"/>
-
     <TextView
         android:id="@+id/tvLabelGroupYourCreate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/label_group_your_create"
-        android:layout_toRightOf="@+id/ivLabelGroupYourCreate"
-        android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_medium_big"
         android:textColor="@color/secondary_text"
         android:textStyle="bold"
-        android:textSize="@dimen/txt_small_medium"/>
+        android:textSize="@dimen/txt_small_medium"
+        android:drawableLeft="@drawable/ic_group_grey_500_24dp"
+        android:gravity="center_vertical"
+        android:drawablePadding="@dimen/margin_medium"
+        android:paddingLeft="@dimen/margin_medium"/>
 
     <View
         android:id="@+id/vLine1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/ivLabelGroupYourCreate"
+        android:layout_below="@+id/tvLabelGroupYourCreate"
         android:layout_marginTop="@dimen/margin_small"
         android:background="@drawable/partition_gray_line_horizontal"/>
 
@@ -51,33 +45,26 @@
         android:layout_marginTop="@dimen/margin_small"
         android:visibility="gone"/>
 
-    <ImageView
-        android:id="@+id/ivLabelGroupYourManage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_public_grey_500_24dp"
-        android:layout_below="@+id/rvGroupYourCreate"
-        android:layout_marginTop="@dimen/margin_medium_big"
-        android:layout_marginLeft="@dimen/margin_medium"/>
-
     <TextView
         android:id="@+id/tvLabelGroupYourManage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rvGroupYourCreate"
         android:text="@string/label_group_your_manage"
-        android:layout_toRightOf="@+id/ivLabelGroupYourManage"
-        android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_big"
         android:textColor="@color/secondary_text"
         android:textStyle="bold"
-        android:textSize="@dimen/txt_small_medium"/>
+        android:textSize="@dimen/txt_small_medium"
+        android:drawableLeft="@drawable/ic_public_grey_500_24dp"
+        android:gravity="center_vertical"
+        android:drawablePadding="@dimen/margin_medium"
+        android:paddingLeft="@dimen/margin_medium"/>
 
     <View
         android:id="@+id/vLine2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/ivLabelGroupYourManage"
+        android:layout_below="@+id/tvLabelGroupYourManage"
         android:layout_marginTop="@dimen/margin_small"
         android:background="@drawable/partition_gray_line_horizontal"/>
 

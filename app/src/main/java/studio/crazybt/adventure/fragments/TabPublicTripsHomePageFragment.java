@@ -183,7 +183,8 @@ public class TabPublicTripsHomePageFragment extends Fragment implements SwipeRef
                             JsonUtil.getInt(item, ApiConstants.KEY_AMOUNT_RATING, 0),
                             JsonUtil.getDouble(item, ApiConstants.KEY_RATING, 0),
                             JsonUtil.getString(item, ApiConstants.KEY_CREATED_AT, ""),
-                            JsonUtil.getInt(item, ApiConstants.KEY_PERMISSION, -1)
+                            JsonUtil.getInt(item, ApiConstants.KEY_PERMISSION, -1),
+                            JsonUtil.getInt(item, ApiConstants.KEY_TYPE, -1)
                     ));
                 }
                 tsaPublicTrips.notifyDataSetChanged();

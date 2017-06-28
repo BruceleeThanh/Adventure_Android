@@ -178,7 +178,7 @@ public class GroupFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         postListAdapter.setOnAdapterClickListener(new PostListAdapter.OnAdapterClick() {
             @Override
             public void onStatusDetailClick(int pos) {
-                startActivityForResult(StatusActivity.newInstance(getContext(), CommonConstants.ACT_STATUS_DETAIL, (Status)lstPosts.get(pos)), REQUEST_CODE);
+                startActivityForResult(StatusActivity.newInstance(getContext(), CommonConstants.ACT_STATUS_DETAIL, (Status) lstPosts.get(pos)), REQUEST_CODE);
             }
         });
         postListAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -329,35 +329,37 @@ public class GroupFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                                                 JsonUtil.getString(itemPost, ApiConstants.KEY_ID, ""),
                                                 JsonUtil.getString(itemPost, ApiConstants.KEY_CREATED_AT, ""),
                                                 JsonUtil.getString(itemPost, ApiConstants.KEY_CONTENT, ""),
-                                                JsonUtil.getInt(itemPost, ApiConstants.KEY_PERMISSION, 3),
-                                                JsonUtil.getInt(itemPost, ApiConstants.KEY_TYPE, 1),
+                                                JsonUtil.getInt(itemPost, ApiConstants.KEY_PERMISSION, -1),
+                                                JsonUtil.getInt(itemPost, ApiConstants.KEY_TYPE, -1),
                                                 JsonUtil.getInt(itemPost, ApiConstants.KEY_AMOUNT_LIKE, 0),
                                                 JsonUtil.getInt(itemPost, ApiConstants.KEY_AMOUNT_COMMENT, 0),
                                                 JsonUtil.getInt(itemPost, ApiConstants.KEY_IS_LIKE, 0),
                                                 JsonUtil.getInt(itemPost, ApiConstants.KEY_IS_COMMENT, 0),
                                                 imageContents));
                             } else if (typeItem == CommonConstants.VAL_TYPE_TRIP_GROUP) {
-                                lstPosts.add(new Trip(
-                                        JsonUtil.getString(itemPost, ApiConstants.KEY_ID, ""),
-                                        new User(JsonUtil.getString(owner, ApiConstants.KEY_ID, ""),
-                                                JsonUtil.getString(owner, ApiConstants.KEY_FIRST_NAME, ""),
-                                                JsonUtil.getString(owner, ApiConstants.KEY_LAST_NAME, ""),
-                                                JsonUtil.getString(owner, ApiConstants.KEY_AVATAR, "")),
-                                        JsonUtil.getString(itemPost, ApiConstants.KEY_NAME, ""),
-                                        JsonUtil.getString(itemPost, ApiConstants.KEY_START_AT, ""),
-                                        JsonUtil.getString(itemPost, ApiConstants.KEY_END_AT, ""),
-                                        JsonUtil.getString(itemPost, ApiConstants.KEY_START_POSITION, ""),
-                                        JsonUtil.getString(itemPost, ApiConstants.KEY_DESTINATION_SUMMARY, ""),
-                                        JsonUtil.getString(itemPost, ApiConstants.KEY_EXPENSE, ""),
-                                        imageContents,
-                                        JsonUtil.getInt(itemPost, ApiConstants.KEY_AMOUNT_PEOPLE, 1),
-                                        JsonUtil.getInt(itemPost, ApiConstants.KEY_AMOUNT_MEMBER, 1),
-                                        JsonUtil.getInt(itemPost, ApiConstants.KEY_AMOUNT_INTERESTED, 0),
-                                        JsonUtil.getInt(itemPost, ApiConstants.KEY_AMOUNT_RATING, 0),
-                                        JsonUtil.getDouble(itemPost, ApiConstants.KEY_RATING, 0),
-                                        JsonUtil.getString(itemPost, ApiConstants.KEY_CREATED_AT, ""),
-                                        JsonUtil.getInt(itemPost, ApiConstants.KEY_PERMISSION, -1)
-                                ));
+                                lstPosts.add(
+                                        new Trip(
+                                                JsonUtil.getString(itemPost, ApiConstants.KEY_ID, ""),
+                                                new User(JsonUtil.getString(owner, ApiConstants.KEY_ID, ""),
+                                                        JsonUtil.getString(owner, ApiConstants.KEY_FIRST_NAME, ""),
+                                                        JsonUtil.getString(owner, ApiConstants.KEY_LAST_NAME, ""),
+                                                        JsonUtil.getString(owner, ApiConstants.KEY_AVATAR, "")),
+                                                JsonUtil.getString(itemPost, ApiConstants.KEY_NAME, ""),
+                                                JsonUtil.getString(itemPost, ApiConstants.KEY_START_AT, ""),
+                                                JsonUtil.getString(itemPost, ApiConstants.KEY_END_AT, ""),
+                                                JsonUtil.getString(itemPost, ApiConstants.KEY_START_POSITION, ""),
+                                                JsonUtil.getString(itemPost, ApiConstants.KEY_DESTINATION_SUMMARY, ""),
+                                                JsonUtil.getString(itemPost, ApiConstants.KEY_EXPENSE, ""),
+                                                imageContents,
+                                                JsonUtil.getInt(itemPost, ApiConstants.KEY_AMOUNT_PEOPLE, 1),
+                                                JsonUtil.getInt(itemPost, ApiConstants.KEY_AMOUNT_MEMBER, 1),
+                                                JsonUtil.getInt(itemPost, ApiConstants.KEY_AMOUNT_INTERESTED, 0),
+                                                JsonUtil.getInt(itemPost, ApiConstants.KEY_AMOUNT_RATING, 0),
+                                                JsonUtil.getDouble(itemPost, ApiConstants.KEY_RATING, 0),
+                                                JsonUtil.getString(itemPost, ApiConstants.KEY_CREATED_AT, ""),
+                                                JsonUtil.getInt(itemPost, ApiConstants.KEY_PERMISSION, -1),
+                                                JsonUtil.getInt(itemPost, ApiConstants.KEY_TYPE, -1)
+                                        ));
                             }
                         }
                         postListAdapter.notifyDataSetChanged();
@@ -407,21 +409,21 @@ public class GroupFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         }
     }
 
-    private void displayRequestMemberGroup(){
+    private void displayRequestMemberGroup() {
         tvJoinGroup.setText(R.string.join_group);
         tvJoinGroup.setTextColor(getResources().getColor(R.color.secondary_text));
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_person_add_gray_24dp);
         tvJoinGroup.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
     }
 
-    private void displayJoinedGroup(){
+    private void displayJoinedGroup() {
         tvJoinGroup.setText(R.string.joined_group);
         tvJoinGroup.setTextColor(getResources().getColor(R.color.primary));
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_done_green_600_24dp);
         tvJoinGroup.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
     }
 
-    private void displayRequestedMemberGroup(){
+    private void displayRequestedMemberGroup() {
         tvJoinGroup.setText(R.string.requested_member_group);
         tvJoinGroup.setTextColor(getResources().getColor(R.color.secondary_text));
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_done_grey_400_24dp);
@@ -511,7 +513,7 @@ public class GroupFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     //endregion
 
     //region Cancel request member group
-    private void displayDialogCancelRequest(){
+    private void displayDialogCancelRequest() {
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.title_cancel_request_member_group)
                 .setMessage(R.string.msg_confirm_cancel_request_member_group)
@@ -562,7 +564,7 @@ public class GroupFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     //endregion
 
     //region Leave group
-    private void displayDialogLeaveGroup(){
+    private void displayDialogLeaveGroup() {
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.leave_group)
                 .setMessage(R.string.msg_confirm_leave_group)

@@ -3,6 +3,7 @@ package studio.crazybt.adventure.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -67,6 +68,9 @@ public class GroupActivity extends AppCompatActivity {
 
     private AdventureRequest adventureRequest = null;
 
+    private int tabSelectedIconColor;
+    private int tabUnselectedIconColor;
+
     public static Intent newInstance(Context context) {
         return new Intent(context, GroupActivity.class);
     }
@@ -92,6 +96,8 @@ public class GroupActivity extends AppCompatActivity {
 
         initToolbar();
 
+        tabSelectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary);
+        tabUnselectedIconColor = ContextCompat.getColor(this.getBaseContext(), R.color.primary_background_content);
     }
 
     private void initEvents() {
@@ -118,11 +124,10 @@ public class GroupActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        RLog.i("Count fragment: " + String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
         if (getSupportFragmentManager().getBackStackEntryCount() <= 0) {
             finish();
         } else {
-            if(getSupportFragmentManager().getBackStackEntryCount() == 1){
+            if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                 onStart();
             }
             super.onBackPressed();
@@ -188,7 +193,7 @@ public class GroupActivity extends AppCompatActivity {
         });
     }
 
-    private List<Group> readGroup(JSONArray array){
+    private List<Group> readGroup(JSONArray array) {
         List<Group> lstGroups = null;
         if (array != null) {
             lstGroups = new ArrayList<>();
@@ -206,15 +211,69 @@ public class GroupActivity extends AppCompatActivity {
         return lstGroups;
     }
 
-    private void bindingData(){
+    private void bindingData() {
         TabManageGroupFragment tabManageGroup = (TabManageGroupFragment) getSupportFragmentManager().findFragmentByTag(TabLayoutAdapter.makeFragmentName(R.id.vpGroup, 0));
         tabManageGroup.setData(lstGroupCreates, lstGroupManages);
+
         TabJoinGroupFragment tabJoinGroup = (TabJoinGroupFragment) getSupportFragmentManager().findFragmentByTag(TabLayoutAdapter.makeFragmentName(R.id.vpGroup, 1));
         tabJoinGroup.setGroupYourJoinData(lstGroupJoins);
+
         TabSuggestionsGroupFragment tabSuggestionsGroup = (TabSuggestionsGroupFragment) getSupportFragmentManager().findFragmentByTag(TabLayoutAdapter.makeFragmentName(R.id.vpGroup, 2));
         tabSuggestionsGroup.setGroupYourRequestsData(lstGroupRequests);
         tabSuggestionsGroup.setGroupSuggestionsData(lstGroupSuggests);
+
         TabInviteGroupFragment tabInviteGroup = (TabInviteGroupFragment) getSupportFragmentManager().findFragmentByTag(TabLayoutAdapter.makeFragmentName(R.id.vpGroup, 3));
         tabInviteGroup.setGroupInvitesData(lstGroupInvites);
+        // remove invite member group listener
+        tabInviteGroup.getGroupInviteAdapter().setOnNotifyResponseReceived(getOnNotifyResponseReceived());
+
+        if(!lstGroupInvites.isEmpty()){
+            tlGroup.with(3, R.string.invite_tablayout_group).iconColor(tabUnselectedIconColor).hasBadge().badgeCount(lstGroupInvites.size()).build();
+        }
+        tlGroup.addOnTabSelectedListener(getOnTabSelectedListener());
+    }
+
+    private TabLayout.OnTabSelectedListener getOnTabSelectedListener() {
+        return new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 3) {
+                    if (!lstGroupInvites.isEmpty()) {
+                        tlGroup.with(3, R.string.invite_tablayout_group).iconColor(tabSelectedIconColor).hasBadge().badgeCount(lstGroupInvites.size()).build();
+                    } else {
+                        tlGroup.with(3, R.string.invite_tablayout_group).iconColor(tabSelectedIconColor).noBadge().build();
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 3) {
+                    if (!lstGroupInvites.isEmpty()) {
+                        tlGroup.with(3, R.string.invite_tablayout_group).iconColor(tabUnselectedIconColor).hasBadge().badgeCount(lstGroupInvites.size()).build();
+                    } else {
+                        tlGroup.with(3, R.string.invite_tablayout_group).iconColor(tabUnselectedIconColor).noBadge().build();
+                    }
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        };
+    }
+
+    private AdventureRequest.OnNotifyResponseReceived getOnNotifyResponseReceived(){
+        return new AdventureRequest.OnNotifyResponseReceived() {
+            @Override
+            public void onNotify() {
+                if(!lstGroupInvites.isEmpty()){
+                    tlGroup.with(3, R.string.invite_tablayout_group).iconColor(tabSelectedIconColor).hasBadge().badgeCount(lstGroupInvites.size()).build();
+                }else{
+                    tlGroup.with(3, R.string.invite_tablayout_group).iconColor(tabSelectedIconColor).noBadge().build();
+                }
+            }
+        };
     }
 }

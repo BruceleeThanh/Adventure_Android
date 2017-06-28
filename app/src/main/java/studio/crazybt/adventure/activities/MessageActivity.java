@@ -14,15 +14,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.fragments.MessageFragment;
-import studio.crazybt.adventure.fragments.SearchUserFragment;
+import studio.crazybt.adventure.fragments.SearchUserMessageFragment;
 import studio.crazybt.adventure.helpers.FragmentController;
+import studio.crazybt.adventure.libs.CommonConstants;
 
 public class MessageActivity extends AppCompatActivity {
 
     @BindView(R.id.tbMessage)
     Toolbar tbMessage;
     private static int typeShow = 0;
-    private SearchUserFragment searchUserFragment = null;
+    private SearchUserMessageFragment searchUserMessageFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class MessageActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        searchUserFragment = SearchUserFragment.newInstance();
+        searchUserMessageFragment = SearchUserMessageFragment.newInstance();
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar_menu_message, menu);
         MenuItem searchItem = menu.findItem(R.id.svSearchUser);
@@ -57,13 +58,13 @@ public class MessageActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchUserFragment.loadData(query);
+                searchUserMessageFragment.loadData(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchUserFragment.loadData(newText);
+                searchUserMessageFragment.loadData(newText);
                 return false;
             }
         });
@@ -73,13 +74,13 @@ public class MessageActivity extends AppCompatActivity {
         MenuItemCompat.OnActionExpandListener expandListener = new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                FragmentController.removeFragment(MessageActivity.this, searchUserFragment);
+                FragmentController.removeFragment(MessageActivity.this, searchUserMessageFragment);
                 return true;  // Return true to collapse action view
             }
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                FragmentController.addFragment_Animation(MessageActivity.this, R.id.rlMessage, searchUserFragment);
+                FragmentController.addFragment_Animation(MessageActivity.this, R.id.rlMessage, searchUserMessageFragment);
                 return true;  // Return true to expand action view
             }
         };

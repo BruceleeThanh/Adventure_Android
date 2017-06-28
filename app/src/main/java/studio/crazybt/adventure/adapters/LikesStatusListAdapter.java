@@ -50,12 +50,12 @@ public class LikesStatusListAdapter extends RecyclerView.Adapter<LikesStatusList
             public void onClick(View view) {
                 Intent intent = new Intent(rootContext, ProfileActivity.class);
                 intent.putExtra(CommonConstants.KEY_ID_USER, user.getId());
-                intent.putExtra(CommonConstants.KEY_USERNAME, user.getFirstName() + " " + user.getLastName());
+                intent.putExtra(CommonConstants.KEY_USERNAME, user.getFullName());
                 rootContext.startActivity(intent);
             }
         });
         PicassoHelper.execPicasso_ProfileImage(rootContext, user.getAvatar(), holder.ivProfileImage);
-        holder.tvProfileName.setText(user.getFirstName() + " " + user.getLastName());
+        holder.tvProfileName.setText(user.getFullName());
         if (user.getIsFriend() == -1) {
             holder.btnFriendOrFollow.setVisibility(View.GONE);
         } else {

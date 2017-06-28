@@ -63,13 +63,13 @@ public class SuggestionsFriendListAdapter extends RecyclerView.Adapter<Suggestio
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         PicassoHelper.execPicasso_ProfileImage(rootContext, users.get(position).getAvatar(), holder.ivProfileImage);
-        holder.tvProfileName.setText(users.get(position).getFirstName() + " " + users.get(position).getLastName());
+        holder.tvProfileName.setText(users.get(position).getFullName());
         holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(rootContext, ProfileActivity.class);
                 intent.putExtra(CommonConstants.KEY_ID_USER, users.get(position).getId());
-                intent.putExtra(CommonConstants.KEY_USERNAME, users.get(position).getFirstName() + " " + users.get(position).getLastName());
+                intent.putExtra(CommonConstants.KEY_USERNAME, users.get(position).getFullName());
                 rootContext.startActivity(intent);
             }
         });
@@ -78,7 +78,7 @@ public class SuggestionsFriendListAdapter extends RecyclerView.Adapter<Suggestio
             public void onClick(View view) {
                 Intent intent = new Intent(rootContext, ProfileActivity.class);
                 intent.putExtra(CommonConstants.KEY_ID_USER, users.get(position).getId());
-                intent.putExtra(CommonConstants.KEY_USERNAME, users.get(position).getFirstName() + " " + users.get(position).getLastName());
+                intent.putExtra(CommonConstants.KEY_USERNAME, users.get(position).getFullName());
                 rootContext.startActivity(intent);
             }
         });
@@ -98,7 +98,7 @@ public class SuggestionsFriendListAdapter extends RecyclerView.Adapter<Suggestio
                     public void onResponse(JSONObject response) {
                         if(jsonUtil.getInt(response, apiConstants.DEF_CODE, 0) == 1){
                             Toast.makeText(rootContext, rootContext.getResources().getString(R.string.success_request_friend) + " "
-                                    + users.get(position).getFirstName() + " " + users.get(position).getLastName(), Toast.LENGTH_LONG).show();
+                                    + users.get(position).getFullName(), Toast.LENGTH_LONG).show();
                         }
                         users.remove(position);
                         notifyDataSetChanged();

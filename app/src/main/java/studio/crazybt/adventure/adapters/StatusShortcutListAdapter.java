@@ -82,19 +82,19 @@ public class StatusShortcutListAdapter extends RecyclerView.Adapter<StatusShortc
             public void onClick(View view) {
                 Intent intent = new Intent(rootContext, ProfileActivity.class);
                 intent.putExtra(CommonConstants.KEY_ID_USER, status.getUser().getId());
-                intent.putExtra(CommonConstants.KEY_USERNAME, status.getUser().getFirstName() + " " + status.getUser().getLastName());
+                intent.putExtra(CommonConstants.KEY_USERNAME, status.getUser().getFullName());
                 rootContext.startActivity(intent);
             }
         });
 
         // User name
-        holder.tvProfileName.setText(status.getUser().getFirstName() + " " + status.getUser().getLastName());
+        holder.tvProfileName.setText(status.getUser().getFullName());
         holder.tvProfileName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(rootContext, ProfileActivity.class);
                 intent.putExtra(CommonConstants.KEY_ID_USER, status.getUser().getId());
-                intent.putExtra(CommonConstants.KEY_USERNAME, status.getUser().getFirstName() + " " + status.getUser().getLastName());
+                intent.putExtra(CommonConstants.KEY_USERNAME, status.getUser().getFullName());
                 rootContext.startActivity(intent);
             }
         });

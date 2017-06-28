@@ -115,8 +115,17 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
     private AdventureFileRequest adventureFileRequest = null;
     private Realm realm;
     private String token;
-    private String idTrip;
+    private String idTrip = null;
     private int countImageUploaded = 0;
+
+    public static CreateDiaryTripFragment newInstance(String idTrip) {
+
+        Bundle args = new Bundle();
+        args.putString(ApiConstants.KEY_ID_TRIP, idTrip);
+        CreateDiaryTripFragment fragment = new CreateDiaryTripFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -124,7 +133,7 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_create_diary_trip, container, false);
         }
-        idTrip = getArguments().getString(ApiConstants.KEY_ID_TRIP);
+        loadInstance();
         initControls();
         initEvents();
         initCreator();
@@ -132,6 +141,13 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
         initImagesList();
         initDetailDiaryList();
         return rootView;
+    }
+
+    private void loadInstance(){
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            idTrip = bundle.getString(ApiConstants.KEY_ID_TRIP, idTrip);
+        }
     }
 
     private void initControls() {
@@ -169,7 +185,7 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
     private void initCreator() {
         User storageUser = realm.where(User.class).equalTo("id", SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_ID, "")).findFirst();
         PicassoHelper.execPicasso_ProfileImage(getContext(), storageUser.getAvatar(), ivProfileImage);
-        tvProfileName.setText(storageUser.getFirstName() + " " + storageUser.getLastName());
+        tvProfileName.setText(storageUser.getFullName());
     }
 
     private void initImagesList() {

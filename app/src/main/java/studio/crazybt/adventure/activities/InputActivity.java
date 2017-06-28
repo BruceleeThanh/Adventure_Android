@@ -13,6 +13,7 @@ import studio.crazybt.adventure.fragments.CreateGroupFragment;
 import studio.crazybt.adventure.fragments.CreateStatusFragment;
 import studio.crazybt.adventure.fragments.CreateTripFragment;
 import studio.crazybt.adventure.fragments.EditProfileInfoFragment;
+import studio.crazybt.adventure.fragments.ProfileBasicInfoFragment;
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.CommonConstants;
@@ -20,11 +21,7 @@ import studio.crazybt.adventure.libs.CommonConstants;
 public class InputActivity extends AppCompatActivity {
 
     private static int typeShow = 0;
-    private CreateStatusFragment createStatusFragment;
     private CreateTripFragment createTripFragment;
-    private CreateDiaryTripFragment createDiaryTripFragment;
-    private EditProfileInfoFragment editProfileInfoFragment;
-    private CreateGroupFragment createGroupFragment;
 
     public static Intent newInstance(Context context, int typeShow) {
         Intent intent = new Intent(context, InputActivity.class);
@@ -57,70 +54,78 @@ public class InputActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
-        ButterKnife.bind(this);
+
+        initControls();
+        loadInstance();
+    }
+
+    private void loadInstance(){
         Intent intent = getIntent();
         typeShow = intent.getIntExtra(CommonConstants.KEY_TYPE_SHOW, typeShow);
-        if (typeShow == CommonConstants.ACT_CREATE_STATUS) {
+        if (typeShow == CommonConstants.ACT_CREATE_STATUS) { // create normal status
             initCreateStatus();
-        } else if (typeShow == CommonConstants.ACT_CREATE_TRIP) {
+        } else if (typeShow == CommonConstants.ACT_CREATE_TRIP) { // create normal trip
             initCreateTrip();
-        } else if (typeShow == CommonConstants.ACT_CREATE_DIARY_TRIP) {
+        } else if (typeShow == CommonConstants.ACT_CREATE_DIARY_TRIP) { // create diary trip
             String idTrip = intent.getStringExtra(ApiConstants.KEY_ID_TRIP);
             initCreateDiaryTrip(idTrip);
-        } else if (typeShow == CommonConstants.ACT_CREATE_DISCUSS_TRIP) {
+        } else if (typeShow == CommonConstants.ACT_CREATE_DISCUSS_TRIP) { // create discuss trip - status in trip
             String idTrip = intent.getStringExtra(ApiConstants.KEY_ID_TRIP);
             initCreateDiscussTrip(idTrip);
-        } else if (typeShow == CommonConstants.ACT_EDIT_PROFILE_INFO) {
+        } else if (typeShow == CommonConstants.ACT_EDIT_PROFILE_INFO) { // edit profile info
             initEditProfileInfo();
-        } else if(typeShow == CommonConstants.ACT_VIEW_PROFILE_INFO){
-
-        } else if(typeShow == CommonConstants.ACT_CREATE_GROUP){
+        } else if(typeShow == CommonConstants.ACT_VIEW_PROFILE_INFO){ // view profile info
+            //String idUser = intent.getStringExtra(ApiConstants.KEY_ID_USER);
+            //initViewProfileBasicInfo(idUser);
+        } else if(typeShow == CommonConstants.ACT_CREATE_GROUP){ // create group
             initCreateGroup();
+        } else if(typeShow == CommonConstants.ACT_CREATE_STATUS_GROUP) { // create status in group
+            String idGroup = intent.getStringExtra(ApiConstants.KEY_ID_GROUP);
+            initCreateStatusGroup(idGroup);
+        }  else if(typeShow == CommonConstants.ACT_CREATE_TRIP_GROUP) { // create status in group
+            String idGroup = intent.getStringExtra(ApiConstants.KEY_ID_GROUP);
+            initCreateTripGroup(idGroup);
         }
     }
 
+    private void initControls(){
+        ButterKnife.bind(this);
+    }
+
     private void initCreateStatus() {
-        createStatusFragment = new CreateStatusFragment();
-        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, createStatusFragment);
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, CreateStatusFragment.newInstance());
     }
 
     private void initCreateTrip() {
-        createTripFragment = new CreateTripFragment();
-        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, createTripFragment);
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, CreateTripFragment.newInstance());
     }
 
     private void initCreateDiaryTrip(String idTrip) {
-        Bundle bundle = new Bundle();
-        bundle.putString(ApiConstants.KEY_ID_TRIP, idTrip);
-        createDiaryTripFragment = new CreateDiaryTripFragment();
-        createDiaryTripFragment.setArguments(bundle);
-        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, createDiaryTripFragment);
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, CreateDiaryTripFragment.newInstance(idTrip));
     }
 
     private void initCreateDiscussTrip(String idTrip) {
-        Bundle bundle = new Bundle();
-        bundle.putString(ApiConstants.KEY_ID_TRIP, idTrip);
-        createStatusFragment = new CreateStatusFragment();
-        createStatusFragment.setArguments(bundle);
-        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, createStatusFragment);
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, CreateStatusFragment.newInstance_Trip(idTrip));
     }
 
     private void initEditProfileInfo() {
-        editProfileInfoFragment = EditProfileInfoFragment.newInstance(CommonConstants.ACT_EDIT_PROFILE_INFO, CommonConstants.VAL_ID_DEFAULT);
-        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, editProfileInfoFragment);
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, EditProfileInfoFragment.newInstance(CommonConstants.ACT_EDIT_PROFILE_INFO, CommonConstants.VAL_ID_DEFAULT));
+    }
+
+    private void initViewProfileBasicInfo(String idUser){
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, ProfileBasicInfoFragment.newInstance(idUser));
     }
 
     private void initCreateGroup(){
-        createGroupFragment = new CreateGroupFragment();
-        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, createGroupFragment);
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, CreateGroupFragment.newInstance());
     }
 
     private void initCreateStatusGroup(String idGroup){
-
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, CreateStatusFragment.newInstance_Group(idGroup));
     }
 
     private void initCreateTripGroup(String idGroup){
-
+        FragmentController.replaceFragment_BackStack(this, R.id.rlInput, CreateTripFragment.newInstance_Group(idGroup));
     }
 
     @Override
