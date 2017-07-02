@@ -1,5 +1,6 @@
 package studio.crazybt.adventure.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -10,22 +11,21 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
+import io.socket.client.Socket;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.URISyntaxException;
 
 import io.realm.Realm;
 import studio.crazybt.adventure.R;
@@ -42,7 +42,10 @@ import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.AdventureRequest;
 import studio.crazybt.adventure.utils.BadgeTabLayout;
 import studio.crazybt.adventure.utils.RLog;
+import studio.crazybt.adventure.utils.RealmUtils;
 import studio.crazybt.adventure.utils.SharedPref;
+import studio.crazybt.adventure.utils.StringUtil;
+import studio.crazybt.adventure.utils.ToastUtil;
 
 public class HomePageActivity extends AppCompatActivity{
 
@@ -62,12 +65,6 @@ public class HomePageActivity extends AppCompatActivity{
     private static int notificationCount = 0;
 
     private Socket mSocket;
-    {
-        try {
-            mSocket = IO.socket(ApiConstants.getBaseUrl());
-
-        } catch (URISyntaxException e) {}
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,16 +72,40 @@ public class HomePageActivity extends AppCompatActivity{
         setContentView(R.layout.activity_home_page);
 
         initControls();
+        initEvents();
         initActionBar();
         initNavigationDrawer();
         initTablayout();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mSocket = ((RealmUtils) getApplication()).getSocket();
+        mSocket.connect();
+        mSocket.emit(ApiConstants.SOCKET_USER_ONLINE, idUser);
+    }
+
     private void initControls(){
         idUser = SharedPref.getInstance(getBaseContext()).getString(ApiConstants.KEY_ID, null);
         realm = Realm.getDefaultInstance();
-        mSocket.connect();
-        mSocket.emit(ApiConstants.SOCKET_USER_ONLINE, idUser);
+
+        navView = (NavigationView) findViewById(R.id.navView);
+        // nav header set item
+        navHeader = navView.getHeaderView(0);
+        ivUserCover = (ImageView) navHeader.findViewById(R.id.ivUserCover);
+        ivUserAvatar = (ImageView) navHeader.findViewById(R.id.ivUserAvatar);
+        tvUserName = (TextView) navHeader.findViewById(R.id.tvUserName);
+    }
+
+    private void initEvents(){
+        ivUserAvatar.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                loadEditApiRoot();
+                return false;
+            }
+        });
     }
 
     private void initActionBar(){
@@ -95,12 +116,6 @@ public class HomePageActivity extends AppCompatActivity{
     }
 
     private void initNavigationDrawer() {
-        navView = (NavigationView) findViewById(R.id.navView);
-        // nav header set item
-        navHeader = navView.getHeaderView(0);
-        ivUserCover = (ImageView) navHeader.findViewById(R.id.ivUserCover);
-        ivUserAvatar = (ImageView) navHeader.findViewById(R.id.ivUserAvatar);
-        tvUserName = (TextView) navHeader.findViewById(R.id.tvUserName);
 
         User storageUser = realm.where(User.class).equalTo("id", SharedPref.getInstance(this).getString(ApiConstants.KEY_ID, "")).findFirst();
         PicassoHelper.execPicasso_CoverImage(getBaseContext(), storageUser.getCover(), ivUserCover);
@@ -246,9 +261,7 @@ public class HomePageActivity extends AppCompatActivity{
         menu.findItem(R.id.itemMessage).getActionView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), MessageActivity.class);
-                intent.putExtra("TYPE_SHOW", MESSAGE);
-                startActivity(intent);
+                startActivity(MessageActivity.newInstance(getBaseContext(), CommonConstants.ACT_VIEW_CONVERSATION));
             }
         });
         return super.onCreateOptionsMenu(menu);
@@ -257,6 +270,40 @@ public class HomePageActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mSocket.disconnect();
+        //mSocket.disconnect();
+    }
+
+    private void loadEditApiRoot(){
+        LayoutInflater li = LayoutInflater.from(HomePageActivity.this);
+        View dialogView = li.inflate(R.layout.dialog_edit_api_root_url, null);
+        final Dialog dialog = new Dialog(HomePageActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
+        final EditText etApiRoot = (EditText) dialog.findViewById(R.id.etApiRoot);
+        final EditText etApiRootImages = (EditText) dialog.findViewById(R.id.etApiRootImages);
+        Button btnCancelEdit = (Button)  dialog.findViewById(R.id.btnCancelEdit);
+        Button btnConfirmEdit = (Button) dialog.findViewById(R.id.btnConfirmEdit);
+
+        etApiRoot.setText(ApiConstants.getApiRoot());
+        etApiRootImages.setText(ApiConstants.getApiRootImages());
+
+        btnCancelEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btnConfirmEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApiConstants.setApiRoot(StringUtil.getText(etApiRoot));
+                ApiConstants.setApiRootImages(StringUtil.getText(etApiRootImages));
+                dialog.dismiss();
+                ToastUtil.showToast(getBaseContext(), "Đã lưu url.");
+            }
+        });
+        dialog.show();
     }
 }

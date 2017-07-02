@@ -1,5 +1,6 @@
 package studio.crazybt.adventure.libs;
 
+import android.content.Context;
 import android.net.Uri;
 
 import studio.crazybt.adventure.utils.RealmUtils;
@@ -11,6 +12,8 @@ import studio.crazybt.adventure.utils.SharedPref;
  */
 
 public class ApiConstants {
+    
+    private static Context context;
 
     public static Uri.Builder builder;
 
@@ -31,8 +34,8 @@ public class ApiConstants {
 //    private static final String API_ROOT = "192.168.7.125:25763/api";
 //    private static final String API_ROOT_IMAGES = "192.168.7.125:25763";
 
-    private static String API_ROOT = SharedPref.getInstance(RealmUtils.getApplication()).getString("API_ROOT", null);
-    private static String API_ROOT_IMAGES = SharedPref.getInstance(RealmUtils.getApplication()).getString("API_ROOT_IMAGES", null);
+    private static String API_ROOT;
+    private static String API_ROOT_IMAGES;
 
     // apis
     private static final String API_SCHEME = "http";
@@ -96,9 +99,17 @@ public class ApiConstants {
     public static final String API_REMOVE_ADMIN_GROUP_MEMBER = "group_member/remove_admin";
     public static final String API_BLOCK_MEMBER_GROUP_MEMBER = "group_member/block_member";
     public static final String API_UNBLOCK_MEMBER_GROUP_MEMBER = "group_member/unblock_member";
+    public static final String API_CONVERSATION_BROWSE = "conversation/browse";
+    public static final String API_CONVERSATION_INITIALIZE = "conversation/initialize";
 
     // socket
     public static final String SOCKET_USER_ONLINE = "user_online";
+    public static final String SOCKET_JOIN_ROOM = "join_room";
+    public static final String SOCKET_LEAVE_ROOM = "leave_room";
+    public static final String SOCKET_CHAT_TO_ROOM = "chat_to_room";
+    public static final String SOCKET_NEW_MESSAGE = "new_message";
+    public static final String SOCKET_TYPING = "typing";
+    public static final String SOCKET_STOP_TYPING = "stop_typing";
 
     // Default params
     public static final String DEF_CODE = "code";
@@ -219,9 +230,36 @@ public class ApiConstants {
     public static final String KEY_COUNT_TRIP_JOINED = "count_trip_joined";
     public static final String KEY_COUNT_PLACE_ARRIVED = "count_place_arrived";
     public static final String KEY_COUNT_FOLLOWER = "count_follower";
+    public static final String KEY_USER_ONLINE = "user_online";
+    public static final String KEY_TOTAL_USER_ONLINE = "total_user_online";
+    public static final String KEY_CONVERSATION = "conversation";
+    public static final String KEY_TOTAL_CONVERSATION = "total_conversation";
+    public static final String KEY_NOTIFY = "notify";
+    public static final String KEY_PARTNER = "partner";
+    public static final String KEY_ID_PARTNER = "id_partner";
+    public static final String KEY_LATEST_MESSAGE = "latest_message";
+    public static final String KEY_PARTNER_SOCKET_ID = "partner_socket_id";
+    public static final String KEY_PARTNER_VISITED_AT = "partner_visited_at";
+    public static final String KEY_MESSAGES = "messages";
+    public static final String KEY_TOTAL_MESSAGE = "total_message";
+    public static final String KEY_ID_CONVERSATION = "id_conversation";
 
     public ApiConstants() {
 
+    }
+
+    public static Context getContext() {
+        return context;
+    }
+
+    public static void setContext(Context context) {
+        ApiConstants.context = context;
+    }
+
+    public static void instance(Context cxt){
+        context = cxt;
+        API_ROOT = SharedPref.getInstance(context).getString("API_ROOT", null);
+        API_ROOT_IMAGES = SharedPref.getInstance(context).getString("API_ROOT_IMAGES", null);
     }
 
     public static String getFirstApiRoot(){
@@ -234,7 +272,7 @@ public class ApiConstants {
 
     public static void setApiRoot(String url){
         API_ROOT = url;
-        SharedPref.getInstance(RealmUtils.getApplication()).putString("API_ROOT", url);
+        SharedPref.getInstance(context).putString("API_ROOT", url);
     }
 
     public static String getApiRoot(){
@@ -243,7 +281,7 @@ public class ApiConstants {
 
     public static void setApiRootImages(String urlImages){
         API_ROOT_IMAGES = urlImages;
-        SharedPref.getInstance(RealmUtils.getApplication()).putString("API_ROOT_IMAGES", urlImages);
+        SharedPref.getInstance(context).putString("API_ROOT_IMAGES", urlImages);
     }
 
     public static String getApiRootImages(){

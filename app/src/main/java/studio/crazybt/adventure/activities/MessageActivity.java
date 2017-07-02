@@ -1,5 +1,6 @@
 package studio.crazybt.adventure.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
+import studio.crazybt.adventure.fragments.ConversationFragment;
 import studio.crazybt.adventure.fragments.MessageFragment;
 import studio.crazybt.adventure.fragments.SearchUserMessageFragment;
 import studio.crazybt.adventure.helpers.FragmentController;
@@ -20,78 +22,55 @@ import studio.crazybt.adventure.libs.CommonConstants;
 
 public class MessageActivity extends AppCompatActivity {
 
-    @BindView(R.id.tbMessage)
-    Toolbar tbMessage;
-    private static int typeShow = 0;
-    private SearchUserMessageFragment searchUserMessageFragment = null;
+    private int typeShow = 0;
+
+
+    public static Intent newInstance(Context context, int typeShow) {
+        Bundle args = new Bundle();
+        args.putInt(CommonConstants.KEY_TYPE_SHOW, typeShow);
+        Intent intent = new Intent(context, MessageActivity.class);
+        intent.putExtra(CommonConstants.KEY_DATA, args);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
-        ButterKnife.bind(this);
-        setSupportActionBar(tbMessage);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getResources().getString(R.string.message_btn_profile));
+
+        loadInstance();
+        initControls();
+    }
+
+    private void loadInstance() {
         Intent intent = getIntent();
-        typeShow = intent.getIntExtra("TYPE_SHOW", typeShow);
-        switch (typeShow){
-            case 1:
-                this.showMessage();
-                break;
-            case 2:
-                break;
+        if (intent.hasExtra(CommonConstants.KEY_DATA)) {
+            Bundle bundle = intent.getBundleExtra(CommonConstants.KEY_DATA);
+            typeShow = bundle.getInt(CommonConstants.KEY_TYPE_SHOW, typeShow);
+            if (typeShow == CommonConstants.ACT_VIEW_CONVERSATION) {
+                showConversation();
+            } else if (typeShow == CommonConstants.ACT_VIEW_MESSAGE) {
+                showMessage();
+            }
         }
+
     }
 
-    private void showMessage(){
-        FragmentController.replaceFragment_BackStack_Animation(this, R.id.rlMessage, new MessageFragment());
+    private void initControls() {
+        ButterKnife.bind(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        searchUserMessageFragment = SearchUserMessageFragment.newInstance();
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toolbar_menu_message, menu);
-        MenuItem searchItem = menu.findItem(R.id.svSearchUser);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchUserMessageFragment.loadData(query);
-                return false;
-            }
+    private void showMessage() {
+        FragmentController.addFragment_Animation(this, R.id.rlMessageActivity, new MessageFragment());
+    }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                searchUserMessageFragment.loadData(newText);
-                return false;
-            }
-        });
-
-
-        // Define the listener
-        MenuItemCompat.OnActionExpandListener expandListener = new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                FragmentController.removeFragment(MessageActivity.this, searchUserMessageFragment);
-                return true;  // Return true to collapse action view
-            }
-
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                FragmentController.addFragment_Animation(MessageActivity.this, R.id.rlMessage, searchUserMessageFragment);
-                return true;  // Return true to expand action view
-            }
-        };
-        MenuItemCompat.setOnActionExpandListener(searchItem, expandListener);
-
-        return true;
+    private void showConversation() {
+        FragmentController.addFragment_BackStack_Animation(this, R.id.rlMessageActivity, ConversationFragment.newInstance());
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 break;
@@ -101,10 +80,9 @@ public class MessageActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1){
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }

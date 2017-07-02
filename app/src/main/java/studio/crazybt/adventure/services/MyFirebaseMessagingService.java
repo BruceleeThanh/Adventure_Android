@@ -20,6 +20,7 @@ import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.activities.HomePageActivity;
 import studio.crazybt.adventure.activities.StatusActivity;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.models.Notification;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.RLog;
@@ -83,13 +84,13 @@ public class MyFirebaseMessagingService extends com.google.firebase.messaging.Fi
         if (noti.getType() == 1) {
             idIcon = R.drawable.ic_chat_96;
             intent = new Intent(this, StatusActivity.class);
-            intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
-            intent.putExtra("data_notify", noti);
+            intent.putExtra(CommonConstants.KEY_TYPE_SHOW, STATUS_DETAIL);
+            intent.putExtra(ApiConstants.KEY_NOTIFY, noti);
         } else if (noti.getType() == 2) {
             idIcon = R.drawable.ic_thumb_up_96;
             intent = new Intent(this, StatusActivity.class);
-            intent.putExtra("TYPE_SHOW", STATUS_DETAIL);
-            intent.putExtra("data_notify", noti);
+            intent.putExtra(CommonConstants.KEY_TYPE_SHOW, STATUS_DETAIL);
+            intent.putExtra(ApiConstants.KEY_NOTIFY, noti);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlTyping"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/margin_medium"
+    android:paddingBottom="@dimen/margin_small"
+    android:paddingEnd="@dimen/margin_small"
+    android:paddingRight="@dimen/margin_small"
+    android:paddingStart="@dimen/margin_medium">
+
+    <TextView
+        android:id="@+id/tvTyping"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_edit_grey_500_18dp"
+        android:drawablePadding="@dimen/margin_small"
+        android:gravity="bottom"
+        android:textSize="@dimen/txt_small"/>
+
+</RelativeLayout>

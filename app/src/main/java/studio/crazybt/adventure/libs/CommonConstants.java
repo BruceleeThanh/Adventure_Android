@@ -57,4 +57,8 @@ public class CommonConstants {
     public static final int ACT_SEARCH_USER_GROUP_INVITE_MEMBER = 1;
     public static final int ACT_SEARCH_USER_MESSAGE = 2;
 
+    // Message activity
+    public static final int ACT_VIEW_CONVERSATION = 1;
+    public static final int ACT_VIEW_MESSAGE = 2;
+
 }

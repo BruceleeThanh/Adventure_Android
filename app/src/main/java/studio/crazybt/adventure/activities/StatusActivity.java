@@ -42,10 +42,17 @@ public class StatusActivity extends SwipeBackActivity {
     Status status;
     Realm realm;
 
-    public static Intent newInstance(Context context, int typeShow, Status status){
+    public static Intent newInstance(Context context, int typeShow, Status status) {
         Intent intent = new Intent(context, StatusActivity.class);
         intent.putExtra(CommonConstants.KEY_TYPE_SHOW, typeShow);
         intent.putExtra(CommonConstants.KEY_DATA, status);
+        return intent;
+    }
+
+    public static Intent newInstance(Context context, int typeShow, Notification notification) {
+        Intent intent = new Intent(context, StatusActivity.class);
+        intent.putExtra(CommonConstants.KEY_TYPE_SHOW, typeShow);
+        intent.putExtra(ApiConstants.KEY_NOTIFY, notification);
         return intent;
     }
 
@@ -56,11 +63,11 @@ public class StatusActivity extends SwipeBackActivity {
         swipeBackLayout = getSwipeBackLayout();
         Intent intent = getIntent();
         typeShow = intent.getIntExtra(CommonConstants.KEY_TYPE_SHOW, typeShow);
-        if (intent.hasExtra("data")) {
-            status = intent.getParcelableExtra("data");
+        if (intent.hasExtra(CommonConstants.KEY_DATA)) {
+            status = intent.getParcelableExtra(CommonConstants.KEY_DATA);
             this.remoteShow(typeShow);
-        } else if (intent.hasExtra("data_notify")) {
-            Notification notification = intent.getParcelableExtra("data_notify");
+        } else if (intent.hasExtra(ApiConstants.KEY_NOTIFY)) {
+            Notification notification = intent.getParcelableExtra(ApiConstants.KEY_NOTIFY);
 //            realm = Realm.getDefaultInstance();
 //            realm.beginTransaction();
 //            Notification notiExisted = realm.where(Notification.class).equalTo("id", notification.getId()).findFirst();
@@ -69,6 +76,7 @@ public class StatusActivity extends SwipeBackActivity {
             this.loadStatusShortcutFromNotification(notification);
         }
     }
+
 
     private void remoteShow(int typeShow) {
         if (typeShow == CommonConstants.ACT_STATUS_DETAIL)
@@ -109,41 +117,10 @@ public class StatusActivity extends SwipeBackActivity {
         adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override
             public void onAdventureResponse(JSONObject response) {
-                // status
-                String idStatus;
-                String content;
-                int amountLike;
-                int amountComment;
-                int permission;
-                int type;
-                String createdAt;
-                int isLike;
-                int isComment;
-                List<ImageContent> imageContents = new ArrayList<>();
-
-                // user
-                String idUser;
-                String firstName;
-                String lastName;
-                String avatar;
-
-
                 JSONObject data = JsonUtil.getJSONObject(response, ApiConstants.DEF_DATA);
-                idStatus = JsonUtil.getString(data, ApiConstants.KEY_ID, "");
-                content = JsonUtil.getString(data, ApiConstants.KEY_CONTENT, "");
-                amountLike = JsonUtil.getInt(data, ApiConstants.KEY_AMOUNT_LIKE, 0);
-                amountComment = JsonUtil.getInt(data, ApiConstants.KEY_AMOUNT_COMMENT, 0);
-                permission = JsonUtil.getInt(data, ApiConstants.KEY_PERMISSION, 3);
-                type = JsonUtil.getInt(data, ApiConstants.KEY_TYPE, 1);
-                createdAt = JsonUtil.getString(data, ApiConstants.KEY_CREATED_AT, "");
-                isLike = JsonUtil.getInt(data, ApiConstants.KEY_IS_LIKE, 0);
-                isComment = JsonUtil.getInt(data, ApiConstants.KEY_IS_COMMENT, 0);
                 JSONObject owner = JsonUtil.getJSONObject(data, ApiConstants.KEY_OWNER);
-                idUser = JsonUtil.getString(owner, ApiConstants.KEY_ID, "");
-                firstName = JsonUtil.getString(owner, ApiConstants.KEY_FIRST_NAME, "");
-                lastName = JsonUtil.getString(owner, ApiConstants.KEY_LAST_NAME, "");
-                avatar = JsonUtil.getString(owner, ApiConstants.KEY_AVATAR, "");
                 JSONArray images = JsonUtil.getJSONArray(data, ApiConstants.KEY_IMAGES);
+                List<ImageContent> imageContents = new ArrayList<>();
                 if (images != null && images.length() > 0) {
                     for (int j = 0; j < images.length(); j++) {
                         JSONObject image = JsonUtil.getJSONObject(images, j);
@@ -153,14 +130,28 @@ public class StatusActivity extends SwipeBackActivity {
                     }
                 }
 
-                status = new Status(new User(idUser, firstName, lastName, avatar), idStatus, createdAt, content, permission,
-                        type, amountLike, amountComment, isLike, isComment, imageContents);
+                status = new Status(
+                        new User(
+                                JsonUtil.getString(owner, ApiConstants.KEY_ID, ""),
+                                JsonUtil.getString(owner, ApiConstants.KEY_FIRST_NAME, ""),
+                                JsonUtil.getString(owner, ApiConstants.KEY_LAST_NAME, ""),
+                                JsonUtil.getString(owner, ApiConstants.KEY_AVATAR, "")),
+                        JsonUtil.getString(data, ApiConstants.KEY_ID, ""),
+                        JsonUtil.getString(data, ApiConstants.KEY_CREATED_AT, ""),
+                        JsonUtil.getString(data, ApiConstants.KEY_CONTENT, ""),
+                        JsonUtil.getInt(data, ApiConstants.KEY_PERMISSION, 3),
+                        JsonUtil.getInt(data, ApiConstants.KEY_TYPE, 1),
+                        JsonUtil.getInt(data, ApiConstants.KEY_AMOUNT_LIKE, 0),
+                        JsonUtil.getInt(data, ApiConstants.KEY_AMOUNT_COMMENT, 0),
+                        JsonUtil.getInt(data, ApiConstants.KEY_IS_LIKE, 0),
+                        JsonUtil.getInt(data, ApiConstants.KEY_IS_COMMENT, 0),
+                        imageContents);
                 remoteShow(typeShow);
             }
 
             @Override
             public void onAdventureError(int errorCode, String errorMsg) {
-                ToastUtil.showToast(StatusActivity.this, errorMsg);
+                ToastUtil.showToast(errorMsg);
             }
         });
     }

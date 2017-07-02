@@ -44,12 +44,6 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(homePageIntent);
             finish();
         }
-        if(ApiConstants.getApiRoot() == null || ApiConstants.getApiRoot().equals("")){
-            ApiConstants.setApiRoot(ApiConstants.getFirstApiRoot());
-        }
-        if(ApiConstants.getApiRootImages() == null || ApiConstants.getApiRootImages().equals("")){
-            ApiConstants.setApiRootImages(ApiConstants.getFirstApiRootImages());
-        }
     }
 
     public void setDrawableFitSize(TextView tv, int id, double w, double h) {

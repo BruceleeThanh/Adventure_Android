@@ -2,12 +2,154 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/ablMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tbMessage"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/primary"
+            android:elevation="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:titleTextAppearance="@style/TextAppearance.Adventure.Title">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/ivBackMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_arrow_back_white_24dp"
+                    android:padding="@dimen/margin_medium"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/selector_green_btn"
+                    android:clickable="true"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/civProfileImage"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/img_profile"
+                    android:layout_toRightOf="@+id/ivBackMessage"
+                    android:layout_marginLeft="@dimen/margin_big"
+                    android:background="@drawable/bg_white_border_circle_iv"
+                    android:cropToPadding="true"
+                    android:padding="1dp"
+                    android:layout_marginTop="3dp"/>
+
+                <TextView
+                    android:id="@+id/tvProfileName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/civProfileImage"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:text="Brucelee Thanh"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/txt_medium"/>
+
+                <TextView
+                    android:id="@+id/tvStatusMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/tvProfileName"
+                    android:layout_alignStart="@+id/tvProfileName"
+                    android:layout_below="@+id/tvProfileName"
+                    android:text="Đang online"
+                    android:textSize="@dimen/txt_small"
+                    android:textStyle="italic"/>
+
+                <ImageView
+                    android:id="@+id/ivInfoMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_info_outline_white_24dp"
+                    android:padding="@dimen/margin_medium"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/selector_green_btn"
+                    android:clickable="true"/>
+
+            </RelativeLayout>
+
+
+
+        </android.support.v7.widget.Toolbar>
+
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvMessage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/ablMessage"/>
+        android:layout_above="@+id/vLine1"
+        android:layout_below="@+id/ablMessage"
+        android:background="@color/secondary_text20"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/margin_small"/>
+
+    <View
+        android:id="@+id/vLine1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/rlTypingMessage"
+        android:background="@drawable/partition_gray_line_horizontal"/>
+
+
+    <RelativeLayout
+        android:id="@+id/rlTypingMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/ivEmoticon"
+            android:layout_width="@dimen/icon_size_big"
+            android:layout_height="@dimen/icon_size_big"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/margin_medium"
+            android:clickable="true"
+            android:src="@drawable/ic_lol_96"/>
+
+        <com.vanniktech.emoji.EmojiEditText
+            android:id="@+id/eetMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_toLeftOf="@+id/ivSendMessage"
+            android:layout_toRightOf="@+id/ivEmoticon"
+            android:background="@android:color/transparent"
+            android:hint="@string/hint_write_message"
+            android:maxHeight="@dimen/max_height_et"
+            android:textSize="@dimen/txt_medium"
+            app:emojiSize="20sp"/>
+
+        <ImageView
+            android:id="@+id/ivSendMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/margin_medium"
+            android:clickable="true"
+            android:src="@drawable/ic_send_green_24dp"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

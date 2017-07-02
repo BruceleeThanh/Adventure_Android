@@ -94,5 +94,8 @@
 
     <dimen name="map_insert_margin">100dp</dimen>
 
+    <!--Chat bubble-->
+    <dimen name="max_width_chat_bubble">250dp</dimen>
+
 
 </resources>

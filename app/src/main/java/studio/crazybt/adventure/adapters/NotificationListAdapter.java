@@ -14,8 +14,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import studio.crazybt.adventure.R;
+import studio.crazybt.adventure.activities.StatusActivity;
 import studio.crazybt.adventure.helpers.ConvertTimeHelper;
+import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.models.Notification;
 
 /**
@@ -35,8 +38,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notification, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -48,7 +50,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             holder.ivIconNotification.setImageResource(R.drawable.ic_thumb_up_96);
         }
         holder.tvContentNotification.setText(Html.fromHtml(notification.getContent()));
-        holder.tvTimeUpload.setText(new ConvertTimeHelper().convertISODateToPrettyTimeStamp(notification.getCreatedAt()));
+        holder.tvTimeUpload.setText(ConvertTimeHelper.convertISODateToPrettyTimeStamp(notification.getCreatedAt()));
     }
 
     @Override
@@ -72,6 +74,11 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.rlNotificationItem)
+        protected void onNotificationItemClick(){
+            rootContext.startActivity(StatusActivity.newInstance(rootContext, CommonConstants.ACT_STATUS_DETAIL, notifications.get(getAdapterPosition())));
         }
     }
 }

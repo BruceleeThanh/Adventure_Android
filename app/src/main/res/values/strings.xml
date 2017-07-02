@@ -372,4 +372,13 @@
     <!--Create trip in group-->
     <string name="title_tb_create_trip_group">Tạo chuyến đi trong nhóm</string>
 
+    <!--Conversation and Message-->
+    <string name="label_user_online">Những người đang online</string>
+    <string name="label_conversation">Cuộc trò chuyện của bạn</string>
+    <string name="label_empty_user_online">Không có bạn bè nào đang online.</string>
+    <string name="label_empty_conversation">Bạn chưa có cuộc trò chuyện nào.</string>
+    <string name="hint_write_message">Nhập tin nhắn…</string>
+    <string name="label_online">Đang online</string>
+    <string name="label_typing">đang gõ…</string>
+
 </resources>

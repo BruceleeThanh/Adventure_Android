@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/margin_small"
+    android:paddingBottom="@dimen/margin_small"
+    android:paddingEnd="@dimen/margin_small"
+    android:paddingRight="@dimen/margin_small"
+    android:paddingStart="@dimen/margin_small">
+
+    <com.vanniktech.emoji.EmojiTextView
+        android:id="@+id/etvMessageContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/chat_sent"
+        android:maxWidth="@dimen/max_width_chat_bubble"
+        android:text=""
+        android:textColor="@color/white"
+        app:emojiSize="20sp"/>
+
+    <TextView
+        android:id="@+id/tvMessageCreatedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/etvMessageContent"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/txt_small"
+        android:visibility="gone"/>
+
+</RelativeLayout>

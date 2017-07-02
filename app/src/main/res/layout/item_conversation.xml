@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rlMessageItem"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlConversationItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/margin_medium">
+    android:paddingTop="@dimen/margin_medium"
+    android:paddingBottom="@dimen/margin_medium">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/ivProfileImage"
+        android:id="@+id/civProfileImage"
         android:layout_width="@dimen/profile_image_big"
         android:layout_height="@dimen/profile_image_big"
         android:layout_marginLeft="@dimen/margin_medium"
-        android:src="@drawable/img_profile2"
+        android:src="@drawable/img_profile"
         android:scaleType="centerCrop"/>
 
     <TextView
@@ -20,26 +22,27 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_small"
-        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_toRightOf="@+id/civProfileImage"
         android:text="Brucelee Thanh"
-        android:textColor="@color/primary_text"
-        android:textSize="@dimen/txt_medium"/>
+        android:textColor="@color/primary_text"/>
 
-    <TextView
-        android:id="@+id/tvContentMessage"
+    <com.vanniktech.emoji.EmojiTextView
+        android:id="@+id/etvLatestMessage"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvProfileName"
         android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_small"
-        android:layout_toRightOf="@+id/ivProfileImage"
-        android:singleLine="true"
+        android:layout_toRightOf="@+id/civProfileImage"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:text="Imogen now has a weekly channel on YouTube"
         android:textColor="@color/primary_text"
-        android:textSize="@dimen/txt_small"/>
+        android:textSize="@dimen/txt_small"
+        app:emojiSize="20sp"/>
 
     <TextView
-        android:id="@+id/tvMessageTime"
+        android:id="@+id/tvLatestMessageTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -47,13 +50,6 @@
         android:layout_marginRight="@dimen/margin_medium"
         android:text="Hôm qua, 22:30"
         android:textSize="@dimen/txt_tiny"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/partition_gray_line_horizontal"
-        android:layout_below="@+id/ivProfileImage"
-        android:layout_marginTop="@dimen/margin_medium"/>
 
 
 </RelativeLayout>
