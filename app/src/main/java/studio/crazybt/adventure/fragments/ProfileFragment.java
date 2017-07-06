@@ -2,16 +2,15 @@ package studio.crazybt.adventure.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.error.VolleyError;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,10 +31,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import studio.crazybt.adventure.R;
-import studio.crazybt.adventure.activities.InputActivity;
 import studio.crazybt.adventure.activities.ProfileActivity;
 import studio.crazybt.adventure.activities.StatusActivity;
-import studio.crazybt.adventure.adapters.NewfeedListAdapter;
+import studio.crazybt.adventure.activities.TripListActivity;
 import studio.crazybt.adventure.adapters.PostListAdapter;
 import studio.crazybt.adventure.helpers.DrawableHelper;
 import studio.crazybt.adventure.helpers.FragmentController;
@@ -46,14 +41,11 @@ import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.ApiParams;
 import studio.crazybt.adventure.libs.CommonConstants;
-import studio.crazybt.adventure.listeners.OnLoadMoreListener;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.Status;
 import studio.crazybt.adventure.models.Trip;
 import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.AdventureRequest;
-import studio.crazybt.adventure.services.CustomRequest;
-import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
@@ -63,11 +55,15 @@ import studio.crazybt.adventure.utils.ToastUtil;
 /**
  * Created by Brucelee Thanh on 13/09/2016.
  */
-public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AppBarLayout.OnOffsetChangedListener {
 
     private final int REQUEST_CODE = 200;
 
     private View rootView;
+    @BindView(R.id.ablProfile)
+    AppBarLayout ablProfile;
+    @BindView(R.id.srlProfile)
+    SwipeRefreshLayout srlProfile;
     @BindView(R.id.ivCover)
     ImageView ivCover;
     @BindView(R.id.ivProfileImage)
@@ -76,10 +72,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
     TextView tvIntroInfo;
     @BindView(R.id.llAction)
     LinearLayout llAction;
-    @BindView(R.id.tvAddFriend)
-    TextView tvAddFriend;
-    @BindView(R.id.tvFollow)
-    TextView tvFollow;
     @BindView(R.id.tvIntroCreatedTrip)
     TextView tvIntroCreatedTrip;
     @BindView(R.id.tvIntroJoinedTrip)
@@ -92,8 +84,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
     Toolbar toolbar;
     @BindView(R.id.rvTimeline)
     RecyclerView rvTimeline;
-    @BindView(R.id.srlProfile)
-    SwipeRefreshLayout srlProfile;
     @BindView(R.id.tvMenuInfo)
     TextView tvMenuInfo;
     @BindView(R.id.tvMenuTrip)
@@ -103,7 +93,10 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @BindView(R.id.tvMenuPhoto)
     TextView tvMenuPhoto;
 
-    private LinearLayoutManager llmTimeline;
+    @BindView(R.id.tvActionLeft)
+    TextView tvActionLeft;
+    @BindView(R.id.tvActionRight)
+    TextView tvActionRight;
 
     private User user;
     private int countTripCreated = 0;
@@ -115,19 +108,13 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private List<Object> lstPosts = null;
     private int posItem;
 
-    // pagination - load more
-    private int page = 1;
-    private final int perPage = 10;
-    private boolean isLoading;
-    private int visibleThreshold = 3;
-    private int lastVisibleItem, totalItemCount;
-
     private boolean isDefaultUser = false;
     private String idUser = null;
     private String username = null;
 
     private AdventureRequest adventureRequest;
     private String token;
+    private int relation = 0;
 
 
     public static ProfileFragment newInstance(String idUser, String username) {
@@ -143,7 +130,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
-            rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+            rootView = inflater.inflate(R.layout.fragment_profile_2, container, false);
         }
 
         loadInstance();
@@ -154,9 +141,11 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         srlProfile.post(new Runnable() {
             @Override
             public void run() {
-                getTimelineRequest(false, 1);
+                srlProfile.setRefreshing(true);
+                getTimelineRequest();
             }
         });
+        getTimelineRequest();
         return rootView;
     }
 
@@ -200,83 +189,40 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private void initPostList() {
         lstPosts = new ArrayList<>();
         postListAdapter = new PostListAdapter(getContext(), lstPosts);
-        initScrollTimeline();
         postListAdapter.setOnAdapterClickListener(new PostListAdapter.OnAdapterClick() {
             @Override
             public void onStatusDetailClick(int pos) {
                 startActivityForResult(StatusActivity.newInstance(getContext(), CommonConstants.ACT_STATUS_DETAIL, (Status) lstPosts.get(pos)), REQUEST_CODE);
             }
         });
-        postListAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                RLog.e("isRefreshing" + srlProfile.isRefreshing());
-                if (!srlProfile.isRefreshing()) {
-                    lstPosts.add(null);
-                    postListAdapter.notifyItemInserted(lstPosts.size() - 1);
-                    getTimelineRequest(true, page + 1);
-                }
-            }
-        });
-        llmTimeline = new LinearLayoutManager(getContext());
-        rvTimeline.setLayoutManager(llmTimeline);
+        rvTimeline.setLayoutManager(new LinearLayoutManager(getContext()));
         rvTimeline.setAdapter(postListAdapter);
     }
 
-    private void initScrollTimeline() {
-        rvTimeline.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
-                    totalItemCount = llmTimeline.getItemCount();
-                    lastVisibleItem = llmTimeline.findLastVisibleItemPosition();
-
-                    if (rvTimeline.canScrollVertically(1)) {
-                        if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                            if (postListAdapter.onLoadMoreListener != null) {
-                                postListAdapter.onLoadMoreListener.onLoadMore();
-                            }
-                            isLoading = true;
-                        }
-                    }
-                }
-            }
-        });
+    private void getTimelineRequest() {
+        adventureRequest = new AdventureRequest(getContext(), Request.Method.GET, ApiConstants.getUrl(ApiConstants.API_TIME_LINE), getTimelineParams(), false);
+        getTimelineResponse();
     }
 
-    private void getTimelineRequest(final boolean isLoadMore, final int pagination) {
-        if (!isLoadMore) {
-            srlProfile.setRefreshing(true);
-        }
-        adventureRequest = new AdventureRequest(getContext(), Request.Method.GET, ApiConstants.getUrl(ApiConstants.API_TIME_LINE), getTimelineParams(pagination), false);
-        getTimelineResponse(isLoadMore, pagination);
-    }
-
-    private Map<String, String> getTimelineParams(int pagination) {
+    private Map<String, String> getTimelineParams() {
         ApiParams params = new ApiParams();
         params.put(ApiConstants.KEY_TOKEN, token);
         if (!isDefaultUser) {
             params.put(ApiConstants.KEY_USER, idUser);
         }
-        params.putParam(ApiConstants.KEY_PAGE, pagination);
-        params.putParam(ApiConstants.KEY_PERPAGE, perPage);
         return params;
     }
 
-    private void getTimelineResponse(final boolean isLoadMore, final int pagination) {
+    private void getTimelineResponse() {
         adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override
             public void onAdventureResponse(JSONObject response) {
-                // pagination - load more
-                if (isLoadMore) {
-                    lstPosts.remove(lstPosts.size() - 1);
-                    postListAdapter.notifyItemRemoved(lstPosts.size());
-                } else {
-                    lstPosts.clear();
-                }
-
+                lstPosts.clear();
                 JSONObject data = JsonUtil.getJSONObject(response, ApiConstants.DEF_DATA);
+
+                // get relation
+                relation = JsonUtil.getInt(data, ApiConstants.KEY_RELATION, relation);
+
                 // get information of user
                 JSONObject summaryInfo = JsonUtil.getJSONObject(data, ApiConstants.KEY_SUMMARY_INFO);
                 JSONObject info = JsonUtil.getJSONObject(summaryInfo, ApiConstants.KEY_INFO);
@@ -363,30 +309,31 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     }
                 }
                 postListAdapter.notifyDataSetChanged();
-                initScrollTimeline();
-                page = pagination;
-                if (isLoadMore) {
-                    isLoading = false;
-                } else {
-                    srlProfile.setRefreshing(false);
-                }
+                srlProfile.setRefreshing(false);
             }
 
             @Override
             public void onAdventureError(int errorCode, String errorMsg) {
-                if (isLoadMore) {
-                    lstPosts.remove(lstPosts.size() - 1);
-                    postListAdapter.notifyItemRemoved(lstPosts.size());
-                    isLoading = false;
-                } else {
-                    srlProfile.setRefreshing(false);
-                }
-                ToastUtil.showToast(getContext(), errorMsg);
+                ToastUtil.showToast(errorMsg);
+                srlProfile.setRefreshing(false);
             }
         });
     }
 
     private void bindingInfoData() {
+        if (relation == CommonConstants.VAL_IS_YOU) {
+            llAction.setVisibility(View.GONE);
+        } else if (relation == CommonConstants.VAL_FRIEND) {
+            llAction.setVisibility(View.VISIBLE);
+            tvActionLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.primary));
+            tvActionLeft.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getContext(), R.drawable.ic_group_green_500_24dp), null, null, null);
+            StringUtil.setText(tvActionLeft, getResources().getString(R.string.friend_btn_friend_and_follow));
+        } else if (relation == CommonConstants.VAL_STRANGER) {
+            llAction.setVisibility(View.VISIBLE);
+            tvActionLeft.setTextColor(ContextCompat.getColor(getContext(), R.color.secondary_text));
+            tvActionLeft.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getContext(), R.drawable.ic_person_add_gray_24dp), null, null, null);
+            StringUtil.setText(tvActionLeft, getResources().getString(R.string.add_friend_btn_friend_and_follow));
+        }
         PicassoHelper.execPicasso_CoverImage(getContext(), user.getCover(), ivCover);
         PicassoHelper.execPicasso_ProfileImage(getContext(), user.getAvatarActual(), ivProfileImage);
         StringUtil.setText(tvIntroInfo, user.getIntro());
@@ -398,7 +345,8 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     @Override
     public void onRefresh() {
-        getTimelineRequest(false, 1);
+        srlProfile.setRefreshing(true);
+        getTimelineRequest();
     }
 
     @Override
@@ -412,7 +360,39 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
     @OnClick(R.id.tvMenuInfo)
-    protected void onMenuInfoClick(){
+    protected void onMenuInfoClick() {
         FragmentController.addFragment_BackStack_Animation(getActivity(), R.id.rlProfile, ProfileBasicInfoFragment.newInstance(idUser));
+    }
+
+    @OnClick(R.id.tvMenuTrip)
+    protected void onMenuTripClick() {
+        if (relation == CommonConstants.VAL_IS_YOU) {
+            startActivity(TripListActivity.newInstance(getContext()));
+        } else {
+            ArrayList<Trip> lstTrips = new ArrayList<>();
+            for (int i = 0; i < lstPosts.size(); i++) {
+                if (lstPosts.get(i) instanceof Trip) {
+                    lstTrips.add((Trip) lstPosts.get(i));
+                }
+            }
+            FragmentController.addFragment_BackStack_Animation(getActivity(), R.id.rlProfile, ProfileTripFragment.newInstance(lstTrips));
+        }
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        srlProfile.setEnabled(verticalOffset == 0);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ablProfile.addOnOffsetChangedListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ablProfile.removeOnOffsetChangedListener(this);
     }
 }

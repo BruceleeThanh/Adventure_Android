@@ -2,7 +2,8 @@
     <string name="app_name">Adventure</string>
     <string name="facebook_app_id">1757209921226171</string>
     <string name="fb_login_protocol_scheme">fb1757209921226171</string>
-    <string name="google_geo_api">AIzaSyDVpmSuzT-tjzo8vr7zM2qk9pGK4YlTOls</string>
+    <string name="google_geo_api">AIzaSyCpA0--PrBdpPT129BFxTlmwndRJdO8WVk</string>
+    <!--AIzaSyDVpmSuzT-tjzo8vr7zM2qk9pGK4YlTOls-->
 
     <string name="openDrawer">Open navigation drawer</string>
     <string name="closeDrawer">Close navigation drawer</string>
@@ -139,8 +140,8 @@
 
     <!--Drawer menu home page-->
     <string name="profile_drawer_menu_home_page">Trang cá nhân</string>
-    <string name="enjoining_trip_drawer_menu_home_page">Đang tham gia</string>
-    <string name="interested_trip_drawer_menu_home_page">Quan tâm</string>
+    <string name="trip_drawer_menu_home_page">Chuyến đi</string>
+    <string name="travelling_trip_drawer_menu_home_page">Đang diễn ra</string>
     <string name="group_drawer_menu_home_page">Nhóm</string>
     <string name="setting_drawer_menu_home_page">Cài đặt</string>
     <string name="about_drawer_menu_home_page">Thông tin</string>
@@ -238,6 +239,7 @@
     <string name="error_end_time_route_after_end">Không thể lớn hơn ngày kết thúc chuyến đi</string>
     <string name="success_post_trip">Tạo chuyến đi thành công.</string>
     <string name="error_null_places">Không tìm thấy địa điểm nào</string>
+    <string name="error_direction_map">Không thể lấy dữ liệu chỉ đường.</string>
 
     <!--Create diary trip-->
     <string name="title_tb_create_diary_trip">Tạo nhật ký chuyến đi</string>
@@ -331,7 +333,7 @@
     <string name="hint_images_group">Nhóm chưa có ảnh nào.</string>
     <string name="label_not_permission_see_images_in_group">Bạn không thể xem các ảnh trong nhóm này.</string>
     <string name="label_group_created_at">Ngày tạo nhóm</string>
-    
+
     <!--Group member-->
     <string name="title_tb_group_member">Thành viên nhóm</string>
     <string name="title_admin_group">Quản trị</string>
@@ -380,5 +382,17 @@
     <string name="hint_write_message">Nhập tin nhắn…</string>
     <string name="label_online">Đang online</string>
     <string name="label_typing">đang gõ…</string>
+
+    <!--Trip list-->
+    <string name="title_tb_trip_list">Chuyến đi của bạn</string>
+    <string name="title_created_trip_tab">Đã tạo</string>
+    <string name="title_joined_trip_tab">Tham gia</string>
+    <string name="title_interested_trip_tab">Quan tâm</string>
+    <string name="title_requested_trip_tab">Yêu cầu</string>
+    <string name="label_created_trip_list_empty">Bạn chưa tạo chuyến đi nào.</string>
+    <string name="label_joined_trip_list_empty">Bạn chưa tham gia chuyến đi nào.</string>
+    <string name="label_interested_trip_list_empty">Bạn chưa quan tâm chuyến đi nào.</string>
+    <string name="label_requested_trip_list_empty">Bạn chưa yêu cầu tham gia chuyến đi nào.</string>
+    <string name="label_another_created_trip_empty">chưa tạo chuyến đi nào.</string>
 
 </resources>

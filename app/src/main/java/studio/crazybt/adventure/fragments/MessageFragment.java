@@ -56,6 +56,7 @@ import studio.crazybt.adventure.helpers.DrawableHelper;
 import studio.crazybt.adventure.helpers.FragmentController;
 import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.listeners.OnTextWatcher;
 import studio.crazybt.adventure.models.Conversation;
 import studio.crazybt.adventure.models.Message;
 import studio.crazybt.adventure.models.User;
@@ -91,6 +92,8 @@ public class MessageFragment extends Fragment {
 
     @BindView(R.id.rvMessage)
     RecyclerView rvMessage;
+    @BindView(R.id.tvTyping)
+    TextView tvTyping;
     @BindView(R.id.ivEmoticon)
     ImageView ivEmoticon;
     @BindView(R.id.eetMessage)
@@ -220,6 +223,7 @@ public class MessageFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
     }
 
     @OnClick(R.id.ivBackMessage)
@@ -241,9 +245,9 @@ public class MessageFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            forceConnectSocket();
             socket.emit(ApiConstants.SOCKET_TYPING, data.toString());
         }
-
         typingHandler.removeCallbacks(onTypingTimeout);
         typingHandler.postDelayed(onTypingTimeout, TYPING_TIMER_LENGTH);
     }
@@ -325,6 +329,7 @@ public class MessageFragment extends Fragment {
             StringUtil.setText(tvStatusMessage, getResources().getString(R.string.label_online));
         }
         notifyInsertedMessage();
+        StringUtil.setText(tvTyping, partner.getLastName() + " " + getResources().getString(R.string.label_typing));
     }
 
     private void bindingJoinRoom(String idConversation, String idUser) {
@@ -353,20 +358,13 @@ public class MessageFragment extends Fragment {
 
     private void addTyping(String idUser) {
         if (idUser.equals(partner.getId())) {
-            lstMessages.add(null);
-            notifyInsertedMessage();
+            tvTyping.setVisibility(View.VISIBLE);
         }
     }
 
     private void removeTyping(String idUser) {
         if (idUser.equals(partner.getId())) {
-            int index = lstMessages.size() - 1;
-            for(int i = index; i >= 0; i--){
-                if(lstMessages.get(i) == null){
-                    lstMessages.remove(i);
-                    messageAdapter.notifyDataSetChanged();
-                }
-            }
+            tvTyping.setVisibility(View.GONE);
         }
     }
 
@@ -384,6 +382,7 @@ public class MessageFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        forceConnectSocket();
         socket.emit(ApiConstants.SOCKET_JOIN_ROOM, data.toString());
     }
 
@@ -395,6 +394,7 @@ public class MessageFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        forceConnectSocket();
         socket.emit(ApiConstants.SOCKET_LEAVE_ROOM, data.toString());
     }
 
@@ -407,7 +407,14 @@ public class MessageFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        forceConnectSocket();
         socket.emit(ApiConstants.SOCKET_CHAT_TO_ROOM, data.toString());
+    }
+
+    private void forceConnectSocket(){
+        if(!socket.connected()){
+            socket.connect();
+        }
     }
 
     private Emitter.Listener onJoinRoom = new Emitter.Listener() {
@@ -528,6 +535,7 @@ public class MessageFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            forceConnectSocket();
             socket.emit(ApiConstants.SOCKET_STOP_TYPING, data.toString());
         }
     };

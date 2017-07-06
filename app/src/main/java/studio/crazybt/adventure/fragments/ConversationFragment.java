@@ -126,6 +126,7 @@ public class ConversationFragment extends Fragment implements SwipeRefreshLayout
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
         }
+        setHasOptionsMenu(true);
     }
 
     private void initConversationList() {

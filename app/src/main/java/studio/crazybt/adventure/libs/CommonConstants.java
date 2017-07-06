@@ -12,6 +12,12 @@ public class CommonConstants {
     public static final String VAL_ID_DEFAULT = "default";
     public static final String VAL_USERNAME_DEFAUT = "Unknow";
 
+    // relation
+    public static final int VAL_IS_YOU = 1;
+    public static final int VAL_FRIEND = 2;
+    public static final int VAL_STRANGER = 3;
+
+
     public static final String KEY_ID_USER = "ID_USER";
     public static final String KEY_USERNAME = "USERNAME";
     public static final String KEY_TYPE_SHOW = "TYPE_SHOW";

@@ -40,6 +40,27 @@
             android:textStyle="bold"/>
 
         <ImageView
+            android:id="@+id/ivLabelInGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_play_arrow_grey_500_18dp"
+            android:layout_alignBottom="@+id/tvProfileName"
+            android:layout_toRightOf="@+id/tvProfileName"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tvGroupName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_toRightOf="@+id/ivLabelInGroup"
+            android:layout_toLeftOf="@+id/ivOptions"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+        <ImageView
             android:id="@+id/ivPermission"
             android:layout_width="@dimen/icon_size_tiny"
             android:layout_height="@dimen/icon_size_tiny"

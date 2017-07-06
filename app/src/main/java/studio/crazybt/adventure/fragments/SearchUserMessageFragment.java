@@ -54,7 +54,6 @@ public class SearchUserMessageFragment extends Fragment {
     SearchUserMessageListAdapter searchStrangerAdapter = null;
 
 
-
     public static SearchUserMessageFragment newInstance() {
         Bundle args = new Bundle();
         SearchUserMessageFragment fragment = new SearchUserMessageFragment();
@@ -65,7 +64,7 @@ public class SearchUserMessageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if(rootView == null){
+        if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_search_user, container, false);
             ButterKnife.bind(this, rootView);
             this.addControls();
@@ -74,32 +73,32 @@ public class SearchUserMessageFragment extends Fragment {
         return rootView;
     }
 
-    private void addControls(){
+    private void addControls() {
         token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
         this.initSearchFriendList();
         this.initSearchStrangerList();
     }
 
-    private void addEvents(){
+    private void addEvents() {
 
     }
 
-    private void initSearchFriendList(){
+    private void initSearchFriendList() {
         rvSearchFriend.setLayoutManager(new LinearLayoutManager(getContext()));
         lstFriends = new ArrayList<>();
-        searchFriendAdapter = new SearchUserMessageListAdapter(getContext(), lstFriends);
+        searchFriendAdapter = new SearchUserMessageListAdapter(getActivity(), getContext(), lstFriends);
         rvSearchFriend.setAdapter(searchFriendAdapter);
     }
 
-    private void initSearchStrangerList(){
+    private void initSearchStrangerList() {
         rvSearchStranger.setLayoutManager(new LinearLayoutManager(getContext()));
         lstStrangers = new ArrayList<>();
-        searchStrangerAdapter = new SearchUserMessageListAdapter(getContext(), lstStrangers);
+        searchStrangerAdapter = new SearchUserMessageListAdapter(getActivity(), getContext(), lstStrangers);
         rvSearchStranger.setAdapter(searchStrangerAdapter);
     }
 
-    public void loadData(String keyword){
-        if(keyword != null && !keyword.isEmpty()) {
+    public void loadData(String keyword) {
+        if (keyword != null && !keyword.isEmpty()) {
             adventureRequest = new AdventureRequest(getContext(), Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_SEARCH_FRIEND), getParams(keyword), false);
             getResponse();
         }
@@ -112,7 +111,7 @@ public class SearchUserMessageFragment extends Fragment {
         return params;
     }
 
-    private void getResponse(){
+    private void getResponse() {
         adventureRequest.setOnAdventureRequestListener(new AdventureRequest.OnAdventureRequestListener() {
             @Override
             public void onAdventureResponse(JSONObject response) {
@@ -124,11 +123,11 @@ public class SearchUserMessageFragment extends Fragment {
                 JSONArray strangers = JsonUtil.getJSONArray(data, ApiConstants.KEY_STRANGERS);
                 JSONObject item;
 
-                if(friends != null && friends.length() > 0){
+                if (friends != null && friends.length() > 0) {
                     rvSearchFriend.setVisibility(View.VISIBLE);
                     tvEmptySearchFriend.setVisibility(View.GONE);
                     int length = friends.length();
-                    for(int i = 0; i < length; i++){
+                    for (int i = 0; i < length; i++) {
                         item = JsonUtil.getJSONObject(friends, i);
                         lstFriends.add(new User(
                                 JsonUtil.getString(item, ApiConstants.KEY_ID, ""),
@@ -137,16 +136,16 @@ public class SearchUserMessageFragment extends Fragment {
                                 JsonUtil.getString(item, ApiConstants.KEY_AVATAR, "")));
                     }
                     searchFriendAdapter.notifyDataSetChanged();
-                }else{
+                } else {
                     rvSearchFriend.setVisibility(View.GONE);
                     tvEmptySearchFriend.setVisibility(View.VISIBLE);
                 }
 
-                if(strangers != null && strangers.length() > 0){
+                if (strangers != null && strangers.length() > 0) {
                     rvSearchStranger.setVisibility(View.VISIBLE);
                     tvEmptySearchStranger.setVisibility(View.GONE);
                     int length = strangers.length();
-                    for(int i = 0; i < length; i++){
+                    for (int i = 0; i < length; i++) {
                         item = JsonUtil.getJSONObject(strangers, i);
                         lstStrangers.add(new User(
                                 JsonUtil.getString(item, ApiConstants.KEY_ID, ""),
@@ -155,7 +154,7 @@ public class SearchUserMessageFragment extends Fragment {
                                 JsonUtil.getString(item, ApiConstants.KEY_AVATAR, "")));
                     }
                     searchStrangerAdapter.notifyDataSetChanged();
-                }else{
+                } else {
                     rvSearchStranger.setVisibility(View.GONE);
                     tvEmptySearchStranger.setVisibility(View.VISIBLE);
                 }

@@ -111,6 +111,8 @@
 
         <activity android:name=".activities.GroupMemberActivity">
         </activity>
+        <activity android:name=".activities.TripListActivity">
+        </activity>
     </application>
 
 </manifest>

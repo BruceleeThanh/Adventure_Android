@@ -193,7 +193,6 @@ public class GroupMemberActivity extends AppCompatActivity {
     private List<GroupMember> readGroupMember(JSONArray array){
         List<GroupMember> lstGroupMembers = new ArrayList<>();
         if(array != null){
-            lstGroupMembers = new ArrayList<>();
             int length = array.length();
             for(int i = 0; i < length; i++){
                 JSONObject member = JsonUtil.getJSONObject(array, i);

@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -125,14 +126,14 @@ public class TabPublicTripsHomePageFragment extends Fragment implements SwipeRef
         if (!isLoadMore) {
             srlPublicTrips.setRefreshing(true);
         }
-        String url = ApiConstants.getUrl(ApiConstants.API_BROWSE_TRIP);
+        String url = ApiConstants.getUrl(ApiConstants.API_PUBLIC_TRIP);
         adventureRequest = new AdventureRequest(getContext(), Request.Method.GET, url, getPublicTripsParams(pagination), false);
         getPublicTripsRequestListener(isLoadMore, pagination);
     }
 
-    private HashMap getPublicTripsParams(int pagination) {
+    private Map<String ,String > getPublicTripsParams(int pagination) {
         final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
-        HashMap<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_PAGE, String.valueOf(pagination));
         params.put(ApiConstants.KEY_PERPAGE, String.valueOf(perPage));

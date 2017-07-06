@@ -3,6 +3,9 @@ package studio.crazybt.adventure.libs;
 import android.content.Context;
 import android.net.Uri;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.utils.RealmUtils;
 import studio.crazybt.adventure.utils.SharedPref;
 
@@ -37,6 +40,8 @@ public class ApiConstants {
     private static String API_ROOT;
     private static String API_ROOT_IMAGES;
 
+    private static final String API_GOOGLE_MAP_DIRECTION = "https://maps.googleapis.com/maps/api/directions/json?origin=%1$s&destination=%2$s&key=%3$s";
+
     // apis
     private static final String API_SCHEME = "http";
     public static final String API_NORMAL_SIGNUP = "user/sign_up";
@@ -58,6 +63,7 @@ public class ApiConstants {
     public static final String API_CLICKED_NOTIFICATION = "notification/clicked";
     public static final String API_TIME_LINE = "news/time_line";
     public static final String API_NEWS_FEED = "news/news_feed";
+    public static final String API_PUBLIC_TRIP = "news/public_trip";
     public static final String API_SUGGEST_FRIEND = "friend/suggest_friend";
     public static final String API_BROWSE_FRIEND = "friend/browse";
     public static final String API_SEND_REQUEST_FRIEND = "friend_request/send_request";
@@ -243,6 +249,11 @@ public class ApiConstants {
     public static final String KEY_MESSAGES = "messages";
     public static final String KEY_TOTAL_MESSAGE = "total_message";
     public static final String KEY_ID_CONVERSATION = "id_conversation";
+    public static final String KEY_TRIP_CREATE = "trip_create";
+    public static final String KEY_TRIP_JOIN = "trip_join";
+    public static final String KEY_TRIP_REQUEST = "trip_request";
+    public static final String KEY_TRIP_INTERESTED = "trip_interested";
+    public static final String KEY_RELATION = "relation";
 
     public ApiConstants() {
 
@@ -337,6 +348,12 @@ public class ApiConstants {
         }else{
             return getImageApi(API_ROOT_IMAGES, path).build().toString();
         }
+    }
+
+    public static String getGoogleMapDirectionUrl(LatLng origin, LatLng destination){
+        String strOrigin = origin.latitude + "," + origin.longitude;
+        String strDestination = destination.latitude + "," + destination.longitude;
+        return String.format(API_GOOGLE_MAP_DIRECTION, strOrigin, strDestination, context.getResources().getString(R.string.google_geo_api));
     }
 
 }

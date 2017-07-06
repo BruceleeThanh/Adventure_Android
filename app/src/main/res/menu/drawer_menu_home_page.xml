@@ -9,13 +9,13 @@
             android:icon="@drawable/ic_face_gray_24dp"
             android:title="@string/profile_drawer_menu_home_page" />
         <item
-            android:id="@+id/itemJoining"
+            android:id="@+id/itemTrip"
             android:icon="@drawable/ic_flight_takeoff_gray_24dp"
-            android:title="@string/enjoining_trip_drawer_menu_home_page" />
+            android:title="@string/trip_drawer_menu_home_page" />
         <item
             android:id="@+id/itemInterested"
             android:icon="@drawable/ic_favorite_gray_24dp"
-            android:title="@string/interested_trip_drawer_menu_home_page" />
+            android:title="@string/travelling_trip_drawer_menu_home_page" />
         <item
             android:id="@+id/itemGroup"
             android:icon="@drawable/ic_account_balance_gray_24dp"

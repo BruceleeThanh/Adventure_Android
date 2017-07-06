@@ -23,6 +23,11 @@ public class Group implements Parcelable {
 
     public Group(){}
 
+    public Group(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Group(String id, String name, String cover, int permission) {
         this.id = id;
         this.name = name;

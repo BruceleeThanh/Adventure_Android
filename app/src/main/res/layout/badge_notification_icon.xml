@@ -36,5 +36,6 @@
         android:paddingTop="1dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/txt_tiny"/>
+        android:textSize="@dimen/txt_tiny"
+        android:visibility="gone"/>
 </RelativeLayout>

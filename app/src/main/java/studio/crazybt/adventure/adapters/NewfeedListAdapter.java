@@ -51,6 +51,7 @@ import studio.crazybt.adventure.services.CustomRequest;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.JsonUtil;
 import studio.crazybt.adventure.utils.SharedPref;
+import studio.crazybt.adventure.utils.StringUtil;
 
 /**
  * Created by Brucelee Thanh on 24/09/2016.
@@ -143,6 +144,16 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     }
                 });
 
+                // In group
+                if(statusItem.getGroup() == null){
+                    statusViewHolder.ivLabelInGroup.setVisibility(View.GONE);
+                    statusViewHolder.tvGroupName.setVisibility(View.GONE);
+                }else{
+                    statusViewHolder.ivLabelInGroup.setVisibility(View.VISIBLE);
+                    statusViewHolder.tvGroupName.setVisibility(View.VISIBLE);
+                    StringUtil.setText(statusViewHolder.tvGroupName, statusItem.getGroup().getName());
+                }
+
                 // Permission (Status Privacy)
                 if (statusItem.getPermission() == 1) {
                     statusViewHolder.ivPermission.setImageResource(R.drawable.ic_private_96);
@@ -150,6 +161,8 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     statusViewHolder.ivPermission.setImageResource(R.drawable.ic_friend_96);
                 } else if (statusItem.getPermission() == 3) {
                     statusViewHolder.ivPermission.setImageResource(R.drawable.ic_public_96);
+                } else {
+                    statusViewHolder.ivPermission.setVisibility(View.GONE);
                 }
 
                 // Options
@@ -444,6 +457,10 @@ public class NewfeedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ImageView ivProfileImage;
         @BindView(R.id.tvProfileName)
         TextView tvProfileName;
+        @BindView(R.id.ivLabelInGroup)
+        ImageView ivLabelInGroup;
+        @BindView(R.id.tvGroupName)
+        TextView tvGroupName;
         @BindView(R.id.tvTimeUpload)
         TextView tvTimeUpload;
         @BindView(R.id.ivPermission)

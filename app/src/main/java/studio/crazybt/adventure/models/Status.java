@@ -15,15 +15,12 @@ import io.realm.annotations.PrimaryKey;
 public class Status implements Parcelable {
     @PrimaryKey
     private String id;
-    @Nullable
-    private String idGroup;
-    @Nullable
+    private Group group;
     private String idTrip;
 
     private User user;
 
     private String createdAt;
-    @Nullable
     private String content;
     private int permission;
     private int type;
@@ -31,22 +28,37 @@ public class Status implements Parcelable {
     private int amountComment;
     private int isLike;
     private int isComment;
-    @Nullable
     private List<ImageContent> imageContents;
 
     public Status() {
 
     }
 
-    public Status(User user, String createdAt, @Nullable String content, @Nullable List<ImageContent> imageContents) {
+    public Status(User user, String createdAt,  String content,  List<ImageContent> imageContents) {
         this.user = user;
         this.createdAt = createdAt;
         this.content = content;
         this.imageContents = imageContents;
     }
 
-    public Status(User user, String id, String createdAt, @Nullable String content, int permission, int type, int amountLike,
-                  int amountComment, int isLike, int isComment, @Nullable List<ImageContent> imageContents) {
+    public Status(User user, String id,  Group group, String createdAt,  String content, int permission, int type, int amountLike,
+                  int amountComment, int isLike, int isComment,  List<ImageContent> imageContents) {
+        this.user = user;
+        this.id = id;
+        this.group = group;
+        this.createdAt = createdAt;
+        this.content = content;
+        this.permission = permission;
+        this.type = type;
+        this.amountLike = amountLike;
+        this.amountComment = amountComment;
+        this.isLike = isLike;
+        this.isComment = isComment;
+        this.imageContents = imageContents;
+    }
+
+    public Status(User user, String id, String createdAt,  String content, int permission, int type, int amountLike,
+                  int amountComment, int isLike, int isComment,  List<ImageContent> imageContents) {
         this.user = user;
         this.id = id;
         this.createdAt = createdAt;
@@ -60,21 +72,19 @@ public class Status implements Parcelable {
         this.imageContents = imageContents;
     }
 
-    @Nullable
-    public String getIdGroup() {
-        return idGroup;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setIdGroup(@Nullable String idGroup) {
-        this.idGroup = idGroup;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
-    @Nullable
     public String getIdTrip() {
         return idTrip;
     }
 
-    public void setIdTrip(@Nullable String idTrip) {
+    public void setIdTrip( String idTrip) {
         this.idTrip = idTrip;
     }
 
@@ -102,12 +112,12 @@ public class Status implements Parcelable {
         this.createdAt = createdAt;
     }
 
-    @Nullable
+    
     public String getContent() {
         return content;
     }
 
-    public void setContent(@Nullable String content) {
+    public void setContent( String content) {
         this.content = content;
     }
 
@@ -159,12 +169,12 @@ public class Status implements Parcelable {
         this.isComment = isComment;
     }
 
-    @Nullable
+    
     public List<ImageContent> getImageContents() {
         return imageContents;
     }
 
-    public void setImageContents(@Nullable List<ImageContent> imageContents) {
+    public void setImageContents( List<ImageContent> imageContents) {
         this.imageContents = imageContents;
     }
 
@@ -176,8 +186,10 @@ public class Status implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.user, flags);
         dest.writeString(this.id);
+        dest.writeParcelable(this.group, flags);
+        dest.writeString(this.idTrip);
+        dest.writeParcelable(this.user, flags);
         dest.writeString(this.createdAt);
         dest.writeString(this.content);
         dest.writeInt(this.permission);
@@ -190,8 +202,10 @@ public class Status implements Parcelable {
     }
 
     protected Status(Parcel in) {
-        this.user = in.readParcelable(User.class.getClassLoader());
         this.id = in.readString();
+        this.group = in.readParcelable(Group.class.getClassLoader());
+        this.idTrip = in.readString();
+        this.user = in.readParcelable(User.class.getClassLoader());
         this.createdAt = in.readString();
         this.content = in.readString();
         this.permission = in.readInt();

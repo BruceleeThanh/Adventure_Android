@@ -28,6 +28,7 @@ import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.listeners.OnLoadMoreListener;
 import studio.crazybt.adventure.models.Trip;
+import studio.crazybt.adventure.utils.StringUtil;
 
 /**
  * Created by Brucelee Thanh on 12/09/2016.
@@ -83,6 +84,16 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
             tripNormalViewHolder.tvProfileName.setText(trip.getOwner().getFullName());
             tripNormalViewHolder.tvTimeUpload.setText(ConvertTimeHelper.convertISODateToPrettyTimeStamp(trip.getCreatedAt()));
 
+            // In group
+            if(trip.getGroup() == null){
+                tripNormalViewHolder.ivLabelInGroup.setVisibility(View.GONE);
+                tripNormalViewHolder.tvGroupName.setVisibility(View.GONE);
+            }else{
+                tripNormalViewHolder.ivLabelInGroup.setVisibility(View.VISIBLE);
+                tripNormalViewHolder.tvGroupName.setVisibility(View.VISIBLE);
+                StringUtil.setText(tripNormalViewHolder.tvGroupName, trip.getGroup().getName());
+            }
+
             // Permission (Trip Privacy)
             if (trip.getPermission() == 1) {
                 tripNormalViewHolder.ivPermission.setImageResource(R.drawable.ic_private_96);
@@ -90,15 +101,17 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 tripNormalViewHolder.ivPermission.setImageResource(R.drawable.ic_friend_96);
             } else if (trip.getPermission() == 3) {
                 tripNormalViewHolder.ivPermission.setImageResource(R.drawable.ic_public_96);
+            } else{
+                tripNormalViewHolder.ivPermission.setVisibility(View.GONE);
             }
             Date startTime = ConvertTimeHelper.convertISODateToDate(trip.getStartAt());
             Date endTime = ConvertTimeHelper.convertISODateToDate(trip.getEndAt());
             if(startTime.compareTo(now) > 0){
-                tripNormalViewHolder.vTripLabel.setBackgroundColor(ContextCompat.getColor(rootContext, R.color.greed_label));
+                tripNormalViewHolder.tvTripPeriod.setTextColor(ContextCompat.getColor(rootContext, R.color.greed_label));
             }else if(endTime.compareTo(now) > 0){
-                tripNormalViewHolder.vTripLabel.setBackgroundColor(ContextCompat.getColor(rootContext, R.color.yellow_label));
+                tripNormalViewHolder.tvTripPeriod.setTextColor(ContextCompat.getColor(rootContext, R.color.yellow_label));
             }else {
-                tripNormalViewHolder.vTripLabel.setBackgroundColor(ContextCompat.getColor(rootContext, R.color.red_label));
+                tripNormalViewHolder.tvTripPeriod.setTextColor(ContextCompat.getColor(rootContext, R.color.red_label));
             }
 
             tripNormalViewHolder.tvTripName.setText(trip.getName());
@@ -137,23 +150,20 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
             tripNormalViewHolder.tvProfileName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(rootContext, ProfileActivity.class);
-                    rootContext.startActivity(intent);
+                    rootContext.startActivity(ProfileActivity.newInstance(rootContext, trip.getOwner().getId(), trip.getOwner().getFullName()));
+
                 }
             });
             tripNormalViewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(rootContext, ProfileActivity.class);
-                    rootContext.startActivity(intent);
+                    rootContext.startActivity(ProfileActivity.newInstance(rootContext, trip.getOwner().getId(), trip.getOwner().getFullName()));
                 }
             });
         } else if (viewType == LOAD_MORE) {
             LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
             loadingViewHolder.pbLoadMore.setIndeterminate(true);
         }
-
-
     }
 
     @Override
@@ -166,14 +176,16 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
         public View itemView;
         public DrawableHelper drawableHelper;
 
-        @BindView(R.id.vTripLabel)
-        View vTripLabel;
         @BindView(R.id.rlContentTripShortcut)
         RelativeLayout rlContentTripShortcut;
         @BindView(R.id.ivProfileImage)
         ImageView ivProfileImage;
         @BindView(R.id.tvProfileName)
         TextView tvProfileName;
+        @BindView(R.id.ivLabelInGroup)
+        ImageView ivLabelInGroup;
+        @BindView(R.id.tvGroupName)
+        TextView tvGroupName;
         @BindView(R.id.tvTimeUpload)
         TextView tvTimeUpload;
         @BindView(R.id.ivPermission)

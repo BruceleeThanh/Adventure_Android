@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+
 import io.socket.client.Socket;
 
 import org.json.JSONObject;
@@ -47,7 +48,7 @@ import studio.crazybt.adventure.utils.SharedPref;
 import studio.crazybt.adventure.utils.StringUtil;
 import studio.crazybt.adventure.utils.ToastUtil;
 
-public class HomePageActivity extends AppCompatActivity{
+public class HomePageActivity extends AppCompatActivity {
 
     private BadgeTabLayout tlHomePage;
     private Toolbar toolbar;
@@ -86,7 +87,7 @@ public class HomePageActivity extends AppCompatActivity{
         mSocket.emit(ApiConstants.SOCKET_USER_ONLINE, idUser);
     }
 
-    private void initControls(){
+    private void initControls() {
         idUser = SharedPref.getInstance(getBaseContext()).getString(ApiConstants.KEY_ID, null);
         realm = Realm.getDefaultInstance();
 
@@ -98,7 +99,7 @@ public class HomePageActivity extends AppCompatActivity{
         tvUserName = (TextView) navHeader.findViewById(R.id.tvUserName);
     }
 
-    private void initEvents(){
+    private void initEvents() {
         ivUserAvatar.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -108,7 +109,7 @@ public class HomePageActivity extends AppCompatActivity{
         });
     }
 
-    private void initActionBar(){
+    private void initActionBar() {
         toolbar = (Toolbar) findViewById(R.id.tbHomePage);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -128,31 +129,28 @@ public class HomePageActivity extends AppCompatActivity{
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 // Checking if the item is in checked state or not, if not make it in checked state
-                if (menuItem.isChecked()) menuItem.setChecked(false);
-                else menuItem.setChecked(true);
+                if (menuItem.isChecked()) {
+                    menuItem.setChecked(false);
+                } else {
+                    menuItem.setChecked(true);
+                }
                 //Closing drawer on item click
                 dlHomePage.closeDrawers();
-                // Check to see which item was being clicked and perform appropriate action
-                switch (menuItem.getItemId()) {
-                    // Replacing the main content with ContentFragment Which is our Inbox View;
-                    case R.id.itemProfile:
-                        startActivity(ProfileActivity.newInstance(getBaseContext(), CommonConstants.VAL_ID_DEFAULT, userName));
-                        return true;
-                    case R.id.itemLogout:
-                        SharedPref.getInstance(getBaseContext()).putString(ApiConstants.KEY_TOKEN, "");
-                        Intent intent1 = new Intent(HomePageActivity.this, SplashActivity.class);
-                        startActivity(intent1);
-                        finish();
-                        return true;
-                    case R.id.itemGroup:
-                        startActivity(GroupActivity.newInstance(getBaseContext()));
-                        return true;
-                    default:
-                        Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
-                        return true;
 
+                int itemId = menuItem.getItemId();
+                if (itemId == R.id.itemProfile) {
+                    startActivity(ProfileActivity.newInstance(getBaseContext(), CommonConstants.VAL_ID_DEFAULT, userName));
+                } else if (itemId == R.id.itemTrip) {
+                    startActivity(TripListActivity.newInstance(getBaseContext()));
+                } else if (itemId == R.id.itemLogout) {
+                    SharedPref.getInstance(getBaseContext()).putString(ApiConstants.KEY_TOKEN, "");
+                    Intent intent1 = new Intent(HomePageActivity.this, SplashActivity.class);
+                    startActivity(intent1);
+                    finish();
+                } else if (itemId == R.id.itemGroup) {
+                    startActivity(GroupActivity.newInstance(getBaseContext()));
                 }
-
+                return true;
             }
         });
 
@@ -232,9 +230,9 @@ public class HomePageActivity extends AppCompatActivity{
         });
     }
 
-    private void tabSelectedAction(int position){
-        if(position == 3){
-            if(notificationCount > 0){
+    private void tabSelectedAction(int position) {
+        if (position == 3) {
+            if (notificationCount > 0) {
                 String token = SharedPref.getInstance(this).getString(ApiConstants.KEY_TOKEN, "");
                 String url = ApiConstants.getUrl(ApiConstants.API_VIEWED_NOTIFICATION);
                 ApiParams params = ApiParams.getBuilder();
@@ -270,10 +268,10 @@ public class HomePageActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //mSocket.disconnect();
+        mSocket.disconnect();
     }
 
-    private void loadEditApiRoot(){
+    private void loadEditApiRoot() {
         LayoutInflater li = LayoutInflater.from(HomePageActivity.this);
         View dialogView = li.inflate(R.layout.dialog_edit_api_root_url, null);
         final Dialog dialog = new Dialog(HomePageActivity.this);
@@ -282,7 +280,7 @@ public class HomePageActivity extends AppCompatActivity{
         dialog.setCanceledOnTouchOutside(true);
         final EditText etApiRoot = (EditText) dialog.findViewById(R.id.etApiRoot);
         final EditText etApiRootImages = (EditText) dialog.findViewById(R.id.etApiRootImages);
-        Button btnCancelEdit = (Button)  dialog.findViewById(R.id.btnCancelEdit);
+        Button btnCancelEdit = (Button) dialog.findViewById(R.id.btnCancelEdit);
         Button btnConfirmEdit = (Button) dialog.findViewById(R.id.btnConfirmEdit);
 
         etApiRoot.setText(ApiConstants.getApiRoot());

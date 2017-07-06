@@ -268,7 +268,6 @@ public class TripActivity extends AppCompatActivity {
 
                 // finally
                 trip = new Trip(JsonUtil.getString(schedule, ApiConstants.KEY_ID, ""),
-                        JsonUtil.getString(schedule, ApiConstants.KEY_ID_GROUP, ""),
                         new User(JsonUtil.getString(schedule, ApiConstants.KEY_OWNER, "")),
                         JsonUtil.getString(schedule, ApiConstants.KEY_NAME, ""),
                         JsonUtil.getString(schedule, ApiConstants.KEY_DESCRIPTION, ""),

@@ -34,6 +34,7 @@ import studio.crazybt.adventure.adapters.NewfeedListAdapter;
 import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.libs.CommonConstants;
 import studio.crazybt.adventure.listeners.OnLoadMoreListener;
+import studio.crazybt.adventure.models.Group;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.Status;
 import studio.crazybt.adventure.models.User;
@@ -138,7 +139,7 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
                     lastVisibleItem = llmNewFeed.findLastVisibleItemPosition();
 
 
-                    if(!rvNewfeed.canScrollVertically(1)){
+                    if (!rvNewfeed.canScrollVertically(1)) {
                         if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                             if (nlaNewfeed.onLoadMoreListener != null) {
                                 nlaNewfeed.onLoadMoreListener.onLoadMore();
@@ -188,9 +189,12 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
                 JSONArray data = JsonUtil.getJSONArray(response, ApiConstants.DEF_DATA);
                 for (int i = 0; i < data.length(); i++) {
                     List<ImageContent> imageContents = new ArrayList<>();
-                    JSONObject dataObject = JsonUtil.getJSONObject(data, i);
-                    JSONObject owner = JsonUtil.getJSONObject(dataObject, ApiConstants.KEY_OWNER);
-                    JSONArray images = JsonUtil.getJSONArray(dataObject, ApiConstants.KEY_IMAGES);
+                    Group group = null;
+
+                    JSONObject item = JsonUtil.getJSONObject(data, i);
+                    JSONObject owner = JsonUtil.getJSONObject(item, ApiConstants.KEY_OWNER);
+                    JSONObject jGroup = JsonUtil.getJSONObject(item, ApiConstants.KEY_ID_GROUP);
+                    JSONArray images = JsonUtil.getJSONArray(item, ApiConstants.KEY_IMAGES);
                     if (images != null && images.length() > 0) {
                         for (int j = 0; j < images.length(); j++) {
                             JSONObject image = JsonUtil.getJSONObject(images, j);
@@ -199,21 +203,28 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
                                     JsonUtil.getString(image, ApiConstants.KEY_DESCRIPTION, "")));
                         }
                     }
+                    if (jGroup != null) {
+                        group = new Group(
+                                JsonUtil.getString(jGroup, ApiConstants.KEY_ID, null),
+                                JsonUtil.getString(jGroup, ApiConstants.KEY_NAME, null)
+                        );
+                    }
                     statuses.add(
                             new Status(
                                     new User(JsonUtil.getString(owner, ApiConstants.KEY_ID, ""),
                                             JsonUtil.getString(owner, ApiConstants.KEY_FIRST_NAME, ""),
                                             JsonUtil.getString(owner, ApiConstants.KEY_LAST_NAME, ""),
                                             JsonUtil.getString(owner, ApiConstants.KEY_AVATAR, "")),
-                                    JsonUtil.getString(dataObject, ApiConstants.KEY_ID, ""),
-                                    JsonUtil.getString(dataObject, ApiConstants.KEY_CREATED_AT, ""),
-                                    JsonUtil.getString(dataObject, ApiConstants.KEY_CONTENT, ""),
-                                    JsonUtil.getInt(dataObject, ApiConstants.KEY_PERMISSION, 3),
-                                    JsonUtil.getInt(dataObject, ApiConstants.KEY_TYPE, 1),
-                                    JsonUtil.getInt(dataObject, ApiConstants.KEY_AMOUNT_LIKE, 0),
-                                    JsonUtil.getInt(dataObject, ApiConstants.KEY_AMOUNT_COMMENT, 0),
-                                    JsonUtil.getInt(dataObject, ApiConstants.KEY_IS_LIKE, 0),
-                                    JsonUtil.getInt(dataObject, ApiConstants.KEY_IS_COMMENT, 0),
+                                    JsonUtil.getString(item, ApiConstants.KEY_ID, ""),
+                                    group,
+                                    JsonUtil.getString(item, ApiConstants.KEY_CREATED_AT, ""),
+                                    JsonUtil.getString(item, ApiConstants.KEY_CONTENT, ""),
+                                    JsonUtil.getInt(item, ApiConstants.KEY_PERMISSION, 3),
+                                    JsonUtil.getInt(item, ApiConstants.KEY_TYPE, 1),
+                                    JsonUtil.getInt(item, ApiConstants.KEY_AMOUNT_LIKE, 0),
+                                    JsonUtil.getInt(item, ApiConstants.KEY_AMOUNT_COMMENT, 0),
+                                    JsonUtil.getInt(item, ApiConstants.KEY_IS_LIKE, 0),
+                                    JsonUtil.getInt(item, ApiConstants.KEY_IS_COMMENT, 0),
                                     imageContents));
                 }
                 nlaNewfeed.notifyDataSetChanged();

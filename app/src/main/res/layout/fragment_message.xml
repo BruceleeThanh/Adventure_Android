@@ -101,6 +101,18 @@
         android:clipToPadding="false"
         android:paddingTop="@dimen/margin_small"/>
 
+    <TextView
+        android:id="@+id/tvTyping"
+        android:layout_above="@+id/vLine1"
+        android:background="@color/secondary_text20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_edit_grey_500_18dp"
+        android:drawablePadding="@dimen/margin_small"
+        android:gravity="bottom"
+        android:textSize="@dimen/txt_small"
+        android:visibility="gone"/>
+
     <View
         android:id="@+id/vLine1"
         android:layout_width="match_parent"

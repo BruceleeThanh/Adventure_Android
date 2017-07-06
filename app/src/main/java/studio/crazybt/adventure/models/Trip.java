@@ -13,23 +13,16 @@ import java.util.List;
 public class Trip implements Parcelable {
 
     private String id;
-    @Nullable
-    private String idGroup;
+    private Group group;
 
     private User owner;
 
     private String name;
-    @Nullable
     private String description;
-    @Nullable
     private String startAt;
-    @Nullable
     private String endAt;
-    @Nullable
     private String startPosition;
-    @Nullable
     private String destinationSummary;
-    @Nullable
     private String expense;
 
     private int amountPeople;
@@ -41,44 +34,45 @@ public class Trip implements Parcelable {
     private int amountRating;
 
     private double rating;
-    @Nullable
+    
     private List<Integer> vehicles;
-    @Nullable
+    
     private List<Route> routes;
-    @Nullable
+    
     private List<ImageContent> images;
-    @Nullable
+    
     private String prepare;
-    @Nullable
+    
     private String note;
-    @Nullable
+    
     private String createdAt;
-    @Nullable
+    
     private List<Rating> ratings;
 
     private int permission;
 
     private int type;
-    @Nullable
+    
     private List<Place> places;
 
     private int isMember; // 1. Request member; 2. Invite member; 3. Member; 4. Nothing happen
 
     private int isInterested; // 0. None; 1. Interested
 
-    @Nullable
+    
     private List<Status> lstDiscuss;
-    @Nullable
+    
     private List<TripDiary> lstTripDiaries;
-    @Nullable
+    
     private List<TripMember> tripMembers;
 
     public Trip() {
     }
 
-    public Trip(String id, User owner, String name, @Nullable String startAt, @Nullable String endAt, @Nullable String startPosition,
-                @Nullable String destinationSummary, @Nullable String expense, @Nullable List<ImageContent> images, int amountPeople,
-                int amountMember, int amountInterested, int amountRating, double rating, @Nullable String createdAt, int permission, int type) {
+    public Trip(String id, User owner, String name,  String startAt,  String endAt,  String startPosition,
+                String destinationSummary,  String expense,  List<ImageContent> images, int amountPeople,
+                int amountMember, int amountInterested, int amountRating, double rating,  String createdAt, int permission,
+                int type) {
         this.id = id;
         this.owner = owner;
         this.name = name;
@@ -98,15 +92,38 @@ public class Trip implements Parcelable {
         this.type = type;
     }
 
-    public Trip(String id, @Nullable String idGroup, User owner, String name, @Nullable String description, @Nullable String startAt,
-                @Nullable String endAt, @Nullable String startPosition, @Nullable String destinationSummary, @Nullable String expense,
-                int amountPeople, int amountMember, @Nullable List<Integer> vehicles, @Nullable List<Route> routes,
-                @Nullable List<ImageContent> images, @Nullable String prepare, @Nullable String note, @Nullable String createdAt,
-                int amountInterested, int amountRating, double rating, int permission, int type, @Nullable List<Rating> ratings,
-                @Nullable List<Place> places, int isMember, int isInterested, @Nullable List<Status> lstDiscuss,
-                @Nullable List<TripDiary> lstTripDiaries, @Nullable List<TripMember> tripMembers) {
+    public Trip(String id, Group group, User owner, String name,  String startAt,  String endAt,  String startPosition,
+                 String destinationSummary,  String expense,  List<ImageContent> images, int amountPeople,
+                int amountMember, int amountInterested, int amountRating, double rating,  String createdAt, int permission,
+                int type) {
         this.id = id;
-        this.idGroup = idGroup;
+        this.group = group;
+        this.owner = owner;
+        this.name = name;
+        this.startAt = startAt;
+        this.endAt = endAt;
+        this.startPosition = startPosition;
+        this.destinationSummary = destinationSummary;
+        this.expense = expense;
+        this.images = images;
+        this.amountPeople = amountPeople;
+        this.amountMember = amountMember;
+        this.amountInterested = amountInterested;
+        this.amountRating = amountRating;
+        this.rating = rating;
+        this.createdAt = createdAt;
+        this.permission = permission;
+        this.type = type;
+    }
+
+    public Trip(String id, User owner, String name,  String description,  String startAt,
+                 String endAt,  String startPosition,  String destinationSummary,  String expense,
+                int amountPeople, int amountMember,  List<Integer> vehicles,  List<Route> routes,
+                 List<ImageContent> images,  String prepare,  String note,  String createdAt,
+                int amountInterested, int amountRating, double rating, int permission, int type,  List<Rating> ratings,
+                 List<Place> places, int isMember, int isInterested,  List<Status> lstDiscuss,
+                 List<TripDiary> lstTripDiaries,  List<TripMember> tripMembers) {
+        this.id = id;
         this.owner = owner;
         this.name = name;
         this.description = description;
@@ -145,13 +162,12 @@ public class Trip implements Parcelable {
         this.id = id;
     }
 
-    @Nullable
-    public String getIdGroup() {
-        return idGroup;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setIdGroup(@Nullable String idGroup) {
-        this.idGroup = idGroup;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public User getOwner() {
@@ -170,57 +186,57 @@ public class Trip implements Parcelable {
         this.name = name;
     }
 
-    @Nullable
+    
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(@Nullable String description) {
+    public void setDescription( String description) {
         this.description = description;
     }
 
-    @Nullable
+    
     public String getStartAt() {
         return startAt;
     }
 
-    public void setStartAt(@Nullable String startAt) {
+    public void setStartAt( String startAt) {
         this.startAt = startAt;
     }
 
-    @Nullable
+    
     public String getEndAt() {
         return endAt;
     }
 
-    public void setEndAt(@Nullable String endAt) {
+    public void setEndAt( String endAt) {
         this.endAt = endAt;
     }
 
-    @Nullable
+    
     public String getStartPosition() {
         return startPosition;
     }
 
-    public void setStartPosition(@Nullable String startPosition) {
+    public void setStartPosition( String startPosition) {
         this.startPosition = startPosition;
     }
 
-    @Nullable
+    
     public String getDestinationSummary() {
         return destinationSummary;
     }
 
-    public void setDestinationSummary(@Nullable String destinationSummary) {
+    public void setDestinationSummary( String destinationSummary) {
         this.destinationSummary = destinationSummary;
     }
 
-    @Nullable
+    
     public String getExpense() {
         return expense;
     }
 
-    public void setExpense(@Nullable String expense) {
+    public void setExpense( String expense) {
         this.expense = expense;
     }
 
@@ -264,66 +280,66 @@ public class Trip implements Parcelable {
         this.rating = rating;
     }
 
-    @Nullable
+    
     public List<Integer> getVehicles() {
         return vehicles;
     }
 
-    public void setVehicles(@Nullable List<Integer> vehicles) {
+    public void setVehicles( List<Integer> vehicles) {
         this.vehicles = vehicles;
     }
 
-    @Nullable
+    
     public List<Route> getRoutes() {
         return routes;
     }
 
-    public void setRoutes(@Nullable List<Route> routes) {
+    public void setRoutes( List<Route> routes) {
         this.routes = routes;
     }
 
-    @Nullable
+    
     public List<ImageContent> getImages() {
         return images;
     }
 
-    public void setImages(@Nullable List<ImageContent> images) {
+    public void setImages( List<ImageContent> images) {
         this.images = images;
     }
 
-    @Nullable
+    
     public String getPrepare() {
         return prepare;
     }
 
-    public void setPrepare(@Nullable String prepare) {
+    public void setPrepare( String prepare) {
         this.prepare = prepare;
     }
 
-    @Nullable
+    
     public String getNote() {
         return note;
     }
 
-    public void setNote(@Nullable String note) {
+    public void setNote( String note) {
         this.note = note;
     }
 
-    @Nullable
+    
     public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(@Nullable String createdAt) {
+    public void setCreatedAt( String createdAt) {
         this.createdAt = createdAt;
     }
 
-    @Nullable
+    
     public List<Rating> getRatings() {
         return ratings;
     }
 
-    public void setRatings(@Nullable List<Rating> ratings) {
+    public void setRatings( List<Rating> ratings) {
         this.ratings = ratings;
     }
 
@@ -343,12 +359,12 @@ public class Trip implements Parcelable {
         this.type = type;
     }
 
-    @Nullable
+    
     public List<Place> getPlaces() {
         return places;
     }
 
-    public void setPlaces(@Nullable List<Place> places) {
+    public void setPlaces( List<Place> places) {
         this.places = places;
     }
 
@@ -368,25 +384,25 @@ public class Trip implements Parcelable {
         this.isInterested = isInterested;
     }
 
-    @Nullable
+    
     public List<Status> getLstDiscuss() {
         return lstDiscuss;
     }
 
-    public void setLstDiscuss(@Nullable List<Status> lstDiscuss) {
+    public void setLstDiscuss( List<Status> lstDiscuss) {
         this.lstDiscuss = lstDiscuss;
     }
 
-    @Nullable
+    
     public List<TripDiary> getLstTripDiaries() {
         return lstTripDiaries;
     }
 
-    public void setLstTripDiaries(@Nullable List<TripDiary> lstTripDiaries) {
+    public void setLstTripDiaries( List<TripDiary> lstTripDiaries) {
         this.lstTripDiaries = lstTripDiaries;
     }
 
-    @Nullable
+    
     public List<TripMember> getRequests() {
         List<TripMember> result = null;
         if (tripMembers != null && !tripMembers.isEmpty()) {
@@ -400,7 +416,7 @@ public class Trip implements Parcelable {
         return result;
     }
 
-    @Nullable
+    
     public List<TripMember> getInvites() {
         List<TripMember> result = null;
         if (tripMembers != null && !tripMembers.isEmpty()) {
@@ -414,7 +430,7 @@ public class Trip implements Parcelable {
         return result;
     }
 
-    @Nullable
+    
     public List<TripMember> getMembers() {
         List<TripMember> result = null;
         if (tripMembers != null && !tripMembers.isEmpty()) {
@@ -437,7 +453,7 @@ public class Trip implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
-        dest.writeString(this.idGroup);
+        dest.writeParcelable(this.group, flags);
         dest.writeParcelable(this.owner, flags);
         dest.writeString(this.name);
         dest.writeString(this.description);
@@ -470,7 +486,7 @@ public class Trip implements Parcelable {
 
     protected Trip(Parcel in) {
         this.id = in.readString();
-        this.idGroup = in.readString();
+        this.group = in.readParcelable(Group.class.getClassLoader());
         this.owner = in.readParcelable(User.class.getClassLoader());
         this.name = in.readString();
         this.description = in.readString();

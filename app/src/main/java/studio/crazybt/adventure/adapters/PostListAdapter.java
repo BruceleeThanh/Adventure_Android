@@ -112,7 +112,7 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (getItemViewType(position) == STATUS) {
             final StatusViewHolder statusViewHolder = (StatusViewHolder) holder;
             final Status statusItem = (Status) lstPosts.get(position);
@@ -363,11 +363,11 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             // Time label
             if (startTime.compareTo(now) > 0) {
-                tripNormalViewHolder.vTripLabel.setBackgroundColor(rootContext.getResources().getColor(R.color.greed_label));
+                tripNormalViewHolder.tvTripPeriod.setTextColor(rootContext.getResources().getColor(R.color.greed_label));
             } else if (endTime.compareTo(now) > 0) {
-                tripNormalViewHolder.vTripLabel.setBackgroundColor(rootContext.getResources().getColor(R.color.yellow_label));
+                tripNormalViewHolder.tvTripPeriod.setTextColor(rootContext.getResources().getColor(R.color.yellow_label));
             } else {
-                tripNormalViewHolder.vTripLabel.setBackgroundColor(rootContext.getResources().getColor(R.color.red_label));
+                tripNormalViewHolder.tvTripPeriod.setTextColor(rootContext.getResources().getColor(R.color.red_label));
             }
 
             tripNormalViewHolder.tvTripName.setText(trip.getName());
@@ -406,15 +406,13 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             tripNormalViewHolder.tvProfileName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(rootContext, ProfileActivity.class);
-                    rootContext.startActivity(intent);
+                    rootContext.startActivity(ProfileActivity.newInstance(rootContext, trip.getOwner().getId(), trip.getOwner().getFullName()));
                 }
             });
             tripNormalViewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(rootContext, ProfileActivity.class);
-                    rootContext.startActivity(intent);
+                    rootContext.startActivity(ProfileActivity.newInstance(rootContext, trip.getOwner().getId(), trip.getOwner().getFullName()));
                 }
             });
         } else if (getItemViewType(position) == LOAD_MORE) {
@@ -532,8 +530,6 @@ public class PostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public View itemView;
         public DrawableHelper drawableHelper;
 
-        @BindView(R.id.vTripLabel)
-        View vTripLabel;
         @BindView(R.id.rlContentTripShortcut)
         RelativeLayout rlContentTripShortcut;
         @BindView(R.id.ivProfileImage)

@@ -35,7 +35,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private final int SENT = 1;
     private final int RECEIVED = 2;
-    private final int TYPING_ACTION = 3;
 
     private String idUser;
 
@@ -48,15 +47,11 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-        if (lstMessage.get(position) == null) {
-            return TYPING_ACTION;
-        } else {
-            String owner = lstMessage.get(position).getOwner();
-            if (idUser.equals(owner))
-                return SENT;
-            else
-                return RECEIVED;
-        }
+        String owner = lstMessage.get(position).getOwner();
+        if (idUser.equals(owner))
+            return SENT;
+        else
+            return RECEIVED;
     }
 
     @Override
@@ -68,13 +63,8 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (viewType == RECEIVED) {
             View viewSent = li.inflate(R.layout.item_message_received, parent, false);
             return new ReceivedViewHolder(viewSent);
-        } else if (viewType == TYPING_ACTION) {
-            View viewTyping = li.inflate(R.layout.item_typing, parent, false);
-            return new TypingViewHolder(viewTyping);
-        } else{
-            View v = li.inflate(-1, parent, false);
-            return new DefaultViewHolder(v);
         }
+        return null;
     }
 
     @Override
@@ -94,17 +84,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             StringUtil.setText(receivedViewHolder.etvMessageContent, message.getContent());
 
             StringUtil.setText(receivedViewHolder.tvMessageCreatedAt, message.getCreatedAtLabel());
-        } else if (getItemViewType(position) == TYPING_ACTION) {
-            TypingViewHolder typingViewHolder = (TypingViewHolder) holder;
-
-            StringUtil.setText(typingViewHolder.tvTyping, partnerLastName + " " + rootContext.getResources().getString(R.string.label_typing));
-        } else{
-            try{
-                TypingViewHolder typingViewHolder = (TypingViewHolder) holder;
-                typingViewHolder.rlTyping.setVisibility(View.GONE);
-            } catch (Exception e){
-
-            }
         }
     }
 
@@ -154,26 +133,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             } else {
                 tvMessageCreatedAt.setVisibility(View.GONE);
             }
-        }
-    }
-
-    class TypingViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.rlTyping)
-        RelativeLayout rlTyping;
-        @BindView(R.id.tvTyping)
-        TextView tvTyping;
-
-        TypingViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
-
-    class DefaultViewHolder extends RecyclerView.ViewHolder {
-
-        DefaultViewHolder(View itemView) {
-            super(itemView);
         }
     }
 }

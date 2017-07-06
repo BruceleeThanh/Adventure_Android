@@ -3,6 +3,7 @@ package studio.crazybt.adventure.fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -17,6 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,21 +32,34 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindDimen;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
+import studio.crazybt.adventure.helpers.DirectionFinderHelper;
 import studio.crazybt.adventure.helpers.DrawableHelper;
+import studio.crazybt.adventure.libs.ApiConstants;
+import studio.crazybt.adventure.listeners.OnDirectionFinderListener;
+import studio.crazybt.adventure.models.Direction;
 import studio.crazybt.adventure.models.Place;
+import studio.crazybt.adventure.services.AdventureRequest;
+import studio.crazybt.adventure.services.CustomRequest;
+import studio.crazybt.adventure.services.MySingleton;
+import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.ToastUtil;
 
 /**
  * Created by Brucelee Thanh on 12/09/2016.
  */
-public class TabMapTripFragment extends Fragment {
+public class TabMapTripFragment extends Fragment implements OnDirectionFinderListener{
 
     private View rootView;
     private SupportMapFragment supportMapFragment;
@@ -51,6 +68,14 @@ public class TabMapTripFragment extends Fragment {
 
     private List<Place> lstPlace;
     private DrawableHelper drawableHelper;
+
+    private LatLng currentLocation;
+    private Marker currentMarker;
+    private Marker pressMarker;
+
+    private List<Marker> originMarkers = new ArrayList<>();
+    private List<Marker> destinationMarkers = new ArrayList<>();
+    private List<Polyline> polylinePaths = new ArrayList<>();
 
     @BindDimen(R.dimen.item_icon_size_big)
     float itemSizeBig;
@@ -99,32 +124,26 @@ public class TabMapTripFragment extends Fragment {
                     }
                 }
             });
-/*            if (ActivityCompat.checkSelfPermission(this.getContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            map.setMyLocationEnabled(true);
 
-            if (Build.VERSION.SDK_INT >= 10) {
-                int accessCoarsePermission
-                        = ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION);
-                int accessFinePermission
-                        = ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION);
-
-
-                if (accessCoarsePermission != PackageManager.PERMISSION_GRANTED
-                        || accessFinePermission != PackageManager.PERMISSION_GRANTED) {
-
-                    // Các quyền cần người dùng cho phép.
-                    String[] permissions = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.ACCESS_FINE_LOCATION};
-
-                    // Hiển thị một Dialog hỏi người dùng cho phép các quyền trên.
-                    ActivityCompat.requestPermissions(this.getActivity(), permissions, REQUEST_ID_ACCESS_COURSE_FINE_LOCATION);
-
-                }
-            }*/
+//            if (Build.VERSION.SDK_INT >= 10) {
+//                int accessCoarsePermission
+//                        = ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION);
+//                int accessFinePermission
+//                        = ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION);
+//
+//
+//                if (accessCoarsePermission != PackageManager.PERMISSION_GRANTED
+//                        || accessFinePermission != PackageManager.PERMISSION_GRANTED) {
+//
+//                    // Các quyền cần người dùng cho phép.
+//                    String[] permissions = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+//                            Manifest.permission.ACCESS_FINE_LOCATION};
+//
+//                    // Hiển thị một Dialog hỏi người dùng cho phép các quyền trên.
+//                    ActivityCompat.requestPermissions(this.getActivity(), permissions, REQUEST_ID_ACCESS_COURSE_FINE_LOCATION);
+//
+//                }
+//            }
         }
     }
 
@@ -145,8 +164,10 @@ public class TabMapTripFragment extends Fragment {
             option.title("Bạn đang ở đây!");
             //option.snippet("Near some where.");
             option.position(latLng);
-            Marker currentMarker = map.addMarker(option);
+            currentMarker = map.addMarker(option);
             currentMarker.showInfoWindow();
+
+            currentLocation = latLng;
         } else {
             Toast.makeText(this.getContext(), "Không thể tìm thấy vị trí của bạn.", Toast.LENGTH_SHORT).show();
         }
@@ -212,10 +233,86 @@ public class TabMapTripFragment extends Fragment {
                     marker.position(new LatLng(temp.getLatitude(), temp.getLongitude()));
                     map.addMarker(marker);
                 }
+                map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        if(currentLocation != null && marker.getPosition() != null){
+                            pressMarker = marker;
+                            new DirectionFinderHelper(getContext(), TabMapTripFragment.this, currentLocation, marker.getPosition());
+                        }else{
+                            ToastUtil.showToast(getResources().getString(R.string.error_direction_map));
+                        }
+                        return false;
+                    }
+                });
+                initFindCurrentLocation();
             } else {
                 ToastUtil.showToast(getContext(), getResources().getString(R.string.error_null_places));
             }
         }
     }
 
+    private void initFindCurrentLocation(){
+        if (ActivityCompat.checkSelfPermission(this.getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        map.setMyLocationEnabled(true);
+        map.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                currentLocation();
+                return false;
+            }
+        });
+    }
+
+
+    @Override
+    public void onDirectionFinderStart() {
+//        if (originMarkers != null) {
+//            for (Marker marker : originMarkers) {
+//                marker.remove();
+//            }
+//        }
+//
+//        if (destinationMarkers != null) {
+//            for (Marker marker : destinationMarkers) {
+//                marker.remove();
+//            }
+//        }
+
+        if (polylinePaths != null) {
+            for (Polyline polyline:polylinePaths ) {
+                polyline.remove();
+            }
+        }
+    }
+
+    @Override
+    public void onDirectionFinderSuccess(List<Direction> directions) {
+        polylinePaths = new ArrayList<>();
+        originMarkers = new ArrayList<>();
+        destinationMarkers = new ArrayList<>();
+
+        for (Direction direction : directions) {
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(direction.startLocation, 10));
+//            ((TextView) findViewById(R.id.tvDuration)).setText(route.duration.text);
+//            ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
+
+            originMarkers.add(currentMarker);
+            destinationMarkers.add(pressMarker);
+
+            PolylineOptions polylineOptions = new PolylineOptions().
+                    geodesic(true).
+                    color(Color.BLUE).
+                    width(10);
+
+            for (int i = 0; i < direction.points.size(); i++)
+                polylineOptions.add(direction.points.get(i));
+
+            polylinePaths.add(map.addPolyline(polylineOptions));
+        }
+    }
 }
