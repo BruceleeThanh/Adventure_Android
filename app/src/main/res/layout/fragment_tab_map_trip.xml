@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <fragment
         android:id="@+id/fmMapTrip"
@@ -10,4 +10,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/rlDirectionInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_medium"
+        android:background="@color/white"
+        android:visibility="gone">
+        
+        <TextView
+            android:id="@+id/tvDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_swap_horiz_green_500_24dp"
+            android:drawablePadding="@dimen/margin_medium"
+            android:layout_marginLeft="@dimen/margin_medium"/>
+
+        <TextView
+            android:id="@+id/tvDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_timer_green_500_24dp"
+            android:layout_toRightOf="@+id/tvDistance"
+            android:layout_marginLeft="@dimen/margin_big"
+            android:drawablePadding="@dimen/margin_medium"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

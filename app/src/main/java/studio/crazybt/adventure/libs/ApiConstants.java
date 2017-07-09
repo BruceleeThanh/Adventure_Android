@@ -353,7 +353,7 @@ public class ApiConstants {
     public static String getGoogleMapDirectionUrl(LatLng origin, LatLng destination){
         String strOrigin = origin.latitude + "," + origin.longitude;
         String strDestination = destination.latitude + "," + destination.longitude;
-        return String.format(API_GOOGLE_MAP_DIRECTION, strOrigin, strDestination, context.getResources().getString(R.string.google_geo_api));
+        return String.format(API_GOOGLE_MAP_DIRECTION, strOrigin, strDestination, context.getResources().getString(R.string.google_direction_api));
     }
 
 }

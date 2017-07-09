@@ -403,7 +403,7 @@ public class CreateStatusFragment extends Fragment implements View.OnClickListen
             params.put(ApiConstants.KEY_ID_TRIP, idTrip);
             params.putParam(ApiConstants.KEY_TYPE, 2);
             params.putParam(ApiConstants.KEY_PERMISSION, 4);
-        } if (idGroup != null){
+        } else if (idGroup != null){
             params.put(ApiConstants.KEY_ID_GROUP, idGroup);
             params.putParam(ApiConstants.KEY_TYPE, 3);
             params.putParam(ApiConstants.KEY_PERMISSION, 4);

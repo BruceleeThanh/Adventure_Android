@@ -32,6 +32,12 @@
                 app:expandedTitleTextAppearance="@style/TextAppearance.Adventure.Title.Expanded"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/tbProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/toolbar_height"
+                    app:layout_collapseMode="pin"/>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -243,12 +249,6 @@
                     </RelativeLayout>
 
                 </RelativeLayout>
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/tbProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/toolbar_height"
-                    app:layout_collapseMode="pin"/>
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 

@@ -16,6 +16,8 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -42,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindDimen;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import studio.crazybt.adventure.R;
 import studio.crazybt.adventure.helpers.DirectionFinderHelper;
@@ -54,12 +57,20 @@ import studio.crazybt.adventure.services.AdventureRequest;
 import studio.crazybt.adventure.services.CustomRequest;
 import studio.crazybt.adventure.services.MySingleton;
 import studio.crazybt.adventure.utils.RLog;
+import studio.crazybt.adventure.utils.StringUtil;
 import studio.crazybt.adventure.utils.ToastUtil;
 
 /**
  * Created by Brucelee Thanh on 12/09/2016.
  */
 public class TabMapTripFragment extends Fragment implements OnDirectionFinderListener{
+
+    @BindView(R.id.rlDirectionInfo)
+    RelativeLayout rlDirectionInfo;
+    @BindView(R.id.tvDistance)
+    TextView tvDistance;
+    @BindView(R.id.tvDuration)
+    TextView tvDuration;
 
     private View rootView;
     private SupportMapFragment supportMapFragment;
@@ -287,6 +298,7 @@ public class TabMapTripFragment extends Fragment implements OnDirectionFinderLis
             for (Polyline polyline:polylinePaths ) {
                 polyline.remove();
             }
+            rlDirectionInfo.setVisibility(View.GONE);
         }
     }
 
@@ -298,8 +310,9 @@ public class TabMapTripFragment extends Fragment implements OnDirectionFinderLis
 
         for (Direction direction : directions) {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(direction.startLocation, 10));
-//            ((TextView) findViewById(R.id.tvDuration)).setText(route.duration.text);
-//            ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
+            rlDirectionInfo.setVisibility(View.VISIBLE);
+            StringUtil.setText(tvDistance, direction.distance.text);
+            StringUtil.setText(tvDuration, direction.distance.text);
 
             originMarkers.add(currentMarker);
             destinationMarkers.add(pressMarker);

@@ -2,8 +2,8 @@
     <string name="app_name">Adventure</string>
     <string name="facebook_app_id">1757209921226171</string>
     <string name="fb_login_protocol_scheme">fb1757209921226171</string>
-    <string name="google_geo_api">AIzaSyCpA0--PrBdpPT129BFxTlmwndRJdO8WVk</string>
-    <!--AIzaSyDVpmSuzT-tjzo8vr7zM2qk9pGK4YlTOls-->
+    <string name="google_geo_api">AIzaSyDVpmSuzT-tjzo8vr7zM2qk9pGK4YlTOls</string>
+    <string name="google_direction_api">AIzaSyCpA0--PrBdpPT129BFxTlmwndRJdO8WVk</string>
 
     <string name="openDrawer">Open navigation drawer</string>
     <string name="closeDrawer">Close navigation drawer</string>
