@@ -122,7 +122,7 @@ public class TabPublicTripsHomePageFragment extends Fragment implements SwipeRef
         });
     }
 
-    public void loadPublicTripsData(final boolean isLoadMore, final int pagination) {
+    private void loadPublicTripsData(final boolean isLoadMore, final int pagination) {
         if (!isLoadMore) {
             srlPublicTrips.setRefreshing(true);
         }
@@ -134,7 +134,6 @@ public class TabPublicTripsHomePageFragment extends Fragment implements SwipeRef
     private Map<String ,String > getPublicTripsParams(int pagination) {
         final String token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
         Map<String, String> params = new HashMap<>();
-        RLog.i("token: " + token);
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_PAGE, String.valueOf(pagination));
         params.put(ApiConstants.KEY_PERPAGE, String.valueOf(perPage));

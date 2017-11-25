@@ -160,14 +160,6 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
                     rootContext.startActivity(ProfileActivity.newInstance(rootContext, trip.getOwner().getId(), trip.getOwner().getFullName()));
                 }
             });
-
-            tripNormalViewHolder.ivOptions.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-
         } else if (viewType == LOAD_MORE) {
             LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
             loadingViewHolder.pbLoadMore.setIndeterminate(true);
@@ -186,8 +178,6 @@ public class TripShortcutListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         @BindView(R.id.rlContentTripShortcut)
         RelativeLayout rlContentTripShortcut;
-        @BindView(R.id.ivOptions)
-        ImageView ivOptions;
         @BindView(R.id.ivProfileImage)
         ImageView ivProfileImage;
         @BindView(R.id.tvProfileName)

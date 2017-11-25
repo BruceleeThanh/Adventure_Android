@@ -87,13 +87,6 @@ public class HomePageActivity extends AppCompatActivity {
         mSocket.emit(ApiConstants.SOCKET_USER_ONLINE, idUser);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == CommonConstants.ACT_CREATE_TRIP && resultCode == RESULT_CANCELED){
-            ((TabPublicTripsHomePageFragment) getSupportFragmentManager().findFragmentByTag(TabLayoutAdapter.makeFragmentName(R.id.vpHomePage, 0))).loadPublicTripsData(false, 1);
-        }
-    }
-
     private void initControls() {
         idUser = SharedPref.getInstance(getBaseContext()).getString(ApiConstants.KEY_ID, null);
         realm = Realm.getDefaultInstance();
@@ -235,7 +228,6 @@ public class HomePageActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void tabSelectedAction(int position) {

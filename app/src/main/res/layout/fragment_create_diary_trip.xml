@@ -31,11 +31,11 @@
         android:id="@+id/ivProfileImage"
         android:layout_width="@dimen/profile_image_medium"
         android:layout_height="@dimen/profile_image_medium"
-        android:layout_below="@id/ablCreateDiaryTrip"
         android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_medium"
         android:scaleType="centerCrop"
-        android:src="@drawable/img_profile"/>
+        android:src="@drawable/img_profile"
+        android:layout_below="@id/ablCreateDiaryTrip"/>
 
     <TextView
         android:id="@+id/tvProfileName"
@@ -71,43 +71,27 @@
             android:layout_marginTop="@dimen/margin_medium"
             android:paddingBottom="@dimen/margin_big">
 
-            <RelativeLayout
-                android:id="@+id/rlTitleDiaryTrip"
+            <EditText
+                android:id="@+id/etTitleDiaryTrip"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/etTitleDiaryTrip"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_medium"
-                    android:layout_marginRight="@dimen/margin_medium"
-                    android:background="@android:color/transparent"
-                    android:drawablePadding="@dimen/margin_small"
-                    android:hint="@string/title_diary_trip"
-                    android:imeOptions="actionNext"
-                    android:inputType="textCapSentences"
-                    android:maxLines="1"
-                    android:textColor="@color/primary_text"
-                    android:textSize="@dimen/txt_small_medium"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/tvTitleDiaryTripError"
-                    style="@style/TextError"
-                    android:layout_below="@+id/etTitleDiaryTrip"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:text="@string/field_can_not_empty"
-                    android:visibility="gone"
-                    android:layout_marginLeft="@dimen/margin_medium"/>
-
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:background="@android:color/transparent"
+                android:drawablePadding="@dimen/margin_small"
+                android:hint="@string/title_diary_trip"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/txt_small_medium"
+                android:textStyle="bold"/>
 
             <View
                 android:id="@+id/vLine1"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/rlTitleDiaryTrip"
+                android:layout_below="@+id/etTitleDiaryTrip"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:background="@drawable/partition_gray_line_horizontal"/>
 

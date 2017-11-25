@@ -332,7 +332,7 @@ public class TripActivity extends AppCompatActivity {
         tabMap.setLstPlace(trip.getPlaces());
         tabDiscuss.setData(trip.getLstDiscuss(), trip.getId(), trip.getIsMember());
         tabDiary.setData(trip.getLstTripDiaries(), trip.getId(), trip.getIsMember());
-        tabMembers.setData(trip.getMembers(), trip.getOwner().getId(), trip.getId());
+        tabMembers.setData(trip.getMembers(), trip.getOwner().getId());
 
         if (currentUserId.equals(trip.getOwner().getId())) {
             tabLayoutAdapter.addFragment(new TabRequestMemberTripFragment(), getResources().getString(R.string.request_member_tablayout_trip));
@@ -381,8 +381,6 @@ public class TripActivity extends AppCompatActivity {
             tabRequestMember.setOnStringCallbackListener(new OnStringCallbackListener() {
                 @Override
                 public void onStringCallback(String response) {
-                    TabMembersTripFragment tabMembers = (TabMembersTripFragment) getSupportFragmentManager().findFragmentByTag(TabLayoutAdapter.makeFragmentName(R.id.vpTrip, 4));
-                    tabMembers.loadData();
                     readRequestMemberResponse(response);
                     if (lstRequest != null && lstRequest.size() > 0) {
                         tlTrip.with(5, getResources().getString(R.string.request_member_tablayout_trip))
@@ -401,8 +399,8 @@ public class TripActivity extends AppCompatActivity {
         if (currentUserId.equals(owner)) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.toolbar_menu_trip, menu);
-        }
-        return true;
+            return true;
+        } else return true;
     }
 
     @Override

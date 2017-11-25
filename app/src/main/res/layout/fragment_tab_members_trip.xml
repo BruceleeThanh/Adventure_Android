@@ -3,18 +3,9 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/srlMemberTrip"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvMemberTrip"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvMemberTrip"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

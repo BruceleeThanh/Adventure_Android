@@ -53,7 +53,6 @@ import studio.crazybt.adventure.adapters.SpinnerAdapter;
 import studio.crazybt.adventure.helpers.ImagePickerHelper;
 import studio.crazybt.adventure.helpers.PicassoHelper;
 import studio.crazybt.adventure.libs.ApiConstants;
-import studio.crazybt.adventure.listeners.OnTextWatcher;
 import studio.crazybt.adventure.models.DetailDiary;
 import studio.crazybt.adventure.models.ImageContent;
 import studio.crazybt.adventure.models.ImageUpload;
@@ -89,8 +88,6 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
     AppCompatSpinner spiPrivacy;
     @BindView(R.id.etTitleDiaryTrip)
     EditText etTitleDiaryTrip;
-    @BindView(R.id.tvTitleDiaryTripError)
-    TextView tvTitleDiaryTripError;
     @BindView(R.id.etContentDiaryTrip)
     EditText etContentDiaryTrip;
     @BindView(R.id.rvImageDiaryTrip)
@@ -166,15 +163,6 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
         editImageCreateStatusFragment = EditImageCreateStatusFragment.newInstance(lstImageUploads, lstImages);
         token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
         realm = Realm.getDefaultInstance();
-
-        etTitleDiaryTrip.addTextChangedListener(new OnTextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s != null && s.length() > 0){
-                    tvTitleDiaryTripError.setVisibility(View.GONE);
-                }
-            }
-        });
     }
 
     private void initEvents() {
@@ -252,8 +240,7 @@ public class CreateDiaryTripFragment extends Fragment implements View.OnClickLis
 
     public void uploadDiary() {
         if (StringUtil.isEmpty(etTitleDiaryTrip)) {
-            tvTitleDiaryTripError.setVisibility(View.VISIBLE);
-            tvTitleDiaryTripError.setText(getResources().getString(R.string.field_can_not_empty));
+            etTitleDiaryTrip.setError(getResources().getString(R.string.field_can_not_empty));
         } else {
             uploadSingleDiary();
             if (lstImageUploads.isEmpty()) {

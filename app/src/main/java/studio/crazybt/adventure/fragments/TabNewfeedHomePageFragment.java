@@ -161,7 +161,7 @@ public class TabNewfeedHomePageFragment extends Fragment implements View.OnClick
                 break;
             case R.id.fabCreateTrip:
                 fabOrigin.close(true);
-                getActivity().startActivityForResult(InputActivity.newInstance(getContext(), CommonConstants.ACT_CREATE_TRIP), CommonConstants.ACT_CREATE_TRIP);
+                startActivity(InputActivity.newInstance(getContext(), CommonConstants.ACT_CREATE_TRIP));
                 break;
         }
     }

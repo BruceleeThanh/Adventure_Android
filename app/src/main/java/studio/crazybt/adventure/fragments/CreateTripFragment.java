@@ -127,18 +127,6 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
     EditText etCreateTripToolbox;
     @BindView(R.id.etCreateTripNote)
     EditText etCreateTripNote;
-    @BindView(R.id.tvCreateTripNameError)
-    TextView tvCreateTripNameError;
-    @BindView(R.id.tvCreateTripStartPositionError)
-    TextView tvCreateTripStartPositionError;
-    @BindView(R.id.tvCreateTripStartTimeError)
-    TextView tvCreateTripStartTimeError;
-    @BindView(R.id.tvCreateTripMemberError)
-    TextView tvCreateTripMemberError;
-    @BindView(R.id.tvCreateTripEndTimeError)
-    TextView tvCreateTripEndTimeError;
-    @BindView(R.id.tvCreateTripVehicleError)
-    TextView tvCreateTripVehicleError;
 
     @BindDimen(R.dimen.item_icon_size_small)
     float itemSizeSmall;
@@ -189,7 +177,7 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
         return rootView;
     }
 
-    private void loadInstance() {
+    private void loadInstance(){
         Bundle bundle = getArguments();
         if (bundle != null) {
             idGroup = bundle.getString(ApiConstants.KEY_ID_GROUP, idGroup);
@@ -203,10 +191,10 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
         ((AppCompatActivity) getActivity()).setSupportActionBar(tbCreateTrip);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (idGroup != null) {
+        if(idGroup != null){
             spiPrivacy.setVisibility(View.GONE);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_tb_create_trip_group);
-        } else {
+        }else{
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_tb_create_trip);
         }
 
@@ -216,8 +204,8 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
 
         btnPlacesStartPosition.setOnClickListener(this);
         btnPlacesDestination.setOnClickListener(this);
-        //etCreateTripStartTime.setOnClickListener(this);
-        //etCreateTripEndTime.setOnClickListener(this);
+        etCreateTripStartTime.setOnClickListener(this);
+        etCreateTripEndTime.setOnClickListener(this);
         btnResetTime.setOnClickListener(this);
         tetCreateTripDestination.setTagsListener(new TagsEditText.TagsEditListener() {
             @Override
@@ -391,37 +379,23 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
         if (date.compareTo(new Date()) > 0) {
             if (type == SET_START_TIME) {
                 if (endDate != null && endDate.compareTo(date) < 0) {
-                    tvCreateTripStartTimeError.setVisibility(View.VISIBLE);
-                    tvCreateTripStartTimeError.setText(getResources().getString(R.string.error_start_time_after_end));
-                    etCreateTripStartTime.requestFocus();
+                    ToastUtil.showToast(this.getContext(), getResources().getString(R.string.error_start_time_after_end));
                 } else {
-                    tvCreateTripStartTimeError.setVisibility(View.GONE);
                     startDate = date;
                     crstlaAdapter.setStartDate(startDate);
                     displayDateTime(etCreateTripStartTime, date, format);
                 }
             } else if (type == SET_END_TIME) {
                 if (startDate != null && startDate.compareTo(date) > 0) {
-                    tvCreateTripEndTimeError.setVisibility(View.VISIBLE);
-                    tvCreateTripEndTimeError.setText(getResources().getString(R.string.error_end_time_before_start));
-                    etCreateTripEndTime.requestFocus();
+                    ToastUtil.showToast(this.getContext(), getResources().getString(R.string.error_end_time_before_start));
                 } else {
-                    tvCreateTripEndTimeError.setVisibility(View.GONE);
                     endDate = date;
                     crstlaAdapter.setEndDate(endDate);
                     displayDateTime(etCreateTripEndTime, date, format);
                 }
             }
         } else {
-            if (type == SET_START_TIME) {
-                tvCreateTripStartTimeError.setVisibility(View.VISIBLE);
-                tvCreateTripStartTimeError.setText(getResources().getString(R.string.error_time_before_now));
-                etCreateTripStartTime.requestFocus();
-            } else if (type == SET_END_TIME) {
-                tvCreateTripEndTimeError.setVisibility(View.VISIBLE);
-                tvCreateTripEndTimeError.setText(getResources().getString(R.string.error_time_before_now));
-                etCreateTripEndTime.requestFocus();
-            }
+            ToastUtil.showToast(this.getContext(), getResources().getString(R.string.error_time_before_now));
         }
     }
 
@@ -430,29 +404,17 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
     }
 
     public void uploadTrip() {
-        tvCreateTripNameError.setVisibility(View.GONE);
-        tvCreateTripStartPositionError.setVisibility(View.GONE);
-        tvCreateTripStartTimeError.setVisibility(View.GONE);
-        tvCreateTripMemberError.setVisibility(View.GONE);
         if (StringUtil.isEmpty(etCreateTripName)) {
-            tvCreateTripNameError.setVisibility(View.VISIBLE);
-            tvCreateTripNameError.setText(getResources().getString(R.string.field_can_not_empty));
+            etCreateTripName.setError(getResources().getString(R.string.field_can_not_empty));
             etCreateTripName.requestFocus();
         } else if (StringUtil.isEmpty(tetCreateTripStartPosition)) {
-            tvCreateTripStartPositionError.setVisibility(View.VISIBLE);
-            tvCreateTripStartPositionError.setText(getResources().getString(R.string.field_can_not_empty));
+            tetCreateTripStartPosition.setError(getResources().getString(R.string.field_can_not_empty));
             tetCreateTripStartPosition.requestFocus();
         } else if (StringUtil.isEmpty(etCreateTripStartTime)) {
-            tvCreateTripStartTimeError.setVisibility(View.VISIBLE);
-            tvCreateTripStartTimeError.setText(getResources().getString(R.string.field_can_not_empty));
+            etCreateTripStartTime.setError(getResources().getString(R.string.field_can_not_empty));
             etCreateTripStartTime.requestFocus();
         } else if (StringUtil.isEmpty(etCreateTripMember)) {
-            tvCreateTripMemberError.setVisibility(View.VISIBLE);
-            tvCreateTripMemberError.setText(getResources().getString(R.string.field_can_not_empty));
-            tetCreateTripVehicle.requestFocus();
-        } else if (StringUtil.isEmpty(tetCreateTripVehicle)) {
-            tvCreateTripVehicleError.setVisibility(View.VISIBLE);
-            tvCreateTripVehicleError.setText(getResources().getString(R.string.field_can_not_empty));
+            etCreateTripMember.setError(getResources().getString(R.string.field_can_not_empty));
             etCreateTripMember.requestFocus();
         } else {
             SharedPref.getInstance(getContext()).putInt(CURRENT_TRIP_PRIVACY, spiPrivacy.getSelectedItemPosition());
@@ -463,8 +425,6 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
     }
 
     private Map<String, String> getTripParams() {
-        startDate = ConvertTimeHelper.convertStringToDate(etCreateTripStartTime.getText().toString(), ConvertTimeHelper.DATE_FORMAT_1);
-        endDate = ConvertTimeHelper.convertStringToDate(etCreateTripEndTime.getText().toString(), ConvertTimeHelper.DATE_FORMAT_1);
         ApiParams params = ApiParams.getBuilder();
         params.put(ApiConstants.KEY_TOKEN, token);
         params.put(ApiConstants.KEY_NAME, StringUtil.getText(etCreateTripName));
@@ -481,11 +441,11 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
         params.put(ApiConstants.KEY_PREPARE, StringUtil.getText(etCreateTripToolbox));
         params.put(ApiConstants.KEY_NOTE, StringUtil.getText(etCreateTripNote));
 
-        if (idGroup != null) {
+        if (idGroup != null){
             params.put(ApiConstants.KEY_ID_GROUP, idGroup);
             params.putParam(ApiConstants.KEY_PERMISSION, 4);
             params.putParam(ApiConstants.KEY_TYPE, 2);
-        } else {
+        }else{
             params.put(ApiConstants.KEY_PERMISSION, String.valueOf(spiPrivacy.getSelectedItemPosition() + 1));
             params.putParam(ApiConstants.KEY_TYPE, 1);
         }
@@ -606,14 +566,12 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
             etCreateTripStartTime.setText("");
             etCreateTripEndTime.setText("");
         } else if (v.getId() == R.id.btnAddTripRoute) {
-            if (!etCreateTripStartTime.getText().toString().isEmpty()) {
+            if (crstlaAdapter.getStartDate() != null) {
                 rvCreateTripRoute.setVisibility(View.VISIBLE);
                 lstRoutes.add(new Route());
                 crstlaAdapter.notifyItemInserted(lstRoutes.size() - 1);
             } else {
-                tvCreateTripStartTimeError.setVisibility(View.VISIBLE);
-                tvCreateTripStartTimeError.setText(getResources().getString(R.string.error_null_start_time));
-                etCreateTripStartTime.requestFocus();
+                ToastUtil.showToast(getContext(), R.string.error_null_start_time);
             }
         }
     }
@@ -655,9 +613,9 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         int id = item.getItemId();
-        if (id == android.R.id.home) {
+        if(id == android.R.id.home){
             getActivity().onBackPressed();
-        } else if (id == R.id.itemPost) {
+        }else if(id == R.id.itemPost){
             uploadTrip();
             if (getRequest() != null) {
                 item.setEnabled(false);

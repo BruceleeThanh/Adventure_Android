@@ -58,7 +58,7 @@ public class TabDiaryTripFragment extends Fragment implements View.OnClickListen
 
     private String idTrip;
     private int isMember;
-    private List<TripDiary> lstTripDiaries = new ArrayList<>();
+    private List<TripDiary> lstTripDiaries = null;
 
     private AdventureRequest adventureRequest;
     private String token = null;
@@ -77,7 +77,6 @@ public class TabDiaryTripFragment extends Fragment implements View.OnClickListen
     private void initControls() {
         ButterKnife.bind(this, rootView);
         token = SharedPref.getInstance(getContext()).getString(ApiConstants.KEY_TOKEN, "");
-        initDiaryShortcutList();
     }
 
     private void initEvents() {
@@ -95,12 +94,9 @@ public class TabDiaryTripFragment extends Fragment implements View.OnClickListen
     public void setData(List<TripDiary> lstTripDiaries, String idTrip, int isMember) {
         if (lstTripDiaries == null || lstTripDiaries.isEmpty()) {
             tvErrorDiaryTrip.setVisibility(View.VISIBLE);
-            rvDiaryTripShortcut.setVisibility(View.GONE);
         } else {
-            tvErrorDiaryTrip.setVisibility(View.GONE);
-            rvDiaryTripShortcut.setVisibility(View.VISIBLE);
-            this.lstTripDiaries.addAll(lstTripDiaries);
-            dtslaAdapter.notifyDataSetChanged();
+            this.lstTripDiaries = lstTripDiaries;
+            initDiaryShortcutList();
         }
         this.idTrip = idTrip;
         this.isMember = isMember;
@@ -116,7 +112,7 @@ public class TabDiaryTripFragment extends Fragment implements View.OnClickListen
 //        });
     }
 
-    public void loadData() {
+    private void loadData() {
         srlDiaryTripShortcut.setRefreshing(true);
         adventureRequest = new AdventureRequest(getContext(), Request.Method.POST,
                 ApiConstants.getUrl(ApiConstants.API_BROWSE_TRIP_DIARY), getParams(), false);
@@ -137,8 +133,8 @@ public class TabDiaryTripFragment extends Fragment implements View.OnClickListen
                 JSONArray data = JsonUtil.getJSONArray(response, ApiConstants.DEF_DATA);
                 JSONObject diary;
                 JSONObject owner;
+                lstTripDiaries.clear();
                 if (data != null) {
-                    lstTripDiaries.clear();
                     int length = data.length();
                     for (int i = 0; i < length; i++) {
                         diary = JsonUtil.getJSONObject(data, i);
@@ -166,10 +162,8 @@ public class TabDiaryTripFragment extends Fragment implements View.OnClickListen
                         ));
                     }
                     dtslaAdapter.notifyDataSetChanged();
-                    tvErrorDiaryTrip.setVisibility(View.GONE);
-                    rvDiaryTripShortcut.setVisibility(View.VISIBLE);
+                    srlDiaryTripShortcut.setRefreshing(false);
                 }
-                srlDiaryTripShortcut.setRefreshing(false);
             }
 
             @Override
@@ -184,14 +178,7 @@ public class TabDiaryTripFragment extends Fragment implements View.OnClickListen
     public void onClick(View v) {
         int id = v.getId();
         if (R.id.fabCreateDiaryTrip == id) {
-            startActivityForResult(InputActivity.newInstance_ForTrip(getContext(), CommonConstants.ACT_CREATE_DIARY_TRIP, idTrip), CommonConstants.ACT_CREATE_DIARY_TRIP);
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == CommonConstants.ACT_CREATE_DIARY_TRIP && resultCode == getActivity().RESULT_CANCELED){
-            loadData();
+            startActivity(InputActivity.newInstance_ForTrip(getContext(), CommonConstants.ACT_CREATE_DIARY_TRIP, idTrip));
         }
     }
 

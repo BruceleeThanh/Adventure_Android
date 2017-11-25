@@ -17,16 +17,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-/*import com.facebook.CallbackManager;
+import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.firebase.iid.FirebaseInstanceId;*/
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +43,7 @@ import studio.crazybt.adventure.libs.ApiConstants;
 import studio.crazybt.adventure.models.User;
 import studio.crazybt.adventure.services.AdventureRequest;
 import studio.crazybt.adventure.utils.JsonUtil;
+import studio.crazybt.adventure.utils.RLog;
 import studio.crazybt.adventure.utils.SharedPref;
 import studio.crazybt.adventure.utils.StringUtil;
 import studio.crazybt.adventure.utils.ToastUtil;
@@ -61,7 +63,7 @@ public class SplashFragment extends Fragment implements View.OnClickListener {
     Button btnSignupViaEmail;
     @BindView(R.id.llLoginViaFacebook)
     LinearLayout llLoginViaFacebook;
-    //CallbackManager callbackManagerFb;
+    CallbackManager callbackManagerFb;
     private AdventureRequest adventureRequest = null;
     private String fcmToken = null;
     private Realm realm;
@@ -71,18 +73,18 @@ public class SplashFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_splash, container, false);
-            //FacebookSdk.sdkInitialize(getContext().getApplicationContext());
+            FacebookSdk.sdkInitialize(getContext().getApplicationContext());
             ButterKnife.bind(this, rootView);
             btnLoginViaEmail.setOnClickListener(this);
             btnSignupViaEmail.setOnClickListener(this);
             llLoginViaFacebook.setOnClickListener(this);
         }
         realm = Realm.getDefaultInstance();
-        //initFbLogin();
+        initFbLogin();
         return rootView;
     }
 
-    /*private void initFbLogin() {
+    private void initFbLogin() {
         fcmToken = FirebaseInstanceId.getInstance().getToken();
         callbackManagerFb = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(callbackManagerFb, new FacebookCallback<LoginResult>() {
@@ -101,7 +103,7 @@ public class SplashFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-    }*/
+    }
 
     private void loginFb(String fbToken) {
         adventureRequest = new AdventureRequest(getContext(), Request.Method.POST, ApiConstants.getUrl(ApiConstants.API_FB_LOGIN), getLoginFbParams(fbToken), false);
@@ -205,7 +207,7 @@ public class SplashFragment extends Fragment implements View.OnClickListener {
         } else if (view.getId() == R.id.btnSignupViaEmail) {
             FragmentController.replaceFragment_BackStack(getActivity(), R.id.rlSplash, new SignupFragment());
         } else if (view.getId() == R.id.llLoginViaFacebook) {
-            //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
         }
     }
 
@@ -215,9 +217,9 @@ public class SplashFragment extends Fragment implements View.OnClickListener {
         return false;
     }
 
-/*    @Override
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManagerFb.onActivityResult(requestCode, resultCode, data);
-    }*/
+    }
 }

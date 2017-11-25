@@ -79,7 +79,6 @@ public class ApiConstants {
     public static final String API_CREATE_TRIP_DIARY = "trip_diary/create";
     public static final String API_BROWSE_TRIP_DIARY = "trip_diary/browse";
     public static final String API_DETAIL_TRIP_DIARY = "trip_diary/detail";
-    public static final String API_BROWSE_TRIP_MEMBER = "trip_member/browse_member";
     public static final String API_REQUEST_TRIP_MEMBER = "trip_member/request";
     public static final String API_CANCEL_REQUEST_TRIP_MEMBER = "trip_member/cancel_request";
     public static final String API_BROWSE_REQUEST_TRIP_MEMBER = "trip_member/browse_request";
@@ -108,7 +107,6 @@ public class ApiConstants {
     public static final String API_UNBLOCK_MEMBER_GROUP_MEMBER = "group_member/unblock_member";
     public static final String API_CONVERSATION_BROWSE = "conversation/browse";
     public static final String API_CONVERSATION_INITIALIZE = "conversation/initialize";
-    public static final String API_STATUS_TRIP_BROWSE = "status/trip_browse";
 
     // socket
     public static final String SOCKET_USER_ONLINE = "user_online";
