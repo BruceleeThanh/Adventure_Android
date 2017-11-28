@@ -54,17 +54,10 @@ public class CreateDetailDiaryListAdapter extends RecyclerView.Adapter<CreateDet
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         DetailDiary detailDiary = lstDetailDiaries.get(position);
         holder.etDateDetailDiaryTrip.setText(detailDiary.getDate() == null ? "" : detailDiary.getShortDate());
-        holder.etDateDetailDiaryTrip.setOnClickListener(new View.OnClickListener() {
+        holder.etDateDetailDiaryTrip.addTextChangedListener(new OnTextWatcher() {
             @Override
-            public void onClick(View v) {
-                datePicker();
-                setOnTimeSetupListener(new OnTimeSetupListener() {
-                    @Override
-                    public void onTimeSetup(Date date) {
-                        lstDetailDiaries.get(position).setDate(ConvertTimeHelper.convertDateToString(date, ConvertTimeHelper.DATE_FORMAT_1));
-                        notifyItemChanged(position);
-                    }
-                });
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                lstDetailDiaries.get(position).setDate(s.toString());
             }
         });
         holder.ivDeleteDetailDiaryTrip.setOnClickListener(new View.OnClickListener() {

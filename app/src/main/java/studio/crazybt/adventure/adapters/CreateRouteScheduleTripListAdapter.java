@@ -5,6 +5,8 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,33 +75,17 @@ public class CreateRouteScheduleTripListAdapter extends RecyclerView.Adapter<Cre
 
         final Route route = lstRoutes.get(position);
         holder.etStartTimeRoute.setText(route.getStartAt() == null ? "" : route.getStartAt());
-        holder.etStartTimeRoute.setOnClickListener(new View.OnClickListener() {
+        holder.etStartTimeRoute.addTextChangedListener(new OnTextWatcher() {
             @Override
-            public void onClick(View v) {
-                datePicker();
-                setOnTimeSetupListener(new OnTimeSetupListener() {
-                    @Override
-                    public void onTimeSetup(Date date) {
-                        lstRoutes.get(position).setStartAt(setDateTime(holder.etStartTimeRoute, date, route.getStartAt(), route.getEndAt(),
-                                ConvertTimeHelper.DATE_FORMAT_1));
-                        notifyItemChanged(position);
-                    }
-                });
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                lstRoutes.get(position).setStartAt(s.toString());
             }
         });
         holder.etEndTimeRoute.setText(route.getEndAt() == null ? "" : route.getEndAt());
-        holder.etEndTimeRoute.setOnClickListener(new View.OnClickListener() {
+        holder.etEndTimeRoute.addTextChangedListener(new OnTextWatcher() {
             @Override
-            public void onClick(View v) {
-                datePicker();
-                setOnTimeSetupListener(new OnTimeSetupListener() {
-                    @Override
-                    public void onTimeSetup(Date date) {
-                        lstRoutes.get(position).setEndAt(setDateTime(holder.etEndTimeRoute, date, route.getStartAt(), route.getEndAt(),
-                                ConvertTimeHelper.DATE_FORMAT_1));
-                        notifyItemChanged(position);
-                    }
-                });
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                lstRoutes.get(position).setEndAt(s.toString());
             }
         });
         holder.etTitleRoute.addTextChangedListener(new OnTextWatcher() {
