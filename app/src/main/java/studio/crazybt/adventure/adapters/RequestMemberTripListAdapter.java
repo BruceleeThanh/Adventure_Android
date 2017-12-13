@@ -153,7 +153,7 @@ public class RequestMemberTripListAdapter extends RecyclerView.Adapter<RequestMe
             public void onAdventureResponse(JSONObject response) {
                 lstTripMember.remove(position);
                 notifyDataSetChanged();
-                ToastUtil.showToast(rootContext, name + " " + rootContext.getResources().getString(R.string.success_accept_trip_member));
+                ToastUtil.showToast(rootContext, name + " " + rootContext.getResources().getString(R.string.success_accept_trip_member), 4500);
                 holder.btnLeftFriendTemplate.setEnabled(true);
 
                 JSONObject data = JsonUtil.getJSONObject(response, ApiConstants.DEF_DATA);

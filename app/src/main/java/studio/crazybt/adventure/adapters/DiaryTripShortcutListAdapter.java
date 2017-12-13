@@ -66,10 +66,13 @@ public class DiaryTripShortcutListAdapter extends RecyclerView.Adapter<DiaryTrip
         StringUtil.setText(holder.tvAuthorDiaryShortcut, tripDiary.getOwner().getFullName());
         if (tripDiary.getPermission() == 1) {
             holder.ivPermission.setImageResource(R.drawable.ic_private_96);
+            holder.ivPermission.setContentDescription(rootContext.getResources().getString(R.string.only_me_privacy));
         } else if (tripDiary.getPermission() == 2) {
             holder.ivPermission.setImageResource(R.drawable.ic_friend_96);
+            holder.ivPermission.setContentDescription(rootContext.getResources().getString(R.string.member_trip_privacy));
         } else if (tripDiary.getPermission() == 3) {
             holder.ivPermission.setImageResource(R.drawable.ic_public_96);
+            holder.ivPermission.setContentDescription(rootContext.getResources().getString(R.string.public_privacy));
         }
         StringUtil.setText(holder.tvDateDiaryShortcut, ConvertTimeHelper.convertISODateToPrettyTimeStamp(tripDiary.getCreatedAt()));
     }

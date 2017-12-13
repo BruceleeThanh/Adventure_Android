@@ -556,7 +556,7 @@ public class CreateTripFragment extends Fragment implements View.OnClickListener
             @Override
             public void onAdventureResponse(JSONObject response) {
                 if (index == lstPlaceTrip.size() - 1) {
-                    ToastUtil.showToast(getContext(), R.string.success_post_trip);
+                    ToastUtil.showToast(getContext(), R.string.success_post_trip, 4500);
                     getActivity().finish();
                     RLog.i(response.toString());
                 }
